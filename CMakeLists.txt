@@ -40,15 +40,17 @@ cmake_minimum_required(VERSION 2.8)
 # Fire requires C++11 to use shared pointers
 list( APPEND CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS} $ENV{CXX_FLAGS}")
 
-# Create the documentation directory and set up the doc target.
-set(DOC_DIR "docs")
-if(NOT EXISTS ${DOC_DIR})
-    execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory "${DOC_DIR}")
-endif(NOT EXISTS ${DOC_DIR})
-set(DOXYFILE_OUTPUT_DIR "${DOC_DIR}")
-set(DOXYFILE_LATEX "ON")
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}")
-include(UseDoxygen OPTIONAL)
+# Setup Doxygen
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+add_custom_target(doc
+${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+COMMENT "Generating API documentation with Doxygen" VERBATIM
+)
+endif(DOXYGEN_FOUND)
+
 
 # Include directories for the main program. Note that include 
 # directories must come before add subdirectory!
