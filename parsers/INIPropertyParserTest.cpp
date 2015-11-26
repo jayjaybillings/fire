@@ -27,57 +27,32 @@
  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-  Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
+ Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
-#ifndef PARSERS_IPROPERTYBLOCK_H_
-#define PARSERS_IPROPERTYBLOCK_H_
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE Regression
 
-#include <string>
+#include <boost/test/included/unit_test.hpp>
 #include <vector>
+#include <string>
+#include "INIPropertyParser.h"
 
-namespace fire {
+using namespace std;
 
-/**
- * This class is defines the basic interface for managing property objects.
- * Properties are basic key-value pairs that are organized in one or more
- * blocks in a source.
- */
-class IPropertyBlock {
-public:
+BOOST_AUTO_TEST_SUITE(BasicPropertyBlock_testSuite)
 
-	/**
-	 * This is a convenience operation that returns all properties in the
-	 * block.
-	 * @return the list of all property keys in the block
-	 */
-    virtual const std::vector<std::string> & getKeys() = 0;
+/**This operation checks default parsing setup of the TokenizedLineReader.*/
+BOOST_AUTO_TEST_CASE(checkBlock) {
 
-    /**
-     * This is a convenience operation that returns all values in the block.
-     * @return the list of all values in the block
-     */
-    virtual const std::vector<std::string> & getValues() = 0;
+	// The third line should skipped because it is a comment so, get the fourth
+	// line and check it
+	auto dLine = 1;
+	auto aValue = 1.05;
+	BOOST_REQUIRE(dLine > 0);
+	BOOST_REQUIRE_EQUAL(1, dLine);
+	BOOST_REQUIRE_CLOSE_FRACTION(1.05, aValue, 0.001);
 
-    /**
-     * This operation returns the property value associated with the key.
-     * @param key the property key
-     * @return the property value associated with the key
-     */
-    virtual std::string getValue(const std::string & key) = 0;
+	return;
+}
 
-    /**
-     * This operation returns the name of the property block.
-     * @return the block name
-     */
-    virtual std::string getName() = 0;
-
-    /**
-     * This operation returns the number of key-value pairs in the block.
-     * @return the number of key-value pairs
-     */
-    virtual int size() = 0;
-};
-
-} /* namespace fire */
-
-#endif /* PARSERS_IPROPERTYBLOCK_H_ */
+BOOST_AUTO_TEST_SUITE_END()

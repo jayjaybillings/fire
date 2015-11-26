@@ -34,8 +34,8 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include "IParser.h"
-#include "IPropertyBlock.h"
 
 namespace fire {
 
@@ -43,7 +43,7 @@ namespace fire {
  * This is an extension of the parser interface that focuses on parsing a set
  * of properties. Properties are returned in blocks (see IPropertyBlock).
  */
-class IPropertyParser : public IParser {
+class IPropertyParser: public IParser {
 public:
 
 	/**
@@ -58,14 +58,8 @@ public:
 	 * @param name the block name
 	 * @return the property block with the given name
 	 */
-	virtual const IPropertyBlock & getPropertyBlock(const std::string & name) = 0;
-
-	/**
-	 * This is a convenience operation that returns all of the property blocks
-	 * in the source.
-	 * @return the full set of property blocks for the source
-	 */
-	virtual const std::vector<IPropertyBlock> & getPropertyBlocks() = 0;
+	virtual const std::map<std::string, std::string> & getPropertyBlock(
+			const std::string & name) = 0;
 
 };
 
