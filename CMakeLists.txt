@@ -51,7 +51,6 @@ COMMENT "Generating API documentation with Doxygen" VERBATIM
 )
 endif(DOXYGEN_FOUND)
 
-
 # Include directories for the main program. Note that include 
 # directories must come before add subdirectory!
 include_directories("${CMAKE_SOURCE_DIR}/parsers")
