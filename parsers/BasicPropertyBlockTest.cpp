@@ -29,65 +29,38 @@
 
  Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
-#ifndef IPARSER_H_
-#define IPARSER_H_
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE Regression
 
+#include <boost/test/included/unit_test.hpp>
+#include <vector>
 #include <string>
+#include "BasicPropertyBlock.h"
 
-namespace fire {
+using namespace std;
 
-/**
- * This is the base interface for parsers in Fire and it defines the contract
- * that can be expected of all parsers.
- *
- * This source string is only a reference to the source or some sort of handle
- * that points to it, such as a file or stream name. The exact type of the
- * source - file, stream, socket, etc. - is determined by the implementing
- * class.
- *
- * IParsers should always be used by setting the source and then parsing the
- * source:
- *
- * IParser parser = ...;// somehow create your parser
- * parser.setSource(sourceName);
- * parser.parser();
- *
- */
-class IParser {
-public:
+BOOST_AUTO_TEST_SUITE(BasicPropertyBlock_testSuite)
 
-	/**
-	 * This operation sets the data source for the parser.
-	 * @param source the name of the source that the parser should parse.
-	 */
-	virtual void setSource(const std::string & source) = 0;
+/**This operation checks default parsing setup of the TokenizedLineReader.*/
+BOOST_AUTO_TEST_CASE(checkBlock) {
 
-	/**
-	 * This operation gets the data source for the parser.
-	 * @return the name of the source
-	 */
-	virtual const std::string & getSource() = 0;
+	// Create some keys
+	std::vector<std::string> keys = { "1", "2", "3", "4" };
+	std::vector<std::string> values = { "one", "two", "three", "four" };
 
-	/**
-	 * This operation indicates whether or not the parser's source is a file.
-	 * @return true if this parser is working with a file, false otherwise.
-	 */
-	virtual bool isFile() = 0;
+	// Create a block and try to configure it
+	fire::BasicPropertyBlock block;
+	block.getName();
 
-	/**
-	 * This operation indicates whether or not the parser is using a local
-	 * source.
-	 * @return true if this parser is working with a local source, false
-	 * otherwise.
-	 */
-	virtual bool isLocal() = 0;
+	// The third line should skipped because it is a comment so, get the fourth
+	// line and check it
+	auto dLine = 1;
+	auto aValue = 1.05;
+	BOOST_REQUIRE(dLine > 0);
+	BOOST_REQUIRE_EQUAL(1, dLine);
+	BOOST_REQUIRE_CLOSE_FRACTION(1.05, aValue, 0.001);
 
-	/**
-	 * This operation indicates whether or not the parser reads in parallel.
-	 * @return true if this parser reads in parallel, false otherwise.
-	 */
-	virtual bool isParallel() = 0;
-};
+	return;
+}
 
-} // end namespace fire
-#endif // IPARSER_H_
+BOOST_AUTO_TEST_SUITE_END()

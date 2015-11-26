@@ -1,5 +1,9 @@
 # Fire Framework
 
+Fire is a framework for scientific computing. It includes various reusable tools 
+and utilities. This includes
+* parsers
+
 ## Prerequisites
 You will need git and cmake to build Fire.
 
@@ -26,6 +30,10 @@ CXX_FLAGS='-Wall' cmake ../fire -DCMAKE_BUILD_TYPE=Debug -G"Eclipse CDT4 - Unix 
 Optimization flags should be handled by setting -DCMAKE_BUILD_TYPE=Release 
 instead of Debug. Likewise, an optimized build with debug information can be 
 acheived by setting -DCMAKE_BUILD_TYPE=RelWithDebugInfo.
+
+## License
+
+See the LICENSE file licensing and copyright information. In short, 3-clause BSD.
 
 ## Questions
 Questions can be directed to me at billingsjj <at> ornl <dot> gov.

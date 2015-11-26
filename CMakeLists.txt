@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (c) 2015-, UT-Battelle, LLC
+# Copyright (c) 2015-, Jay Jay Billings
 # All rights reserved.
 #
 # Author Contact: Jay Jay Billings, billingsjj@ornl.gov
@@ -62,7 +62,7 @@ add_subdirectory(parsers)
 ADD_SUBDIRECTORY(tpls)
 
 # Setup the library list
-set(FIRE_LIBS fire)
+set(FIRE_LIBS fireParsers)
 
 # ---- Tests! ----- #
 
@@ -85,7 +85,8 @@ if(Boost_FOUND)
         message(STATUS "Making test ${test}")
         get_filename_component(testName ${test} NAME_WE)
         add_executable(${testName} ${test})
-        add_test(${testName} ${testName}) 
+        add_test(${testName} ${testName})
+        target_link_libraries(${testName} ${FIRE_LIBS}) 
         #add a label so the tests can be run separately
         set_property(TEST ${testName} PROPERTY LABELS ${PACKAGE_NAME})   
     endforeach(test ${tests})

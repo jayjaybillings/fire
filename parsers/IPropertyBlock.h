@@ -1,5 +1,5 @@
 /**----------------------------------------------------------------------------
- Copyright (c) 2015-, UT-Battelle, LLC.
+ Copyright (c) 2015-, Jay Jay Billings
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
- Author(s): Jay Jay Billings
+  Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
 #ifndef PARSERS_IPROPERTYBLOCK_H_
 #define PARSERS_IPROPERTYBLOCK_H_
@@ -50,32 +50,32 @@ public:
 	 * block.
 	 * @return the list of all property keys in the block
 	 */
-    const std::vector<std::string> & getKeys();
+    virtual const std::vector<std::string> & getKeys() = 0;
 
     /**
      * This is a convenience operation that returns all values in the block.
      * @return the list of all values in the block
      */
-    const std::vector<std::string> & getValues();
+    virtual const std::vector<std::string> & getValues() = 0;
 
     /**
      * This operation returns the property value associated with the key.
      * @param key the property key
      * @return the property value associated with the key
      */
-    std::string getValue(const std::string & key);
+    virtual std::string getValue(const std::string & key) = 0;
 
     /**
      * This operation returns the name of the property block.
      * @return the block name
      */
-    std::string getName();
+    virtual std::string getName() = 0;
 
     /**
      * This operation returns the number of key-value pairs in the block.
      * @return the number of key-value pairs
      */
-    int size();
+    virtual int size() = 0;
 };
 
 } /* namespace fire */

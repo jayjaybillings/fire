@@ -1,5 +1,5 @@
 /**----------------------------------------------------------------------------
- Copyright (c) 2015-, UT-Battelle, LLC.
+ Copyright (c) 2015-, Jay Jay Billings
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
- Author(s): Jay Jay Billings
+ Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
 #ifndef IPROPERTYPARSER_H_
 #define IPROPERTYPARSER_H_
@@ -51,21 +51,21 @@ public:
 	 * source.
 	 * @return the block names
 	 */
-	const std::vector<std::string> & getPropertyBlockNames();
+	virtual const std::vector<std::string> & getPropertyBlockNames() = 0;
 
 	/**
 	 * This operation returns the property block with the given name.
 	 * @param name the block name
 	 * @return the property block with the given name
 	 */
-	const IPropertyBlock & getPropertyBlock(const std::string & name);
+	virtual const IPropertyBlock & getPropertyBlock(const std::string & name) = 0;
 
 	/**
 	 * This is a convenience operation that returns all of the property blocks
 	 * in the source.
 	 * @return the full set of property blocks for the source
 	 */
-	const std::vector<IPropertyBlock> & getPropertyBlocks();
+	virtual const std::vector<IPropertyBlock> & getPropertyBlocks() = 0;
 
 };
 

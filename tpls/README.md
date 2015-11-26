@@ -1,3 +1,5 @@
+## Note on Licenses for Third Party Libraries
+
 This directory holds the Third Party Libraries (TPLs) that are used by Fire.
 Each directory contains the original distribution of the TPL as well as a 
 VERSION.txt file that describes the version and source for the TPL. This extra
