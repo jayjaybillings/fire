@@ -47,7 +47,7 @@ file(GLOB HEADERS *.h)
 file(GLOB SRC *.cpp)
 
 #Add the source code to the library
-add_library(${LIBRARY_NAME} STATIC ${SRC} TestPropertyParser.cpp TestPropertyParser.h)
+add_library(${LIBRARY_NAME} STATIC ${SRC})
 
 #Install the Fire header files
 install(FILES ${HEADERS} DESTINATION include)
