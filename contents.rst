@@ -1,2 +1,3 @@
-.. doxygennamespace:: fire
-   :project: fire-framework
+.. toctree::
+   README.md
+   API.rst
