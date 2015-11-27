@@ -9,5 +9,4 @@
 
    README.md
    
-.. doxygenclass:: *
-   :members: Jay Jay Billings
+.. doxygenindex::
