@@ -41,6 +41,10 @@ const std::string & INIPropertyParser::getSource() {
 	return source;
 }
 
+const std::string & INIPropertyParser::getSource() {
+	return source;
+}
+
 bool INIPropertyParser::isFile() {
 	return true;
 }

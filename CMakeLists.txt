@@ -88,7 +88,7 @@ if(Boost_FOUND)
         add_test(${testName} ${testName})
         target_link_libraries(${testName} ${FIRE_LIBS}) 
         #add a label so the tests can be run separately
-        set_property(TEST ${testName} PROPERTY LABELS ${PACKAGE_NAME})   
+        set_property(TEST ${testName} PROPERTY LABELS ${PACKAGE_NAME})
     endforeach(test ${tests})
 endif(Boost_FOUND)
 

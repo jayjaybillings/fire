@@ -41,12 +41,12 @@
 
 using namespace std;
 
+// Test file name
+static std::string testFileName = "INIPropertyParserTestFile.txt";
+
 // This is a class that creates and later deletes the test input file.
 class BlockGenerator {
 public:
-
-	// Test file name
-	std::string testFileName = "INIPropertyParserTestFile.txt";
 
 	// Constructor - Setup
 	BlockGenerator() {
@@ -76,15 +76,18 @@ BOOST_FIXTURE_TEST_SUITE(BasicPropertyBlock_testSuite, BlockGenerator)
 /**This operation checks default parsing setup of the INIPropertyParser.*/
 BOOST_AUTO_TEST_CASE(checkBlocks) {
 
+	// Configure the parser
 	fire::INIPropertyParser parser;
+	parser.setSource(testFileName);
+	parser.parse();
 
 	// The third line should skipped because it is a comment so, get the fourth
 	// line and check it
-	auto dLine = 1;
-	auto aValue = 1.05;
-	BOOST_REQUIRE(dLine > 0);
-	BOOST_REQUIRE_EQUAL(1, dLine);
-	BOOST_REQUIRE_CLOSE_FRACTION(1.05, aValue, 0.001);
+//	auto dLine = 1;
+//	auto aValue = 1.05;
+//	BOOST_REQUIRE(dLine > 0);
+//	BOOST_REQUIRE_EQUAL(1, dLine);
+//	BOOST_REQUIRE_CLOSE_FRACTION(1.05, aValue, 0.001);
 
 	return;
 }
