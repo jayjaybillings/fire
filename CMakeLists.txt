@@ -79,7 +79,7 @@ if(Boost_FOUND)
     # Include the header directory since BOOST tests
     INCLUDE_DIRECTORIES("${Boost_INCLUDE_DIR}")
     #Get the test files
-    file(GLOB tests parsers/*Test.cpp)
+    file(GLOB tests parsers/tests/*Test.cpp)
     #Make executables and link libraries for testers
     foreach(test ${tests})
         message(STATUS "Making test ${test}")

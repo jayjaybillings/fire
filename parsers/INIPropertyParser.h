@@ -38,9 +38,38 @@
 namespace fire {
 
 class INIPropertyParser: public IPropertyParser {
+
+private:
+
+	/**
+	 * The name of the source that will be parsed.
+	 */
+	std::string source;
+
+	/**
+	 * The names of all the property blocks.
+	 */
+	std::vector<std::string> blockNames;
+
 public:
-	INIPropertyParser();
-	virtual ~INIPropertyParser();
+	INIPropertyParser() {};
+	virtual ~INIPropertyParser() {};
+
+	void setSource(const std::string & source);
+
+	const std::string & getSource();
+
+	bool isFile();
+
+	bool isLocal();
+
+	bool isParallel();
+
+	const std::vector<std::string> & getPropertyBlockNames();
+
+	const std::map<std::string, std::string> & getPropertyBlock(
+			const std::string & name);
+
 };
 
 } /* namespace fire */

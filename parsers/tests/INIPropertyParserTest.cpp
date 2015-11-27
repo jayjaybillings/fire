@@ -35,14 +35,48 @@
 #include <boost/test/included/unit_test.hpp>
 #include <vector>
 #include <string>
+#include <fstream>
+#include <stdio.h>
 #include "INIPropertyParser.h"
 
 using namespace std;
 
-BOOST_AUTO_TEST_SUITE(BasicPropertyBlock_testSuite)
+// This is a class that creates and later deletes the test input file.
+class BlockGenerator {
+public:
 
-/**This operation checks default parsing setup of the TokenizedLineReader.*/
-BOOST_AUTO_TEST_CASE(checkBlock) {
+	// Test file name
+	std::string testFileName = "INIPropertyParserTestFile.txt";
+
+	// Constructor - Setup
+	BlockGenerator() {
+		// Open the file and write some blocks to it
+		std::fstream testFile;
+		testFile.open(testFileName.c_str());
+		testFile << "[block1]\n";
+		testFile << "prop1=value1\n";
+		testFile << "prop2=value2\n";
+		testFile << "\n";
+		testFile << "[block2]\n";
+		testFile << "prop3=value4\n";
+		testFile << "prop4=value4\n";
+		testFile << "prop5=value5\n";
+	}
+
+	// Destructor - Teardown
+	~BlockGenerator() {
+		// Delete the test file
+		remove(testFileName.c_str());
+	}
+
+};
+
+BOOST_FIXTURE_TEST_SUITE(BasicPropertyBlock_testSuite, BlockGenerator)
+
+/**This operation checks default parsing setup of the INIPropertyParser.*/
+BOOST_AUTO_TEST_CASE(checkBlocks) {
+
+	fire::INIPropertyParser parser;
 
 	// The third line should skipped because it is a comment so, get the fourth
 	// line and check it

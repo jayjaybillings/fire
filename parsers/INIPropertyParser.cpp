@@ -33,13 +33,36 @@
 
 namespace fire {
 
-INIPropertyParser::INIPropertyParser() {
-	// TODO Auto-generated constructor stub
+void INIPropertyParser::setSource(const std::string & source) {
 
 }
 
-INIPropertyParser::~INIPropertyParser() {
-	// TODO Auto-generated destructor stub
+const std::string & INIPropertyParser::getSource() {
+	return source;
+}
+
+bool INIPropertyParser::isFile() {
+	return true;
+}
+
+bool INIPropertyParser::isLocal() {
+	return true;
+}
+
+bool INIPropertyParser::isParallel() {
+	return false;
+}
+
+const std::vector<std::string> & INIPropertyParser::getPropertyBlockNames() {
+	return blockNames;
+}
+
+/**
+ * @see IPropertyParser.getPropertyBlock()
+ */
+const std::map<std::string, std::string> & INIPropertyParser::getPropertyBlock(
+		const std::string & name) {
+	return std::map<std::string,std::string>();
 }
 
 } /* namespace fire */
