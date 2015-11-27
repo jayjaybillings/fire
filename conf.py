@@ -15,6 +15,7 @@ if read_the_docs_build:
 breathe_projects = {
     "fire-framework":"xml/",
     }
+breathe_default_project = "fire-framework"
 
 # Configure markdown support
 source_parsers = {
