@@ -37,6 +37,19 @@
 
 namespace fire {
 
+/**
+ * This class implements the IPropertyParser to provide a local, file-based,
+ * serially executed INI parser.
+ *
+ * isFile() always returns true.
+ * isLocal() always returns true.
+ * isParallel() always returns false.
+ *
+ * This implementation is backed by SimpleINI, one of Fire's dependencies, so
+ * it supports whatever SimpleINI supports.
+ *
+ * The source must be a file on the local filesystem.
+ */
 class INIPropertyParser: public IPropertyParser {
 
 private:
