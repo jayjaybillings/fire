@@ -7,6 +7,8 @@
 
 .. toctree::
 
-
    README.md
-   html/index.html
+   
+.. doxygenclass:: Fire
+   :project: fire-framework
+   :members: Jay Jay Billings

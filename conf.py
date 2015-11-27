@@ -6,12 +6,15 @@ from recommonmark.parser import CommonMarkParser
 # Generate Doxygen files
 read_the_docs_build = os.environ.get('READTHEDOCS', None) == 'True'
 
+# Run the doxygen build
 if read_the_docs_build:
 
     subprocess.call('doxygen Doxyfile.rtfd', shell=True)
-    subprocess.call('ls -R', shell=True)
-    subprocess.call('mv html /home/docs/checkouts/readthedocs.org/user_builds/fire-framework/artifacts/latest/doxygen-html', shell=True)
-    subprocess.call('mv latex _build/doxygen-latex', shell=True)
+
+# Configure breathe support
+breathe_projects = {
+    "fire-framework":"xml/",
+    }
 
 # Configure markdown support
 source_parsers = {
@@ -19,3 +22,4 @@ source_parsers = {
 }
 
 source_suffix = ['.rst', '.md']
+extensions = [ "breathe" ]
