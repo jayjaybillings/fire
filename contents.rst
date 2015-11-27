@@ -9,6 +9,5 @@
 
    README.md
    
-.. doxygenclass::
-   :project: fire-framework
+.. doxygenclass:: *
    :members: Jay Jay Billings
