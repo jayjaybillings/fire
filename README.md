@@ -9,7 +9,11 @@ and utilities. This includes
 Documentation in Fire is generated via Doxygen by running "make doc" during the 
 build. This documentation is viewable online at 
 [Read The Docs](http://fire-framework.readthedocs.org/en/latest/) with detailed
-[API information](http://fire-framework.readthedocs.org/en/latest/doxygen-html/index.html)  
+[API information](http://fire-framework.readthedocs.org/en/latest/API.html).  
+
+In the opinion of the author, if you have Doxygen installed, it makes a much
+nice looking document than Read the Docs. So, run "make doc" if you want very
+pretty docs.
 
 Doxygen handles most of the required documentation without developer 
 intervention. This means that in some cases there may be classes that seem to 
