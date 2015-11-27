@@ -1,5 +1,5 @@
 ======================
 Fire API Documentation
 ======================
-.. doxygennamespace:: fire
+.. doxygenindex::
    :project: fire-framework
