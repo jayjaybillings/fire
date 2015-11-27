@@ -10,7 +10,7 @@ if read_the_docs_build:
 
     subprocess.call('doxygen Doxyfile.rtfd', shell=True)
     subprocess.call('ls -R', shell=True)
-    subprocess.call('mv html _build/doxygen-html', shell=True)
+    subprocess.call('mv html /home/docs/checkouts/readthedocs.org/user_builds/fire-framework/artifacts/latest/doxygen-html', shell=True)
     subprocess.call('mv latex _build/doxygen-latex', shell=True)
 
 # Configure markdown support
