@@ -6,12 +6,17 @@ and utilities. This includes
 
 ## Documentation
 
-Documentation in Fire is generated via Doxygen. This means that in some cases
-there may be classes that seem to have minimal documentation in the source, like 
-classes that implement interfaces and provide no additional functionality, but
-are in fact quite well documented by Doxygen. Run the 'make doc' target after
-building to generate the documentation or checkout it out at 
-[Read The Docs](http://readthedocs.org). 
+Documentation in Fire is generated via Doxygen by running "make doc" during the 
+build. This documentation is viewable online at 
+[Read The Docs](http://fire-framework.readthedocs.org/en/latest/) with detailed
+[API information](http://fire-framework.readthedocs.org/en/latest/doxygen-html/index.html)  
+
+Doxygen handles most of the required documentation without developer 
+intervention. This means that in some cases there may be classes that seem to 
+have minimal documentation in the source, like classes that implement interfaces 
+and provide no additional functionality, but are in fact quite well documented 
+by Doxygen. Most IDEs will also auto-generate descriptions for developers too, 
+so the author(s) see no need to cover every piece of code with comments.
 
 ## Prerequisites
 You will need git and cmake to build Fire.
