@@ -30,7 +30,7 @@
  Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE Regression
+#define BOOST_TEST_MODULE Parsers
 
 #include <boost/test/included/unit_test.hpp>
 #include <vector>
@@ -45,22 +45,28 @@ using namespace std;
 static std::string testFileName = "INIPropertyParserTestFile.txt";
 
 // This is a class that creates and later deletes the test input file.
-class BlockGenerator {
-public:
+struct BlockGenerator {
 
 	// Constructor - Setup
 	BlockGenerator() {
+		BOOST_TEST_MESSAGE( "Configuring fixture." );
+
 		// Open the file and write some blocks to it
 		std::fstream testFile;
-		testFile.open(testFileName.c_str());
+		testFile.open(testFileName.c_str(), std::fstream::out | std::fstream::app);
 		testFile << "[block1]\n";
 		testFile << "prop1=value1\n";
 		testFile << "prop2=value2\n";
 		testFile << "\n";
 		testFile << "[block2]\n";
-		testFile << "prop3=value4\n";
+		testFile << "prop3=value3\n";
 		testFile << "prop4=value4\n";
 		testFile << "prop5=value5\n";
+		testFile.close();
+
+		BOOST_TEST_MESSAGE( "Fixture configured." );
+
+		return;
 	}
 
 	// Destructor - Teardown
@@ -71,25 +77,50 @@ public:
 
 };
 
-BOOST_FIXTURE_TEST_SUITE(BasicPropertyBlock_testSuite, BlockGenerator)
-
 /**This operation checks default parsing setup of the INIPropertyParser.*/
-BOOST_AUTO_TEST_CASE(checkBlocks) {
+BOOST_FIXTURE_TEST_CASE(checkBlocks, BlockGenerator) {
 
 	// Configure the parser
 	fire::INIPropertyParser parser;
 	parser.setSource(testFileName);
 	parser.parse();
 
-	// The third line should skipped because it is a comment so, get the fourth
-	// line and check it
-//	auto dLine = 1;
-//	auto aValue = 1.05;
-//	BOOST_REQUIRE(dLine > 0);
-//	BOOST_REQUIRE_EQUAL(1, dLine);
-//	BOOST_REQUIRE_CLOSE_FRACTION(1.05, aValue, 0.001);
+	// Get the block names and check them
+	auto names = parser.getPropertyBlockNames();
+	BOOST_REQUIRE_EQUAL(2,names.size());
+	BOOST_REQUIRE_EQUAL(names[0],"block1");
+	BOOST_REQUIRE_EQUAL(names[1],"block2");
+
+	// Get the blocks and check them
+	auto block = parser.getPropertyBlock("block1");
+	BOOST_TEST_MESSAGE(block["prop1"]);
+	BOOST_REQUIRE_EQUAL("value1",block.at("prop1"));
+	BOOST_REQUIRE_EQUAL("value2",block.at("prop2"));
+	block = parser.getPropertyBlock("block2");
+	BOOST_REQUIRE_EQUAL("value3",block.at("prop3"));
+	BOOST_REQUIRE_EQUAL("value4",block.at("prop4"));
+	BOOST_REQUIRE_EQUAL("value5",block.at("prop5"));
 
 	return;
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_CASE(checkSource) {
+
+	// Configure the parser
+	fire::INIPropertyParser parser;
+	parser.setSource(testFileName);
+	BOOST_REQUIRE_EQUAL(testFileName,parser.getSource());
+
+	return;
+}
+
+BOOST_AUTO_TEST_CASE(checkBools) {
+
+	// Configure the parser
+	fire::INIPropertyParser parser;
+	BOOST_REQUIRE_EQUAL(true,parser.isFile());
+	BOOST_REQUIRE_EQUAL(true,parser.isLocal());
+	BOOST_REQUIRE_EQUAL(false,parser.isParallel());
+
+	return;
+}

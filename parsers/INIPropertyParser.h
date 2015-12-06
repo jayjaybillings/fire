@@ -34,6 +34,7 @@
 #define INIPROPERTYPARSER_H_
 
 #include "IPropertyParser.h"
+#include <SimpleIni.h>
 
 namespace fire {
 
@@ -55,14 +56,24 @@ class INIPropertyParser: public IPropertyParser {
 private:
 
 	/**
-	 * The name of the source that will be parsed.
+	 * The name of the source that will be parsed
 	 */
 	std::string source;
 
 	/**
-	 * The names of all the property blocks.
+	 * The names of all the property blocks
 	 */
 	std::vector<std::string> blockNames;
+
+	/**
+	 * The actual INI reader
+	 */
+	CSimpleIniA iniReader;
+
+	/**
+	 * The master map of blocks from the INI file
+	 */
+	std::map<std::string,std::map<std::string,std::string>> blockMap;
 
 public:
 	INIPropertyParser() {};
@@ -71,6 +82,8 @@ public:
 	void setSource(const std::string & source);
 
 	const std::string & getSource();
+
+	void parse();
 
 	bool isFile();
 

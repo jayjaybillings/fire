@@ -30,19 +30,54 @@
  Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
 #include "INIPropertyParser.h"
+#include <iostream>
 
 namespace fire {
 
 void INIPropertyParser::setSource(const std::string & source) {
-
+	this->source = source;
 }
 
 const std::string & INIPropertyParser::getSource() {
 	return source;
 }
 
-const std::string & INIPropertyParser::getSource() {
-	return source;
+void INIPropertyParser::parse() {
+
+	// Load the parameters file
+	iniReader.SetUnicode();
+	SI_Error status = iniReader.LoadFile(source.c_str());
+	// Exit with a failure if the file won't load.
+	if (status < 0) {
+		std::cout << "Unable to open source " << source << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	// Get all the sections
+	CSimpleIniA::TNamesDepend sections;
+	iniReader.GetAllSections(sections);
+	// Load them into the vector
+	for (auto i = sections.begin(); i != sections.end(); ++i) {
+		// Store the block names
+		blockNames.push_back(std::string(i->pItem));
+		// Grab the keys
+		CSimpleIniA::TNamesDepend keys;
+		iniReader.GetAllKeys(i->pItem, keys);
+		// Initialize the block in the map. Make sure to use 'auto &'!
+		auto & map = blockMap[i->pItem];
+		// And then fill
+		for (auto j = keys.begin(); j != keys.end(); ++j) {
+			auto value = iniReader.GetValue(i->pItem, j->pItem,
+					NULL, NULL);
+			map[std::string(j->pItem)] = std::string(value);
+		}
+	}
+
+	// FOR some reason the map is empty here.
+
+	std::cout << blockMap["block1"]["prop1"] << std::endl;
+
+	return;
 }
 
 bool INIPropertyParser::isFile() {
@@ -66,7 +101,8 @@ const std::vector<std::string> & INIPropertyParser::getPropertyBlockNames() {
  */
 const std::map<std::string, std::string> & INIPropertyParser::getPropertyBlock(
 		const std::string & name) {
-	return std::map<std::string,std::string>();
+	std::cout << blockMap["block1"]["prop1"] << std::endl;
+	return blockMap[name.c_str()];
 }
 
 } /* namespace fire */

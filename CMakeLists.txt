@@ -36,9 +36,21 @@
 PROJECT ( FIRE CXX )
 # Set the minimum required version of cmake for this project.
 cmake_minimum_required(VERSION 2.8)
+# Configure some default options
+set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
+set(CMAKE_DISABLE_SOURCE_CHANGES ON)
+set(CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 11)
+message(STATUS "C++ version ${CXX_STANDARD} configured.")
 
-# Fire requires C++11 to use shared pointers
-list( APPEND CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS} $ENV{CXX_FLAGS}")
+# Setup flag overrides if Fire is building on its own. This works by 
+# determining if a parent is available and allowing flag overrides if not.
+get_directory_property(hasParent PARENT_DIRECTORY)
+message(STATUS "Parent directory is ${hasParent}")
+if(NOT hasParent)
+  list( APPEND CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} $ENV{CXX_FLAGS}")
+  message(STATUS "Parent detected. Disabling Fire flag overrides.")
+endif()
 
 # Setup Doxygen
 find_package(Doxygen)
@@ -91,9 +103,3 @@ if(Boost_FOUND)
         set_property(TEST ${testName} PROPERTY LABELS ${PACKAGE_NAME})
     endforeach(test ${tests})
 endif(Boost_FOUND)
-
-# Add the tests is Boost is available
-
-IF (Boost_FOUND)
-
-ENDIF()

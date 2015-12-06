@@ -71,7 +71,7 @@ public:
 	/**
 	 * This operation directs the parser to parse its source.
 	 */
-	virtual const void parse() = 0;
+	virtual void parse() = 0;
 
 	/**
 	 * This operation indicates whether or not the parser's source is a file.
