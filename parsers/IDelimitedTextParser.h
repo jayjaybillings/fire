@@ -29,39 +29,47 @@
 
  Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
-#ifndef IPROPERTYPARSER_H_
-#define IPROPERTYPARSER_H_
+#ifndef PARSERS_IDELIMITEDTEXTPARSER_H_
+#define PARSERS_IDELIMITEDTEXTPARSER_H_
 
-#include <string>
-#include <vector>
-#include <map>
+#include<vector>
+#include<string>
 #include "IParser.h"
 
 namespace fire {
 
 /**
- * This is an extension of the parser interface that focuses on parsing a set
- * of properties. Properties are returned in blocks (see IPropertyBlock).
+ * This is an extension of the parser interface that focuses on parsing
+ * delimited text. Delimited text is text with entries that are separated by a
+ * common pattern, such as a common or space.
+ *
+ * The Comma-Separated Variables format is a delimited text format of the form
+ *
+ * v1, v2, v3, v4
+ *
+ * where each comma is the delimiter between the text values v1 through v4. A
+ * line of text with only spaces is also a delimited text format:
+ *
+ * v1 v2 v3 v4
  */
-class IPropertyParser: public virtual IParser {
+template<class T>
+class IDelimitedTextParser: public virtual IParser {
+
+protected:
+
+	/**
+	 * The delimiter used when parsing the file.
+	 */
+	std::string delimiter;
+
 public:
 
-	/**
-	 * This operation returns the names of the property blocks parsed from the
-	 * source.
-	 * @return the block names
-	 */
-	virtual const std::vector<std::string> & getPropertyBlockNames() = 0;
+	IDelimitedTextParser(std::string delim) : delimiter(delim) {};
 
-	/**
-	 * This operation returns the property block with the given name.
-	 * @param name the block name
-	 * @return the property block with the given name
-	 */
-	virtual const std::map<std::string, std::string> & getPropertyBlock(
-			const std::string & name) = 0;
+	virtual std::vector<std::vector<std::string>> & getData() = 0;
 
 };
 
-} // end namespace fire
-#endif // IPROPERTYPARSER_H_
+} /* namespace fire */
+
+#endif /* PARSERS_IDELIMITEDTEXTPARSER_H_ */
