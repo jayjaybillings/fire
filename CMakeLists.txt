@@ -90,6 +90,7 @@ if(Boost_FOUND)
     message(STATUS "Tests can be run with the 'make test' command.")
     # Include the header directory since BOOST tests
     INCLUDE_DIRECTORIES("${Boost_INCLUDE_DIR}")
+    INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/parsers")
     #Get the test files
     file(GLOB tests parsers/tests/*Test.cpp)
     #Make executables and link libraries for testers
