@@ -2,7 +2,7 @@
 # Copyright (c) 2015-, Jay Jay Billings
 # All rights reserved.
 #
-# Author Contact: Jay Jay Billings, billingsjj@ornl.gov
+# Author Contact: Jay Jay Billings, jayjaybillings <at> gmail <dot> com
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
