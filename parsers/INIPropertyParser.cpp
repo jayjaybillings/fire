@@ -80,18 +80,6 @@ void INIPropertyParser::parse() {
 	return;
 }
 
-bool INIPropertyParser::isFile() {
-	return true;
-}
-
-bool INIPropertyParser::isLocal() {
-	return true;
-}
-
-bool INIPropertyParser::isParallel() {
-	return false;
-}
-
 const std::vector<std::string> & INIPropertyParser::getPropertyBlockNames() {
 	return blockNames;
 }

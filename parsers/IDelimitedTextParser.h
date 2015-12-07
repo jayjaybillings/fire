@@ -34,7 +34,7 @@
 
 #include<vector>
 #include<string>
-#include "IParser.h"
+#include "ILocalParser.h"
 
 namespace fire {
 
@@ -51,9 +51,12 @@ namespace fire {
  * line of text with only spaces is also a delimited text format:
  *
  * v1 v2 v3 v4
+ *
+ * Delimited text parsers may assume that lines such as those above are
+ * terminated by \n.
  */
 template<class T>
-class IDelimitedTextParser: public virtual IParser {
+class IDelimitedTextParser: public virtual ILocalParser {
 
 protected:
 
@@ -64,9 +67,25 @@ protected:
 
 public:
 
+	/**
+	 * Constructor
+	 * @param delim the delimiter in the source
+	 */
 	IDelimitedTextParser(std::string delim) : delimiter(delim) {};
 
-	virtual std::vector<std::vector<std::string>> & getData() = 0;
+	/**
+	 * This operation sets the data source for the parser using a stream
+	 * instead of a string.
+	 * @param source the stream of delimited text data
+	 */
+	virtual void setSource(const std::istream & source) = 0;
+
+	/**
+	 * This operation returns all of the data in the source as a vector of
+	 * vectors of the template type T.
+	 * @return all the data in the source with one vector for each line
+	 */
+	virtual std::vector<std::vector<T>> & getData() = 0;
 
 };
 

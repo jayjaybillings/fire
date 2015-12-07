@@ -29,69 +29,34 @@
 
  Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
+#ifndef PARSERS_BASICDELIMITEDTEXTPARSER_H_
+#define PARSERS_BASICDELIMITEDTEXTPARSER_H_
 
-#ifndef INIPROPERTYPARSER_H_
-#define INIPROPERTYPARSER_H_
-
-#include "IPropertyParser.h"
-#include <SimpleIni.h>
+#include "IDelimitedTextParser.h"
 
 namespace fire {
 
 /**
- * This class implements IPropertyParser to provide a local, file-based,
- * serially executed INI parser.
+ * This class implements IDelimitedTextParser to provide a local, file-based,
+ * serially executed delimited text parser.
  *
- * isFile() always returns true.
+ * isFile() will return true if setSource(std::string) is used
+ * isStream() will return true if setSource(std::istream) is used
  * isLocal() always returns true.
  * isParallel() always returns false.
  *
- * This implementation is backed by SimpleINI, one of Fire's dependencies, so
- * it supports whatever SimpleINI supports.
+ * The source may either be a file on the local filesystem or an input stream.
  *
- * The source must be a file on the local filesystem.
  */
-class INIPropertyParser: public IPropertyParser {
-
-private:
-
-	/**
-	 * The name of the source that will be parsed
-	 */
-	std::string source;
-
-	/**
-	 * The names of all the property blocks
-	 */
-	std::vector<std::string> blockNames;
-
-	/**
-	 * The actual INI reader
-	 */
-	CSimpleIniA iniReader;
-
-	/**
-	 * The master map of blocks from the INI file
-	 */
-	std::map<std::string,std::map<std::string,std::string>> blockMap;
-
+template<class T>
+class BasicDelimitedTextParser: public IDelimitedTextParser<T> {
 public:
-	INIPropertyParser() {};
-	virtual ~INIPropertyParser() {};
+	BasicDelimitedTextParser();
+	virtual ~BasicDelimitedTextParser();
 
-	void setSource(const std::string & source);
-
-	const std::string & getSource();
-
-	void parse();
-
-	const std::vector<std::string> & getPropertyBlockNames();
-
-	const std::map<std::string, std::string> & getPropertyBlock(
-			const std::string & name);
 
 };
 
 } /* namespace fire */
 
-#endif /* INIPROPERTYPARSER_H_ */
+#endif /* PARSERS_BASICDELIMITEDTEXTPARSER_H_ */

@@ -29,69 +29,45 @@
 
  Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
+#ifndef PARSERS_ILOCALPARSER_H_
+#define PARSERS_ILOCALPARSER_H_
 
-#ifndef INIPROPERTYPARSER_H_
-#define INIPROPERTYPARSER_H_
-
-#include "IPropertyParser.h"
-#include <SimpleIni.h>
+#include "IParser.h"
 
 namespace fire {
 
 /**
- * This class implements IPropertyParser to provide a local, file-based,
- * serially executed INI parser.
+ * This is a sub-interface of IParser that represents a parser for a local,
+ * serially executed parser.
  *
- * isFile() always returns true.
  * isLocal() always returns true.
  * isParallel() always returns false.
  *
- * This implementation is backed by SimpleINI, one of Fire's dependencies, so
- * it supports whatever SimpleINI supports.
- *
- * The source must be a file on the local filesystem.
+ * Implementations should set isFile in their setSource(std::string) and
+ * setSource(std::istream) to true and false respectively.
  */
-class INIPropertyParser: public IPropertyParser {
+class ILocalParser: public virtual IParser {
 
-private:
-
-	/**
-	 * The name of the source that will be parsed
-	 */
-	std::string source;
+protected:
 
 	/**
-	 * The names of all the property blocks
+	 * This value is true if the source is a file and false if it is a stream.
+	 * This value should be set in the setSource(std::string) and
+     * setSource(std::istream) to true and false respectively. It is set to
+     * true by default.
 	 */
-	std::vector<std::string> blockNames;
-
-	/**
-	 * The actual INI reader
-	 */
-	CSimpleIniA iniReader;
-
-	/**
-	 * The master map of blocks from the INI file
-	 */
-	std::map<std::string,std::map<std::string,std::string>> blockMap;
+	bool isAFile = true;
 
 public:
-	INIPropertyParser() {};
-	virtual ~INIPropertyParser() {};
 
-	void setSource(const std::string & source);
+	virtual bool isFile() {return isAFile;};
 
-	const std::string & getSource();
+	virtual bool isLocal() {return true;};
 
-	void parse();
-
-	const std::vector<std::string> & getPropertyBlockNames();
-
-	const std::map<std::string, std::string> & getPropertyBlock(
-			const std::string & name);
+	virtual bool isParallel() {return false;};
 
 };
 
-} /* namespace fire */
+}
 
-#endif /* INIPROPERTYPARSER_H_ */
+#endif /* PARSERS_ILOCALPARSER_H_ */

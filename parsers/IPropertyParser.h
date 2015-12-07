@@ -35,7 +35,7 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "IParser.h"
+#include "ILocalParser.h"
 
 namespace fire {
 
@@ -43,7 +43,7 @@ namespace fire {
  * This is an extension of the parser interface that focuses on parsing a set
  * of properties. Properties are returned in blocks (see IPropertyBlock).
  */
-class IPropertyParser: public virtual IParser {
+class IPropertyParser: public virtual ILocalParser {
 public:
 
 	/**
