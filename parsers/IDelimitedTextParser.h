@@ -53,7 +53,10 @@ namespace fire {
  * v1 v2 v3 v4
  *
  * Delimited text parsers may assume that lines such as those above are
- * terminated by \n.
+ * terminated by \n. Like most other text formats, delimited text files may
+ * contain comments, which may be skipped by IDelimitedTextParsers. The
+ * characters that denote comments - very commonly a "#" or "//" - may be
+ * passed to the constructor.
  */
 template<class T>
 class IDelimitedTextParser: public virtual ILocalParser {
@@ -65,13 +68,20 @@ protected:
 	 */
 	std::string delimiter;
 
+	/**
+	 * The character that represents a comment and should be skipped.
+	 */
+	std::string commentChar;
+
+
 public:
 
 	/**
 	 * Constructor
 	 * @param delim the delimiter in the source
 	 */
-	IDelimitedTextParser(std::string delim) : delimiter(delim) {};
+	IDelimitedTextParser(std::string delim, std::string comment) :
+		delimiter(delim), commentChar(comment) {};
 
 	/**
 	 * This operation sets the data source for the parser using a stream
