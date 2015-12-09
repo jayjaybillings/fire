@@ -50,7 +50,11 @@ namespace fire {
  */
 class IStepper {
 public:
-	IStepper();
+
+	/**
+	 * Constructor
+	 */
+	IStepper() {};
 
 	/**
 	 * This operation returns the step value for the current step.
