@@ -52,11 +52,6 @@ class IStepper {
 public:
 
 	/**
-	 * Constructor
-	 */
-	IStepper() {};
-
-	/**
 	 * This operation returns the step value for the current step.
 	 * @return the step value
 	 */
