@@ -68,7 +68,7 @@ public:
 	 * This operation replaces the current step and stepsize with the next step
 	 * and stepsize values.
 	 */
-	virtual void updateStep();
+	virtual void updateStep() = 0;
 };
 
 } /* namespace fire */
