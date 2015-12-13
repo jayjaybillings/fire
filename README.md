@@ -3,6 +3,7 @@
 Fire is a framework for scientific computing. It includes various reusable tools 
 and utilities. This includes
 * parsers
+* steppers
 
 ## Documentation
 
