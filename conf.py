@@ -222,7 +222,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'Fire.tex', u'Fire Documentation',
+  ('contents', 'Fire.tex', u'Fire Documentation',
    u'Jay Jay Billings', 'manual'),
 ]
 
@@ -252,7 +252,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'fire', u'Fire Documentation',
+    ('contents', 'fire', u'Fire Documentation',
      [u'Jay Jay Billings'], 1)
 ]
 
@@ -266,7 +266,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'Fire', u'Fire Documentation',
+  ('contents', 'Fire', u'Fire Documentation',
    u'Jay Jay Billings', 'Fire', 'One line description of project.',
    'Miscellaneous'),
 ]
