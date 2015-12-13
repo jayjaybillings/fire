@@ -86,6 +86,30 @@ public:
 		++stepID;
 	};
 
+    virtual void setInitialStep(double initialStep) {
+    	// Ignore it
+    };
+
+	virtual double getInitialStep() {
+		return steps[0];
+	};
+
+	virtual void setFinalStep(double finalStep) {
+		// Ignore it
+	};
+
+	virtual double getFinalStep() {
+		stepSizes[stepSizes.size()-1];
+	};
+
+	virtual void setInitialStepsize(double stepSize) {
+		// Ignore it
+	};
+
+	virtual double getInitialStepsize() {
+		return stepSizes[0];
+	};
+
 };
 
 } /* namespace fire */

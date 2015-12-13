@@ -69,6 +69,43 @@ public:
 	 * and stepsize values.
 	 */
 	virtual void updateStep() = 0;
+
+    /**
+     * This operation sets the initial step for the stepper.
+     * @param initialStep the initial step
+     */
+    virtual void setInitialStep(double initialStep) = 0;
+
+	/**
+	 * This operation returns the initial step for the stepper.
+	 * @return the initial step
+	 */
+	virtual double getInitialStep() = 0;
+
+	/**
+	 * This operation sets the final step for the stepper.
+	 * @param finalStep the final step
+	 */
+	virtual void setFinalStep(double finalStep) = 0;
+
+	/**
+	 * This operation returns the final step for the stepper.
+	 * @return the final step
+	 */
+	virtual double getFinalStep() = 0;
+
+	/**
+	 * This operation sets the initial step size for the stepper
+	 * @param the initial step size
+	 */
+	virtual void setInitialStepsize(double stepSize) = 0;
+
+	/**
+	 * This operation gets the initial step size for the stepper
+	 * @return the initial step size
+	 */
+	virtual double getInitialStepsize() = 0;
+
 };
 
 } /* namespace fire */
