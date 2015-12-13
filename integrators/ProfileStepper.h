@@ -29,69 +29,65 @@
 
  Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
+#ifndef INTEGRATORS_PROFILESTEPPER_H_
+#define INTEGRATORS_PROFILESTEPPER_H_
 
-#ifndef INIPROPERTYPARSER_H_
-#define INIPROPERTYPARSER_H_
-
-#include "IPropertyParser.h"
-#include <SimpleIni.h>
+#include "IStepper.h"
 
 namespace fire {
 
 /**
- * This class implements IPropertyParser to provide a local, file-based,
- * serially executed INI parser.
- *
- * isFile() always returns true.
- * isLocal() always returns true.
- * isParallel() always returns false.
- *
- * This implementation is backed by SimpleINI, one of Fire's dependencies, so
- * it supports whatever SimpleINI supports.
- *
- * The source must be a file on the local filesystem.
+ * This class is a Stepper that pulls its steps and step sizes from two
+ * matching lists. It can be used for restricting the stepping to a
+ * pre-determined profile, which is useful for coupling and testing.
  */
-class INIPropertyParser: public IPropertyParser {
+class ProfileStepper: public IStepper {
 
-private:
-
-	/**
-	 * The name of the source that will be parsed
-	 */
-	std::string source;
+protected:
 
 	/**
-	 * The names of all the property blocks
+	 * The lists of steps
 	 */
-	std::vector<std::string> blockNames;
+	const std::vector<double> & steps;
 
 	/**
-	 * The actual INI reader
+	 * The list of step sizes - the distances between the steps
 	 */
-	CSimpleIniA iniReader;
+	const std::vector<double> & stepSizes;
 
 	/**
-	 * The master map of blocks from the INI file
+	 * The id number of the current staff
 	 */
-	std::map<std::string,std::map<std::string,std::string>> blockMap;
+	int stepID = 0;
 
 public:
-	INIPropertyParser() {};
-	virtual ~INIPropertyParser() {};
 
-	virtual void setSource(const std::string & source);
+	/**
+	 * Constructor
+	 */
+	ProfileStepper(const std::vector<double> & stepsList,
+			const std::vector<double> & stepSizeList) :
+			steps(stepsList), stepSizes(stepSizeList) {};
 
-	virtual const std::string & getSource();
+	/**
+	 * Destructor
+	 */
+	virtual ~ProfileStepper() {};
 
-	virtual void parse();
+	virtual double getStep() {
+		return steps[stepID];
+	};
 
-	virtual const std::vector<std::string> & getPropertyBlockNames();
+	virtual double getStepSizeAtStage(int i) {
+		return stepSizes[stepID];
+	};
 
-	virtual const std::map<std::string, std::string> & getPropertyBlock(
-			const std::string & name);
+	virtual void updateStep() {
+		++stepID;
+	};
 
 };
 
 } /* namespace fire */
 
-#endif /* INIPROPERTYPARSER_H_ */
+#endif /* INTEGRATORS_PROFILESTEPPER_H_ */

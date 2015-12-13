@@ -35,34 +35,39 @@
 #include <boost/test/included/unit_test.hpp>
 #include <vector>
 #include <string>
-#include <fstream>
 #include <stdio.h>
-#include "INIPropertyParser.h"
 #include "BasicDelimitedTextParser.h"
 
 using namespace std;
 
-// Test file name
-static std::string testFileName = "INIPropertyParserTestFile.txt";
+// Test file names
+static std::string csvFileName = "testFile.csv";
+static std::string spaceFileName = "testFile.dat";
 
 // This is a class that creates and later deletes the test input file.
-struct BlockGenerator {
+struct FileGenerator {
 
 	// Constructor - Setup
-	BlockGenerator() {
+	FileGenerator() {
 		BOOST_TEST_MESSAGE( "Configuring fixture." );
 
-		// Open the file and write some blocks to it
+		// Open the file and write some CSV blocks to it
 		std::fstream testFile;
-		testFile.open(testFileName.c_str(), std::fstream::out | std::fstream::app);
-		testFile << "[block1]\n";
-		testFile << "prop1=value1\n";
-		testFile << "prop2=value2\n";
+		testFile.open(csvFileName.c_str(), std::fstream::out | std::fstream::app);
+		testFile << "#Comment\n";
+		testFile << "1.0, 3.1, 99.99\n";
+		testFile << "8,6,7,5,3,0,9\n";
 		testFile << "\n";
-		testFile << "[block2]\n";
-		testFile << "prop3=value3\n";
-		testFile << "prop4=value4\n";
-		testFile << "prop5=value5\n";
+		testFile << "38,7, 74.12,8729.9 \n";
+		testFile.close();
+
+		// Open the file and write some space blocks to it
+		testFile.open(spaceFileName.c_str(), std::fstream::out | std::fstream::app);
+		testFile << "#Comment\n";
+		testFile << "1.0 3.1 99.99\n";
+		testFile << "8 6 7 5 3 0 9\n";
+		testFile << "\n";
+		testFile << "38 7 74.12 8729.9 \n";
 		testFile.close();
 
 		BOOST_TEST_MESSAGE( "Fixture configured." );
@@ -71,57 +76,75 @@ struct BlockGenerator {
 	}
 
 	// Destructor - Teardown
-	~BlockGenerator() {
-		// Delete the test file
-		remove(testFileName.c_str());
+	~FileGenerator() {
+		// Delete the test files
+		remove(csvFileName.c_str());
+		remove(spaceFileName.c_str());
 	}
 
 };
 
-/**This operation checks default parsing setup of the INIPropertyParser.*/
-BOOST_FIXTURE_TEST_CASE(checkBlocks, BlockGenerator) {
+/**
+ * This operation checks the data in the array.
+ * @param data the array of data that should be checked
+ */
+void checkData(std::vector<std::vector<double>> data) {
+	// Check the data
+	BOOST_REQUIRE_EQUAL(3,data.size());
+	std::vector<double> & dataEntry = data[0];
+	BOOST_REQUIRE_EQUAL(3,dataEntry.size());
+	BOOST_REQUIRE_EQUAL(1.0,dataEntry[0]);
+	BOOST_REQUIRE_EQUAL(3.1,dataEntry[1]);
+	BOOST_REQUIRE_EQUAL(99.99,dataEntry[2]);
+	dataEntry = data[1];
+	BOOST_REQUIRE_EQUAL(7,dataEntry.size());
+	BOOST_REQUIRE_EQUAL(8.0,dataEntry[0]);
+	BOOST_REQUIRE_EQUAL(6.0,dataEntry[1]);
+	BOOST_REQUIRE_EQUAL(7.0,dataEntry[2]);
+	BOOST_REQUIRE_EQUAL(5.0,dataEntry[3]);
+	BOOST_REQUIRE_EQUAL(3.0,dataEntry[4]);
+	BOOST_REQUIRE_EQUAL(0.0,dataEntry[5]);
+	BOOST_REQUIRE_EQUAL(9.0,dataEntry[6]);
+	dataEntry = data[2];
+	BOOST_REQUIRE_EQUAL(4,dataEntry.size());
+	BOOST_REQUIRE_EQUAL(38.0,dataEntry[0]);
+	BOOST_REQUIRE_EQUAL(7.0,dataEntry[1]);
+	BOOST_REQUIRE_EQUAL(74.12,dataEntry[2]);
+	BOOST_REQUIRE_EQUAL(8729.9,dataEntry[3]);
 
-	// Configure the parser
-	fire::INIPropertyParser parser;
-	parser.setSource(testFileName);
+	return;
+}
+
+/**
+ * This operation checks CSV parsing.
+ */
+BOOST_FIXTURE_TEST_CASE(checkCSV, FileGenerator) {
+
+	// Configure the parser and grab the data
+	fire::BasicDelimitedTextParser<double> parser(std::string(","),std::string("#"));
+	parser.setSource(csvFileName);
 	parser.parse();
+	std::vector<std::vector<double>> data = parser.getData();
 
-	// Get the block names and check them
-	auto names = parser.getPropertyBlockNames();
-	BOOST_REQUIRE_EQUAL(2,names.size());
-	BOOST_REQUIRE_EQUAL(names[0],"block1");
-	BOOST_REQUIRE_EQUAL(names[1],"block2");
-
-	// Get the blocks and check them
-	auto block = parser.getPropertyBlock("block1");
-	BOOST_TEST_MESSAGE(block["prop1"]);
-	BOOST_REQUIRE_EQUAL("value1",block.at("prop1"));
-	BOOST_REQUIRE_EQUAL("value2",block.at("prop2"));
-	block = parser.getPropertyBlock("block2");
-	BOOST_REQUIRE_EQUAL("value3",block.at("prop3"));
-	BOOST_REQUIRE_EQUAL("value4",block.at("prop4"));
-	BOOST_REQUIRE_EQUAL("value5",block.at("prop5"));
+	// Check the data
+	checkData(data);
 
 	return;
 }
 
-BOOST_AUTO_TEST_CASE(checkSource) {
+/**
+ * This operation checks default parsing setup of the INIPropertyParser.
+ */
+BOOST_FIXTURE_TEST_CASE(checkSpace, FileGenerator) {
 
-	// Configure the parser
-	fire::INIPropertyParser parser;
-	parser.setSource(testFileName);
-	BOOST_REQUIRE_EQUAL(testFileName,parser.getSource());
+	// Configure the parser and grab the data
+	fire::BasicDelimitedTextParser<double> parser(std::string(" "),std::string("#"));
+	parser.setSource(spaceFileName);
+	parser.parse();
+	std::vector<std::vector<double>> data = parser.getData();
 
-	return;
-}
-
-BOOST_AUTO_TEST_CASE(checkBools) {
-
-	// Configure the parser
-	fire::INIPropertyParser parser;
-	BOOST_REQUIRE_EQUAL(true,parser.isFile());
-	BOOST_REQUIRE_EQUAL(true,parser.isLocal());
-	BOOST_REQUIRE_EQUAL(false,parser.isParallel());
+	// Check the data
+	checkData(data);
 
 	return;
 }

@@ -29,69 +29,42 @@
 
  Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE Parsers
 
-#ifndef INIPROPERTYPARSER_H_
-#define INIPROPERTYPARSER_H_
+#include <boost/test/included/unit_test.hpp>
+#include <vector>
+#include <string>
+#include <stdio.h>
+#include "ProfileStepper.h"
 
-#include "IPropertyParser.h"
-#include <SimpleIni.h>
-
-namespace fire {
+using namespace std;
 
 /**
- * This class implements IPropertyParser to provide a local, file-based,
- * serially executed INI parser.
- *
- * isFile() always returns true.
- * isLocal() always returns true.
- * isParallel() always returns false.
- *
- * This implementation is backed by SimpleINI, one of Fire's dependencies, so
- * it supports whatever SimpleINI supports.
- *
- * The source must be a file on the local filesystem.
+ * This operation checks the stepping with a profile.
  */
-class INIPropertyParser: public IPropertyParser {
+BOOST_AUTO_TEST_CASE(checkProfile) {
 
-private:
+	std::vector<double> steps{1.0, 1.5, 1.9, 2.0};
+	std::vector<double> sizes{0.5, 0.4, 0.1, 0.0};
+	fire::ProfileStepper profile(steps,sizes);
 
-	/**
-	 * The name of the source that will be parsed
-	 */
-	std::string source;
+	// Step 1
+	BOOST_REQUIRE_EQUAL(1.0,profile.getStep());
+	BOOST_REQUIRE_EQUAL(0.5,profile.getStepSizeAtStage(1));
+	profile.updateStep();
+	// Step 2
+	BOOST_REQUIRE_EQUAL(1.5,profile.getStep());
+	BOOST_REQUIRE_EQUAL(0.4,profile.getStepSizeAtStage(1));
+	profile.updateStep();
+	// Step 3
+	BOOST_REQUIRE_EQUAL(1.9,profile.getStep());
+	BOOST_REQUIRE_EQUAL(0.1,profile.getStepSizeAtStage(1));
+	profile.updateStep();
+	// Step 4
+	BOOST_REQUIRE_EQUAL(2.0,profile.getStep());
+	BOOST_REQUIRE_EQUAL(0.0,profile.getStepSizeAtStage(1));
+	profile.updateStep();
 
-	/**
-	 * The names of all the property blocks
-	 */
-	std::vector<std::string> blockNames;
-
-	/**
-	 * The actual INI reader
-	 */
-	CSimpleIniA iniReader;
-
-	/**
-	 * The master map of blocks from the INI file
-	 */
-	std::map<std::string,std::map<std::string,std::string>> blockMap;
-
-public:
-	INIPropertyParser() {};
-	virtual ~INIPropertyParser() {};
-
-	virtual void setSource(const std::string & source);
-
-	virtual const std::string & getSource();
-
-	virtual void parse();
-
-	virtual const std::vector<std::string> & getPropertyBlockNames();
-
-	virtual const std::map<std::string, std::string> & getPropertyBlock(
-			const std::string & name);
-
-};
-
-} /* namespace fire */
-
-#endif /* INIPROPERTYPARSER_H_ */
+	return;
+}

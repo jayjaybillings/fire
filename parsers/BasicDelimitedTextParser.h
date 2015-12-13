@@ -32,9 +32,49 @@
 #ifndef PARSERS_BASICDELIMITEDTEXTPARSER_H_
 #define PARSERS_BASICDELIMITEDTEXTPARSER_H_
 
+#include <iostream>
+#include <stdlib.h>
+#include <fstream>
+#include <string>
 #include "IDelimitedTextParser.h"
 
 namespace fire {
+
+/**
+ * Default template for casting strings properly.
+ */
+template<typename T>
+struct StringCaster{
+	static T cast(const std::string & value) {return static_cast<T>(value);};
+};
+
+/**
+ * Implementation of StringCaster for doubles
+ */
+template<>
+struct StringCaster<double>{
+	static double cast(const std::string & value) {
+		return strtod(value.c_str(),NULL);};
+};
+
+/**
+ * Implementation of StringCaster for floats
+ */
+template<>
+struct StringCaster<float>{
+	static double cast(const std::string & value) {
+		return strtof(value.c_str(),NULL);};
+};
+
+/**
+ * Implementation of StringCaster for ints
+ */
+template<>
+struct StringCaster<int>{
+	static double cast(const std::string & value) {
+		return atoi(value.c_str());};
+};
+
 
 /**
  * This class implements IDelimitedTextParser to provide a local, file-based,
@@ -50,10 +90,74 @@ namespace fire {
  */
 template<class T>
 class BasicDelimitedTextParser: public IDelimitedTextParser<T> {
-public:
-	BasicDelimitedTextParser();
-	virtual ~BasicDelimitedTextParser();
 
+protected:
+
+	/**
+	 * The source file name used if setSource(string) is called.
+	 */
+	std::string sourceFile;
+
+	/**
+	 * The source stream used if setSource(stream) is called.
+	 */
+	std::istream sourceStream;
+
+	/**
+	 * The delimiter used when parsing the file.
+	 */
+	std::string delimiter;
+
+	/**
+	 * The character that represents a comment and should be skipped.
+	 */
+	std::string commentChar;
+
+	/**
+	 * The vector of data parsed from the file.
+	 */
+	std::vector<std::vector<T>> data;
+
+public:
+	BasicDelimitedTextParser(std::string delim, std::string comment)
+		 : delimiter(delim), commentChar(comment), sourceStream(NULL) {};
+
+	virtual ~BasicDelimitedTextParser() {};
+
+	virtual void setSource(const std::string & source) {
+		sourceFile = source;
+	};
+
+	virtual void setSource(const std::istream & source) {
+		throw "Method not yet implemented.";
+	};
+
+	virtual const std::string & getSource() {return sourceFile;};
+
+	virtual const std::istream & getSourceStream() {return sourceStream;};
+
+	virtual void parse() {
+		// Load the contents of the file
+		std::string value, line;
+		std::ifstream fileStream(sourceFile);
+		if (fileStream.is_open()) {
+			while (getline(fileStream,line)) {
+				if (!line.empty() && !line.find("#") == 0) {
+				   std::stringstream ss(line);
+				   std::vector<T> lineVec;
+				   while (getline(ss,value,*delimiter.c_str())) {
+				       lineVec.push_back(StringCaster<double>::cast(value));
+				   }
+				   data.push_back(lineVec);
+				}
+			}
+			fileStream.close();
+		}
+	};
+
+	virtual std::vector<std::vector<T>> & getData() {
+		return data;
+	};
 
 };
 

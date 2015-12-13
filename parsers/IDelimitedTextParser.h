@@ -61,27 +61,7 @@ namespace fire {
 template<class T>
 class IDelimitedTextParser: public virtual ILocalParser {
 
-protected:
-
-	/**
-	 * The delimiter used when parsing the file.
-	 */
-	std::string delimiter;
-
-	/**
-	 * The character that represents a comment and should be skipped.
-	 */
-	std::string commentChar;
-
-
 public:
-
-	/**
-	 * Constructor
-	 * @param delim the delimiter in the source
-	 */
-	IDelimitedTextParser(std::string delim, std::string comment) :
-		delimiter(delim), commentChar(comment) {};
 
 	/**
 	 * This operation sets the data source for the parser using a stream
@@ -89,6 +69,13 @@ public:
 	 * @param source the stream of delimited text data
 	 */
 	virtual void setSource(const std::istream & source) = 0;
+
+	/**
+	 * This operation gets the data source for the parser as a stream if and
+	 * only if it was set as such.
+	 * @return source the stream of delimited text data
+	 */
+	virtual const std::istream & getSourceStream() = 0;
 
 	/**
 	 * This operation returns all of the data in the source as a vector of

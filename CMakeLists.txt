@@ -91,8 +91,10 @@ if(Boost_FOUND)
     # Include the header directory since BOOST tests
     INCLUDE_DIRECTORIES("${Boost_INCLUDE_DIR}")
     INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/parsers")
+    INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/integrators")
     # Get the test files
-    file(GLOB tests parsers/tests/*Test.cpp)
+    file(GLOB tests ${PROJECT_SOURCE_DIR}/parsers/tests/*Test.cpp 
+         ${PROJECT_SOURCE_DIR}/integrators/tests/*Test.cpp)
     # Make executables and link libraries for testers
     foreach(test ${tests})
         message(STATUS "Making test ${test}")
