@@ -36,6 +36,7 @@
 #include <stdlib.h>
 #include <fstream>
 #include <string>
+#include <sstream>
 #include <IDelimitedTextParser.h>
 
 namespace fire {
@@ -143,7 +144,7 @@ public:
 		if (fileStream.is_open()) {
 			while (getline(fileStream,line)) {
 				if (!line.empty() && !line.find("#") == 0) {
-				   std::stringstream ss(line);
+				   std::istringstream ss(line);
 				   std::vector<T> lineVec;
 				   while (getline(ss,value,*delimiter.c_str())) {
 				       lineVec.push_back(StringCaster<double>::cast(value));
