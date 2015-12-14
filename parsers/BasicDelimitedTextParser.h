@@ -36,7 +36,7 @@
 #include <stdlib.h>
 #include <fstream>
 #include <string>
-#include "IDelimitedTextParser.h"
+#include <IDelimitedTextParser.h>
 
 namespace fire {
 
