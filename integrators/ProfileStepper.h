@@ -60,6 +60,11 @@ protected:
 	 */
 	int stepID = 0;
 
+	/**
+	 * The final step value.
+	 */
+	double finalStep;
+
 public:
 
 	/**
@@ -67,7 +72,9 @@ public:
 	 */
 	ProfileStepper(const std::vector<double> & stepsList,
 			const std::vector<double> & stepSizeList) :
-			steps(stepsList), stepSizes(stepSizeList) {};
+			steps(stepsList), stepSizes(stepSizeList) {
+		finalStep = steps[steps.size() - 1];
+	};
 
 	/**
 	 * Destructor
@@ -95,11 +102,12 @@ public:
 	};
 
 	virtual void setFinalStep(double finalStep) {
-		// Ignore it
+		// Override the final step so that the whole profile can be truncated.
+		this->finalStep = finalStep;
 	};
 
 	virtual double getFinalStep() {
-		return steps[steps.size()-1];
+		return finalStep;
 	};
 
 	virtual void setInitialStepsize(double stepSize) {
