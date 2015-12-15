@@ -99,7 +99,7 @@ public:
 	};
 
 	virtual double getFinalStep() {
-		stepSizes[stepSizes.size()-1];
+		steps[steps.size()-1];
 	};
 
 	virtual void setInitialStepsize(double stepSize) {
