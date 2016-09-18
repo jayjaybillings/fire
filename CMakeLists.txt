@@ -46,21 +46,21 @@ message(STATUS "C++ version ${CXX_STANDARD} configured.")
 # Setup flag overrides if Fire is building on its own. This works by 
 # determining if a parent is available and allowing flag overrides if not.
 get_directory_property(hasParent PARENT_DIRECTORY)
-message(STATUS "Parent directory is ${hasParent}")
-if(NOT hasParent)
+if(NOT hasParent STREQUAL "")
+  message(STATUS "Parent directory is ${hasParent}")
   list( APPEND CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} $ENV{CXX_FLAGS}")
   message(STATUS "Parent detected. Disabling Fire flag overrides.")
+else()
+  message(STATUS "No parent directory found. Stand-alone build assumed. Build flag overrides enabled.")
 endif()
 
 # Setup Doxygen
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.cmake ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
-add_custom_target(doc
-${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-COMMENT "Generating API documentation with Doxygen" VERBATIM
-)
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.cmake ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+  add_custom_target(doc ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR} COMMENT "Generating API documentation with Doxygen" 
+    VERBATIM)
 endif(DOXYGEN_FOUND)
 
 # Include directories for the main program. Note that include 
