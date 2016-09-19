@@ -43,6 +43,9 @@ set(CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 11)
 message(STATUS "C++ version ${CXX_STANDARD} configured.")
 
+# Add the Modules directory to pick up extra *.cmake files.
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+
 # Setup flag overrides if Fire is building on its own. This works by 
 # determining if a parent is available and allowing flag overrides if not.
 get_directory_property(hasParent PARENT_DIRECTORY)
@@ -66,15 +69,17 @@ endif(DOXYGEN_FOUND)
 # Include directories for the main program. Note that include 
 # directories must come before add subdirectory!
 include_directories("${CMAKE_SOURCE_DIR}/parsers")
+include_directories("${CMAKE_SOURCE_DIR}/solvers")
 include_directories("${CMAKE_SOURCE_DIR}/tpls/simpleini-4.17")
 
-# Add the source directory
+# Add the source directories
 add_subdirectory(parsers)
+add_subdirectory(solvers)
 # Add the third party libraries
 ADD_SUBDIRECTORY(tpls)
 
 # Setup the library list
-set(FIRE_LIBS fireParsers)
+set(FIRE_LIBS FireParsers)
 
 # ---- Tests! ----- #
 

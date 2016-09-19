@@ -79,7 +79,7 @@ public:
 	/**
 	 * Destructor
 	 */
-	virtual ~ProfileStepper() {};
+	~ProfileStepper() {};
 
 	virtual double getStep() {
 		return steps[stepID];

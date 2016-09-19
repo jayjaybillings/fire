@@ -31,23 +31,38 @@
 #
 # Author(s): Jay Jay Billings
 #----------------------------------------------------------------------------*/
+#
+# This file was adapted from:
+#    http://stackoverflow.com/questions/17747470/cmake-find-library-does-not-find-the-library
+#
+# I saved the header, but rewrote the rest to use PkgConfig.
+#
+# - Find the MAGMA library
+#
+# Usage:
+#   find_package(MAGMA [REQUIRED] [QUIET] )
+#
+# It sets the following variables:
+#   MAGMA_FOUND               ... true if magma is found on the system
+#   MAGMA_LIBRARY_DIRS        ... full path to magma library
+#   MAGMA_INCLUDE_DIRS        ... magma include directory
+#   MAGMA_LIBRARIES           ... magma libraries
+#
+# The following variables will be checked by the function
+#   MAGMA_USE_STATIC_LIBS     ... if true, only static libraries are found
+#   MAGMA_ROOT                ... if set, the libraries are exclusively searched
+#                                 under this path
 
-#Set the package name
-SET(PACKAGE_NAME "FireParsers")
-#Set the description
-SET(PACKAGE_DESCRIPTION "Fire Parser Library")
-#Set the library name
-SET(LIBRARY_NAME "FireParsers")
+#Reconfigure the pkgconfig path to contain the MAGMA lib directory, which
+#is where the magma.pc file is located.
+set( ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:${MAGMA_ROOT}/lib/pkgconfig" )
 
-#Collect all header filenames in this project 
-#and glob them in HEADERS
-file(GLOB HEADERS *.h)
+#Find MAGMA using PKGCONFIG
+find_package(PkgConfig REQUIRED)
+pkg_search_module(MAGMA REQUIRED magma magma_sparse)
 
-#Grab all of the source files
-file(GLOB SRC *.cpp)
-
-#Add the source code to the library
-add_library(${LIBRARY_NAME} STATIC ${SRC})
-
-#Install the Fire header files
-install(FILES ${HEADERS} DESTINATION include)
+if (MAGMA_FOUND)
+   message(STATUS "MAGMA libraries found in ${MAGMA_LIBRARY_DIRS}.")
+   #Modify the library list to include the magma_sparse library
+   set(MAGMA_LIBRARIES "magma_sparse:${MAGMA_LIBRARIES}")
+endif(MAGMA_FOUND)

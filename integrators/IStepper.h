@@ -106,6 +106,11 @@ public:
 	 */
 	virtual double getInitialStepsize() = 0;
 
+	/**
+	 * Virtual Destructor
+	 */
+	virtual ~IStepper() {};
+
 };
 
 } /* namespace fire */
