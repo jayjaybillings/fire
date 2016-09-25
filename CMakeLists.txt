@@ -46,6 +46,9 @@ message(STATUS "C++ version ${CXX_STANDARD} configured.")
 # Add the Modules directory to pick up extra *.cmake files.
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
+# Include the testing framework
+include(tests)
+
 # Setup flag overrides if Fire is building on its own. This works by 
 # determining if a parent is available and allowing flag overrides if not.
 get_directory_property(hasParent PARENT_DIRECTORY)
@@ -74,40 +77,8 @@ include_directories("${CMAKE_SOURCE_DIR}/tpls/simpleini-4.17")
 
 # Add the source directories
 add_subdirectory(parsers)
+add_subdirectory(integrators)
 add_subdirectory(solvers)
 # Add the third party libraries
 ADD_SUBDIRECTORY(tpls)
-
-# Setup the library list
-set(FIRE_LIBS FireParsers)
-
-# ---- Tests! ----- #
-
-# Find Boost for unit tests
-FIND_PACKAGE(Boost)
-# Enable testing if boost is found.
-if(Boost_FOUND)
-    # Turn on the testing harness
-	enable_testing()
-    # Let the user know that tests will be built
-    message(STATUS "Boost version ${Boost_VERSION} found.")
-    message(STATUS "Tests will be built since Boost was found.")
-    message(STATUS "Tests can be run with the 'make test' command.")
-    # Include the header directory since BOOST tests
-    INCLUDE_DIRECTORIES("${Boost_INCLUDE_DIR}")
-    INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/parsers")
-    INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/integrators")
-    # Get the test files
-    file(GLOB tests ${PROJECT_SOURCE_DIR}/parsers/tests/*Test.cpp 
-         ${PROJECT_SOURCE_DIR}/integrators/tests/*Test.cpp)
-    # Make executables and link libraries for testers
-    foreach(test ${tests})
-        message(STATUS "Making test ${test}")
-        get_filename_component(testName ${test} NAME_WE)
-        add_executable(${testName} ${test})
-        add_test(${testName} ${testName})
-        target_link_libraries(${testName} ${FIRE_LIBS}) 
-        #add a label so the tests can be run separately
-        set_property(TEST ${testName} PROPERTY LABELS ${PACKAGE_NAME})
-    endforeach(test ${tests})
-endif(Boost_FOUND)
+    
