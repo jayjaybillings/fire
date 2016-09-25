@@ -33,7 +33,7 @@
 #----------------------------------------------------------------------------*/
 
 # Set a name for this project.
-PROJECT ( FIRE CXX )
+PROJECT ( FIRE C CXX )
 # Set the minimum required version of cmake for this project.
 cmake_minimum_required(VERSION 2.8)
 # Configure some default options
