@@ -69,9 +69,25 @@ endif(Boost_FOUND)
 # @param test_include_dirs - the list of header directories to include
 # @param test_libs - the list of libraries to link for the tests
 #
+# This is a convenience call around add_tests_with_flags where the 
+# test_cflags argument is set to the default.
+#
 # When you call this function, you need to quote your variables like so:
 # add_tests("${intTests}" "${test_include_dirs}" "${FIRE_LIBS}") 
 function(add_tests tests test_include_dirs test_libs)
+      add_tests_with_flags("${tests}" "${test_include_dirs}" "${test_libs}" "")
+endfunction()
+
+# This function builds and configures ctest for a list of test files.
+# @param tests - the list of test files to be built
+# @param test_include_dirs - the list of header directories to include
+# @param test_libs - the list of libraries to link for the tests
+# @param test_cflags - compiler flags for the tests. If this flag is 
+#                      empty, the default flags are used.
+#
+# When you call this function, you need to quote your variables like so:
+# add_tests("${intTests}" "${test_include_dirs}" "${FIRE_LIBS}" "${flags}")
+function(add_tests_with_flags tests test_include_dirs test_libs test_cflags)
     if(Boost_FOUND)
       # Include all the required headers and BOOST
       include_directories("${Boost_INCLUDE_DIR}" "${test_include_dirs}")
@@ -79,8 +95,13 @@ function(add_tests tests test_include_dirs test_libs)
       foreach(test ${tests})
          message(STATUS "Adding test ${test}")
          get_filename_component(testName ${test} NAME_WE)
+         # Add the executable to the build and the test list
          add_executable(${testName} ${test})
          add_test(${testName} ${testName})
+         # Overwrite the default compile flags if needed.
+         if (NOT test_cflags STREQUAL "")
+            target_compile_options(${testName} PUBLIC "${test_cflags}")
+         endif()
          # Only link libraries if they are provided
          if (test_libs)
             target_link_libraries(${testName} ${test_libs})

@@ -64,4 +64,6 @@ if (MAGMA_FOUND)
    message(STATUS "MAGMA libraries found in ${MAGMA_LIBRARY_DIRS}.")
    # Modify the library list to include the magma_sparse library
    set(MAGMA_LIBRARIES "magma_sparse;${MAGMA_LIBRARIES}")
+   # Tell the build to link the MAGMA library directory in case it is not on the path
+   link_directories("${MAGMA_LIBRARY_DIRS}")
 endif(MAGMA_FOUND)

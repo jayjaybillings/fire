@@ -51,6 +51,14 @@ if(NOT MAGMA_ROOT STREQUAL "")
   message(STATUS 
      "MAGMA support requested. Searching at MAGMA_ROOT=${MAGMA_ROOT}.")
   find_package(MAGMA)
+  # Add a MAGMA example to the unit tests to make sure Fire can build against it 
+  # correctly.
+  if(MAGMA_FOUND)
+    message(STATUS "Adding a MAGMA example to the tests to test integration.")
+    # Add the tests
+    add_tests_with_flags("tests/example_v2.c" "${MAGMA_INCLUDE_DIRS}" 
+                         "${MAGMA_LIBRARIES}" "${MAGMA_CFLAGS}")   
+  endif(MAGMA_FOUND)
 endif()
 
 #FIXME!!!! Commented out so the build works fine tonight.
