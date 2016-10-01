@@ -26,4 +26,5 @@ gem "github-pages", group: :jekyll_plugins
 # Add asciidoc plugin
 group :jekyll_plugins do
   gem 'jekyll-asciidoc'
+  gem 'minima'
 end
