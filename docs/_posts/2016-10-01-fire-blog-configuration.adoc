@@ -1,0 +1,15 @@
+= Fire Blog Configuration 
+:page-layout: post
+:page-permalink: /blog-setup/
+:uri-asciidoctor: http://asciidoctor.org
+
+It uses the https://github.com/hemangsk/Gravity[Gravity Theme], which I unzipped into the docs directory of the Fire repository. The next step
+
+[source]
+group :jekyll_plugins do
+  gem 'jekyll-asciidoc'
+end
+
+[source]
+bundle install
+bundle exec jekyll serve
