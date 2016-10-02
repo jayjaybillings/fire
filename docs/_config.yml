@@ -9,8 +9,8 @@ title: Fire
 email: hemangsk@gmail.com
 description: "A framework for scientific computing with various reusable tools
 and utilities."
-url: "https://jayjaybillings.github.io/fire"
-baseurl: ""
+url: "https://jayjaybillings.github.io"
+baseurl: "/fire"
 twitter_username: jayjaybillings
 github_username:  jayjaybillings
 
