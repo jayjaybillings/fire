@@ -5,26 +5,14 @@
 # For technical reasons, this file is *NOT* reloaded automatically when you use
 # 'jekyll serve'. If you change this file, please restart the server process.
 
-sass:
-  sass_dir: _sass
-  style: expanded # compressed # expanded
-
-# permalink and highlighter
-permalink   : /:year/:title/
-markdown    : kramdown
-highlighter : rouge
-
-# SEO settings
-title: TriVols
-description: "Club of Triathletes at the University of Tennessee competing in the Southeast Collegiate Triathlon Conference"
-keywords: "triathlon, Tennessee, Knoxville, triathlete, UTK, bikes, SECTC"
-
 # Site settings
-url: http://jayjaybillings.github.io/fire
-baseurl: /fire
+title: Gravity
+email: hemangsk@gmail.com
+description: The Liberal Jekyll Theme
+url: "https://jayjaybillings.github.io"
+baseurl: "/fire" # the subpath of your site, e.g. /blog
+twitter_username: hemang_kumar
+github_username:  hemangsk
 
-repo: http://github.com/jayjaybillings/fire
-
-gems:
-  - github-pages
-  - jekyll-sitemap
+# Build settings
+markdown: kramdown

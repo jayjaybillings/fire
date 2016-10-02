@@ -1,51 +1,117 @@
 ---
 layout: page
-title: About
-subtitle: Club team competing in the Southeast Collegiate Triathlon Conference
+title : About
 permalink: /about/
 ---
-## About the team
 
-Since 2006, the TriVols have been a training ground for triathletes to compete at the Collegiate level in the [Southeast](http://sectc.org) and against the top teams in the nation at Collegiate Nationals. More than just competition, the TriVols offer a fun and inclusive atmosphere for students at the University of Tennessee to train, as well as be involved in the triathlon community in East Tennessee. We do social events as well, be on the look out for awesome events in the weekly email! Interested in joining? Contact [Alex](mailto:alex@trivols.org).
+<h2>Gravity</h2>
+<p>Minimal, text based, liberal Jekyll theme<br>for sharing your awesome ideas.</p>
+<br>
+<center><p ><strong><span class="manual">Get up and running with</span> Gravity</strong></p></center>
+<br>
+<div class="manual-post">
+  <div class="manual manual-title">
+  <strong>Posting</strong>
+  </div>
+<p>  <div class="manual-content">
 
-More info about the team from the Fall Interest Meeting [here](/assets/files/Fall Interest Meeting.pdf).
+      - Create a .markdown file inside <code class="highlighter-rouge">_posts</code> folder.<br>
+      - Name the file according to the format YY-MM-DD-[short name for your post].<br>  <code>2016-03-30-i-love-design.markdown</code><br>
+      - Write the <a href="jekyll">Front Matter</a> and content in the file.<br>
+      <div class="example">
+        <span class='manual'>FORMAT</span><BR>
+        <pre>---
+layout: post | default | page
+title:  String<span class="hint"> Post Title</span>
+date:   Time Stamp
+categories: String | Array of Strings<span class="hint"> Category / Categories </span>
+---</pre>
+      </div>
+      <div class="example">
 
-## How to join
+        <pre>---
+layout: post
+title:  "The One with the Blackout"
+date:   2016-03-30 19:45:31 +0530
+categories: ["life", "friends"]
+---</pre>
+      </div>
 
-We have two options for to join the team! A competitive and non-competitive option.
 
-### Competitive
+  </div>
+</p>
+</div>
+<br>
+<div class="manual-post">
+  <div class="manual manual-title">
+  <strong>Create Pages</strong>
+  </div>
+<p>  <div class="manual-content">
 
-- Dues $70 for semester, $120 for year
-- Travel with Team for Conference Races, team covers travel fees
-- Must get USAT ID
-- Come to Practices
-- Race fees covered by you, race discounts for conference races (if available)
+      - Create a .md file in the root directory.<br>
+      - Name the file with the desired page link name.<br>  <code>about.md</code><br><code>design.md</code><br>
+      - Write the <a href="jekyll">Front Matter</a> and content in the file.
+      <div class="example">
+        <span class='manual'>FORMAT</span><BR>
+        <pre>---
+layout: page
+title: String <span class="hint">Title of the webpage</span>
+permalink: / String / <span class="hint">Permalink for the webpage</span>
+tagline: String <span class="hint">Optional Gravity Feature : Tagline for the page</span>
+---</pre>
+      </div>
+      <div class="example">
 
-### Non-Competitive
-- Dues $40 for semester, $70 for year
-- Come out for a Non-Conference race with the team
-- Come to Practices
-- Race fees covered by you
+        <pre>---
+layout: page
+title:  "Science"
+permalink:   /science/
+tagline : "Humanity is overrated."
+---</pre>
+      </div>
 
-## Officers
 
-### President - Alex
+  </div>
+</p>
+</div>
+<br>
+<div class="manual-post">
+  <div class="manual manual-title">
+  <strong>Create Archives/ Category Pages</strong><br>
+</div><br>
+<div class="archiveIntro">
+  <p>
+    Introducing <strong>Archive Pages</strong>.<br></p>
+  <span class="archive-intro">  You can display a list of all the post corresponding to a particular category on a standalone Page using the <code>'archive'</code> layout.
+</span>
+</div>
+<br>
 
-![Alex Pawlowski](/assets/images/alex-pawlowski.jpg){:height="200px" width="200px"}
+<p>  <div class="manual-content">
 
-Hey there, I’m Alex and I’m a third year PhD Student, doing research at Oak Ridge National Lab. Having competed with the University of Virginia in triathlon, I am beginning my 7th year training for triathlons. As President this year, I look to strengthen the core triathlon team at competition while growing the team at large through a variety of partnerships with the local community. Interested in the team? Drop me a [line](mailto:{{site.author.email}})!
+      - Create a .md file in the root directory.<br>
+      - Name the file. Preferred name will be the name of the category<br>  <code>life.md</code><br>
+      - Write the <a href="jekyll">Front Matter</a> and content in the file.
+      <div class="example">
+        <span class='manual'>FORMAT</span><BR>
+    <pre>---
+layout: archive<span class="hint"> Archive Page Layout</span>
+title: String <span class="hint">Title of the webpage</span>
+permalink: / String / <span class="hint">Permalink for the webpage</span>
+tagline: String <span class="hint"> Tagline for the page</span>
+category : String <span class="hint"> Name of the category of which the page will show posts.</span>
+---</pre>
+      </div>
+      <div class="example">
 
-### Vice President - Jake
-
-![Jake Houser](/assets/images/jake-houser.jpg){:height="200px" width="200px"}
-
-How’s it going?  I’m Jake, a fifth year PhD student (not a kangaroo) and avid swimmer who got into triathlon four years ago when I came to UT.  I’m also a member of the local Provision Health and Performance Racing Team.  As Vice President, I’ll be acting in a support capacity to Alex while we work towards making the team bigger and better than ever.  I’m excited to see what our team can become over the next year and look forward to working with everyone on the team towards these goals.  Any questions about the team, triathlon, etc.?  Let me know at jhouse11 (at) utk (dot) edu!
-
-### Treasurer - Zach
-
-### Social - Ashley
-
-## Interested in more?
-
-Contact the team president - [Alex Pawlowski](mailto:{{site.author.email}}) for how you can get involved with the team!
+        <pre>---
+layout: archive
+title:  "Design"
+permalink : "Design"
+category: "design"
+tagline: "It's all about perception."
+---</pre>
+    </div><br>
+  </div>
+</p>
+</div>
