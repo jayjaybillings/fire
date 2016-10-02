@@ -6,8 +6,7 @@ permalink: /about/
 <!--- Pull all articles from the "about category and post them -->
 <div class="home">
 
-
-  {% for post in site.categories[about]%}
+  {% for post in site.categories.about %}
   <div class="post postContent">
     <div  class="postDate"><time datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">{{ post.date | date: "%b %-d, %Y" }}</time>
     </div>
