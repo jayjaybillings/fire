@@ -1,40 +1,21 @@
-# .X [![Build Status](https://travis-ci.org/nandomoreirame/dotX.svg?branch=master)](https://travis-ci.org/nandomoreirame/dotX)
+# Gravity
 
-> Simple & Beautiful Jekyll theme
 
-### [Demo](https://nandomoreira.me/dotX/)
+If there's any issue you are facing in setting up this theme I'm there for you. Just create an issue in this repository (http://github.com/hemangsk/Gravity), (https://help.github.com/articles/creating-an-issue/) and I'll get back to you asap.
 
-![dotX - free Jekyll theme](/screenshot.png)
+![alt tag](https://farm2.staticflickr.com/1593/25549169123_cfb392bfe9.jpg)
 
----
+![alt-tag](https://farm8.staticflickr.com/7295/26900743846_10e9a0ba71_o.png)
+![alt-tag](https://farm8.staticflickr.com/7675/26840339222_b078607576_o.png)
+![alt-tag](https://farm2.staticflickr.com/1592/26151881165_3f351e5fd1.jpg)
 
-### Start in 4 steps
 
-1. Download or clone repo `git clone git@github.com:nandomoreirame/dotX.git`
-2. Enter the folder: `cd dotX/`
-3. Install Ruby gems: `bundle install`
-4. Start Jekyll server: `jekyll serve`
 
-Access, [localhost:4000/dotX](http://localhost:4000/dotX)
+![alt-tag](https://farm2.staticflickr.com/1674/25549273413_3872aa3b1e_o.png)
 
-### Deploy in Github pages in 2 steps
 
-1. Change the variables `GITHUB_REPONAME` and `GITHUB_REPO_BRANCH` in `Rakefile`
-2. Run `rake` or `rake publish` for build and publish on Github
 
----
+![alt-tag](https://farm2.staticflickr.com/1590/26563924866_ec40fd1ccd_o.png)
 
-### Using Rake tasks
+![alt-tag](https://farm2.staticflickr.com/1565/25879042020_03acf3c968_o.png)
 
-* Create a new page: `rake page name="contact.md"`
-* Create a new post: `rake post title="TITLE OF THE POST"`
-
----
-
-### Copyright and license
-
-It is under [the MIT license](/LICENSE).
-
-Enjoy :yum:
-
-by [nandomoreira.me](https://nandomoreira.me)
