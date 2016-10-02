@@ -24,22 +24,7 @@ url: http://jayjaybillings.github.io/fire
 baseurl: ""
 # baseurl: ""
 
-# Author settings
-author:
-  name      : Alex Pawlowski
-  job       : President
-  bio       : "Triathlete, PhD student at UT, love to compete and enjoy every moment"
-  thumb     : /images/author.jpg
-  email     : alex@trivols.org
-  url       : http://trivols.org
-  twitter   : https://twitter.com/tntrivols
-  instagram : https://www.instagram.com/tntrivols/
-
-google_analytics: UA-70808641-2
-repo: http://github.com/trivols/trivols.github.io
-
-# comments
-disqus_shortname: "alexpawlowski"
+repo: http://github.com/jayjaybillings/fire
 
 gems:
   - github-pages
