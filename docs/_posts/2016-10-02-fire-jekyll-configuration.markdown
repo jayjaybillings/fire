@@ -2,7 +2,8 @@
 layout: post
 permalink: /jekyll_config
 ---
-#Fire Jekyll Configuration
+Fire Jekyll Configuration
+=
 
 Fire uses Jekyll for publishing documentation on GitHub Pages and it uses the
 [Gravity theme](1). There are several important things to keep in
@@ -49,7 +50,8 @@ but deployment to GitHub fails because the style.scss file has references to
 empty scss files in _ssas directory starting at line 47. When these imports
 are removed or commented out, GitHub will build the site. 
 
-##Acknowledgements
+Acknowledgements
+--
 
 Thanks to @AlexPawlowski_ for encouraging me to not give up and sharing some expertise.
 Thanks also to Shawna Jean from GitHub for answering my ticket on a Sunday.
