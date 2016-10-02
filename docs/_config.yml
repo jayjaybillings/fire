@@ -1,0 +1,46 @@
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely need to edit after that.
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'jekyll serve'. If you change this file, please restart the server process.
+
+sass:
+  sass_dir: _sass
+  style: expanded # compressed # expanded
+
+# permalink and highlighter
+permalink   : /:year/:title/
+markdown    : kramdown
+highlighter : rouge
+
+# SEO settings
+title: TriVols
+description: "Club of Triathletes at the University of Tennessee competing in the Southeast Collegiate Triathlon Conference"
+keywords: "triathlon, Tennessee, Knoxville, triathlete, UTK, bikes, SECTC"
+
+# Site settings
+url: http://trivols.org
+baseurl: ""
+# baseurl: ""
+
+# Author settings
+author:
+  name      : Alex Pawlowski
+  job       : President
+  bio       : "Triathlete, PhD student at UT, love to compete and enjoy every moment"
+  thumb     : /images/author.jpg
+  email     : alex@trivols.org
+  url       : http://trivols.org
+  twitter   : https://twitter.com/tntrivols
+  instagram : https://www.instagram.com/tntrivols/
+
+google_analytics: UA-70808641-2
+repo: http://github.com/trivols/trivols.github.io
+
+# comments
+disqus_shortname: "alexpawlowski"
+
+gems:
+  - github-pages
+  - jekyll-sitemap
