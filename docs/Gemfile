@@ -2,10 +2,10 @@
 # the following line to use "https"
 source 'http://rubygems.org'
 
+# Configure the gem for working with GitHub Pages
 gem 'github-pages', group: :jekyll_plugins
-# group :development do
-#   gem 'rake', '~> 10.4.2'
-#   gem 'sass', '~> 3.4.10'
-#   gem 'github-pages'
-#   gem 'travis', '~> 1.8'
-# end
+
+# Configure the asciidoc support in Jekyll
+group :jekyll_plugins do
+  gem 'jekyll-asciidoc'
+end
