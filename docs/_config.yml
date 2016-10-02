@@ -16,3 +16,13 @@ github_username:  hemangsk
 
 # Build settings
 markdown: kramdown
+
+# GitHub settings
+github: [metadata]
+kramdown:
+  input: GFM
+  hard_wrap: false
+  math_engine: mathjax
+gems:
+  - jekyll-coffeescript
+  - jekyll-paginate
