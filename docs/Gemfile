@@ -1,11 +1,17 @@
-# If you have OpenSSL installed, we recommend updating
-# the following line to use "https"
-source 'http://rubygems.org'
+source 'https://rubygems.org'
+
+# Ascii Doctor and PlantUML
+gem 'jekyll', '~> 2.5'
+gem 'asciidoctor', '~> 1.5'
+gem 'coderay', '1.1.0'
+gem 'rake-jekyll', '~> 1.0'
+gem 'jekyll-plantuml', '~> 1.1' 
+
+group :jekyll_plugins do
+  gem "jekyll-asciidoc"
+  gem 'asciidoctor-diagram' 
+end
 
 # Configure the gem for working with GitHub Pages
-gem 'github-pages', group: :jekyll_plugins
+#gem 'github-pages', group: :jekyll_plugins
 
-# Configure the asciidoc support in Jekyll
-group :jekyll_plugins do
-  gem 'jekyll-asciidoc'
-end
