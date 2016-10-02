@@ -1,20 +1,24 @@
+---
+layout: compress
+---
 <!DOCTYPE html>
 <html>
 
   {% include head.html %}
+  {% if page.custom_js %}
+    {% for script in page.custom_js%}
+    <script src="/assets/js/{{script}}.js"></script>
+    {% endfor %}
+  {% endif %}
 
-  <body>
+  <body{% if page.body_class %} class="{{ page.body_class }}{% endif %}">
 
-    {% include header.html %}
+    <main class="wrapper">
+      {% include header.html %}
+      {{ content }}
+      {% include footer.html %}
+    </main>
 
-    <div class="page-content">
-      <div class="wrapper">
-        {{ content }}
-      </div>
-    </div>
-
-    {% include footer.html %}
-
+    {% include scripts.html %}
   </body>
-
-</html>
+</html><!-- by nandomoreira.me -->
