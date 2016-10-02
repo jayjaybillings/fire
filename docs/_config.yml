@@ -21,7 +21,7 @@ keywords: "triathlon, Tennessee, Knoxville, triathlete, UTK, bikes, SECTC"
 
 # Site settings
 url: http://jayjaybillings.github.io/fire
-site.url: http://jayjaybillings.github.io/fire
+baseurl: /fire
 
 repo: http://github.com/jayjaybillings/fire
 
