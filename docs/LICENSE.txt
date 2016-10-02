@@ -1,4 +1,10 @@
+#----------------------------------------------------------------------------
+Original License for the Gravity Theme for Jekyll. My modifications are 
+released under the same license.
 
+Jay Jay Billings
+20161002
+#----------------------------------------------------------------------------
 
 MIT License
 

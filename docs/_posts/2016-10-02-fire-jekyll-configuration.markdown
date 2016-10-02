@@ -1,9 +1,9 @@
 ---
 layout: post
-permalink: /jekyll_config
+title: Fire Jekyll Configuration
+permalink: /about/jekyll_config
+category: about
 ---
-Fire Jekyll Configuration
-=
 
 Fire uses Jekyll for publishing documentation on GitHub Pages and it uses the
 [Gravity theme](1). There are several important things to keep in
