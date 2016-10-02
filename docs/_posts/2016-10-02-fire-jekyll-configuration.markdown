@@ -2,8 +2,7 @@
 layout: post
 permalink: /jekyll_config
 ---
-Fire Jekyll Configuration
-=
+#Fire Jekyll Configuration
 
 Fire uses Jekyll for publishing documentation on GitHub Pages and it uses the
 [Gravity theme](1). There are several important things to keep in
@@ -27,8 +26,9 @@ end
 
 I ran into two major problems with GitHub that took hours to fix and then only
 after contacting GitHub directly.
+
 - The site.url (or just "url") and site.baseurl variables in _config.yml must be set to 
-"http://<username>.github.io/<project>" for a project level deployment as in
+"http://[username].github.io/[project]" for a project level deployment as in
 
 ```
 url = "http://jayjaybillings.github.io"
@@ -49,6 +49,9 @@ but deployment to GitHub fails because the style.scss file has references to
 empty scss files in _ssas directory starting at line 47. When these imports
 are removed or commented out, GitHub will build the site. 
 
+##Acknowledgements
+
 Thanks to @AlexPawlowski_ for encouraging me to not give up and sharing some expertise.
+Thanks also to Shawna Jean from GitHub for answering my ticket on a Sunday.
 
 [1]: http://hemangsk.github.io/Gravity/
