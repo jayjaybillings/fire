@@ -16,3 +16,7 @@ github_username:  hemangsk
 
 # Build settings
 markdown: kramdown
+
+# Sass support
+sass:
+    sass_dir: _sass
