@@ -6,7 +6,7 @@ category: about
 ---
 
 Fire uses Jekyll for publishing documentation on GitHub Pages and it uses the
-[Gravity theme](1). There are several important things to keep in
+[Gravity theme][1]. There are several important things to keep in
 mind for this configuration. The Gemfile should contain
 
 ```ruby
