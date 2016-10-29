@@ -15,7 +15,8 @@ twitter_username: jayjaybillings
 github_username:  jayjaybillings
 
 # Build settings
-markdown: kramdown
+#markdown: kramdown
+markdown: redcarpet
 
 # Sass support
 sass:

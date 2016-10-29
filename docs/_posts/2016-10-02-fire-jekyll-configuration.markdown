@@ -42,7 +42,7 @@ into master/docs.
 
 The Gravity theme works as expected when deployed using
 
-```shell
+```bash
 bundle exec jekyll serve
 ```
 
