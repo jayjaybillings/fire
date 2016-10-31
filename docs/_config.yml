@@ -14,10 +14,6 @@ baseurl: "/fire"
 twitter_username: jayjaybillings
 github_username:  jayjaybillings
 
-# Build settings
-#markdown: kramdown
-markdown: redcarpet
-
 # Sass support
 sass:
     sass_dir: _sass

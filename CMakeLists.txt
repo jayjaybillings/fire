@@ -75,10 +75,12 @@ include_directories("${CMAKE_SOURCE_DIR}/parsers")
 include_directories("${CMAKE_SOURCE_DIR}/solvers")
 include_directories("${CMAKE_SOURCE_DIR}/tpls/simpleini-4.17")
 
-# Add the source directories
+# Add the main source directories
 add_subdirectory(parsers)
 add_subdirectory(integrators)
 add_subdirectory(solvers)
+# Add the domain source directories
+add_subdirectory(astrophysics)
 # Add the third party libraries
 ADD_SUBDIRECTORY(tpls)
     

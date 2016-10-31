@@ -29,63 +29,61 @@
 
  Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
-#ifndef PARSERS_IDELIMITEDTEXTPARSER_H_
-#define PARSERS_IDELIMITEDTEXTPARSER_H_
 
-#include<vector>
-#include<string>
-#include "ILocalParser.h"
+#ifndef ASTROPHYSICS_SPECIES_H_
+#define ASTROPHYSICS_SPECIES_H_
+
+#include <string>
 
 namespace fire {
+namespace astrophysics {
 
 /**
- * This is an extension of the parser interface that focuses on parsing
- * delimited text. Delimited text is text with entries that are separated by a
- * common pattern, such as a common or space.
- *
- * The Comma-Separated Variables format is a delimited text format of the form
- *
- * v1, v2, v3, v4
- *
- * where each comma is the delimiter between the text values v1 through v4. A
- * line of text with only spaces is also a delimited text format:
- *
- * v1 v2 v3 v4
- *
- * Delimited text parsers may assume that lines such as those above are
- * terminated by \n. Like most other text formats, delimited text files may
- * contain comments, which may be skipped by IDelimitedTextParsers. The
- * characters that denote comments - very commonly a "#" or "//" - may be
- * passed to the constructor.
+ * This class represents a standard nuclear species within astrophysics such as
+ * Helium or Carbon.
  */
-template<class T>
-class IDelimitedTextParser: public virtual ILocalParser {
+class Species {
 
 public:
 
 	/**
-	 * This operation sets the data source for the parser using a stream
-	 * instead of a string.
-	 * @param source the stream of delimited text data
+	 * The name of this species.
 	 */
-	virtual void setSource(const std::istream & source) = 0;
+	std::string name;
 
 	/**
-	 * This operation gets the data source for the parser as a stream if and
-	 * only if it was set as such.
-	 * @return source the stream of delimited text data
+	 * The total number of nucleons, equal to the sum of the atomic and neutron
+	 * numbers, in the nucleus of this species.
 	 */
-	virtual const std::istream & getSourceStream() = 0;
+	int massNumber;
 
 	/**
-	 * This operation returns all of the data in the source as a vector of
-	 * vectors of the template type T.
-	 * @return all the data in the source with one vector for each line
+	 * The total number of protons in the nucleus of this species. Also known
+	 * as the proton number.
 	 */
-	virtual std::vector<std::vector<T>> & getData() = 0;
+	int atomicNumber;
+
+	/**
+	 * The total number of neutrons in the nucleus of this species.
+	 */
+	int neutronNumber;
+
+	/**
+	 * The fraction of the total mass of the system that is composed of this
+	 * species. The quantity is normalized to 1.0. It is sometimes called the
+	 * "abundance" as well.
+	 */
+	double massFraction;
+
+	/**
+	 * The difference between the actual mass of this species and the mass
+	 * number.
+	 */
+	double massExcess;
 
 };
 
+} /* namespace astrophysics */
 } /* namespace fire */
 
-#endif /* PARSERS_IDELIMITEDTEXTPARSER_H_ */
+#endif /* ASTROPHYSICS_SPECIES_H_ */

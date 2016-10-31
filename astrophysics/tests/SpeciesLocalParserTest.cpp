@@ -29,59 +29,43 @@
 
  Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
-#ifndef PARSERS_ILOCALPARSER_H_
-#define PARSERS_ILOCALPARSER_H_
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE Astro
 
-#include <memory>
-#include "IParser.h"
+#include <boost/test/included/unit_test.hpp>
+#include <vector>
+#include <string>
+#include "Species.h"
+#include "LocalParser.h"
+#include "SpeciesLocalParser.h"
 
-namespace fire {
+using namespace std;
+using namespace fire;
+using namespace fire::astrophysics;
+
+// Test file names
+static std::string networkFileName = "CUDAnet_alpha.inp";
 
 /**
- * This is a sub-interface of IParser that represents a parser for a local,
- * serially executed parser.
- *
- * isLocal() always returns true.
- * isParallel() always returns false.
- *
- * Implementations should set isFile in their setSource(std::string) if their
- * source is a file. Subclasses must always be sure that they implement parse()
- * and setSource() because default implementations are not provided.
- *
- * The getData() operation always returns a shared_ptr instead of a raw type
- * (copy) or raw pointer to efficiently share the dynamically allocated data.
- *
+ * This operation checks the ability of the SpeciesLocalParser to parse the
+ * network.
  */
-template <typename T>
-class ILocalParser: public virtual IParser {
+BOOST_AUTO_TEST_CASE(checkParsing) {
 
-protected:
+	// Create the parser
+	LocalParser<vector<Species>> parser;
+	parser.setSource(networkFileName);
+	parser.parse();
+	shared_ptr<vector<Species>> speciesList = parser.getData();
 
-	/**
-	 * This value is true if the source is a file and false if it is a stream.
-	 * This value should be set in the setSource(std::string) and
-     * setSource(std::istream) to true and false respectively. It is set to
-     * true by default.
-	 */
-	bool isAFile = true;
-
-public:
-
-	virtual bool isFile() {return isAFile;};
-
-	virtual bool isLocal() {return true;};
-
-	virtual bool isParallel() {return false;};
-
-	/**
-	 * This operation returns a shared pointer to an instance of type T.
-	 * @return a shared pointer holding an instance of type T that was parsed
-	 * from the file.
-	 */
-	virtual std::shared_ptr<T> getData() = 0;
-
-};
-
+	// The test file is an alpha network with sixteen species.
+	BOOST_REQUIRE(parser.isFile());
+	BOOST_REQUIRE_EQUAL(16,speciesList->size());
+	return;
 }
 
-#endif /* PARSERS_ILOCALPARSER_H_ */
+
+
+
+
+

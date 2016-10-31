@@ -43,17 +43,26 @@ namespace fire {
  * This source string is only a reference to the source or some sort of handle
  * that points to it, such as a file or stream name. The exact type of the
  * source - file, stream, socket, etc. - is determined by the implementing
- * class.
+ * class. Check the documentation of implementing classes for the exact way the
+ * source string is used.
  *
  * IParsers should always be used by setting the source and then parsing the
  * source:
  *
+ * @code
  * IParser parser = ...;// somehow create your parser
  * parser.setSource(sourceName);
  * parser.parser();
+ * @endcode
+ *
+ * Subclasses must always be sure that they implement parse() and setSource().
  *
  */
 class IParser {
+
+protected:
+
+
 public:
 
 	/**
@@ -67,6 +76,20 @@ public:
 	 * @return the name of the source
 	 */
 	virtual const std::string & getSource() = 0;
+
+	/**
+	 * This operation sets the data source for the parser using a stream
+	 * instead of a string.
+	 * @param source the stream of delimited text data
+	 */
+	virtual void setSource(const std::istream & source) = 0;
+
+	/**
+	 * This operation gets the data source for the parser as a stream if and
+	 * only if it was set as such.
+	 * @return source the stream of delimited text data
+	 */
+	virtual const std::istream & getSourceStream() = 0;
 
 	/**
 	 * This operation directs the parser to parse its source.

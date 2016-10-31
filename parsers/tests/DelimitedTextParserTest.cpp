@@ -1,3 +1,4 @@
+
 /**----------------------------------------------------------------------------
  Copyright (c) 2015-, Jay Jay Billings
  All rights reserved.
@@ -35,13 +36,14 @@
 #include <boost/test/included/unit_test.hpp>
 #include <vector>
 #include <string>
-#include "BasicDelimitedTextParser.h"
+#include <memory>
+#include <DelimitedTextParser.h>
 
 using namespace std;
 
 // Test file names
-static std::string csvFileName = "testFile.csv";
-static std::string spaceFileName = "testFile.dat";
+static string csvFileName = "testFile.csv";
+static string spaceFileName = "testFile.dat";
 
 // This is a class that creates and later deletes the test input file.
 struct FileGenerator {
@@ -51,8 +53,8 @@ struct FileGenerator {
 		BOOST_TEST_MESSAGE( "Configuring fixture." );
 
 		// Open the file and write some CSV blocks to it
-		std::fstream testFile;
-		testFile.open(csvFileName.c_str(), std::fstream::out | std::fstream::app);
+		fstream testFile;
+		testFile.open(csvFileName.c_str(), fstream::out | fstream::app);
 		testFile << "#Comment\n";
 		testFile << "1.0, 3.1, 99.99\n";
 		testFile << "8,6,7,5,3,0,9\n";
@@ -61,7 +63,7 @@ struct FileGenerator {
 		testFile.close();
 
 		// Open the file and write some space blocks to it
-		testFile.open(spaceFileName.c_str(), std::fstream::out | std::fstream::app);
+		testFile.open(spaceFileName.c_str(), fstream::out | fstream::app);
 		testFile << "#Comment\n";
 		testFile << "1.0 3.1 99.99\n";
 		testFile << "8 6 7 5 3 0 9\n";
@@ -87,10 +89,10 @@ struct FileGenerator {
  * This operation checks the data in the array.
  * @param data the array of data that should be checked
  */
-void checkData(std::vector<std::vector<double>> data) {
+void checkData(vector<vector<double>> data) {
 	// Check the data
 	BOOST_REQUIRE_EQUAL(3,data.size());
-	std::vector<double> & dataEntry = data[0];
+	vector<double> & dataEntry = data[0];
 	BOOST_REQUIRE_EQUAL(3,dataEntry.size());
 	BOOST_REQUIRE_EQUAL(1.0,dataEntry[0]);
 	BOOST_REQUIRE_EQUAL(3.1,dataEntry[1]);
@@ -120,13 +122,13 @@ void checkData(std::vector<std::vector<double>> data) {
 BOOST_FIXTURE_TEST_CASE(checkCSV, FileGenerator) {
 
 	// Configure the parser and grab the data
-	fire::BasicDelimitedTextParser<double> parser(std::string(","),std::string("#"));
+	fire::DelimitedTextParser<vector<vector<double>>,double> parser(string(","),string("#"));
 	parser.setSource(csvFileName);
 	parser.parse();
-	std::vector<std::vector<double>> data = parser.getData();
+	shared_ptr<vector<vector<double>>> data = parser.getData();
 
 	// Check the data
-	checkData(data);
+	checkData(*data);
 
 	return;
 }
@@ -137,13 +139,13 @@ BOOST_FIXTURE_TEST_CASE(checkCSV, FileGenerator) {
 BOOST_FIXTURE_TEST_CASE(checkSpace, FileGenerator) {
 
 	// Configure the parser and grab the data
-	fire::BasicDelimitedTextParser<double> parser(std::string(" "),std::string("#"));
+	fire::DelimitedTextParser<vector<vector<double>>,double> parser(string(" "),string("#"));
 	parser.setSource(spaceFileName);
 	parser.parse();
-	std::vector<std::vector<double>> data = parser.getData();
+	shared_ptr<vector<vector<double>>> data = parser.getData();
 
 	// Check the data
-	checkData(data);
+	checkData(*data);
 
 	return;
 }

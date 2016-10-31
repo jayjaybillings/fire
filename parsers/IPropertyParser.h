@@ -35,15 +35,15 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "ILocalParser.h"
+#include "LocalParser.h"
 
 namespace fire {
 
 /**
  * This is an extension of the parser interface that focuses on parsing a set
- * of properties. Properties are returned in blocks (see IPropertyBlock).
+ * of properties. Properties are returned in blocks represented by maps..
  */
-class IPropertyParser: public virtual ILocalParser {
+class IPropertyParser: public virtual LocalParser<std::string> {
 public:
 
 	/**

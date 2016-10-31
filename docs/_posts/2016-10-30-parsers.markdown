@@ -1,0 +1,25 @@
+---
+layout: post
+title: Parsers
+permalink: /science/parsers
+category: science
+---
+
+Parsers in Fire implement the IParser interface, which can either be implemented through direct interface realization or by using template specialization
+for local parsers when appropriate.
+
+##Local Parsers
+
+Local Parsers in Fire represent parsers for resources that are on the local machine (i.e. - localhost). These can be streams or files, depending on the
+implementation. Local Parsers implement ILocalParser or specialize the LocalParser<T> template.
+
+###Templated Local Parsers
+
+Specializations of LocalParser<T> should be created in the "fire" namespace. See astrophysics/SpeciesLocalParser.h for an example.
+
+This is required by the C++ standard. If you do not create your specialization in the "fire" namespace, you will get an error like the following
+
+```
+error: specialization of ‘template<class T> class fire::LocalParser’ in different namespace [-fpermissive]
+ class LocalParser<std::vector<Species>> {
+```

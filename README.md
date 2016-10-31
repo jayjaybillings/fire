@@ -5,6 +5,9 @@ and utilities. This includes
 * parsers
 * steppers
 
+It also includes domain-specific classes for nuclear reaction network
+simulations in nuclear astrophysics.
+
 ## Documentation
 
 Documentation in Fire is generated via Doxygen by running "make doc" during the 

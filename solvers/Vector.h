@@ -29,59 +29,17 @@
 
  Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
-#ifndef PARSERS_ILOCALPARSER_H_
-#define PARSERS_ILOCALPARSER_H_
 
-#include <memory>
-#include "IParser.h"
+#ifndef SOLVERS_VECTOR_H_
+#define SOLVERS_VECTOR_H_
 
 namespace fire {
 
-/**
- * This is a sub-interface of IParser that represents a parser for a local,
- * serially executed parser.
- *
- * isLocal() always returns true.
- * isParallel() always returns false.
- *
- * Implementations should set isFile in their setSource(std::string) if their
- * source is a file. Subclasses must always be sure that they implement parse()
- * and setSource() because default implementations are not provided.
- *
- * The getData() operation always returns a shared_ptr instead of a raw type
- * (copy) or raw pointer to efficiently share the dynamically allocated data.
- *
- */
-template <typename T>
-class ILocalParser: public virtual IParser {
-
-protected:
-
-	/**
-	 * This value is true if the source is a file and false if it is a stream.
-	 * This value should be set in the setSource(std::string) and
-     * setSource(std::istream) to true and false respectively. It is set to
-     * true by default.
-	 */
-	bool isAFile = true;
-
-public:
-
-	virtual bool isFile() {return isAFile;};
-
-	virtual bool isLocal() {return true;};
-
-	virtual bool isParallel() {return false;};
-
-	/**
-	 * This operation returns a shared pointer to an instance of type T.
-	 * @return a shared pointer holding an instance of type T that was parsed
-	 * from the file.
-	 */
-	virtual std::shared_ptr<T> getData() = 0;
+class Vector {
 
 };
 
-}
 
-#endif /* PARSERS_ILOCALPARSER_H_ */
+} // end namespace fire
+
+#endif /* SOLVERS_VECTOR_H_ */
