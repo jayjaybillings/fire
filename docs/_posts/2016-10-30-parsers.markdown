@@ -1,19 +1,19 @@
 ---
 layout: post
 title: Parsers
-permalink: /science/parsers
-category: science
+permalink: /design/parsers
+category: design
 ---
 
 Parsers in Fire implement the IParser interface, which can either be implemented through direct interface realization or by using template specialization
 for local parsers when appropriate.
 
-##Local Parsers
+## Local Parsers
 
 Local Parsers in Fire represent parsers for resources that are on the local machine (i.e. - localhost). These can be streams or files, depending on the
 implementation. Local Parsers implement ILocalParser or specialize the LocalParser<T> template.
 
-###Templated Local Parsers
+### Templated Local Parsers
 
 Specializations of LocalParser<T> should be created in the "fire" namespace. See astrophysics/SpeciesLocalParser.h for an example.
 

@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Memory Model
-permalink: /science/memory_model
-category: science
+permalink: /design/memory_model
+category: design
 ---
 
 The memory model in Fire is meant to be simple, but efficient. The idea is that sometimes striving for the
