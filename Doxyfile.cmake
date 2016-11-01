@@ -1106,7 +1106,7 @@ HTML_HEADER            = @CMAKE_CURRENT_SOURCE_DIR@/docs-doxygen/doxygen-bootstr
 # that doxygen normally uses.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_FOOTER            = @CMAKE_CURRENT_SOURCE_DIR@/docs-doxygen/doxygen-bootstrapped/header.html
+HTML_FOOTER            = @CMAKE_CURRENT_SOURCE_DIR@/docs-doxygen/doxygen-bootstrapped/footer.html
 
 # The HTML_STYLESHEET tag can be used to specify a user-defined cascading style
 # sheet that is used by each HTML page. It can be used to fine-tune the look of
@@ -1141,7 +1141,7 @@ HTML_EXTRA_STYLESHEET  = @CMAKE_CURRENT_SOURCE_DIR@/docs-doxygen/doxygen-bootstr
 # files will be copied as-is; there are no commands or markers available.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_FILES       = @CMAKE_CURRENT_SOURCE_DIR@/docs-doxygen/doxygen-bootstrapped/bootstrap/js/doxy-boot.js @CMAKE_CURRENT_SOURCE_DIR@/docs-doxygen/doxygen-bootstrapped/bootstrap/js/bootstrap.min.js
+HTML_EXTRA_FILES       = @CMAKE_CURRENT_SOURCE_DIR@/docs-doxygen/doxygen-bootstrapped/doxy-boot.js
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output. Doxygen
 # will adjust the colors in the style sheet and background images according to

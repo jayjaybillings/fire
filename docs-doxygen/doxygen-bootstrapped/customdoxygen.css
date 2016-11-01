@@ -1,14 +1,3 @@
-/*-------------------------------------------------------------------
-   Originally taken and adapted from
-   https://github.com/Velron/doxygen-bootstrapped/ with changes
-   pull from the doxygen-bootstrap example provided by the original
-   author, Velron, at
-   https://biogearsengine.com/documentation/customdoxygen.css
-
-   Jay Jay Billings
-   20161002
-*/-------------------------------------------------------------------
-
 h1, .h1, h2, .h2, h3, .h3{
     font-weight: 200 !important;
 }
@@ -23,8 +12,13 @@ font-size: 1.15em !important;
 }
 .navbar{
  border: 0px solid #222 !important;
- margin-bottom: 0px !important;
 }
+table{
+    white-space:pre-wrap !important;
+}
+/*
+ ===========================
+ */
 
 
 /* Sticky footer styles
@@ -35,10 +29,6 @@ body {
     /* The html and body elements cannot have any padding or margin. */
 }
 
-body, table, div, p, dl, a, ul, span, li, ol{
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
 /* Wrapper for page content to push down footer */
 #wrap {
     min-height: 100%;
@@ -47,10 +37,6 @@ body, table, div, p, dl, a, ul, span, li, ol{
     margin: 0 auto -60px;
     /* Pad bottom by footer height */
     padding: 0 0 60px;
-}
-
-#top {
-	margin-top: 25px;
 }
 
 /* Set the fixed height of the footer here */
@@ -89,17 +75,6 @@ body, table, div, p, dl, a, ul, span, li, ol{
     text-align: center;
 }
 
-@media (min-width: 768px) and (max-width: 991px) {
-  .adjust-right {
-    margin: 0px -5px;
-  }
-}
-@media (min-width: 768px) {
-  .nav > li > a {
-    padding-left: 9px !important;
-    padding-right: 9px !important;
-  }
-}
 
 @media (min-width: 992px) {
     .footer-row {
@@ -162,7 +137,7 @@ pre.fragment {
     word-wrap: break-word;
     font-size:  9pt;
     line-height: 125%;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: monospace, fixed;
     font-size: 105%;
 }
 
@@ -173,8 +148,8 @@ div.fragment {
 }
 
 div.line {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 13px;
+    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 12px;
     min-height: 13px;
     line-height: 1.0;
     text-wrap: unrestricted;
@@ -211,17 +186,21 @@ div.line.glow {
 span.lineno {
     padding-right: 4px;
     text-align: right;
-    border-right: 2px solid #0F0;
-    background-color: #E8E8E8;
+    color:rgba(0,0,0,0.3);
+    border-right: 1px solid #EEE;
+    border-left: 1px solid #EEE;
+    background-color: #FFF;
     white-space: pre;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace ;
 }
 span.lineno a {
-    background-color: #D8D8D8;
+    background-color: #FAFAFA;
+    cursor:pointer;
 }
 
 span.lineno a:hover {
-    background-color: #C8C8C8;
+    background-color: #EFE200;
+    color: #1e1e1e;
 }
 
 div.groupHeader {
