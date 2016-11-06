@@ -5,11 +5,44 @@ permalink: /design/memory_model
 category: design
 ---
 
-The memory model in Fire is meant to be simple, but efficient. The idea is that sometimes striving for the
+The memory model in Fire is meant to be simple and efficient. The idea is that sometimes striving for the
 best performance _and_ the highest architectural purity is stupid and, furthermore, YAGNI.
 
-Data Arrays
----
+# Public Domain Data
+
+The proper implementation of a pure, public data structure in Fire is to use a *struct* instead of a class, which would look like:
+
+```cpp
+struct MyData {
+    int A;
+    int B;
+    int C;
+};
+```
+
+### When to use accessors
+
+Fire uses structs over classes for pure data structures because, in some cases, *accessor functions* may be evil. Accessors - or functions that start with "get" or "set" - are used as a means of managing access to or hiding the state of "private" data in a class. (Hiding internal state is called *encapsulation.*) However, in a class like the following it is clear that the accessors are just fluff since the getA() and setA() functions do no other work than provide access to A, B, and C.
+
+```cpp
+class MyData {
+    int A;
+    int B;
+    int C;
+    // More properties
+public:
+    int getA() {return A;};
+    void setA(int otherA) {A = otherA;};
+    // More get/set functions for B and C 
+};
+```
+
+If the getA() and setA() functions did some extra work or required other information about internal state, then they would be just fine and well warranted. If they do not do any extra work, then encapsulation is completely violated and can no longer be used as an excuse. That is, the internal state is not actually hidden, so it is better to just make them public. Both C and C++ provide the *struct* construct for defining a data structure with all public members, and it is a better fit here. 
+
+There is another important reason for skipping accessors for pure data structures: Accessors are a common source of bugs! While these types of bugs will be easily caught by a good unit test, they can be avoided all together by not using accessors where that makes sense.
+
+# Data Arrays
+
 
 Fire combines smart pointers and shared pointers for data arrays. Arrays are loaded into shared pointers and passed to functions as raw pointers. The _free()_ and _delete()_ **must not be called** on raw pointers in Fire routines because the shared pointers are responsible for the lifecycle of the memory to which the pointer points.
 
