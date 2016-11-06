@@ -29,71 +29,54 @@
 
  Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
+#ifndef PARSERS_STRINGCASTER_H_
+#define PARSERS_STRINGCASTER_H_
 
-#ifndef ASTROPHYSICS_SPECIESLOCALPARSER_H_
-#define ASTROPHYSICS_SPECIESLOCALPARSER_H_
-
-#include <vector>
-#include <memory>
-#include "Species.h"
-#include "LocalParser.h"
-#include <stdio.h>
 #include <iostream>
+#include <stdlib.h>
 #include <fstream>
-#include "DelimitedTextParser.h"
+#include <string>
+#include <sstream>
 
 using namespace std;
-using namespace fire::astrophysics;
 
 namespace fire {
 
 /**
- * This operation parses a network file that holds the basic species
- * information for the network.
- * @return a shared pointer
+ * Default template for casting strings properly.
+ */
+template<typename T>
+struct StringCaster{
+	static T cast(const string & value) {return static_cast<T>(value);};
+};
+
+/**
+ * Implementation of StringCaster for doubles
  */
 template<>
-void LocalParser<std::vector<Species>>::parse() {
+struct StringCaster<double>{
+	static double cast(const string & value) {
+		return strtod(value.c_str(),NULL);};
+};
 
-	// Note: "data" has already been initialized by the base class.
-	// Load the contents of the file
-	string value, line;
-	ifstream fileStream;
-	fileStream.open(sourceFile.c_str(), ifstream::in);
-	string delimiter = " ";
-	// Pull each line and push it into the list
-	if (fileStream.is_open()) {
-		while (getline(fileStream, line)) {
-			if (!line.empty() && !line.find("#") == 0) {
-				istringstream ss(line);
-				vector < string > lineVec;
-				// Push each line into the container
-				while (getline(ss, value, *delimiter.c_str())) {
-					lineVec.push_back(value);
-				}
-				// Load the main species data from the lines with six elements,
-				// which is every fifth line. Ignore all the other lines for now
-				// because they contain unused partition function data.
-				if (lineVec.size() == 6) {
-					// Create the species from the line, which has the format of
-					// "name massNumber atomicNumber neutronNumber massFraction
-					// massExcess" The Species struct can be created from a
-					// vector of these values directly.
-					Species species(lineVec);
-					// Copy it into the data vector
-					data->push_back(species);
-				}
-			}
-		}
-		fileStream.close();
-	} else {
-		throw "Delimited test file stream not open! Check directory?";
-	}
+/**
+ * Implementation of StringCaster for floats
+ */
+template<>
+struct StringCaster<float>{
+	static double cast(const string & value) {
+		return strtof(value.c_str(),NULL);};
+};
 
-	return;
-}
-;
+/**
+ * Implementation of StringCaster for ints
+ */
+template<>
+struct StringCaster<int>{
+	static double cast(const string & value) {
+		return atoi(value.c_str());};
+};
 
 } /* namespace fire */
 
-#endif /* ASTROPHYSICS_SPECIESLOCALPARSER_H_ */
+#endif /* PARSERS_STRINGCASTER_H_ */

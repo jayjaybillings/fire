@@ -33,6 +33,7 @@
 #define ASTROPHYSICS_REACTION_H_
 
 #include <string>
+#include <array>
 
 namespace fire {
 namespace astrophysics {
@@ -42,8 +43,7 @@ namespace astrophysics {
  * astrophysical case. This includes both forward reactions and backward (decay)
  * reactions with one to four reacting bodies.
  */
-class Reaction {
-public:
+struct Reaction {
 
 	/**
 	 * The name, or label, for the reaction. This should be of the form:
@@ -72,13 +72,86 @@ public:
     int numReactingSpecies;
 
     /**
-     *
+     * The number of products produced as a result of the reaction.
      */
     int numProducts;
+
+    /**
+     * No idea.
+     *
+     * ASK MIKE!
+     */
     bool isEC;
+
+    /**
+     * True if this reaction is a reverse reaction.
+     *
+     * ASK MIKE! Why is this set to false by in FERN's loadReactions operation?
+     */
     bool isReverse;
+
+    /**
+     * A statistical factor associated with this reaction.
+     */
     double statisticalFactor;
+
+    /**
+     * The energy released by this reaction in electron volts.
+     */
     double energyRelease;
+
+    /**
+     * The array of REACLIB p-coefficients used in the parameterized
+     * computation of the rate. The rate is computed by
+     * \f[
+     * R = \sum_k R_k
+     * \f]
+     * where
+     * \f[
+     * R_k = \exp(p_1 + \frac{p_2}{T_9} + \frac{p_3}{T_9^{1/3}} + p_{4}T_9^{1/3}
+     * + p_{5}T_9 + p_{6}T_9^{5/3} + p_{7}\ln T_9).
+     * \f]
+     *
+     * \f$T_9\f$ is the the temperature in units of \f$10^9\f$ Kelvin. Note
+     * that p1 = reaclibRateCoeff[0] since C++ is a zero-indexed language.
+     *
+     * See: "Stars and Stellar Processes", Mike Guidry, to be published Cambridge University Press.
+     */
+    std::array<double,7> reaclibRateCoeff;
+
+    /**
+     * The array of atomic mass numbers for the reactants in this reaction.
+     */
+    std::array<int, 4> reactantZ;
+
+    /**
+     * The array of neutron numbers for the reactants in this reaction.
+     */
+    std::array<int, 4> reactantN;
+
+    /**
+     * The array of atomic mass numbers for the products in this reaction.
+     */
+    std::array<int, 4> productZ;
+
+    /**
+     * The array of neutron numbers for the products in this reaction.
+     */
+    std::array<int, 4> productN;
+
+    /**
+     * The array of reactants to subtract from reacVector.
+     *
+     * No idea. ASK MIKE! This is used by the partial equilibrium code and may be useless for now.
+     */
+    std::array<int, 3> reactants;
+
+    /**
+     * The array of products to add to reacVector.
+     *
+     * No idea. ASK MIKE! This is used by the partial equilibrium code and may be useless for now.
+     */
+    std::array<int, 3> products;
 
 };
 

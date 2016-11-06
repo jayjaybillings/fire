@@ -34,39 +34,44 @@
 #define ASTROPHYSICS_SPECIES_H_
 
 #include <string>
+#include <vector>
+#include "StringCaster.h"
 
 namespace fire {
 namespace astrophysics {
 
 /**
  * This class represents a standard nuclear species within astrophysics such as
- * Helium or Carbon.
+ * Helium or Carbon. The mass fraction is the only value on this struct which
+ * can be changed.
+ *
+ * This class is composed of const-qualified members because atomic parameters
+ * are immutable. The amount of a species present in a given context varies
+ * though.
  */
-class Species {
-
-public:
+struct Species {
 
 	/**
 	 * The name of this species.
 	 */
-	std::string name;
+	const std::string name;
 
 	/**
 	 * The total number of nucleons, equal to the sum of the atomic and neutron
 	 * numbers, in the nucleus of this species.
 	 */
-	int massNumber;
+	const int massNumber;
 
 	/**
 	 * The total number of protons in the nucleus of this species. Also known
 	 * as the proton number.
 	 */
-	int atomicNumber;
+	const int atomicNumber;
 
 	/**
 	 * The total number of neutrons in the nucleus of this species.
 	 */
-	int neutronNumber;
+	const int neutronNumber;
 
 	/**
 	 * The fraction of the total mass of the system that is composed of this
@@ -79,7 +84,28 @@ public:
 	 * The difference between the actual mass of this species and the mass
 	 * number.
 	 */
-	double massExcess;
+	const double massExcess;
+
+	/**
+	 * The constructor. This class is meant to be initialized from a vector of
+	 * data created by reading a line from a network file. The vector should
+	 * have the following entries:
+	 * v[0] - The name
+	 * v[1] - The mass number
+	 * v[2] - The atomic number
+	 * v[3] - The neutron number
+	 * v[4] - The mass fraction
+	 * v[5] - The mass excess
+	 * @param a vector with entries for each of the data members in this class
+	 * as described above.
+	 */
+	Species(const std::vector<std::string> & values) :
+			name(values[0]),
+			massNumber(StringCaster<int>::cast (values[1])),
+			atomicNumber(StringCaster<int>::cast (values[2])),
+			neutronNumber(StringCaster<int>::cast (values[3])),
+			massFraction(StringCaster<double>::cast (values[4])),
+			massExcess(StringCaster<double>::cast (values[5])) {};
 
 };
 
