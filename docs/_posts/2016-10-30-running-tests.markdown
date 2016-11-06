@@ -5,10 +5,12 @@ permalink: /about/tests
 category: about
 ---
 
+# Running Tests
+
 Fire combines CMake's testing system, CTest, and Boost's Unit Testing 
 Framework for testing. 
 
-You can run the tests in Fire after the build by simply executing
+You can run the tests in Fire in your build directory after the build by simply executing
 
 ```bash
 make test
@@ -21,7 +23,30 @@ using ctest. For example, you can execute
 ctest
 ```
 
-###Executing By Label
+You can also run individual tests manually. For example, you can run a test in
+the astrophysics module like so, assuming you start in your build directory,
+
+```bash
+cd astrophysics
+./myTest
+```
+
+### Where to run?
+
+All tests in fire are written to run from the directory where they are built,
+not the top-level build directory. For example, all astrophysics tests should
+be run from the astrophysics directory, all parser tests should be run from the
+parsers directory, etc. This makes it possible for the test code to very simply
+interact with test data files without any special requirements for finding those test data files.
+
+The custom CMake code in Fire that generates your test (see cmake/tests.cmake),
+configures ctest so that when you run it from the build directory it secretly
+executes in the appropriate subdirectory. So, if you run "make test," the build
+quietly changes into the appropriate directory to run the test. Make sure that you follow the third example above for manually running your test in the proper
+directory if you need to run individual tests.
+
+
+### Executing By Label
 
 You can run subsets of Fire's tests by passing the labels of the tests that you
 want to run to ctest. The following command will execute all of the
@@ -34,7 +59,7 @@ ctest -L FireAstro
 The valid labels are the CMake module names defined for each packaged in its 
 CMakeLists.txt file.
 
-###On NVidia Optimus Cards with Linux
+### On NVidia Optimus Cards with Linux
 
 NVidia's Optimus Technology requires special care and feeding on Linux. If you
 have this setup and your system is configure correctly, you need only modify
@@ -47,3 +72,50 @@ optirun make test
 If you do not use this command, you may see segmentation faults or other
 errors. The alternative to optirun, called "primusrun," may or may not work.
 (Sometimes it works for the author and sometimes it doesn't.)
+
+# Verbose Output
+
+Boost unit tests do not print all of their output by default. Neither does
+ctest. This makes debugging with stdout difficult! The level of
+output is controlled by environment variables that must be set before the tests run. For example, running a test without this variable will look something like
+
+```bash
+$ ./DelimitedTextParserTest 
+Running 2 test cases...
+
+*** No errors detected
+```
+but running it with the log level set to "all" will have different output,
+
+```bash
+BOOST_TEST_LOG_LEVEL=all ./DelimitedTextParserTest 
+Running 2 test cases...
+Entering test suite "Parsers"
+Entering test case "checkCSV"
+Configuring fixture.
+Fixture configured.
+fire/parsers/tests/DelimitedTextParserTest.cpp(94): info: check 3 == data.size() passed
+fire/parsers/tests/DelimitedTextParserTest.cpp(96): info: check 3 == dataEntry.size() passed
+
+...
+
+fire/parsers/tests/DelimitedTextParserTest.cpp(114): info: check 8729.9 == dataEntry[3] passed
+Leaving test case "checkCSV"; testing time: 1005mks
+Entering test case "checkSpace"
+Leaving test case "checkSpace"; testing time: 805mks
+Leaving test suite "Parsers"
+
+*** No errors detected
+```
+
+Detailed information on the log levels of the Boost Unit Testing Framework
+are available on their [log level parameter page][1].
+
+To get ctest to display all of this information, the CTEST_OUTPUT_ON_FAILURE
+flag can be combined with the BOOST log level to display all the information
+
+```bash
+CTEST_OUTPUT_ON_FAILURE=1 BOOST_TEST_LOG_LEVEL=all make test
+```
+
+[1]: http://www.boost.org/doc/libs/1_34_1/libs/test/doc/components/utf/parameters/log_level.html

@@ -150,19 +150,18 @@ public:
 };
 
 /**
- * This specialization is for dense data of primitive types.
+ * This specialization is for dense data of primitive type double.
  */
 template<>
 void DelimitedTextParser<vector<vector<double>>,double>::parse() {
-	// Create the initial container
-	data = make_shared<vector<vector<double>>>();
+	// Note: "data" has already been initialized by the base class.
 	// Load the contents of the file
 	string value, line;
 	ifstream fileStream(sourceFile);
 	// Pull each line and push it into the list
 	if (fileStream.is_open()) {
 		while (getline(fileStream,line)) {
-			if (!line.empty() && !line.find("#") == 0) {
+			if (!line.empty() && !line.find(commentChar) == 0) {
 			   istringstream ss(line);
 			   vector<double> lineVec;
 			   // Push each line into the container
@@ -173,6 +172,8 @@ void DelimitedTextParser<vector<vector<double>>,double>::parse() {
 			}
 		}
 		fileStream.close();
+	} else {
+		throw "Delimited test file stream not open! Check directory?";
 	}
 };
 

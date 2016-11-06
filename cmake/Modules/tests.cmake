@@ -72,6 +72,11 @@ endif(Boost_FOUND)
 # This is a convenience call around add_tests_with_flags where the 
 # test_cflags argument is set to the default.
 #
+# This function sets the working directory of the tests to the directory
+# where the binary is build, which means that ctest will not execute it
+# from the root of your build directory. Instead, it will be run from the
+# subdirectory of the build directory for your module.
+#
 # When you call this function, you need to quote your variables like so:
 # add_tests("${intTests}" "${test_include_dirs}" "${FIRE_LIBS}") 
 function(add_tests tests test_include_dirs test_libs)
@@ -85,6 +90,11 @@ endfunction()
 # @param test_cflags - compiler flags for the tests. If this flag is 
 #                      empty, the default flags are used.
 #
+# This function sets the working directory of the tests to the directory
+# where the binary is build, which means that ctest will not execute it
+# from the root of your build directory. Instead, it will be run from the
+# subdirectory of the build directory for your module.
+#
 # When you call this function, you need to quote your variables like so:
 # add_tests("${intTests}" "${test_include_dirs}" "${FIRE_LIBS}" "${flags}")
 function(add_tests_with_flags tests test_include_dirs test_libs test_cflags)
@@ -97,7 +107,7 @@ function(add_tests_with_flags tests test_include_dirs test_libs test_cflags)
          get_filename_component(testName ${test} NAME_WE)
          # Add the executable to the build and the test list
          add_executable(${testName} ${test})
-         add_test(${testName} ${testName})
+         add_test(${testName} ${testName} WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
          # Overwrite the default compile flags if needed.
          if (NOT test_cflags STREQUAL "")
             target_compile_options(${testName} PUBLIC "${test_cflags}")

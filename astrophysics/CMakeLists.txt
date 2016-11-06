@@ -53,6 +53,8 @@ file(GLOB SRC *.cpp)
 file(GLOB test_files tests/*Test.cpp)
 # Add the tests
 add_tests("${test_files}" "${CMAKE_CURRENT_SOURCE_DIR}" "")   
+# Copy the data file for Species parsing tests
+configure_file(tests/CUDAnet_alpha.inp CUDAnet_alpha.inp COPYONLY)
 
 #Install the Fire header files
 install(FILES ${HEADERS} DESTINATION include)

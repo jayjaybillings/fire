@@ -42,6 +42,13 @@ cmake ../fire -DCMAKE_BUILD_TYPE=Debug -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE
 make
 ```
 
+If you would like to use MAGMA for solvers, you need to modify the cmake
+argument with the path to the MAGMA installation. Your configuration
+statement should look like the following:
+
+```bash
+cmake ../fire -DCMAKE_BUILD_TYPE=Debug -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_VERSION=4.5 MAGMA_ROOT=/usr/local/lib
+```
 
 The above will get the code running, but it will not run the tests or generate the 
 documentation. Issue the following commands to do that:

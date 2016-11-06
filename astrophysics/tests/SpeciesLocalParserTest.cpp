@@ -56,11 +56,32 @@ BOOST_AUTO_TEST_CASE(checkParsing) {
 	LocalParser<vector<Species>> parser;
 	parser.setSource(networkFileName);
 	parser.parse();
-	shared_ptr<vector<Species>> speciesList = parser.getData();
+	auto speciesListPtr = parser.getData();
+	auto speciesList = *speciesListPtr;
 
 	// The test file is an alpha network with sixteen species.
 	BOOST_REQUIRE(parser.isFile());
-	BOOST_REQUIRE_EQUAL(16,speciesList->size());
+	BOOST_REQUIRE_EQUAL(16,speciesList.size());
+
+	// Check the first element
+	Species helium = speciesList[0];
+    BOOST_REQUIRE_EQUAL(helium.name,"4He");
+    BOOST_REQUIRE_EQUAL(helium.massNumber,4);
+    BOOST_REQUIRE_EQUAL(helium.atomicNumber,2);
+    BOOST_REQUIRE_EQUAL(helium.neutronNumber,2);
+    BOOST_REQUIRE_CLOSE(helium.massFraction,0.0,0.0);
+    BOOST_REQUIRE_CLOSE(helium.massExcess,2.4250,1.0e-4);
+
+	// Check the last element
+	Species selenium = speciesList[15];
+    BOOST_REQUIRE_EQUAL(selenium.name,"68Se");
+    BOOST_REQUIRE_EQUAL(selenium.massNumber,68);
+    BOOST_REQUIRE_EQUAL(selenium.atomicNumber,34);
+    BOOST_REQUIRE_EQUAL(selenium.neutronNumber,34);
+    BOOST_REQUIRE_CLOSE(selenium.massFraction,0.0,0.0);
+    BOOST_REQUIRE_CLOSE(selenium.massExcess,-53.5530,1.0e-4);
+
+	// Good enough for government work
 	return;
 }
 
