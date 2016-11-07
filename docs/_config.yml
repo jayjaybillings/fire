@@ -14,6 +14,10 @@ baseurl: "/fire"
 twitter_username: jayjaybillings
 github_username:  jayjaybillings
 
+# Markdown support
+markdown:         kramdown
+highlighter: rouge
+
 # Sass support
 sass:
     sass_dir: _sass
