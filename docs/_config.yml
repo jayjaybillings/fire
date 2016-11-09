@@ -15,7 +15,7 @@ twitter_username: jayjaybillings
 github_username:  jayjaybillings
 
 # Markdown support
-markdown: kramdown
+markdown: redcarpet
 highlighter: rouge
 
 # Sass support
