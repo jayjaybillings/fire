@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Astrophysics Reactions ASCII File Format
-permalink: /fire/science/astrophysics/reactions-ascii-format
+permalink: /science/astrophysics/reactions-ascii-format
 category: science
 ---
 

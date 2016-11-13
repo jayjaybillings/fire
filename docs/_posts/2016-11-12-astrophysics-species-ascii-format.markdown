@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Astrophysics Species ASCII File Format
-permalink: /fire/science/astrophysics/species-ascii-format
+permalink: /science/astrophysics/species-ascii-format
 category: science
 ---
 
