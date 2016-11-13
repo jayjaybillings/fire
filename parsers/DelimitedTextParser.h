@@ -125,11 +125,12 @@ void DelimitedTextParser<vector<vector<double>>,double>::parse() {
 	ifstream fileStream(sourceFile);
 	// Pull each line and push it into the list
 	if (fileStream.is_open()) {
+		// Pull each line from the file
 		while (getline(fileStream,line)) {
 			if (!line.empty() && !line.find(commentChar) == 0) {
 			   istringstream ss(line);
 			   vector<double> lineVec;
-			   // Push each line into the container
+				// Split the line and push each element into the line list.
 			   while (getline(ss,value,*delimiter.c_str())) {
 			       lineVec.push_back(StringCaster<double>::cast(value));
 			   }
@@ -138,7 +139,7 @@ void DelimitedTextParser<vector<vector<double>>,double>::parse() {
 		}
 		fileStream.close();
 	} else {
-		throw "Delimited test file stream not open! Check directory?";
+		throw "Delimited text file stream not open! Check directory?";
 	}
 };
 

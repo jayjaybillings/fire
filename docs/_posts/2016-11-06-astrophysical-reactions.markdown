@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Nuclear Reactions in Astrophysical Systems
-permalink: /science/astrophysical-reactions
+permalink: /science/astrophysics/reactions
 category: science
 ---
 

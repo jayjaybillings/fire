@@ -46,7 +46,7 @@ namespace fire {
  * Default template for casting strings properly.
  */
 template<typename T>
-struct StringCaster{
+struct StringCaster {
 	static T cast(const string & value) {return static_cast<T>(value);};
 };
 
@@ -54,7 +54,7 @@ struct StringCaster{
  * Implementation of StringCaster for doubles
  */
 template<>
-struct StringCaster<double>{
+struct StringCaster<double> {
 	static double cast(const string & value) {
 		return strtod(value.c_str(),NULL);};
 };
@@ -63,7 +63,7 @@ struct StringCaster<double>{
  * Implementation of StringCaster for floats
  */
 template<>
-struct StringCaster<float>{
+struct StringCaster<float> {
 	static double cast(const string & value) {
 		return strtof(value.c_str(),NULL);};
 };
@@ -72,9 +72,21 @@ struct StringCaster<float>{
  * Implementation of StringCaster for ints
  */
 template<>
-struct StringCaster<int>{
+struct StringCaster<int> {
 	static double cast(const string & value) {
 		return atoi(value.c_str());};
+};
+
+/**
+ * Implementation of StringCaster for bools
+ */
+template<>
+struct StringCaster<bool> {
+	static bool cast(const string & value) {
+		bool result;
+		istringstream(value) >> result;
+		return result;
+	}
 };
 
 } /* namespace fire */

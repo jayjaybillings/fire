@@ -42,6 +42,12 @@ namespace astrophysics {
  * This class represents a reaction, and specifically a nuclear reaction in the
  * astrophysical case. This includes both forward reactions and backward (decay)
  * reactions with one to four reacting bodies.
+ *
+ * At the moment, this struct has an extremely bad design. However, it is worth
+ * noting that this is significantly better than what is currently used. There
+ * are several useful optimizations that will be added in time, such as using
+ * the Species class and creating a new reaction group class.
+ *
  */
 struct Reaction {
 
@@ -69,7 +75,7 @@ struct Reaction {
     /**
      * The number of species in this reaction.
      */
-    int numReactingSpecies;
+    int numReactants;
 
     /**
      * The number of products produced as a result of the reaction.
@@ -77,11 +83,10 @@ struct Reaction {
     int numProducts;
 
     /**
-     * No idea.
-     *
-     * ASK MIKE!
+     * This is flag that designates whether or not the reaction captures an
+     * electron.
      */
-    bool isEC;
+    bool isElectronCapture;
 
     /**
      * True if this reaction is a reverse reaction.
@@ -91,7 +96,9 @@ struct Reaction {
     bool isReverse;
 
     /**
-     * A statistical factor associated with this reaction.
+     * A statistical factor associated with this reaction that avoids double
+     * counting. It also accounts for the sign needed to designate whether or
+     * not the population is depleting or increasing.
      */
     double statisticalFactor;
 
@@ -120,7 +127,7 @@ struct Reaction {
     std::array<double,7> reaclibRateCoeff;
 
     /**
-     * The array of atomic mass numbers for the reactants in this reaction.
+     * The array of atomic numbers for the reactants in this reaction.
      */
     std::array<int, 4> reactantZ;
 
@@ -130,7 +137,7 @@ struct Reaction {
     std::array<int, 4> reactantN;
 
     /**
-     * The array of atomic mass numbers for the products in this reaction.
+     * The array of atomic numbers for the products in this reaction.
      */
     std::array<int, 4> productZ;
 

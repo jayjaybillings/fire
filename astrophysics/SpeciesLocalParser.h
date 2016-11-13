@@ -40,7 +40,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
-#include "DelimitedTextParser.h"
+#include "StringCaster.h"
 
 using namespace std;
 using namespace fire::astrophysics;
@@ -48,9 +48,8 @@ using namespace fire::astrophysics;
 namespace fire {
 
 /**
- * This operation parses a network file that holds the basic species
- * information for the network.
- * @return a shared pointer
+ * This operation parses a file that holds the basic species
+ * information for a thermonuclear network.
  */
 template<>
 void LocalParser<std::vector<Species>>::parse() {
@@ -63,11 +62,12 @@ void LocalParser<std::vector<Species>>::parse() {
 	string delimiter = " ";
 	// Pull each line and push it into the list
 	if (fileStream.is_open()) {
+		// Pull each line from the file
 		while (getline(fileStream, line)) {
 			if (!line.empty() && !line.find("#") == 0) {
 				istringstream ss(line);
 				vector < string > lineVec;
-				// Push each line into the container
+				// Split the line and push each element into the line list.
 				while (getline(ss, value, *delimiter.c_str())) {
 					lineVec.push_back(value);
 				}
@@ -80,14 +80,15 @@ void LocalParser<std::vector<Species>>::parse() {
 					// massExcess" The Species struct can be created from a
 					// vector of these values directly.
 					Species species(lineVec);
-					// Copy it into the data vector
+					// Copy it into the data vector. Note this is a *real*
+					// copy.
 					data->push_back(species);
 				}
 			}
 		}
 		fileStream.close();
 	} else {
-		throw "Delimited test file stream not open! Check directory?";
+		throw "Species file stream not open! Check directory?";
 	}
 
 	return;
