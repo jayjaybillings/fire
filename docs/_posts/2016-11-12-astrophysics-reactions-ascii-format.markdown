@@ -9,6 +9,7 @@ Simulations of thermonuclear networks in astrophysics require lists of reactions
 in each line is separated by a space. See Reaction.h for full details on each required value.
 
 The first line for each reaction contains:
+
 * Name/Label - A string of the form "he4+he4+he4-->c12" that describes the 
 reaction.
 * Reaction Group Class - an integer
