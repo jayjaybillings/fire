@@ -77,12 +77,10 @@ void LocalParser<std::vector<Species>>::parse() {
 				if (lineVec.size() == 6) {
 					// Create the species from the line, which has the format of
 					// "name massNumber atomicNumber neutronNumber massFraction
-					// massExcess" The Species struct can be created from a
-					// vector of these values directly.
-					Species species(lineVec);
-					// Copy it into the data vector. Note this is a *real*
-					// copy.
-					data->push_back(species);
+					// massExcess". Use the builder to put this right into the
+					// data list. Note there is a *real* copy from the return
+					// value of the build function.
+					data->push_back(build<Species,const vector<string> &>(lineVec));
 				}
 			}
 		}

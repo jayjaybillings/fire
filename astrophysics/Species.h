@@ -35,7 +35,8 @@
 
 #include <string>
 #include <vector>
-#include "StringCaster.h"
+#include <StringCaster.h>
+#include <build.h>
 
 namespace fire {
 namespace astrophysics {
@@ -110,6 +111,10 @@ struct Species {
 };
 
 } /* namespace astrophysics */
+
+// Instantiate a builder for the Species class.
+//template astrophysics::Species build(const std::vector<std::string> & values);
+
 } /* namespace fire */
 
 #endif /* ASTROPHYSICS_SPECIES_H_ */

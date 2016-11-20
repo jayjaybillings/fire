@@ -23,3 +23,7 @@ This is required by the C++ standard. If you do not create your specialization i
 error: specialization of ‘template<class T> class fire::LocalParser’ in different namespace [-fpermissive]
  class LocalParser<std::vector<Species>> {
 ```
+
+### Delimited Text Parsers
+
+One special class of parsers are parsers for delimited text, which is dense text with entries of the same type separated by a common *delimiter,* like a comma, space, or other character. Fire has a special subclass of LocalParser, called the DelimitedTextParser, that should be used for this type of text.

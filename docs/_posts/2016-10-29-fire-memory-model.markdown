@@ -5,12 +5,38 @@ permalink: /design/memory_model
 category: design
 ---
 
-The memory model in Fire is meant to be simple and efficient. The idea is that sometimes striving for the
-best performance _and_ the highest architectural purity is stupid and, furthermore, YAGNI.
+The memory model in Fire is meant to be simple and efficient. The idea is that sometimes striving for the best performance _and_ the highest architectural purity is stupid and, furthermore, YAGNI.
 
-# Public Domain Data
+Fire takes advantage of the latest updates to C++ and relies heavily on C++11 memory management enhancements to get the best performance.
 
-The proper implementation of a pure, public data structure in Fire is to use a *struct* instead of a class. Such a class is one which only holds data. It would would look like:
+# Return by Value
+
+There is no need to return by reference (pointer) for most functions in Fire because it uses C++11. Thus the following code is performs very well:
+
+```cpp
+
+vector<int> getVec() {
+	vector<int> myVec;
+	... // Some code to fill the vector
+	return myVec;
+}
+
+int main(int argc, char** argv) {
+    vector<int> mainVec = getVec();
+    return EXIT_SUCCESS;
+}
+```
+
+This code would have performed very slowly in earlier versions of C++ because they did not provide so called "move semantics" like C++11. The problem in older versions of C++ comes from the fact that there would be at least two copies the above code. First, myVec is copied into the return value of getVec() when it returns. Second, the return value of getVec() is copied into mainVec. 
+
+C++11 eliminates the second copy with move semantics. The first copy is eliminated by a process called *return value optimization,* which is implemented directly by the compiler.
+
+The important implication for this is that functions in Fire can be much simpler and easier to understand while simultaneously performing very well, or, as we like to say with purely technical language, "running like a scalded dog." ;-) This performance is especially important for the build<>()
+template, which encapsulates the construction of objects. Without move semantics and return value optimization, it would perform very poorly unless it returned a pointer.
+
+# Public Data
+
+The proper implementation of a pure, public data structure in Fire is to use a *struct* instead of a class. It would would look like:
 
 ```cpp
 struct MyData {

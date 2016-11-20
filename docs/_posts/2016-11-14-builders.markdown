@@ -1,0 +1,53 @@
+---
+layout: post
+title: Builders
+permalink: /design/builders
+category: design
+---
+
+Objects in Fire should be constructed using developer-provided specializations of the build<>() template function, which is described in build.h.
+
+Object construction can be problematic in software projects if the method of initializing those objects changes. For example, it may be sufficient to initialize
+an object with the following:
+
+```cpp
+MyCustomClass object; // Nullary constructor
+MyCustomClass copiedObject(object); // Copy constructor
+MyCustomClass otherObject(5); // Special constructor that does something else.
+```
+
+What happens if the design of *MyCustomClass* changes so that a special *initialize* operation must be called after the constructor? Or what if data members need
+to be filled? Then initialization would look like this:
+
+```cpp
+MyCustomClass object(5); // Pass a special argument
+object.setX(x); // Set some data
+object.setY(y);
+object.init(); // Initialize the object for some long-running work after construction
+```
+
+This quickly becomes troublesome if *MyCustomClass* is used in many places because it requires a lot of code and could lead to bugs. Thus, Fire uses a templated "builder" function to construct objects like so
+
+```cpp
+auto object = build<MyCustomClass>(); // Default construction
+auto otherObject = build<MyCustomClass>(5,x,y); // Initialized with data
+```
+
+where the build<>() template is specialized by the developer specifically for constructing MyCustomClass in appropriate ways. This eliminates the details of exactly how MyCustomClass is constructed and 
+additionally avoids the "pollution" of duplicating the code to construct MyCustomClass every it is used. Different versions of build<>() exist, including versions for instantiation by lists and other input arguments; both versions in the code sample above are valid.
+
+The cleanest way to provide specializations of build<>() for any class is after the class in the header file where the class is defined.
+
+The build<>() template function is currently defined in build.h in the parsers module, but may move in the future.
+
+## Example
+
+The Reaction.h file in the astrophysics module has a good examples of providing a specialization of build<>(). The only catch is that build<>() specializations must be created in the *fire* namespace, not a subspace.
+
+SpeciesLocalParser.h shows a good example of "implicit instantiation" for
+the build<>() function for the Species class. In this case, the compiler
+automatically creates the specialized version of build<>() based on type
+inference and the second version of build<>() in build.h.
+
+### Author note
+Note: Ideally the default version of build would work for variadic template and function arguments, but at the specific function must be implemented.

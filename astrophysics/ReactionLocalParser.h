@@ -35,33 +35,14 @@
 
 #include <vector>
 #include <memory>
-#include "Reaction.h"
-#include "LocalParser.h"
+#include <Reaction.h>
+#include <LocalParser.h>
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
-#include "StringCaster.h"
 
 using namespace std;
 using namespace fire::astrophysics;
-
-/**
- * This is a utility function used for splitting lines.
- * @param the line to be split
- * @return a vector with a string for each entry in the line.
- */
-static inline vector<string> splitLine(string line) {
-
-	string value;
-	istringstream ss(line);
-	vector < string > lineVec;
-	string delimiter = " ";
-	//Split the line and push each element into the line list.
-	while (getline(ss, value, *delimiter.c_str())) {
-	      lineVec.push_back(value);
-	}
-	return lineVec;
-}
 
 namespace fire {
 
@@ -107,131 +88,18 @@ void LocalParser<std::vector<Reaction>>::parse() {
 	if (!(lines.size() % 8)) {
 		// Loop in eight line blocks
 		for (int i = 0; i < lines.size(); i=i+8) {
-			Reaction reaction;
-			// Line 1 - Basic Reaction Metadata
-			lineVec = splitLine(lines[i]);
-			if (lineVec.size() == 10) {
-				reaction.name = lineVec[0];
-				reaction.reactionGroupClass = StringCaster<int>::cast(
-						lineVec[1]);
-				reaction.reactionGroupMemberIndex = StringCaster<int>::cast(
-						lineVec[2]);
-				reaction.reaclibClass = StringCaster<int>::cast(lineVec[3]);
-				reaction.numReactants = StringCaster<int>::cast(
-						lineVec[4]);
-				reaction.numProducts = StringCaster<int>::cast(lineVec[5]);
-				reaction.isElectronCapture = StringCaster<bool>::cast(
-						lineVec[6]);
-				reaction.isReverse = StringCaster<bool>::cast(lineVec[7]);
-				reaction.statisticalFactor = StringCaster<double>::cast(
-						lineVec[8]);
-				reaction.energyRelease = StringCaster<double>::cast(lineVec[9]);
-			} else {
-				ostringstream error;
-				error << "Invalid first line for reaction in file! Missing an element? ";
-				error << "Check around reaction " << (i*8+1) << ".";
-				throw runtime_error(error.str());
-			}
-			// Line 2 - Reaclib Coefficients
-			lineVec = splitLine(lines[i+1]);
-			if (lineVec.size() == 7) {
-				reaction.reaclibRateCoeff[0] = StringCaster<double>::cast(lineVec[0]);
-				reaction.reaclibRateCoeff[1] = StringCaster<double>::cast(lineVec[1]);
-				reaction.reaclibRateCoeff[2] = StringCaster<double>::cast(lineVec[2]);
-				reaction.reaclibRateCoeff[3] = StringCaster<double>::cast(lineVec[3]);
-				reaction.reaclibRateCoeff[4] = StringCaster<double>::cast(lineVec[4]);
-				reaction.reaclibRateCoeff[5] = StringCaster<double>::cast(lineVec[5]);
-				reaction.reaclibRateCoeff[6] = StringCaster<double>::cast(lineVec[6]);
-			} else {
-				ostringstream error;
-				error << "Invalid number of reaclib rate coefficients in file! ";
-				error << "Check coefficients for " << reaction.name << ".";
-				throw runtime_error(error.str());
-			}
-			// Line 3 - Reactant Z values
-			lineVec = splitLine(lines[i+2]);
-			if (lineVec.size() > 0 && lineVec.size() < 4) {
-				// We can't unroll this because we don't know how many values are
-				// available.
-				for(int j = 0; j < lineVec.size(); j++) {
-					reaction.reactantZ[j] = StringCaster<int>::cast(lineVec[j]);
-				}
-			} else {
-				ostringstream error;
-				error << "Invalid number of reactant atomic numbers in file! ";
-				error << "Check values for " << reaction.name << ".";
-				throw runtime_error(error.str());
-			}
-			// Line 4 - Reactant N values
-			lineVec = splitLine(lines[i+3]);
-			if (lineVec.size() > 0 && lineVec.size() <= 4) {
-				// We can't unroll this because we don't know how many values are
-				// available.
-				for(int j = 0; j < lineVec.size(); j++) {
-					reaction.reactantN[j] = StringCaster<int>::cast(lineVec[j]);
-				}
-			} else {
-				ostringstream error;
-				error << "Invalid number of reactant neutron numbers in file! ";
-				error << "Check values for " << reaction.name << ".";
-				throw runtime_error(error.str());
-			}
-			// Line 5 - Product Z values
-			lineVec = splitLine(lines[i+4]);
-			if (lineVec.size() > 0 && lineVec.size() <= 4) {
-				// We can't unroll this because we don't know how many values are
-				// available.
-				for(int j = 0; j < lineVec.size(); j++) {
-					reaction.productZ[j] = StringCaster<int>::cast(lineVec[j]);
-				}
-			} else {
-				ostringstream error;
-				error << "Invalid number of product atomic numbers in file! ";
-				error << "Check values for " << reaction.name << ".";
-				throw runtime_error(error.str());
-			}
-			// Line 6 - Product N Values
-			lineVec = splitLine(lines[i+5]);
-			if (lineVec.size() > 0 && lineVec.size() <= 4) {
-				// We can't unroll this because we don't know how many values are
-				// available.
-				for(int j = 0; j < lineVec.size(); j++) {
-					reaction.productN[j] = StringCaster<int>::cast(lineVec[j]);
-				}
-			} else {
-				ostringstream error;
-				error << "Invalid number of product neutronn numbers in file! ";
-				error << "Check values for " << reaction.name << ".";
-				throw runtime_error(error.str());
-			}
-			// Line 7 - Partial Equilibrium data
-			lineVec = splitLine(lines[i+6]);
-			if (lineVec.size() > 0 && lineVec.size() <= 3) {
-				// We can't unroll this because we don't know how many values are
-				// available.
-				for(int j = 0; j < lineVec.size(); j++) {
-					reaction.reactants[j] = StringCaster<int>::cast(lineVec[j]);
-				}
-			} else {
-				ostringstream error;
-				error << "Invalid number of PE reactants in file! ";
-				error << "Check values in line 7 for " << reaction.name << ".";
-				throw runtime_error(error.str());
-			}
-			// Line 8 - Partial Equilibrium data
-			lineVec = splitLine(lines[i+7]);
-			if (lineVec.size() > 0 && lineVec.size() <= 3) {
-				// We can't unroll this because we don't know how many values are
-				// available.
-				for(int j = 0; j < lineVec.size(); j++) {
-					reaction.products[j] = StringCaster<int>::cast(lineVec[j]);
-				}
-			} else {
-				ostringstream error;
-				error << "Invalid number of PE products in file! ";
-				error << "Check values in line 8 for " << reaction.name << ".";
-				throw runtime_error(error.str());
-			}
+			// Load the eight lines that represent a reaction into a vector
+			vector<string> reactionLines;
+			reactionLines.push_back(lines[i]);
+			reactionLines.push_back(lines[i+1]);
+			reactionLines.push_back(lines[i+2]);
+			reactionLines.push_back(lines[i+3]);
+			reactionLines.push_back(lines[i+4]);
+			reactionLines.push_back(lines[i+5]);
+			reactionLines.push_back(lines[i+6]);
+			reactionLines.push_back(lines[i+7]);
+			// Push it to the builder
+			Reaction reaction = build<Reaction,const vector<string> &>(reactionLines);
 
 			// N.B. - The FERN routine for parsing this file includes
 			// a significantly large amount of code beyond parsing to
@@ -240,7 +108,6 @@ void LocalParser<std::vector<Reaction>>::parse() {
 			// not be appropriate for this routine and is therefore
 			// ignored.
 
-			// PUSH REACTION ONTO LIST!
 			// Copy it into the data vector. Note this is a *real*
 			// copy.
 			data->push_back(reaction);
