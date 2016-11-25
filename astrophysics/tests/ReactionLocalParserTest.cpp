@@ -35,9 +35,8 @@
 #include <boost/test/included/unit_test.hpp>
 #include <vector>
 #include <string>
-#include "Reaction.h"
-#include "LocalParser.h"
-#include "ReactionLocalParser.h"
+#include <Reaction.h>
+#include <ReactionLocalParser.h>
 
 using namespace std;
 using namespace fire;
@@ -53,8 +52,8 @@ static std::string networkFileName = "rateLibrary_alpha.data";
 BOOST_AUTO_TEST_CASE(checkParsing) {
 
 	// Create the parser
-	LocalParser<vector<Reaction>> parser;
-	parser.setSource(networkFileName);
+	LocalParser<vector<Reaction>> parser = build
+			< LocalParser<vector<Reaction>>,const string &>(networkFileName);
 	parser.parse();
 	auto reactionListPtr = parser.getData();
 	vector<Reaction> reactionList = *reactionListPtr;

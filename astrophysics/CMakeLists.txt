@@ -57,6 +57,8 @@ add_tests("${test_files}" "${CMAKE_CURRENT_SOURCE_DIR}" "")
 configure_file(tests/CUDAnet_alpha.inp CUDAnet_alpha.inp COPYONLY)
 # Copy the data file for Reaction parsing tests
 configure_file(tests/rateLibrary_alpha.data rateLibrary_alpha.data COPYONLY)
+# Copy the parameter file for the network test
+configure_file(tests/alpha_gold.ini alpha_gold.ini COPYONLY)
 
 #Install the Fire header files
 install(FILES ${HEADERS} DESTINATION include)

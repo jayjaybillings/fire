@@ -29,68 +29,44 @@
 
  Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
-#include "INIPropertyParser.h"
-#include <iostream>
+#ifndef PARSERS_PARSE_H_
+#define PARSERS_PARSE_H_
+
+#include <LocalParser.h>
+#include<build.h>
+#include<vector>
+#include <memory>
+
+using namespace std;
 
 namespace fire {
 
-void INIPropertyParser::setSource(const std::string & source) {
-	this->source = source;
-}
-
-const std::string & INIPropertyParser::getSource() {
-	return source;
-}
-
-void INIPropertyParser::parse() {
-
-	// Load the parameters file
-	iniReader.SetUnicode();
-	SI_Error status = iniReader.LoadFile(source.c_str());
-	// Exit with a failure if the file won't load.
-	if (status < 0) {
-		std::cout << "Unable to open source " << source << std::endl;
-		exit(EXIT_FAILURE);
-	}
-
-	// Get all the sections
-	CSimpleIniA::TNamesDepend sections;
-	iniReader.GetAllSections(sections);
-	// Load them into the vector
-	for (auto i = sections.begin(); i != sections.end(); ++i) {
-		// Store the block names
-		blockNames.push_back(std::string(i->pItem));
-		// Grab the keys
-		CSimpleIniA::TNamesDepend keys;
-		iniReader.GetAllKeys(i->pItem, keys);
-		// Initialize the block in the map. Make sure to use 'auto &'!
-		auto & map = blockMap[i->pItem];
-		// And then fill
-		for (auto j = keys.begin(); j != keys.end(); ++j) {
-			auto value = iniReader.GetValue(i->pItem, j->pItem,
-					NULL, NULL);
-			map[std::string(j->pItem)] = std::string(value);
-		}
-	}
-
-	// FOR some reason the map is empty here.
-
-	std::cout << blockMap["block1"]["prop1"] << std::endl;
-
-	return;
-}
-
-const std::vector<std::string> & INIPropertyParser::getPropertyBlockNames() {
-	return blockNames;
-}
-
 /**
- * @see IPropertyParser.getPropertyBlock()
+ * The parse<>() template function defines a basic mechanism for parsing data
+ * objects in Fire. This function was added to clean up parsing with
+ * LocalParsers in Fire since the code below is common to almost all local
+ * parser types. Instead of copying the four line implementation below all over
+ * the code base, client code now looks like the following
+ * @code
+ * auto data = parse<T>(filename);
+ * @endcode
+ *
+ * Those concerned about the performance of calling parse<>() should know that
+ * it performs very well because of C++11's move semantics and return value
+ * optimizations provided by the compiler. It may perform slowly when used in
+ * debug mode with gcc since these optimizations may be disabled.
+ *
+ * @return an instance of class T created from the default constructor.
  */
-const std::map<std::string, std::string> & INIPropertyParser::getPropertyBlock(
-		const std::string & name) {
-	std::cout << blockMap["block1"]["prop1"] << std::endl;
-	return blockMap[name.c_str()];
+template<typename T>
+shared_ptr<vector<T>> parse(const string & source) {
+	LocalParser<vector<T>> parser = build
+			< LocalParser<vector<T>>,const string &>(source);
+	parser.setSource(source);
+	parser.parse();
+	return parser.getData();
 }
 
 } /* namespace fire */
+
+#endif /* PARSERS_PARSE_H_ */

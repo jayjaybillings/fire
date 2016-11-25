@@ -33,8 +33,11 @@
 #ifndef INIPROPERTYPARSER_H_
 #define INIPROPERTYPARSER_H_
 
-#include "IPropertyParser.h"
+#include <IPropertyParser.h>
+#include <string>
+#include <build.h>
 #include <SimpleIni.h>
+#include <iostream>
 
 namespace fire {
 
@@ -66,11 +69,6 @@ private:
 	std::vector<std::string> blockNames;
 
 	/**
-	 * The actual INI reader
-	 */
-	CSimpleIniA iniReader;
-
-	/**
 	 * The master map of blocks from the INI file
 	 */
 	std::map<std::string,std::map<std::string,std::string>> blockMap;
@@ -79,18 +77,78 @@ public:
 	INIPropertyParser() {};
 	virtual ~INIPropertyParser() {};
 
-	virtual void setSource(const std::string & source);
+	virtual void setSource(const std::string & source) {
+		this->source = source;
+	};
 
-	virtual const std::string & getSource();
+	virtual const std::string & getSource() {
+		return source;
+	};
 
-	virtual void parse();
+	virtual void parse() {
+		// The actual INI reader
+		CSimpleIniA iniReader;
 
-	virtual const std::vector<std::string> & getPropertyBlockNames();
+		// Load the parameters file
+		iniReader.SetUnicode();
+		SI_Error status = iniReader.LoadFile(source.c_str());
+		// Exit with a failure if the file won't load.
+		if (status < 0) {
+			std::cout << "Unable to open source " << source << std::endl;
+			exit(EXIT_FAILURE);
+		}
+
+		// Get all the sections
+		CSimpleIniA::TNamesDepend sections;
+		iniReader.GetAllSections(sections);
+		// Load them into the vector
+		for (auto i = sections.begin(); i != sections.end(); ++i) {
+			// Store the block names
+			blockNames.push_back(std::string(i->pItem));
+			// Grab the keys
+			CSimpleIniA::TNamesDepend keys;
+			iniReader.GetAllKeys(i->pItem, keys);
+			// Initialize the block in the map. Make sure to use 'auto &'!
+			auto & map = blockMap[i->pItem];
+			// And then fill
+			for (auto j = keys.begin(); j != keys.end(); ++j) {
+				auto value = iniReader.GetValue(i->pItem, j->pItem,
+						NULL, NULL);
+				map[std::string(j->pItem)] = std::string(value);
+			}
+		}
+
+		// FOR some reason the map is empty here.
+
+		std::cout << blockMap["block1"]["prop1"] << std::endl;
+
+		return;
+	};
+
+	virtual const std::vector<std::string> & getPropertyBlockNames() {
+		return blockNames;
+	};
 
 	virtual const std::map<std::string, std::string> & getPropertyBlock(
-			const std::string & name);
-
+			const std::string & name) {
+		return blockMap[name.c_str()];
+	};
 };
+
+/**
+ * This is a builder for constructing INIPropertyParsers from a string. It
+ * constructs, initializes, and parses the properties. Property files are
+ * expected to be relatively small, so any copying on return is acceptable.
+ * @param The filename that should be parsed for the properties.
+ * @return the fully initialized property parser.
+ */
+template<>
+INIPropertyParser build(const std::string & source) {
+	INIPropertyParser parser;
+	parser.setSource(source);
+	parser.parse();
+	return parser;
+}
 
 } /* namespace fire */
 

@@ -37,8 +37,9 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include "ILocalParser.h"
+#include <ILocalParser.h>
 #include <memory>
+#include <build.h>
 
 namespace fire {
 
@@ -87,15 +88,11 @@ protected:
 	 */
 	std::shared_ptr<T> data;
 
-	/**
-	 * The source stream used if setSource(stream) is called.
-	 */
-	std::istream sourceStream;
-
 public:
-	LocalParser() : sourceStream(NULL) {
+	LocalParser() {
 		data = std::make_shared<T>();
 	};
+
 	virtual ~LocalParser() {};
 
 	virtual void setSource(const std::string & source) {
@@ -112,7 +109,9 @@ public:
 
 	virtual const std::string & getSource() {return sourceFile;};
 
-	virtual const std::istream & getSourceStream() {return sourceStream;};
+	virtual const std::istream & getSourceStream() {
+		throw "Method not yet implemented.";
+	};
 
 	virtual std::shared_ptr<T> getData() {
 		return data;

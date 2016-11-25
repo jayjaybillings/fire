@@ -35,51 +35,47 @@
 #include <boost/test/included/unit_test.hpp>
 #include <vector>
 #include <string>
-#include <Species.h>
-#include <LocalParser.h>
-#include <SpeciesLocalParser.h>
+#include <INIPropertyParser.h>
+#include <ReactionNetwork.h>
 
 using namespace std;
 using namespace fire;
 using namespace fire::astrophysics;
 
-// Test file names
-static std::string networkFileName = "CUDAnet_alpha.inp";
+static const string & propertyFileName = "alpha_gold.ini";
 
 /**
- * This operation checks the ability of the SpeciesLocalParser to parse the
- * network.
+ * This operation checks the ability of the Network to load itself properly
+ * from an input parameter file.
  */
-BOOST_AUTO_TEST_CASE(checkParsing) {
+BOOST_AUTO_TEST_CASE(checkLoading) {
 
-	// Create the parser
-	LocalParser<vector<Species>> parser =
-			build<LocalParser<vector < Species>>, const string &>(networkFileName);
-	parser.parse();
-	auto speciesListPtr = parser.getData();
-	auto speciesList = *speciesListPtr;
+	// Load the properties
+	INIPropertyParser parser = build<INIPropertyParser,const string &>(propertyFileName);
 
-	// The test file is an alpha network with sixteen species.
-	BOOST_REQUIRE(parser.isFile());
-	BOOST_REQUIRE_EQUAL(16,speciesList.size());
+	// Create the network
+	ReactionNetwork network;
+	// Set the properties from the property block and load the network
+	auto props = parser.getPropertyBlock("network");
+	network.setProperties(props);
 
-	// Check the first element
-	Species helium = speciesList[0];
-    BOOST_REQUIRE_EQUAL(helium.name,"4He");
-    BOOST_REQUIRE_EQUAL(helium.massNumber,4);
-    BOOST_REQUIRE_EQUAL(helium.atomicNumber,2);
-    BOOST_REQUIRE_EQUAL(helium.neutronNumber,2);
-    BOOST_REQUIRE_CLOSE(helium.massFraction,0.0,0.0);
-    BOOST_REQUIRE_CLOSE(helium.massExcess,2.4250,1.0e-4);
+	// Check the properties
+	BOOST_REQUIRE_EQUAL(16,network.numSpecies);
+	BOOST_REQUIRE_EQUAL(48,network.numReactions);
+	BOOST_REQUIRE_EQUAL(19,network.numReactionGroups);
+	BOOST_REQUIRE_CLOSE(1.0e-7,network.massTol,1.0e-8);
+	BOOST_REQUIRE_CLOSE(0.01,network.fluxFrac,1.0e3);
+	BOOST_REQUIRE_EQUAL("CUDAnet_alpha.inp",network.networkFileName);
+	BOOST_REQUIRE_EQUAL("rateLibrary_alpha.data",network.rateFileName);
 
-	// Check the last element
-	Species selenium = speciesList[15];
-    BOOST_REQUIRE_EQUAL(selenium.name,"68Se");
-    BOOST_REQUIRE_EQUAL(selenium.massNumber,68);
-    BOOST_REQUIRE_EQUAL(selenium.atomicNumber,34);
-    BOOST_REQUIRE_EQUAL(selenium.neutronNumber,34);
-    BOOST_REQUIRE_CLOSE(selenium.massFraction,0.0,0.0);
-    BOOST_REQUIRE_CLOSE(selenium.massExcess,-53.5530,1.0e-4);
+	// Load the remaining data
+	network.load();
+
+	// Checking the species and reactions is done thoroughly elsewhere,
+	// so just check total sizes now.
+	auto species = network.species;
+	BOOST_REQUIRE_EQUAL(16,network.species->size());
+	BOOST_REQUIRE_EQUAL(48,network.reactions->size());
 
 	// Good enough for government work
 	return;

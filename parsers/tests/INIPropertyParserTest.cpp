@@ -37,12 +37,13 @@
 #include <string>
 #include <fstream>
 #include <stdio.h>
-#include "INIPropertyParser.h"
+#include <INIPropertyParser.h>
 
 using namespace std;
+using namespace fire;
 
 // Test file name
-static std::string testFileName = "INIPropertyParserTestFile.txt";
+static string testFileName = "INIPropertyParserTestFile.txt";
 
 // This is a class that creates and later deletes the test input file.
 struct BlockGenerator {
@@ -52,8 +53,8 @@ struct BlockGenerator {
 		BOOST_TEST_MESSAGE( "Configuring fixture." );
 
 		// Open the file and write some blocks to it
-		std::fstream testFile;
-		testFile.open(testFileName.c_str(), std::fstream::out | std::fstream::app);
+		fstream testFile;
+		testFile.open(testFileName.c_str(), fstream::out | fstream::app);
 		testFile << "[block1]\n";
 		testFile << "prop1=value1\n";
 		testFile << "prop2=value2\n";
@@ -81,9 +82,7 @@ struct BlockGenerator {
 BOOST_FIXTURE_TEST_CASE(checkBlocks, BlockGenerator) {
 
 	// Configure the parser
-	fire::INIPropertyParser parser;
-	parser.setSource(testFileName);
-	parser.parse();
+    INIPropertyParser parser = build<INIPropertyParser,const string &>(testFileName);
 
 	// Get the block names and check them
 	auto names = parser.getPropertyBlockNames();

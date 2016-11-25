@@ -51,7 +51,7 @@ namespace fire {
  * information for a thermonuclear network.
  */
 template<>
-void LocalParser<std::vector<Reaction>>::parse() {
+void LocalParser<vector<Reaction>>::parse() {
 
 	// Note: "data" has already been initialized by the base class.
 	// Load the contents of the file
@@ -116,11 +116,22 @@ void LocalParser<std::vector<Reaction>>::parse() {
 		throw "Reaction file is incomplete. Check entries?";
 	}
 
-
-
 	return;
+};
+
+/**
+ * This function builds a local parser for a vector of thermonuclear reactions
+ * for astrophysical problems. Note: It does not automatically
+ * parse the source! Clients must explicitly call parse(). See parse.h for a
+ * function template that automatically parses - parse<T>().
+ * @param the name of the file to parse
+ */
+template<>
+LocalParser<vector<Reaction>> build(const string & source) {
+    LocalParser<vector<Reaction>> parser;
+	parser.setSource(source);
+	return parser;
 }
-;
 
 } /* namespace fire */
 
