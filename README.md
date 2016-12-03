@@ -11,15 +11,9 @@ simulations in nuclear astrophysics.
 ## Documentation
 
 Documentation in Fire is generated via Doxygen by running "make doc" during the 
-build. This documentation is viewable online at 
-[Read The Docs](http://fire-framework.readthedocs.org/en/latest/) with detailed
-[API information](http://fire-framework.readthedocs.org/en/latest/API.html).  
+build. This documentation is viewable [online](http://www.jayjaybillings.com/fire). 
 
-In the opinion of the author, if you have Doxygen installed, it makes a much
-nice looking document than Read the Docs. So, run "make doc" if you want very
-pretty docs.
-
-Doxygen handles most of the required documentation without developer 
+You can run "make doc" from build directory to generate the API documentation. Doxygen handles most of the required documentation without developer 
 intervention. This means that in some cases there may be classes that seem to 
 have minimal documentation in the source, like classes that implement interfaces 
 and provide no additional functionality, but are in fact quite well documented 
