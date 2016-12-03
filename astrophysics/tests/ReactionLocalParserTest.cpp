@@ -97,6 +97,11 @@ BOOST_AUTO_TEST_CASE(checkParsing) {
 	BOOST_REQUIRE_EQUAL(0,reaction.reactants[2]);
 	BOOST_REQUIRE_EQUAL(1,reaction.products[0]);
 
+	// Make sure the statistical factor was read correctly. If rho=1, then
+	// p_s = s*rho^(numReactants-1) = s.
+	reaction.setPrefactor(1.0);
+	BOOST_REQUIRE_CLOSE(0.16666667,reaction.prefactor ,1.0e-8);
+
 	// Good enough for government work
 	return;
 }
