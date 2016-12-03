@@ -176,7 +176,7 @@ struct Reaction {
 	/**
 	 * The statistical prefactor that act as constant multipliers on this reaction.
      * \f[
-     * p_s = s^{\rho (n_R -1)}.
+     * p_s = s\rho^{(n_R -1)}.
      * \f]
 	 * @param the current density
 	 */
@@ -190,7 +190,7 @@ struct Reaction {
 	/**
 	 * The statistical prefactor that act as constant multipliers on this reaction.
      * \f[
-     * p_s = s^{\rho (n_R -1)}.
+     * p_s = s\rho^{(n_R -1)}.
      * \f]
 	 * @param the current density
 	 */

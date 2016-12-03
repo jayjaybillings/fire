@@ -32,7 +32,7 @@ $$ R_k = \exp(p_1 + \frac{p_2}{T_9} + \frac{p_3}{T_9^{1/3}} + p_{4}T_9^{1/3}
 $$T_9$$ is the the temperature in units of $$10^9$$ Kelvin. The prefactor is
 given by
 
-$$ p_s = s^{\rho*(n_R -1)} $$
+$$ p_s = s\rho^{(n_R -1)}. $$
 
 where $$s$$ is the statistical factor (an input from REACLIB), $$\rho$$ is the
 density in units of $$10^8 \frac{g}{m^3}$$ and $$n_R$$ is the number of
