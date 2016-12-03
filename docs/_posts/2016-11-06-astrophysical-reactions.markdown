@@ -20,7 +20,7 @@ Reaction rates are computed using parameterized rates from the REACLIB rate
 library. The REACLIB rates are parameterized by seven coefficients and can
 be computed as 
 
-The rate is computed according to [Guidry, 2017],
+The rate is computed as
 
 $$ R = p_s*\sum_k R_k $$
 
@@ -32,9 +32,9 @@ $$ R_k = \exp(p_1 + \frac{p_2}{T_9} + \frac{p_3}{T_9^{1/3}} + p_{4}T_9^{1/3}
 $$T_9$$ is the the temperature in units of $$10^9$$ Kelvin. The prefactor is
 given by
 
-$$ p_s = s^(\rho (n_R -1)) $$
+$$ p_s = s^{\rho*(n_R -1)} $$
 
-where $$s$ is the statistical factor (an input from REACLIB), $$\rho$$ is the
+where $$s$$ is the statistical factor (an input from REACLIB), $$\rho$$ is the
 density in units of $$10^8 \frac{g}{m^3}$$ and $$n_R$$ is the number of
 reactants in the reaction (species on the left hand side that start the 
 reaction).
@@ -59,4 +59,6 @@ considerations for a cleaner design were not addressed. These problems are
 discussed in-line in the classes themselves and will be addressed in a
 future release.
 
-[Guidry, 2017]: "Stars and Stellar Processes", Mike Guidry, to be published Cambridge University Press.
+# References
+
+"Stars and Stellar Processes", Mike Guidry, to be published Cambridge University Press.
