@@ -38,6 +38,7 @@
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
+#include <math.h>
 #include <StringCaster.h>
 
 using namespace std;
@@ -131,41 +132,120 @@ struct Reaction {
      *
      * See: "Stars and Stellar Processes", Mike Guidry, to be published Cambridge University Press.
      */
-    std::array<double,7> reaclibRateCoeff;
+    array<double,7> reaclibRateCoeff;
 
     /**
      * The array of atomic numbers for the reactants in this reaction.
      */
-    std::array<int, 4> reactantZ;
+    array<int, 4> reactantZ;
 
     /**
      * The array of neutron numbers for the reactants in this reaction.
      */
-    std::array<int, 4> reactantN;
+    array<int, 4> reactantN;
 
     /**
      * The array of atomic numbers for the products in this reaction.
      */
-    std::array<int, 4> productZ;
+    array<int, 4> productZ;
 
     /**
      * The array of neutron numbers for the products in this reaction.
      */
-    std::array<int, 4> productN;
+    array<int, 4> productN;
 
     /**
      * The array of reactants to subtract from reacVector.
      *
      * No idea. ASK MIKE! This is used by the partial equilibrium code and may be useless for now.
      */
-    std::array<int, 3> reactants;
+    array<int, 3> reactants;
 
     /**
      * The array of products to add to reacVector.
      *
      * No idea. ASK MIKE! This is used by the partial equilibrium code and may be useless for now.
      */
-    std::array<int, 3> products;
+    array<int, 3> products;
+
+	/**
+	 * The statistical prefactor that act as constant multipliers on this reaction.
+     * \f[
+     * p_s = s^(\rho (n_R -1)).
+     * \f]
+	 * @param the current density
+	 */
+    double prefactor;
+
+    /**
+     * The reaction rate as described in setRate().
+     */
+    double rate;
+
+	/**
+	 * The statistical prefactor that act as constant multipliers on this reaction.
+     * \f[
+     * p_s = s^(\rho (n_R -1)).
+     * \f]
+	 * @param the current density
+	 */
+	void setPrefactor(const double & rho) {
+		prefactor = statisticalFactor*pow(rho,(numReactants-1));
+	}
+
+	/**
+	 * This operation computes and sets the reaction rate. This version is optimized
+	 * to use pre-computed temperature values so that the costly exponentiation does
+	 * not need to be repeated for each reaction if the temperature doesn't change.
+	 * @param An array of all six temperature values used to compute the rate.
+	 *
+	 * \f[
+     * R_k = \exp(p_1 + \frac{p_2}{T_9} + \frac{p_3}{T_9^{1/3}} + p_{4}T_9^{1/3}
+     * + p_{5}T_9 + p_{6}T_9^{5/3} + p_{7}\ln T_9).
+     * \f]
+     *
+     * \f$T_9\f$ is the the temperature in units of \f$10^9\f$ Kelvin. Note
+     * that p1 = reaclibRateCoeff[0] since C++ is a zero-indexed language.
+	 */
+	void setRate(array<double,6> tempValues) {
+		// Compute the exponent
+		double x = reaclibRateCoeff[0] + tempValues[0] * reaclibRateCoeff[1]
+				+ tempValues[1] * reaclibRateCoeff[2] + tempValues[2] * reaclibRateCoeff[3]
+				+ tempValues[3] * reaclibRateCoeff[4] + tempValues[4] * reaclibRateCoeff[5]
+				+ tempValues[5] * reaclibRateCoeff[6];
+		// Compute the rate
+		rate = prefactor * exp(x);
+	}
+
+	/**
+	 * This operation computes and sets the reaction rate. This version will use
+	 * the provided temperature to compute all of the temperature coefficients.
+	 * See the other version of this function for a more efficient version (which
+	 * this function actually calls).
+	 * @param the temperature
+	 *
+	 * \f[
+     * R_k = \exp(p_1 + \frac{p_2}{T_9} + \frac{p_3}{T_9^{1/3}} + p_{4}T_9^{1/3}
+     * + p_{5}T_9 + p_{6}T_9^{5/3} + p_{7}\ln T_9).
+     * \f]
+     *
+     * \f$T_9\f$ is the the temperature in units of \f$10^9\f$ Kelvin. Note
+     * that p1 = reaclibRateCoeff[0] since C++ is a zero-indexed language.
+	 */
+	void setRate(const double & temp) {
+		// Compute the temperatures
+		array<double,6> tempValues;
+		double cbrtT = cbrt(temp); // Cube root of T
+		tempValues[0] = 1 / temp; // 1/T
+		tempValues[1] = 1 / cbrtT;
+		tempValues[2] = cbrtT;
+		tempValues[3] = temp;
+		tempValues[4] = cbrtT * cbrtT * cbrtT * cbrtT * cbrtT; // T^(5/3)
+		tempValues[5] = log(temp);
+
+		// Delegate the actual computation
+		setRate(tempValues);
+	}
 
 };
 

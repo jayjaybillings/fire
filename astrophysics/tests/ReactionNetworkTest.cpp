@@ -77,6 +77,12 @@ BOOST_AUTO_TEST_CASE(checkLoading) {
 	BOOST_REQUIRE_EQUAL(16,network.species->size());
 	BOOST_REQUIRE_EQUAL(48,network.reactions->size());
 
+	// The proper course of action at this point would be to check all of the
+	// flux maps, but that code is really nasty and I don't plan to use it as
+	// originally written in FERN. I mostly just copied it over to get the
+	// functionality. Everything looks OK in the debugger, so I will enhance
+	// this test once I determine how to rewrite the routine.
+
 	// Good enough for government work
 	return;
 }

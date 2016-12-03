@@ -47,7 +47,7 @@ file(GLOB HEADERS *.h)
 file(GLOB SRC *.cpp)
 
 #Look for MAGMA if the user set MAGMA_ROOT
-if(NOT MAGMA_ROOT STREQUAL "")
+if(MAGMA_ROOT)
   message(STATUS 
      "MAGMA support requested. Searching at MAGMA_ROOT=${MAGMA_ROOT}.")
   find_package(MAGMA)
