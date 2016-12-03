@@ -37,6 +37,7 @@
 #include <string>
 #include <Reaction.h>
 #include <ReactionLocalParser.h>
+#include <math.h>
 
 using namespace std;
 using namespace fire;
@@ -66,7 +67,7 @@ BOOST_AUTO_TEST_CASE(checkParsing) {
 	reactionList[0];
 
 	// Check the first reaction
-	auto reaction = reactionList[0];
+	Reaction reaction = reactionList[0];
 	BOOST_REQUIRE_EQUAL("he4+he4+he4-->c12",reaction.name);
 	BOOST_REQUIRE_EQUAL(3,reaction.reactionGroupClass);
 	BOOST_REQUIRE_EQUAL(0,reaction.reactionGroupMemberIndex);
@@ -101,6 +102,16 @@ BOOST_AUTO_TEST_CASE(checkParsing) {
 	// p_s = s*rho^(numReactants-1) = s.
 	reaction.setPrefactor(1.0);
 	BOOST_REQUIRE_CLOSE(0.16666667,reaction.prefactor ,1.0e-8);
+
+	// Make sure the reaction rate can be computed correctly. If T = 1, then
+	// the rate is equal to prefactor*e^(sum of reaclibRateCoeffs[0:5]). Note
+	// log(1) = 0, so reaclibRateCoeff[6] is omitted.
+	reaction.setRate(1.0);
+	double sumCoeffs = reaction.reaclibRateCoeff[0] + reaction.reaclibRateCoeff[1]
+			+ reaction.reaclibRateCoeff[2] + reaction.reaclibRateCoeff[3]
+            + reaction.reaclibRateCoeff[4] + reaction.reaclibRateCoeff[5];
+	double rate = reaction.prefactor*exp(sumCoeffs);
+	BOOST_REQUIRE_CLOSE(rate,reaction.rate,1.0e-8);
 
 	// Good enough for government work
 	return;

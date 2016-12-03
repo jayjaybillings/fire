@@ -83,6 +83,24 @@ BOOST_AUTO_TEST_CASE(checkLoading) {
 	// functionality. Everything looks OK in the debugger, so I will enhance
 	// this test once I determine how to rewrite the routine.
 
+	// Check the prefactor and rate computations
+	network.computePrefactors(1.0);
+	network.computeRates(1.0);
+	for (Reaction & reaction : *(network.reactions)) {
+		// Check the prefactor computations. If rho=1, then
+		// p_s = s*rho^(numReactants-1) = s for all reactions.
+	    BOOST_REQUIRE_CLOSE(reaction.statisticalFactor,reaction.prefactor,1.0e-8);
+
+		// Make sure the reaction rate can be computed correctly. If T = 1, then
+		// the rate is equal to prefactor*e^(sum of reaclibRateCoeffs[0:5]) for all
+		// reactions. Note log(1) = 0, so reaclibRateCoeff[6] is omitted.
+		double sumCoeffs = reaction.reaclibRateCoeff[0] + reaction.reaclibRateCoeff[1]
+				+ reaction.reaclibRateCoeff[2] + reaction.reaclibRateCoeff[3]
+	            + reaction.reaclibRateCoeff[4] + reaction.reaclibRateCoeff[5];
+		double rate = reaction.prefactor*exp(sumCoeffs);
+		BOOST_REQUIRE_CLOSE(rate,reaction.rate,1.0e-8);
+	}
+
 	// Good enough for government work
 	return;
 }

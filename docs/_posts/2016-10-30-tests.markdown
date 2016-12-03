@@ -1,9 +1,20 @@
 ---
 layout: post
-title: Running Fire's Tests
+title: Tests
 permalink: /about/tests
 category: about
 ---
+
+Testing is extremely important in the design of Fire. There are a lot of
+different types of tests in Fire and, more or less, [test driven development][2] drives the design of Fire.
+
+Tests can be found in the */tests* subdirectory of any particular module
+of Fire. CMakeLists.txt files use the *tests.cmake* module in the *cmake*
+folder to configure and build tests.
+
+# Types of Tests
+
+Fire contains a lot of unit tests. 
 
 # Running Tests
 
@@ -119,3 +130,5 @@ CTEST_OUTPUT_ON_FAILURE=1 BOOST_TEST_LOG_LEVEL=all make test
 ```
 
 [1]: http://www.boost.org/doc/libs/1_34_1/libs/test/doc/components/utf/parameters/log_level.html
+
+[2]: https://en.wikipedia.org/wiki/Test-driven_development
