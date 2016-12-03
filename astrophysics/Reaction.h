@@ -119,9 +119,10 @@ struct Reaction {
      * The array of REACLIB p-coefficients used in the parameterized
      * computation of the rate. The rate is computed by
      * \f[
-     * R = \sum_k R_k
+     * R = p_s*\sum_k R_k
      * \f]
-     * where
+     * where \f[p_s\f] is the prefactor (based on the statistical prefactor)
+     * and
      * \f[
      * R_k = \exp(p_1 + \frac{p_2}{T_9} + \frac{p_3}{T_9^{1/3}} + p_{4}T_9^{1/3}
      * + p_{5}T_9 + p_{6}T_9^{5/3} + p_{7}\ln T_9).
@@ -130,7 +131,11 @@ struct Reaction {
      * \f$T_9\f$ is the the temperature in units of \f$10^9\f$ Kelvin. Note
      * that p1 = reaclibRateCoeff[0] since C++ is a zero-indexed language.
      *
-     * See: "Stars and Stellar Processes", Mike Guidry, to be published Cambridge University Press.
+     * In general k may be greater than 1 in the summation for the rate, but
+     * in this work k = 1 and \f[R = R_k\f].
+     *
+     * See: "Stars and Stellar Processes", Mike Guidry, to be published Cambridge
+     * University Press.
      */
     array<double,7> reaclibRateCoeff;
 
@@ -198,15 +203,27 @@ struct Reaction {
 	 * to use pre-computed temperature values so that the costly exponentiation does
 	 * not need to be repeated for each reaction if the temperature doesn't change.
 	 * @param An array of all six temperature values used to compute the rate.
-	 *
-	 * \f[
+     *
+     * The rate is computed by
+     * \f[
+     * R = p_s*\sum_k R_k
+     * \f]
+     * where \f[p_s\f] is the prefactor (based on the statistical prefactor)
+     * and
+     * \f[
      * R_k = \exp(p_1 + \frac{p_2}{T_9} + \frac{p_3}{T_9^{1/3}} + p_{4}T_9^{1/3}
      * + p_{5}T_9 + p_{6}T_9^{5/3} + p_{7}\ln T_9).
      * \f]
      *
      * \f$T_9\f$ is the the temperature in units of \f$10^9\f$ Kelvin. Note
      * that p1 = reaclibRateCoeff[0] since C++ is a zero-indexed language.
-	 */
+     *
+     * In general k may be greater than 1 in the summation for the rate, but
+     * in this work k = 1 and \f[R = R_k\f].
+     *
+     * See: "Stars and Stellar Processes", Mike Guidry, to be published Cambridge
+     * University Press.
+     */
 	void setRate(array<double,6> tempValues) {
 		// Compute the exponent
 		double x = reaclibRateCoeff[0] + tempValues[0] * reaclibRateCoeff[1]
@@ -224,14 +241,26 @@ struct Reaction {
 	 * this function actually calls).
 	 * @param the temperature
 	 *
-	 * \f[
+     * The rate is computed by
+     * \f[
+     * R = p_s*\sum_k R_k
+     * \f]
+     * where \f[p_s\f] is the prefactor (based on the statistical prefactor)
+     * and
+     * \f[
      * R_k = \exp(p_1 + \frac{p_2}{T_9} + \frac{p_3}{T_9^{1/3}} + p_{4}T_9^{1/3}
      * + p_{5}T_9 + p_{6}T_9^{5/3} + p_{7}\ln T_9).
      * \f]
      *
      * \f$T_9\f$ is the the temperature in units of \f$10^9\f$ Kelvin. Note
      * that p1 = reaclibRateCoeff[0] since C++ is a zero-indexed language.
-	 */
+     *
+     * In general k may be greater than 1 in the summation for the rate, but
+     * in this work k = 1 and \f[R = R_k\f].
+     *
+     * See: "Stars and Stellar Processes", Mike Guidry, to be published Cambridge
+     * University Press.
+     */
 	void setRate(const double & temp) {
 		// Compute the temperatures
 		array<double,6> tempValues;
