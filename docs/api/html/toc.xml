@@ -1,0 +1,370 @@
+<toc label="Fire" topic="index.html">
+  <topic label="Fire Framework" href="index.html"/>
+  <topic label="Fire Data Files" href="a00001.html"/>
+  <topic label="Note on Licenses for Third Party Libraries" href="a00002.html"/>
+  <topic label="simpleini" href="a00003.html"/>
+  <topic label="Namespaces">
+    <topic label="Namespace List" href="namespaces.html">
+      <topic label="fire" href="a00085.html"/>
+    </topic>
+    <topic label="Namespace Members" href="namespacemembers.html">
+      <topic label="All" href="namespacemembers.html"/>
+      <topic label="Functions" href="namespacemembers_func.html"/>
+    </topic>
+  </topic>
+  <topic label="Classes" href="annotated.html">
+    <topic label="Class List" href="annotated.html">
+      <topic label="fire" href="a00085.html">
+        <topic label="astrophysics">
+          <topic label="Reaction" href="a00022.html">
+            <topic label="setPrefactor" href="a00022.html#a98b03c550c3926cb5c20f8a27a2ee1ed"/>
+            <topic label="setRate" href="a00022.html#a671a0560e6843664cdae4d724b8645da"/>
+            <topic label="setRate" href="a00022.html#a598fe411c64ab247e5d4f299b4a59b70"/>
+            <topic label="energyRelease" href="a00022.html#a07f4db35c5d9bca2d5c5fc8529ec3801"/>
+            <topic label="isElectronCapture" href="a00022.html#a84165249a444a64bdfc41531fbe81cc0"/>
+            <topic label="isReverse" href="a00022.html#ae161628da753400b3d2256e2d10a02b9"/>
+            <topic label="name" href="a00022.html#abb359091e992ad4cb4cde0faacf6021b"/>
+            <topic label="numProducts" href="a00022.html#aa59b550e5dbdd34c9c563e7dfc2cbc1e"/>
+            <topic label="numReactants" href="a00022.html#a86154569e16ef396c93cdf97c5eaf5b7"/>
+            <topic label="prefactor" href="a00022.html#a5033228e6305beb4e8dd717d2f088d99"/>
+            <topic label="productN" href="a00022.html#a81251169f8dd972b6cdc285fbc42c331"/>
+            <topic label="products" href="a00022.html#a5d0e77ebec059081aaafa5ba86df4c88"/>
+            <topic label="productZ" href="a00022.html#a0586d888e1f60d6371239af888f9158b"/>
+            <topic label="rate" href="a00022.html#a343553d449e3cca261f8ee166fa6b699"/>
+            <topic label="reaclibClass" href="a00022.html#a581b5410f62a299f2262324d6c0199c7"/>
+            <topic label="reaclibRateCoeff" href="a00022.html#aa6265e73f4d2c55441caf95e6eb6e656"/>
+            <topic label="reactantN" href="a00022.html#a831dcae79d4ed842c9bbdf51ebdd137f"/>
+            <topic label="reactants" href="a00022.html#ab13b0133b89c6531a1648b696324d804"/>
+            <topic label="reactantZ" href="a00022.html#a74b96d4f5ff99d60adfb88b096a7e256"/>
+            <topic label="reactionGroupClass" href="a00022.html#ab6d29b5c28ef33ea1d9219b70f02d98a"/>
+            <topic label="reactionGroupMemberIndex" href="a00022.html#adb666fe2c511b5a5e86ebcd35ba7faa4"/>
+            <topic label="statisticalFactor" href="a00022.html#a439daff55fecd97cafc96f204570376a"/>
+          </topic>
+          <topic label="ReactionNetwork" href="a00023.html">
+            <topic label="buildFluxMaps" href="a00023.html#aa0c06237ae72e698aee9cf72d0032fd8"/>
+            <topic label="computePrefactors" href="a00023.html#ac5b97490e667b011b5e2bea92e16f8b7"/>
+            <topic label="computeRates" href="a00023.html#a3b1fee4e28576c677d7b852e91c6fa98"/>
+            <topic label="load" href="a00023.html#aa9b4de0566ab0b0f148677d8b97e8c49"/>
+            <topic label="setProperties" href="a00023.html#ab4713cafb974ca41bf6a55619e9fd875"/>
+            <topic label="fluxFrac" href="a00023.html#a0bb068c675589e1ad767c1faf2165ed7"/>
+            <topic label="fMinusFactors" href="a00023.html#a3aff20108c80e14f9f4d526a08af49de"/>
+            <topic label="fMinusMap" href="a00023.html#a9065be108e95b1604b0d53e2080f0b57"/>
+            <topic label="fMinusMaximums" href="a00023.html#a4ea51dc9d41bf555592f93bb237e0440"/>
+            <topic label="fPlusFactors" href="a00023.html#aca9928041359ecf555a63e4f58e80164"/>
+            <topic label="fPlusMap" href="a00023.html#af3aa4184f759b2a8babf765667aa6604"/>
+            <topic label="fPlusMaximums" href="a00023.html#a6682680b1f2975fa8dc1288d3c463693"/>
+            <topic label="massTol" href="a00023.html#ad3d95ecac758ca7efce6376904455123"/>
+            <topic label="networkFileName" href="a00023.html#abcc4209749ecd64d0ab9621210536ade"/>
+            <topic label="numReactionGroups" href="a00023.html#a91f7685b58b70eca227a098717dfe2c5"/>
+            <topic label="numReactions" href="a00023.html#ade8f4d9aa1524cbc45809e7943725d59"/>
+            <topic label="numSpecies" href="a00023.html#a17ffe8399181590d59d3d339ce867709"/>
+            <topic label="rateFileName" href="a00023.html#abb5fbb289b2e40d3b3dcb3695696e2c2"/>
+            <topic label="reactions" href="a00023.html#a32964b6f6a9cb312e722c1478167b7f0"/>
+            <topic label="species" href="a00023.html#ac3811889f4866a29a49ce3a8d0e80cad"/>
+          </topic>
+          <topic label="Species" href="a00028.html">
+            <topic label="Species" href="a00028.html#ac3c237025b5bcd786519dfbf398f86d3"/>
+            <topic label="atomicNumber" href="a00028.html#a01796faa4262d2225c4cf3b714afde81"/>
+            <topic label="massExcess" href="a00028.html#a3fd8c01bcbb27c20fb80cf9a9e6e1f66"/>
+            <topic label="massFraction" href="a00028.html#aa23c930af303e0c2b09491b18888855b"/>
+            <topic label="massNumber" href="a00028.html#a403a85b9ffb625643b0bd5cf2e944376"/>
+            <topic label="name" href="a00028.html#a4aea10c6b155eaeeb52dedcef2dcf849"/>
+            <topic label="neutronNumber" href="a00028.html#acd295953eb640a1354df0be96e63f1cd"/>
+          </topic>
+        </topic>
+        <topic label="DelimitedTextParser" href="a00008.html">
+          <topic label="DelimitedTextParser" href="a00008.html#aa1f041ebbf0bf72145e8bd20bf95f3f4"/>
+          <topic label="~DelimitedTextParser" href="a00008.html#abc484af2495ba32b7285c3844274705b"/>
+          <topic label="parse" href="a00008.html#a686df5548771cae833d5e721442a821a"/>
+          <topic label="parse" href="a00008.html#a773fa7ed28cb9d8c384ad94bd81fc93f"/>
+          <topic label="commentChar" href="a00008.html#acdd7b27b8109ed41e7d9bc5e6de72e93"/>
+          <topic label="delimiter" href="a00008.html#ac817fc333b53611a41f446977461bdbf"/>
+        </topic>
+        <topic label="ILocalParser" href="a00012.html">
+          <topic label="getData" href="a00012.html#a0fc1446d106f0ab8daf8744a4bd29a65"/>
+          <topic label="isFile" href="a00012.html#a091d5cf56bf8f407854ef87f460b2958"/>
+          <topic label="isLocal" href="a00012.html#a770acae6e216de3a9c7140a12de25d58"/>
+          <topic label="isParallel" href="a00012.html#ad46898c516adcce38acbb4800dc9777b"/>
+          <topic label="isAFile" href="a00012.html#a39adf288ae0bc79cf39fd6e4638858cf"/>
+        </topic>
+        <topic label="INIPropertyParser" href="a00013.html">
+          <topic label="INIPropertyParser" href="a00013.html#ab4f09c1712a79295d87b59e79f8fdafd"/>
+          <topic label="~INIPropertyParser" href="a00013.html#a39ad83199eb1099f5b0a42d4329349bd"/>
+          <topic label="getPropertyBlock" href="a00013.html#a3591312590a66659ebd377cdde9ab9ad"/>
+          <topic label="getPropertyBlockNames" href="a00013.html#aed0f1f47111794659564dcddb4d25bc6"/>
+          <topic label="getSource" href="a00013.html#ad02c9a530f20a706d7bb2554813e8d3a"/>
+          <topic label="parse" href="a00013.html#a31b6bad01e65ed4bb5f1ba297616c641"/>
+          <topic label="setSource" href="a00013.html#a06793909bc707a69d0c5772b14bc946d"/>
+        </topic>
+        <topic label="IParser" href="a00014.html">
+          <topic label="getSource" href="a00014.html#ab55d2644dfa6d950d1f874e1e02df095"/>
+          <topic label="getSourceStream" href="a00014.html#ac94c7a288bf669322b93ba171c43f90e"/>
+          <topic label="isFile" href="a00014.html#a616c42c85d781c916e97f0ad8f1e9010"/>
+          <topic label="isLocal" href="a00014.html#a97b9e58493b3cadbc63e670b0b0e759f"/>
+          <topic label="isParallel" href="a00014.html#a83d2882a466d694fb0aea3d846bcbed4"/>
+          <topic label="parse" href="a00014.html#af36ac6eedd8c27d2f418869193d7d03c"/>
+          <topic label="setSource" href="a00014.html#a0dbeff2b9bd8dbfb2aad7a424eef87d1"/>
+          <topic label="setSource" href="a00014.html#a7748a633910e9bfc27411d6bd840496b"/>
+        </topic>
+        <topic label="IPropertyParser" href="a00015.html">
+          <topic label="getPropertyBlock" href="a00015.html#a34201371cb36dd09e96a66242ececb86"/>
+          <topic label="getPropertyBlockNames" href="a00015.html#a34602687f9d1affac7bd842102d4a6aa"/>
+        </topic>
+        <topic label="IStepper" href="a00016.html">
+          <topic label="~IStepper" href="a00016.html#ac8ec460d35512e2e039396d5192eb57e"/>
+          <topic label="getFinalStep" href="a00016.html#ab234d9f032e02668aededf1c22e8c0a9"/>
+          <topic label="getInitialStep" href="a00016.html#a49df3a2ac05cebaf2baf387b66d19272"/>
+          <topic label="getInitialStepsize" href="a00016.html#afb777e62386b25e5a38d59af54972690"/>
+          <topic label="getStep" href="a00016.html#a7f709d1462a2a3b8bd8214cc681ca26e"/>
+          <topic label="getStepSizeAtStage" href="a00016.html#a43027c0c268afcd59db8815c2e2c41ea"/>
+          <topic label="setFinalStep" href="a00016.html#add76974a7b6fbbc93916270a376c461e"/>
+          <topic label="setInitialStep" href="a00016.html#a3a5099cd0f3c874e56c33cb8f13b8f3b"/>
+          <topic label="setInitialStepsize" href="a00016.html#a69c262f248511efcd271be1724a41ad9"/>
+          <topic label="updateStep" href="a00016.html#a44dfccb90ee5ef6e080b54113c215458"/>
+        </topic>
+        <topic label="LocalParser" href="a00019.html">
+          <topic label="LocalParser" href="a00019.html#a3ad7dc549ad773d9f3822104f4435216"/>
+          <topic label="~LocalParser" href="a00019.html#a91b3e00c483868f6b6cc1f1f41f0b5a1"/>
+          <topic label="getData" href="a00019.html#ab9016cca8e5dca516bb57c6a8e76607a"/>
+          <topic label="getSource" href="a00019.html#aedb7fe10911182525a719963b9b56726"/>
+          <topic label="getSourceStream" href="a00019.html#a9bf19a3cc9ae8ac0e6e7a0e7f6212cdc"/>
+          <topic label="parse" href="a00019.html#a34fd9ffb0196c612c75b5288ed5e219b"/>
+          <topic label="parse" href="a00019.html#ae904e264fe16708b3e434adea59e1b88"/>
+          <topic label="parse" href="a00019.html#abd8929aea06c2dda40256d2e58236650"/>
+          <topic label="setSource" href="a00019.html#afcaec6429fdd6e5d53642a32c001ff73"/>
+          <topic label="setSource" href="a00019.html#aed4357541f2ff7d46f8846bd07bb3c42"/>
+          <topic label="data" href="a00019.html#af8f722c7e35378c69e76e4275d384d86"/>
+          <topic label="sourceFile" href="a00019.html#acf921ee916266efe70be5b24bec37fce"/>
+        </topic>
+        <topic label="ProfileStepper" href="a00021.html">
+          <topic label="ProfileStepper" href="a00021.html#a5bba5babbcb293b5e6a535cc4d06c55f"/>
+          <topic label="~ProfileStepper" href="a00021.html#a6838143d952dec2519a43c576a1f1546"/>
+          <topic label="getFinalStep" href="a00021.html#ae6f257aca7b3bb62a851169a01bcaacf"/>
+          <topic label="getInitialStep" href="a00021.html#af24660fa4bd027f877d5c1bdeb286cf5"/>
+          <topic label="getInitialStepsize" href="a00021.html#a86e7035366907a08a36722655746271e"/>
+          <topic label="getStep" href="a00021.html#a9096ad65a3fcf63678b600cbe0c33961"/>
+          <topic label="getStepSizeAtStage" href="a00021.html#adaa1a23c068977ecc6809dd8eecab49d"/>
+          <topic label="setFinalStep" href="a00021.html#af8203296b4f3bef53bafab7cb654cc97"/>
+          <topic label="setInitialStep" href="a00021.html#adf2f78648d9539282225117c0fd243af"/>
+          <topic label="setInitialStepsize" href="a00021.html#a55c44fd97d8b6a474243ad0da48b039d"/>
+          <topic label="updateStep" href="a00021.html#a2c13fd4da5550f1e58df2b54bbfe4c2c"/>
+          <topic label="finalStep" href="a00021.html#a4f2347f039417fe9cdd16d3ca74a072d"/>
+          <topic label="stepID" href="a00021.html#ac3a3c58d7ff087d09ea71f5f33264853"/>
+          <topic label="steps" href="a00021.html#a4b388e68798f39795386758f85525cf3"/>
+          <topic label="stepSizes" href="a00021.html#a3ab053b93662a362fa16147e88a03c22"/>
+        </topic>
+        <topic label="StringCaster" href="a00029.html">
+        </topic>
+        <topic label="StringCaster&lt; bool &gt;" href="a00030.html">
+        </topic>
+        <topic label="StringCaster&lt; double &gt;" href="a00031.html">
+        </topic>
+        <topic label="StringCaster&lt; float &gt;" href="a00032.html">
+        </topic>
+        <topic label="StringCaster&lt; int &gt;" href="a00033.html">
+        </topic>
+        <topic label="Vector" href="a00037.html"/>
+      </topic>
+      <topic label="BlockGenerator" href="a00005.html">
+        <topic label="BlockGenerator" href="a00005.html#ab65c93a76c6f78c6562518d96cef68de"/>
+        <topic label="~BlockGenerator" href="a00005.html#abc1776157805792f79bdeb45c022ee80"/>
+      </topic>
+      <topic label="CSimpleIniTempl" href="a00007.html">
+        <topic label="Converter" href="a00006.html">
+          <topic label="Converter" href="a00006.html#ab8e740b211e4ece127d4d25773ba7e42"/>
+          <topic label="Converter" href="a00006.html#a2f6e993014ed5d60c6e890e55beb0805"/>
+          <topic label="ConvertToStore" href="a00006.html#a4e4186867214b54326cf622e323c9f2f"/>
+          <topic label="Data" href="a00006.html#a918bbd4f861a2872e148bc9481ac80bb"/>
+          <topic label="operator=" href="a00006.html#af858c01c6a7e4ce9fafd18abc9e0ac1b"/>
+        </topic>
+        <topic label="Entry" href="a00009.html">
+          <topic label="KeyOrder" href="a00017.html">
+            <topic label="operator()" href="a00017.html#a4cfcbc71e83cc369f55643c715609176"/>
+          </topic>
+          <topic label="LoadOrder" href="a00018.html">
+            <topic label="operator()" href="a00018.html#ac92e1aa48e5c9aafe994aab65aff4a48"/>
+          </topic>
+          <topic label="Entry" href="a00009.html#a20fc446e1f56f562333042a19bb57c9c"/>
+          <topic label="Entry" href="a00009.html#aaa6fc487377a2fc91dc4f0b83e572996"/>
+          <topic label="Entry" href="a00009.html#afbe8b9d3c87d5de3c6aa8d8984f011f6"/>
+          <topic label="operator=" href="a00009.html#a7f4dd11cc944c140d751ae22ef6cd034"/>
+          <topic label="nOrder" href="a00009.html#ac08ed1fec5743b35aebfa8635e1bdb5a"/>
+          <topic label="pComment" href="a00009.html#a84364bcded2d32c5ae4241bf197a74c4"/>
+          <topic label="pItem" href="a00009.html#a0f987914bf6076156c2a7c40e8e09c89"/>
+        </topic>
+        <topic label="FileWriter" href="a00011.html">
+          <topic label="FileWriter" href="a00011.html#aecd4d79480c9b4e70b598c10014856f8"/>
+          <topic label="Write" href="a00011.html#ae8885b97884ef9dd5bf074bc4f011373"/>
+        </topic>
+        <topic label="OutputWriter" href="a00020.html">
+          <topic label="OutputWriter" href="a00020.html#ae151e0bb6e8b61d7a35c08ba530038a2"/>
+          <topic label="~OutputWriter" href="a00020.html#a16dc43ae7dda48ec652a4f6e6b5ab6f4"/>
+          <topic label="Write" href="a00020.html#a48e5905a9defbe96d14f3068a383463d"/>
+        </topic>
+        <topic label="StringWriter" href="a00034.html">
+          <topic label="StringWriter" href="a00034.html#ad50338a07a9b6de7e4a78d0bbc11f67b"/>
+          <topic label="Write" href="a00034.html#afdfd0dfe71278ea7490a9d4ef6bffadc"/>
+        </topic>
+        <topic label="SI_CHAR_T" href="a00007.html#ad7ffad7e87da2303a05b885e95bc74fa"/>
+        <topic label="TKeyVal" href="a00007.html#ae7f0e11d84617214bd479de6332c80e6"/>
+        <topic label="TNamesDepend" href="a00007.html#a391b3f3751e06cd9e9de4fb16ac14342"/>
+        <topic label="TSection" href="a00007.html#a2e7963455f680abd0d6901786495a665"/>
+        <topic label="CSimpleIniTempl" href="a00007.html#af878d0a2aa780255b621e95f58f691d8"/>
+        <topic label="~CSimpleIniTempl" href="a00007.html#a8c933adc1d46bb663caeb6f9dee5aa12"/>
+        <topic label="Delete" href="a00007.html#aa5c1cdd0b306434d9e9f1422888049da"/>
+        <topic label="GetAllKeys" href="a00007.html#a8cf1357d78d28653b68790ab5d5b45f1"/>
+        <topic label="GetAllSections" href="a00007.html#a65b01b5bf88d0dfe3ba51f12278cbcb8"/>
+        <topic label="GetAllValues" href="a00007.html#a263c85a8cd839c315fefc078e048257b"/>
+        <topic label="GetBoolValue" href="a00007.html#af0a8cffb0b7f6ca04e3eed9ab4660666"/>
+        <topic label="GetConverter" href="a00007.html#a98442d01db35187f2770f0a91042cce8"/>
+        <topic label="GetDoubleValue" href="a00007.html#a6ce7c77a1d5d64dc289927a5c2659e78"/>
+        <topic label="GetLongValue" href="a00007.html#a994c6b29bb8b4c16a4b1a7f4c8b2b3f4"/>
+        <topic label="GetSection" href="a00007.html#a795e2fcbad3472055aedfe188f4f8d33"/>
+        <topic label="GetSectionSize" href="a00007.html#a2e612d67d1e1631c157af6291ac8c348"/>
+        <topic label="GetValue" href="a00007.html#a39999339113e9395d5e2c6b02ef5c618"/>
+        <topic label="IsEmpty" href="a00007.html#acaada2b1ab734fc7dd8780ba7f376c26"/>
+        <topic label="IsMultiKey" href="a00007.html#a8069b3c574949b78fe0274ae803f0685"/>
+        <topic label="IsMultiLine" href="a00007.html#a805dba3689efd63f8c4485a5f2e89090"/>
+        <topic label="IsUnicode" href="a00007.html#aa18f29d67107392a9e9f361def892c71"/>
+        <topic label="LoadData" href="a00007.html#a174244fd3e09ff78da05fe46be86e714"/>
+        <topic label="LoadData" href="a00007.html#aa797cf47cec05906f07d5065882af4d3"/>
+        <topic label="LoadFile" href="a00007.html#aebb6e5fff76efc05ca6cc4b7b56481a3"/>
+        <topic label="LoadFile" href="a00007.html#a7ccb65e82fa347b42b59330968f826ae"/>
+        <topic label="Reset" href="a00007.html#a89b34d38be4518e9ed91c634a41b8055"/>
+        <topic label="Save" href="a00007.html#a5fea5d590edbb5eef694991c7c355915"/>
+        <topic label="Save" href="a00007.html#af944674fb44473ede150a3bcdc103d63"/>
+        <topic label="SaveFile" href="a00007.html#a1449e083d968790ef7479de24edddba0"/>
+        <topic label="SaveFile" href="a00007.html#af3f26b331a0f9d7f071d7b4aa8038758"/>
+        <topic label="SetBoolValue" href="a00007.html#a48ae136fa20c5d7eb7ab0b75342b27cf"/>
+        <topic label="SetDoubleValue" href="a00007.html#af92ba0b8067553ab693c62a370de6534"/>
+        <topic label="SetLongValue" href="a00007.html#ab2238be407232e4bba0f1343e4793e4e"/>
+        <topic label="SetMultiKey" href="a00007.html#ac3cfaf072a64f960bdcb7ddf2edc52b6"/>
+        <topic label="SetMultiLine" href="a00007.html#aa7214b76600790053a5c715e9730aab0"/>
+        <topic label="SetSpaces" href="a00007.html#ae3c0eae2dcd84a42c99bb86ae103662c"/>
+        <topic label="SetUnicode" href="a00007.html#aa9a15a66de893571014f661f89cb4d4b"/>
+        <topic label="SetValue" href="a00007.html#aa2014a3dc8fdd638316cf1d3611796ab"/>
+        <topic label="UsingSpaces" href="a00007.html#a9c967faf796cf5babea67e97975bed9b"/>
+      </topic>
+      <topic label="FileGenerator" href="a00010.html">
+        <topic label="FileGenerator" href="a00010.html#afe216608d89bea261e4b71cbf34f2ad6"/>
+        <topic label="~FileGenerator" href="a00010.html#a08c7ec2a0b638647f5c564f9884cd2fb"/>
+      </topic>
+      <topic label="SI_ConvertA" href="a00024.html">
+        <topic label="SI_ConvertA" href="a00024.html#affdb4c689d2a5afee37c2d1770f7111d"/>
+        <topic label="SI_ConvertA" href="a00024.html#ab9c32530dc603974c3fdca06aad5b801"/>
+        <topic label="SI_ConvertA" href="a00024.html#a532fa9943ae417518e370a489bdea0f5"/>
+        <topic label="ConvertFromStore" href="a00024.html#a5176a6dc2dc6482280e9a08dd3607f9e"/>
+        <topic label="ConvertToStore" href="a00024.html#a188fd6d6fcba6ba8d769e70e5fbea742"/>
+        <topic label="operator=" href="a00024.html#a4296011c45379c08309ce2b0709b387b"/>
+        <topic label="SizeFromStore" href="a00024.html#a30ce0eee2556184d41130311d3c8cc84"/>
+        <topic label="SizeToStore" href="a00024.html#a39e7a8c49712c295b24ff2ae788c01c5"/>
+      </topic>
+      <topic label="SI_ConvertW" href="a00025.html">
+        <topic label="SI_ConvertW" href="a00025.html#a89926793c37fa3c947f25a04527558d4"/>
+        <topic label="SI_ConvertW" href="a00025.html#a2dff5480be64970fdd309411eca5d68b"/>
+        <topic label="SI_ConvertW" href="a00025.html#a443e5fe7e7cf4a4972942f2b0a33c7c2"/>
+        <topic label="ConvertFromStore" href="a00025.html#a132a9317a6f69780fa6b818d3fcf59e9"/>
+        <topic label="ConvertToStore" href="a00025.html#ab30993d03cdc7b5d5635b95add8b7133"/>
+        <topic label="operator=" href="a00025.html#adb6fc210ad5c4beb894c03ddc1ff5085"/>
+        <topic label="SizeFromStore" href="a00025.html#aeb7cb9953fd07917c9a049c441add51e"/>
+        <topic label="SizeToStore" href="a00025.html#a7619dba0ecb1b6ec28b4d16a89ed89c0"/>
+      </topic>
+      <topic label="SI_GenericCase" href="a00026.html">
+        <topic label="operator()" href="a00026.html#af91c0d1b328b5c1bd15053204dcfa9b1"/>
+      </topic>
+      <topic label="SI_GenericNoCase" href="a00027.html">
+        <topic label="locase" href="a00027.html#adc6bb2ca8960d24913b598a2f3085e7c"/>
+        <topic label="operator()" href="a00027.html#aa8014f86b3d74b2cd0f6e9b6ccc43426"/>
+      </topic>
+      <topic label="Test" href="a00035.html">
+        <topic label="Test" href="a00035.html#a00dc4afd42c3d98cd00a42510665b568"/>
+        <topic label="Failure" href="a00035.html#a0de2fcc2b34ad6b393d277deaa9ad59d"/>
+        <topic label="Success" href="a00035.html#af14a8e1aeac799d34e623b91d1e95df1"/>
+      </topic>
+      <topic label="TestStruct" href="a00036.html">
+        <topic label="TestStruct" href="a00036.html#a07c248a0dd8e82d8bd807270e48999e1"/>
+        <topic label="TestStruct" href="a00036.html#ad1b28d11092e7dcf1818901f7a276120"/>
+        <topic label="A" href="a00036.html#a948fae89410671cffc8087f752a45552"/>
+      </topic>
+    </topic>
+    <topic label="Class Index" href="classes.html"/>
+    <topic label="Class Hierarchy" href="hierarchy.html">
+      <topic label="binary_function">
+        <topic label="CSimpleIniTempl&lt; SI_CHAR, SI_STRLESS, SI_CONVERTER &gt;::Entry::KeyOrder" href="a00017.html"/>
+        <topic label="CSimpleIniTempl&lt; SI_CHAR, SI_STRLESS, SI_CONVERTER &gt;::Entry::LoadOrder" href="a00018.html"/>
+      </topic>
+      <topic label="BlockGenerator" href="a00005.html"/>
+      <topic label="CSimpleIniTempl&lt; SI_CHAR, SI_STRLESS, SI_CONVERTER &gt;" href="a00007.html"/>
+      <topic label="CSimpleIniTempl&lt; SI_CHAR, SI_STRLESS, SI_CONVERTER &gt;::Entry" href="a00009.html"/>
+      <topic label="FileGenerator" href="a00010.html"/>
+      <topic label="fire::IParser" href="a00014.html">
+        <topic label="fire::ILocalParser&lt; T &gt;" href="a00012.html">
+          <topic label="fire::LocalParser&lt; T &gt;" href="a00019.html">
+            <topic label="fire::DelimitedTextParser&lt; T, K &gt;" href="a00008.html"/>
+          </topic>
+        </topic>
+        <topic label="fire::ILocalParser&lt; std::string &gt;" href="a00012.html">
+          <topic label="fire::LocalParser&lt; std::string &gt;" href="a00019.html">
+            <topic label="fire::IPropertyParser" href="a00015.html">
+              <topic label="fire::INIPropertyParser" href="a00013.html"/>
+            </topic>
+          </topic>
+        </topic>
+      </topic>
+      <topic label="fire::IStepper" href="a00016.html">
+        <topic label="fire::ProfileStepper" href="a00021.html"/>
+      </topic>
+      <topic label="CSimpleIniTempl&lt; SI_CHAR, SI_STRLESS, SI_CONVERTER &gt;::OutputWriter" href="a00020.html">
+        <topic label="CSimpleIniTempl&lt; SI_CHAR, SI_STRLESS, SI_CONVERTER &gt;::FileWriter" href="a00011.html"/>
+        <topic label="CSimpleIniTempl&lt; SI_CHAR, SI_STRLESS, SI_CONVERTER &gt;::StringWriter" href="a00034.html"/>
+      </topic>
+      <topic label="fire::astrophysics::Reaction" href="a00022.html"/>
+      <topic label="fire::astrophysics::ReactionNetwork" href="a00023.html"/>
+      <topic label="SI_ConvertA&lt; SI_CHAR &gt;" href="a00024.html"/>
+      <topic label="SI_CONVERTER">
+        <topic label="CSimpleIniTempl&lt; SI_CHAR, SI_STRLESS, SI_CONVERTER &gt;::Converter" href="a00006.html"/>
+      </topic>
+      <topic label="SI_ConvertW&lt; SI_CHAR &gt;" href="a00025.html"/>
+      <topic label="SI_GenericCase&lt; SI_CHAR &gt;" href="a00026.html"/>
+      <topic label="SI_GenericNoCase&lt; SI_CHAR &gt;" href="a00027.html"/>
+      <topic label="fire::astrophysics::Species" href="a00028.html"/>
+      <topic label="fire::StringCaster&lt; T &gt;" href="a00029.html"/>
+      <topic label="fire::StringCaster&lt; bool &gt;" href="a00030.html"/>
+      <topic label="fire::StringCaster&lt; double &gt;" href="a00031.html"/>
+      <topic label="fire::StringCaster&lt; float &gt;" href="a00032.html"/>
+      <topic label="fire::StringCaster&lt; int &gt;" href="a00033.html"/>
+      <topic label="Test" href="a00035.html"/>
+      <topic label="TestStruct" href="a00036.html"/>
+      <topic label="fire::Vector" href="a00037.html"/>
+    </topic>
+    <topic label="Class Members" href="functions.html">
+      <topic label="All" href="functions.html"/>
+      <topic label="Functions" href="functions_func.html"/>
+      <topic label="Variables" href="functions_vars.html"/>
+      <topic label="Typedefs" href="functions_type.html"/>
+    </topic>
+  </topic>
+  <topic label="Files">
+    <topic label="File List" href="files.html">
+      <topic label="build.h" href="a00039_source.html"/>
+      <topic label="ConvertUTF.h" href="a00049_source.html"/>
+      <topic label="DelimitedTextParser.h" href="a00050_source.html"/>
+      <topic label="ILocalParser.h" href="a00054_source.html"/>
+      <topic label="INIPropertyParser.h" href="a00055_source.html"/>
+      <topic label="IParser.h" href="a00057_source.html"/>
+      <topic label="IPropertyParser.h" href="a00058_source.html"/>
+      <topic label="IStepper.h" href="a00059_source.html"/>
+      <topic label="LocalParser.h" href="a00061_source.html"/>
+      <topic label="parse.h" href="a00062_source.html"/>
+      <topic label="ProfileStepper.h" href="a00063_source.html"/>
+      <topic label="Reaction.h" href="a00065_source.html"/>
+      <topic label="ReactionLocalParser.h" href="a00066_source.html"/>
+      <topic label="ReactionNetwork.h" href="a00068_source.html"/>
+      <topic label="SimpleIni.h" href="a00074_source.html"/>
+      <topic label="Species.h" href="a00076_source.html"/>
+      <topic label="SpeciesLocalParser.h" href="a00077_source.html"/>
+      <topic label="StringCaster.h" href="a00080_source.html"/>
+      <topic label="Vector.h" href="a00083_source.html"/>
+    </topic>
+  </topic>
+</toc>
