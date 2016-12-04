@@ -124,7 +124,7 @@ void LocalParser<vector<Reaction>>::parse() {
  * for astrophysical problems. Note: It does not automatically
  * parse the source! Clients must explicitly call parse(). See parse.h for a
  * function template that automatically parses - parse<T>().
- * @param the name of the file to parse
+ * @param source the name of the file to parse
  */
 template<>
 LocalParser<vector<Reaction>> build(const string & source) {

@@ -97,7 +97,7 @@ struct Species {
 	 * v[3] - The neutron number
 	 * v[4] - The mass fraction
 	 * v[5] - The mass excess
-	 * @param a vector with entries for each of the data members in this class
+	 * @param values a vector with entries for each of the data members in this class
 	 * as described above.
 	 */
 	Species(const std::vector<std::string> & values) :

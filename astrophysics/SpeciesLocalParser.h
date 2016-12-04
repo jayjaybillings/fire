@@ -97,7 +97,7 @@ void LocalParser<std::vector<Species>>::parse() {
  * astrophysical reaction network problems. Note: It does not automatically
  * parse the source! Clients must explicitly call parse(). See parse.h for a
  * function template that automatically parses - parse<T>().
- * @param the name of the file to parse
+ * @param source the name of the file to parse
  */
 template<>
 LocalParser<vector<Species>> build(const string & source) {

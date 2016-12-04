@@ -192,7 +192,7 @@ struct Reaction {
      * \f[
      * p_s = s\rho^{(n_R -1)}.
      * \f]
-	 * @param the current density
+	 * @param rho the current density
 	 */
 	void setPrefactor(const double & rho) {
 		prefactor = statisticalFactor*pow(rho,(numReactants-1));
@@ -202,44 +202,6 @@ struct Reaction {
 	 * This operation computes and sets the reaction rate. This version is optimized
 	 * to use pre-computed temperature values so that the costly exponentiation does
 	 * not need to be repeated for each reaction if the temperature doesn't change.
-	 * @param An array of all six temperature values used to compute the rate.
-     *
-     * The rate is computed by
-     * \f[
-     * R = p_s*\sum_k R_k
-     * \f]
-     * where \f[p_s\f] is the prefactor (based on the statistical prefactor)
-     * and
-     * \f[
-     * R_k = \exp(p_1 + \frac{p_2}{T_9} + \frac{p_3}{T_9^{1/3}} + p_{4}T_9^{1/3}
-     * + p_{5}T_9 + p_{6}T_9^{5/3} + p_{7}\ln T_9).
-     * \f]
-     *
-     * \f$T_9\f$ is the the temperature in units of \f$10^9\f$ Kelvin. Note
-     * that p1 = reaclibRateCoeff[0] since C++ is a zero-indexed language.
-     *
-     * In general k may be greater than 1 in the summation for the rate, but
-     * in this work k = 1 and \f[R = R_k\f].
-     *
-     * See: "Stars and Stellar Processes", Mike Guidry, to be published Cambridge
-     * University Press.
-     */
-	void setRate(array<double,6> tempValues) {
-		// Compute the exponent
-		double x = reaclibRateCoeff[0] + tempValues[0] * reaclibRateCoeff[1]
-				+ tempValues[1] * reaclibRateCoeff[2] + tempValues[2] * reaclibRateCoeff[3]
-				+ tempValues[3] * reaclibRateCoeff[4] + tempValues[4] * reaclibRateCoeff[5]
-				+ tempValues[5] * reaclibRateCoeff[6];
-		// Compute the rate
-		rate = prefactor * exp(x);
-	}
-
-	/**
-	 * This operation computes and sets the reaction rate. This version will use
-	 * the provided temperature to compute all of the temperature coefficients.
-	 * See the other version of this function for a more efficient version (which
-	 * this function actually calls).
-	 * @param the temperature
 	 *
      * The rate is computed by
      * \f[
@@ -260,6 +222,47 @@ struct Reaction {
      *
      * See: "Stars and Stellar Processes", Mike Guidry, to be published Cambridge
      * University Press.
+	 *
+	 * @param tempValues An array of all six temperature values used to compute the rate.
+     */
+	void setRate(array<double,6> tempValues) {
+		// Compute the exponent
+		double x = reaclibRateCoeff[0] + tempValues[0] * reaclibRateCoeff[1]
+				+ tempValues[1] * reaclibRateCoeff[2] + tempValues[2] * reaclibRateCoeff[3]
+				+ tempValues[3] * reaclibRateCoeff[4] + tempValues[4] * reaclibRateCoeff[5]
+				+ tempValues[5] * reaclibRateCoeff[6];
+		// Compute the rate
+		rate = prefactor * exp(x);
+	}
+
+	/**
+	 * This operation computes and sets the reaction rate. This version will use
+	 * the provided temperature to compute all of the temperature coefficients.
+	 * See the other version of this function for a more efficient version (which
+	 * this function actually calls).
+     *
+     * The rate is computed by
+     * \f[
+     * R = p_s*\sum_k R_k
+     * \f]
+     * where \f[p_s\f] is the prefactor (based on the statistical prefactor)
+     * and
+     * \f[
+     * R_k = \exp(p_1 + \frac{p_2}{T_9} + \frac{p_3}{T_9^{1/3}} + p_{4}T_9^{1/3}
+     * + p_{5}T_9 + p_{6}T_9^{5/3} + p_{7}\ln T_9).
+     * \f]
+     *
+     * \f$T_9\f$ is the the temperature in units of \f$10^9\f$ Kelvin. Note
+     * that p1 = reaclibRateCoeff[0] since C++ is a zero-indexed language.
+     *
+     * In general k may be greater than 1 in the summation for the rate, but
+     * in this work k = 1 and \f[R = R_k\f].
+     *
+     * See: "Stars and Stellar Processes", Mike Guidry, to be published Cambridge
+     * University Press.
+     *
+     * @param temp the temperature
+	 *
      */
 	void setRate(const double & temp) {
 		// Compute the temperatures
@@ -283,7 +286,7 @@ struct Reaction {
 /**
  * This is a builder for constructing reactions from a vector of strings. This is meant
  * to work with data parsed from the legacy ASCII format.
- * @param The input vector with size 8.
+ * @param lines The input vector with size 8.
  * @return the fully initialized Reaction.
  */
 template<>

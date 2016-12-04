@@ -160,7 +160,7 @@ public:
 	 * fluxFrac
 	 * networkFile
 	 * rateFile
-	 * @param the property map
+	 * @param props the property map
 	 */
 	void setProperties(const map<string,string> & props) {
 		// Set the properties
@@ -381,6 +381,7 @@ public:
 	/**
 	 * This function computes the prefactors for the reaction rates. It is primarily a
 	 * convenience function for configuring the reactions.
+	 * @param rho the current density in units of 10^8 g/m^3.
 	 */
 	void computePrefactors(const double & rho) {
 		// Compute the factors.
@@ -392,6 +393,7 @@ public:
 	/**
 	 * This function computers the reaction rates. It is primarily a convenience function
 	 * for configuring the reactions.
+	 * @param temp the current temperature in units of 10^9 Kelvin.
 	 */
 	void computeRates(const double & temp) {
 		// Compute the temperatures
