@@ -41,6 +41,15 @@
 
 namespace fire {
 
+template<typename Scalar>
+class TensorData {
+
+private:
+
+	Scalar * data;
+
+};
+
 /**
  *
  */
@@ -50,18 +59,22 @@ protected:
 
 	const int rank = 0;
 
+	std::vector<int> dimensions;
+
+
 public:
 
-	TensorProvider(const int r) : rank(r) {}
+	TensorProvider(const int r, std::vector<int> dims) : rank(r), dimensions(dims) {}
 
-	static TensorProvider * create(const std::string& id, const int rank) {
+
+	static TensorProvider * create(const std::string& id, const int rank, std::vector<int> dims) {
 		auto iter = getConstructors().find(id);
-		return iter == getConstructors().end() ? nullptr : (*iter->second)(rank);
+		return iter == getConstructors().end() ? nullptr : (*iter->second)(rank, dims);
 	}
 
 private:
 
-	typedef TensorProvider * TPCtor(const int rank);
+	typedef TensorProvider * TPCtor(const int rank, std::vector<int> dims);
 	typedef std::map<std::string, TPCtor*> CtorMap;
 
 	static CtorMap& getConstructors() {
@@ -71,8 +84,8 @@ private:
 
 	template<class T = int>
 	struct DynamicRegister {
-		static TensorProvider* create(const int rank) {
-			return new T(rank);
+		static TensorProvider* create(const int rank, std::vector<int> dims) {
+			return new T(rank, dims);
 		}
 
 		static TPCtor * initialize (const std::string& id) {

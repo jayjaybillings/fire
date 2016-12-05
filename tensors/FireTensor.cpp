@@ -33,7 +33,8 @@
 
 namespace fire {
 
-FireTensor::FireTensor(const int r) : TensorProvider(r) {
+FireTensor::FireTensor(const int r, std::vector<int> dims) :
+		TensorProvider(r, dims) {
 	std::cout << "HELLO MY RANK IS " << r << "\n";
 }
 

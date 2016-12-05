@@ -38,6 +38,7 @@
 
 namespace fire {
 
+
 /**
  *
  */
@@ -46,14 +47,24 @@ class Tensor : public virtual ITensor {
 
 private:
 
-	std::shared_ptr<ITensor> provider;
+	std::shared_ptr<TensorProvider> provider;
 
 public:
 
-	template<typename... Indices>
-	Tensor(int firstDim, int secondDim, Indices... otherDims, Scalar initial = Scalar(0)) {
-		static_assert(sizeof...(otherDims) + 2 == Rank, "Incorrect number of dimensions");
-		provider = std::shared_ptr<ITensor>(TensorProvider::create("default", Rank));
+	Tensor(int allRankDimension) {
+
+	}
+
+	template<typename... Dimension>
+	Tensor(int firstDim, Dimension... otherDims) {
+		static_assert( sizeof...(otherDims) + 1 == Rank, "Incorrect number of dimension integers");
+		std::vector<int> dims{static_cast<int>(otherDims)...};
+		dims.insert(dims.begin(), firstDim);
+		for (auto i : dims) {
+			std::cout << i << " ";
+		}
+		std::cout << "\n";
+		provider = std::shared_ptr<TensorProvider>(TensorProvider::create("default", Rank, dims));
 	}
 
 	template<typename... Indices>
@@ -75,6 +86,5 @@ public:
 	static Tensor<ValueType, IdentityRank> identity() {}
 
 };
-
 }
 #endif

@@ -40,7 +40,7 @@ class FireTensor : public TensorProvider {
 
 public:
 
-	FireTensor(const int r);
+	FireTensor(const int r, std::vector<int> dims);
 
 	virtual ITensor& contract(ITensor& other);
 

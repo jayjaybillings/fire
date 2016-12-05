@@ -38,6 +38,6 @@
 using namespace boost;
 
 BOOST_AUTO_TEST_CASE(checkConstruction) {
-	fire::Tensor<double, 2> a(1, 1);
-	fire::Tensor<double, 3> b(1, 1, 1);
+	fire::Tensor<double, 5> a(1, 2, 3, 4, 5);
+	fire::Tensor<int, 3> b(1, 1, 1);
 }
