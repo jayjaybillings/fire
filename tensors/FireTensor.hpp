@@ -29,52 +29,25 @@
 
  Author(s): Alex McCaskey (mccaskeyaj <at> ornl <dot> gov)
  -----------------------------------------------------------------------------*/
+#ifndef TENSORS_FIRETENSOR_HPP_
+#define TENSORS_FIRETENSOR_HPP_
 
-#ifndef TENSORS_TENSOR_HPP_
-#define TENSORS_TENSOR_HPP_
-
-#include <memory>
 #include "TensorProvider.hpp"
 
 namespace fire {
 
-/**
- *
- */
-template<typename Scalar, int Rank>
-class Tensor : public virtual ITensor {
-
-private:
-
-	std::shared_ptr<ITensor> provider;
+class FireTensor : public TensorProvider {
 
 public:
 
-	template<typename... Indices>
-	Tensor(int firstDim, int secondDim, Indices... otherDims, Scalar initial = Scalar(0)) {
-		static_assert(sizeof...(otherDims) + 2 == Rank, "Incorrect number of dimensions");
-		provider = std::shared_ptr<ITensor>(TensorProvider::create("default", Rank));
-	}
+	FireTensor(const int r);
 
-	template<typename... Indices>
-	Scalar operator() (Indices... indices) const {
+	virtual ITensor& contract(ITensor& other);
 
-	}
-
-	virtual ITensor& contract(ITensor& other) {
-		return provider->contract(other);
-	}
-
-	virtual ITensor& add(ITensor& other) {
-		return provider->add(other);
-	}
-
-	virtual ~Tensor() {}
-
-	template<typename ValueType, int IdentityRank>
-	static Tensor<ValueType, IdentityRank> identity() {}
+	virtual ITensor& add(ITensor& other);
 
 };
 
 }
+
 #endif

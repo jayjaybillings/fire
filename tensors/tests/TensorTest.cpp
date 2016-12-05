@@ -29,52 +29,15 @@
 
  Author(s): Alex McCaskey (mccaskeyaj <at> ornl <dot> gov)
  -----------------------------------------------------------------------------*/
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE Tensors
 
-#ifndef TENSORS_TENSOR_HPP_
-#define TENSORS_TENSOR_HPP_
+#include <boost/test/included/unit_test.hpp>
+#include "Tensor.hpp"
 
-#include <memory>
-#include "TensorProvider.hpp"
+using namespace boost;
 
-namespace fire {
-
-/**
- *
- */
-template<typename Scalar, int Rank>
-class Tensor : public virtual ITensor {
-
-private:
-
-	std::shared_ptr<ITensor> provider;
-
-public:
-
-	template<typename... Indices>
-	Tensor(int firstDim, int secondDim, Indices... otherDims, Scalar initial = Scalar(0)) {
-		static_assert(sizeof...(otherDims) + 2 == Rank, "Incorrect number of dimensions");
-		provider = std::shared_ptr<ITensor>(TensorProvider::create("default", Rank));
-	}
-
-	template<typename... Indices>
-	Scalar operator() (Indices... indices) const {
-
-	}
-
-	virtual ITensor& contract(ITensor& other) {
-		return provider->contract(other);
-	}
-
-	virtual ITensor& add(ITensor& other) {
-		return provider->add(other);
-	}
-
-	virtual ~Tensor() {}
-
-	template<typename ValueType, int IdentityRank>
-	static Tensor<ValueType, IdentityRank> identity() {}
-
-};
-
+BOOST_AUTO_TEST_CASE(checkConstruction) {
+	fire::Tensor<double, 2> a(1, 1);
+	fire::Tensor<double, 3> b(1, 1, 1);
 }
-#endif

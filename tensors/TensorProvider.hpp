@@ -33,21 +33,61 @@
 #ifndef TENSORS_TENSORPROVIDER_HPP_
 #define TENSORS_TENSORPROVIDER_HPP_
 
-#include "Tensor.hpp"
+#include "ITensor.hpp"
+#include <string>
+#include <map>
+#include <vector>
+#include <iostream>
 
 namespace fire {
 
 /**
  *
  */
-template <typename ValueType, int rank>
-class TensorProvider : public Tensor<> {
+class TensorProvider : public virtual ITensor {
+
+protected:
+
+	const int rank = 0;
 
 public:
 
+	TensorProvider(const int r) : rank(r) {}
+
+	static TensorProvider * create(const std::string& id, const int rank) {
+		auto iter = getConstructors().find(id);
+		return iter == getConstructors().end() ? nullptr : (*iter->second)(rank);
+	}
+
 private:
 
+	typedef TensorProvider * TPCtor(const int rank);
+	typedef std::map<std::string, TPCtor*> CtorMap;
+
+	static CtorMap& getConstructors() {
+		static CtorMap constructors;
+		return constructors;
+	}
+
+	template<class T = int>
+	struct DynamicRegister {
+		static TensorProvider* create(const int rank) {
+			return new T(rank);
+		}
+
+		static TPCtor * initialize (const std::string& id) {
+			return getConstructors()[id] = create;
+		}
+
+		static TPCtor * creator;
+
+	};
+
 };
+
+#define REGISTER_TENSORPROVIDER(T, STR) template<> fire::TensorProvider::TPCtor* \
+	fire::TensorProvider::DynamicRegister<T>::creator = \
+	fire::TensorProvider::DynamicRegister<T>::initialize(STR)
 
 }
 
