@@ -29,25 +29,31 @@
 
  Author(s): Alex McCaskey (mccaskeyaj <at> ornl <dot> gov)
  -----------------------------------------------------------------------------*/
-#ifndef TENSORS_FIRETENSOR_HPP_
-#define TENSORS_FIRETENSOR_HPP_
-
-#include "TensorProvider.hpp"
+#include "EigenTensor.hpp"
 
 namespace fire {
 
-class FireTensor : public TensorProvider {
+EigenTensor::EigenTensor(const int& r, std::vector<int>& dims) :
+		TensorProvider(r, dims) {
+	std::cout << "HELLO MY RANK IS " << r << "\n";
+}
 
-public:
+ITensor& EigenTensor::contract(ITensor& other, std::vector<std::pair<int, int>>& dimensions) {
+}
 
-	FireTensor(const int r, std::vector<int> dims);
+double EigenTensor::norm1() {
+	return 0.0;
+}
 
-	virtual ITensor& contract(ITensor& other);
+double EigenTensor::norm2() {
+	return 0.0;
+}
 
-	virtual ITensor& add(ITensor& other);
-
-};
+void EigenTensor::add(ITensor& other, double scale) {
 
 }
 
-#endif
+REGISTER_TENSORPROVIDER(EigenTensor, "eigen");
+
+}
+

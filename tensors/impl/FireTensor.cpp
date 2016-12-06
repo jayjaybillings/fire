@@ -29,81 +29,29 @@
 
  Author(s): Alex McCaskey (mccaskeyaj <at> ornl <dot> gov)
  -----------------------------------------------------------------------------*/
-
-#ifndef TENSORS_TENSORPROVIDER_HPP_
-#define TENSORS_TENSORPROVIDER_HPP_
-
-#include "ITensor.hpp"
-#include <string>
-#include <map>
-#include <vector>
-#include <iostream>
+#include "FireTensor.hpp"
 
 namespace fire {
 
-template<typename Scalar>
-class TensorData {
-
-private:
-
-	Scalar * data;
-
-};
-
-/**
- *
- */
-class TensorProvider : public virtual ITensor {
-
-protected:
-
-	const int rank = 0;
-
-	std::vector<int> dimensions;
-
-
-public:
-
-	TensorProvider(const int r, std::vector<int> dims) : rank(r), dimensions(dims) {}
-
-
-	static TensorProvider * create(const std::string& id, const int rank, std::vector<int> dims) {
-		auto iter = getConstructors().find(id);
-		return iter == getConstructors().end() ? nullptr : (*iter->second)(rank, dims);
-	}
-
-private:
-
-	typedef TensorProvider * TPCtor(const int rank, std::vector<int> dims);
-	typedef std::map<std::string, TPCtor*> CtorMap;
-
-	static CtorMap& getConstructors() {
-		static CtorMap constructors;
-		return constructors;
-	}
-
-	template<class T = int>
-	struct DynamicRegister {
-		static TensorProvider* create(const int rank, std::vector<int> dims) {
-			return new T(rank, dims);
-		}
-
-		static TPCtor * initialize (const std::string& id) {
-			return getConstructors()[id] = create;
-		}
-
-		static TPCtor * creator;
-
-	};
-
-};
-
-#define REGISTER_TENSORPROVIDER(T, STR) template<> fire::TensorProvider::TPCtor* \
-	fire::TensorProvider::DynamicRegister<T>::creator = \
-	fire::TensorProvider::DynamicRegister<T>::initialize(STR)
-
+FireTensor::FireTensor(const int r, std::vector<int> dims) :
+		TensorProvider(r, dims) {
+	std::cout << "HELLO MY RANK IS " << r << "\n";
 }
 
+ITensor& FireTensor::contract(ITensor& other, std::vector<std::pair<int, int>>& dimensions) {
+}
 
+double FireTensor::norm1() {
+	return 0.0;
+}
 
-#endif
+double FireTensor::norm2() {
+	return 0.0;
+}
+
+void FireTensor::add(ITensor& other, double scale) {
+}
+
+REGISTER_TENSORPROVIDER(FireTensor, "default");
+
+}
