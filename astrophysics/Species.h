@@ -59,18 +59,19 @@ struct Species {
 
 	/**
 	 * The total number of nucleons, equal to the sum of the atomic and neutron
-	 * numbers, in the nucleus of this species.
+	 * numbers, in the nucleus of this species. Commonly denoted "A."
 	 */
 	const int massNumber;
 
 	/**
 	 * The total number of protons in the nucleus of this species. Also known
-	 * as the proton number.
+	 * as the proton number. Commonly denoted "Z."
 	 */
 	const int atomicNumber;
 
 	/**
-	 * The total number of neutrons in the nucleus of this species.
+	 * The total number of neutrons in the nucleus of this species. Commonly
+	 * denoted "N."
 	 */
 	const int neutronNumber;
 
@@ -86,6 +87,11 @@ struct Species {
 	 * number.
 	 */
 	const double massExcess;
+
+	/**
+	 * The total flux in the species under current conditions.
+	 */
+	double flux;
 
 	/**
 	 * The constructor. This class is meant to be initialized from a vector of
@@ -111,9 +117,6 @@ struct Species {
 };
 
 } /* namespace astrophysics */
-
-// Instantiate a builder for the Species class.
-//template astrophysics::Species build(const std::vector<std::string> & values);
 
 } /* namespace fire */
 

@@ -100,6 +100,24 @@ BOOST_AUTO_TEST_CASE(checkLoading) {
 		double rate = reaction.prefactor*exp(sumCoeffs);
 		BOOST_REQUIRE_CLOSE(rate,reaction.rate,1.0e-8);
 	}
+	// Reset the network to use the appropriate temperature and density for this test.
+	network.computePrefactors(1.0e8);
+	network.computeRates(7.0);
+	// Make sure the rates are realistic under these conditions. It is sufficient to
+	// just check a couple.
+	BOOST_REQUIRE_CLOSE(103926.77067175004,network.reactions->at(0).rate,1.0e-8);
+	BOOST_REQUIRE_CLOSE(0.0,network.reactions->at(1).rate,1.0e-8);
+
+	// Check the flux values
+	vector<double> referenceFluxes =
+			{ 3692943778.241045, -7210391517.142347,
+			-155893155.846619, 3536467448.167465, 143648559.705471,
+			2510685.357474, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000,
+			0.000000, 0.000000, 0.000000, 0.000000, 0.000000 };
+	network.computeFluxes();
+	for (int i = 0; i < network.numSpecies; i++) {
+		BOOST_REQUIRE_CLOSE(referenceFluxes[i],network.species->at(i).flux,1.0e-10);
+	}
 
 	// Good enough for government work
 	return;

@@ -148,6 +148,18 @@ public:
 	 */
 	vector<unsigned short> fMinusMaximums;
 
+	/*
+	 * The total number of reactions that result in increases in flux. It is
+	 * also the number of entries in the fPlusMap member.
+	 */
+	int numFPlus;
+
+	/*
+	 * The total number of reactions that result in decreases in flux. It is
+	 * also the number of entries in the fMinusMap member.
+	 */
+	int numFMinus;
+
 	/**
 	 * This operation sets the properties of the network from a map. It is
 	 * designed to work with property blocks pulled from INI files. It expects
@@ -216,27 +228,25 @@ public:
 	void buildFluxMaps() {
 		// These tempInt blocks will become fPlusMap and fMinusMap eventually.
 		const size_t tempIntSize = numSpecies * numReactions / 2;
-		unsigned short tempInt1 [tempIntSize];
-		unsigned short tempInt2 [tempIntSize];
+		vector<int> tempInt1(tempIntSize,0);
+	    vector<int> tempInt2(tempIntSize,0);
 
 		// Access elements by reacMask[speciesIndex + species * reactionIndex].
-		int reacMask[numSpecies * numReactions]; // [species][reactions]
-		int numFluxPlus [numSpecies];
-		int numFluxMinus[numSpecies];
+		vector<int> reacMask(numSpecies * numReactions,0); // [species][reactions]
+		vector<int> numFluxPlus(numSpecies,0), numFluxMinus(numSpecies,0);
 
 		// Start of Guidry's original parseF() code
 		int incrementPlus = 0;
 		int incrementMinus = 0;
-
-		int totalFplus = 0;
-		int totalFminus = 0;
+		int localNumFPlus = 0, localNumFMinus = 0;
+		numFPlus = 0; numFMinus = 0;
 
 		// Loop over all isotopes in the network
 
 		for (int i = 0; i < numSpecies; i++) {
 			int total = 0;
-			int numFplus = 0;
-			int numFminus = 0;
+			localNumFPlus = 0;
+			localNumFMinus = 0;
 
 			// Loop over all possible reactions for this isotope, finding those that
 			// change its population up (contributing to F+) or down (contributing
@@ -267,14 +277,14 @@ public:
 
 				if (total > 0)       // Contributes to F- for this isotope
 						{
-					numFminus++;
+					localNumFMinus++;
 					reacMask[i + numSpecies * j] = -total;
-					tempInt2[incrementMinus + numFminus - 1] = j;
+					tempInt2[incrementMinus + localNumFMinus - 1] = j;
 				} else if (total < 0)  // Contributes to F+ for this isotope
 						{
-					numFplus++;
+					localNumFPlus++;
 					reacMask[i + numSpecies * j] = -total;
-					tempInt1[incrementPlus + numFplus - 1] = j;
+					tempInt1[incrementPlus + localNumFPlus - 1] = j;
 				} else               // Does not contribute to flux for this isotope
 				{
 					reacMask[i + numSpecies * j] = 0;
@@ -282,14 +292,14 @@ public:
 			}
 
 			// Keep track of the total number of F+ and F- terms in the network for all isotopes
-			totalFplus += numFplus;
-			totalFminus += numFminus;
+			numFPlus += localNumFPlus;
+			numFMinus += localNumFMinus;
 
-			numFluxPlus[i] = numFplus;
-			numFluxMinus[i] = numFminus;
+			numFluxPlus[i] = localNumFPlus;
+			numFluxMinus[i] = localNumFMinus;
 
-			incrementPlus += numFplus;
-			incrementMinus += numFminus;
+			incrementPlus += localNumFPlus;
+			incrementMinus += localNumFMinus;
 
 			// if (showParsing == 1)
 			// 	printf("%d %s numF+ = %d numF- = %d\n", i, isoLabel[i], numFplus, numFminus);
@@ -298,8 +308,8 @@ public:
 		// Create 1D arrays that will be used to map finite F+ and F- to the Flux array.
 		int FplusIsotopeCut[numSpecies];
 		int FminusIsotopeCut[numSpecies];
-		int FplusIsotopeIndex[totalFplus];
-		int FminusIsotopeIndex[totalFminus];
+		int FplusIsotopeIndex[numFPlus];
+		int FminusIsotopeIndex[numFMinus];
 
 		FplusIsotopeCut[0] = numFluxPlus[0];
 		FminusIsotopeCut[0] = numFluxMinus[0];
@@ -309,46 +319,46 @@ public:
 		}
 
 		int currentIso = 0;
-		for (int i = 0; i < totalFplus; i++) {
+		for (int i = 0; i < numFPlus; i++) {
 			FplusIsotopeIndex[i] = currentIso;
 			if (i == (FplusIsotopeCut[currentIso] - 1))
 				currentIso++;
 		}
 
 		currentIso = 0;
-		for (int i = 0; i < totalFminus; i++) {
+		for (int i = 0; i < numFMinus; i++) {
 			FminusIsotopeIndex[i] = currentIso;
 			if (i == (FminusIsotopeCut[currentIso] - 1))
 				currentIso++;
 		}
 
-		fPlusMap.resize(totalFplus);
-		for (int i = 0; i < totalFplus; i++) {
+		fPlusMap.resize(numFPlus);
+		for (int i = 0; i < numFPlus; i++) {
 			fPlusMap[i] = tempInt1[i];
 		}
-		fMinusMap.resize(totalFminus);
-		for (int i = 0; i < totalFminus; i++) {
+		fMinusMap.resize(numFMinus);
+		for (int i = 0; i < numFMinus; i++) {
 			fMinusMap[i] = tempInt2[i];
 		}
 
-		// Populate the FplusMin and FplusMax arrays
-		unsigned short FplusMin [numSpecies];
-		unsigned short FminusMin [numSpecies];
+		// Populate the fPlusMin and FplusMax arrays
+		unsigned short fPlusMin [numSpecies];
+		unsigned short fMinusMin [numSpecies];
 
-		FplusMin[0] = 0;
+		fPlusMin[0] = 0;
 		fPlusMaximums.resize(numSpecies);
 		fPlusMaximums[0] = numFluxPlus[0] - 1;
 		for (int i = 1; i < numSpecies; i++) {
-			FplusMin[i] = fPlusMaximums[i - 1] + 1;
-			fPlusMaximums[i] = FplusMin[i] + numFluxPlus[i] - 1;
+			fPlusMin[i] = fPlusMaximums[i - 1] + 1;
+			fPlusMaximums[i] = fPlusMin[i] + numFluxPlus[i] - 1;
 		}
-		// Populate the FminusMin and FminusMax arrays
-		FminusMin[0] = 0;
+		// Populate the fMinusMin and FminusMax arrays
+		fMinusMin[0] = 0;
 		fMinusMaximums.resize(numSpecies);
 		fMinusMaximums[0] = numFluxMinus[0] - 1;
 		for (int i = 1; i < numSpecies; i++) {
-			FminusMin[i] = fMinusMaximums[i - 1] + 1;
-			fMinusMaximums[i] = FminusMin[i] + numFluxMinus[i] - 1;
+			fMinusMin[i] = fMinusMaximums[i - 1] + 1;
+			fMinusMaximums[i] = fMinusMin[i] + numFluxMinus[i] - 1;
 		}
 
 		// Allocate the flux vectors
@@ -379,9 +389,10 @@ public:
 	}
 
 	/**
-	 * This function computes the prefactors for the reaction rates. It is primarily a
-	 * convenience function for configuring the reactions.
-	 * @param rho the current density in units of 10^8 g/m^3.
+	 * This function computes the prefactors for the reaction rates. It is
+	 * primarily a convenience function for configuring the reactions. The
+	 * prefactors are stored in the reactions themselves.
+	 * @param rho the current density in units of g/m^3.
 	 */
 	void computePrefactors(const double & rho) {
 		// Compute the factors.
@@ -391,8 +402,9 @@ public:
 	}
 
 	/**
-	 * This function computers the reaction rates. It is primarily a convenience function
-	 * for configuring the reactions.
+	 * This function computers the reaction rates. It is primarily a
+	 * convenience function for configuring the reactions. The rates are
+	 * stored in the rate member variable on the reaction itself.
 	 * @param temp the current temperature in units of 10^9 Kelvin.
 	 */
 	void computeRates(const double & temp) {
@@ -410,6 +422,71 @@ public:
 		for (Reaction & reaction : *reactions) {
 			reaction.setRate(tempValues);
 		}
+	}
+
+	/**
+	 * This operation computes the fluxes for the species in the network under
+	 * the given conditions. The fluxes are stored in the flux member variable
+	 * on the species itself.
+	 */
+	void computeFluxes() {
+
+		vector<double> reactionFlux(numReactions, 0);
+
+		// Compute the flux due to each reaction
+		for (int i = 0; i < numReactions; i++) {
+			Reaction & reaction = reactions->at(i);
+			// This computes the flux as the product of the rate times some
+			// power of the current abundance. It is written as presented below
+			// to (hopefully) streamline the performance. There is a branchless
+			// implementation too, but it isn't clear to me that it is faster.
+			// 1 Body
+			reactionFlux[i] = reaction.rate
+					* (species->at(reaction.reactants[0]).massFraction);
+			// 2 Body
+			if (reaction.numReactants > 1)
+				reactionFlux[i] *=
+						(species->at(reaction.reactants[1]).massFraction);
+			// 3 Body
+			else if (reaction.numReactants > 2)
+				reactionFlux[i] *=
+						(species->at(reaction.reactants[1]).massFraction)
+								* (species->at(reaction.reactants[2]).massFraction);
+		}
+
+		// Populate the incoming (fPlus) and outgoing flux (fMinus).
+		vector<double> fPlus(numFPlus, 0);
+		for (int i = 0; i < numFPlus; i++) {
+			fPlus[i] = fPlusFactors[i] * reactionFlux[fPlusMap[i]];
+		}
+		vector<double> fMinus(numFMinus, 0);
+		for (int i = 0; i < numFMinus; i++) {
+			fMinus[i] = fMinusFactors[i] * reactionFlux[fMinusMap[i]];
+		}
+
+		// Sum the F+ and F- for each isotope. These are "sub-arrays"
+		// of Fplus and Fminus at (F[+ or -] + minny) of size fPlusMaximums[i].
+		int minny;
+		vector<double> fPlusSum(numSpecies, 0);
+		vector<double> fMinusSum(numSpecies, 0);
+		for (int i = 0; i < numSpecies; i++) {
+			minny = (i > 0) ? fPlusMaximums[i - 1] + 1 : 0;
+			// Sum F+.
+			fPlusSum[i] = 0.0;
+			for (int j = minny; j <= fPlusMaximums[i]; j++) {
+				fPlusSum[i] += fPlus[j];
+			}
+			// Sum F-.
+			minny = (i > 0) ? fMinusMaximums[i - 1] + 1 : 0;
+			fMinusSum[i] = 0.0;
+			for (int j = minny; j <= fMinusMaximums[i]; j++) {
+				fMinusSum[i] += fMinus[j];
+			}
+			species->at(i).flux = fPlusSum[i] - fMinusSum[i];
+			cout << species->at(i).flux << endl;
+		}
+
+		return;
 	}
 
 };
