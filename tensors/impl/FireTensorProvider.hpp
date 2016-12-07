@@ -29,20 +29,67 @@
 
  Author(s): Alex McCaskey (mccaskeyaj <at> ornl <dot> gov)
  -----------------------------------------------------------------------------*/
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE Tensors
+#ifndef TENSORS_FIRETENSORPROVIDER_HPP_
+#define TENSORS_FIRETENSORPROVIDER_HPP_
 
-#include <boost/test/included/unit_test.hpp>
-#include "Tensor.hpp"
-#include "FireTensorProvider.hpp"
+#include "TensorProvider.hpp"
 
-using namespace boost;
+namespace fire {
 
-BOOST_AUTO_TEST_CASE(checkConstruction) {
+/**
+ *
+ */
+template<typename Scalar, int Rank>
+class FireTensorProvider: public TensorProvider<Scalar, Rank> {
 
-	// Construct an Eigen Tensor
-	fire::Tensor<double, 5> a(1, 2, 3, 4, 5);
+public:
 
-	// Construct a Fire Tensor
-	fire::Tensor<int, 3, FireTensor> b(1, 1, 1);
+	template<typename ... Args>
+	FireTensorProvider(int firstDim, Args ... dims) :
+			TensorProvider<Scalar, Rank>(firstDim, dims...) {
+	}
+
+	/**
+	 *
+	 * @param other
+	 * @param dimensions
+	 * @return
+	 */
+	virtual ITensor& contract(ITensor& other,
+			std::vector<std::pair<int, int>>& dimensions) {
+
+	}
+
+	/**
+	 *
+	 * @param other
+	 * @param scale
+	 * @return
+	 */
+	virtual void add(ITensor& other, double scale = 1.0) {
+
+	}
+
+	virtual double norm1() {
+
+	}
+
+	virtual double norm2() {
+
+	}
+
+	virtual ~FireTensorProvider() {}
+
+};
+
+class FireBuilder : ProviderBuilder {
+public:
+	template<typename Scalar, int Rank>
+    FireTensorProvider<Scalar, Rank> build() {
+	}
+};
 }
+
+using FireTensor = fire::FireBuilder;
+
+#endif
