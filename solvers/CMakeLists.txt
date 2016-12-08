@@ -59,18 +59,13 @@ if(MAGMA_ROOT)
     add_tests_with_flags("tests/example_v2.c" "${MAGMA_INCLUDE_DIRS}" 
                          "${MAGMA_LIBRARIES}" "${MAGMA_CFLAGS}")   
   endif(MAGMA_FOUND)
-endif()
+endif(MAGMA_ROOT)
 
 #Look for CVODE if the user set CVODE_ROOT
-if (CVODE_ROOT)
-  message(STATUS 
-     "CVODE support requested. Searching at CVODE_ROOT=${CVODE_ROOT}.")
-# FIXME! - Implement this!
-find_package(CVODE)
-if (CVODE_FOUND)
-   message(STATUS "Adding.... CVODE...")
-endif(CVODE_FOUND)
-endif()
+if(SUNDIALS_ROOT OR SPACK_ROOT)
+  message(STATUS "SUNDIALS support requested.")
+find_package(SUNDIALS)
+endif(SUNDIALS_ROOT OR SPACK_ROOT)
 
 #Add the source code to the library
 #add_library(${LIBRARY_NAME} STATIC ${SRC})
