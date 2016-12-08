@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# Copyright (c) 2015-, Jay Jay Billings
+# Copyright (c) 2015-, UT-Battelle, LLC
 # All rights reserved.
 #
 # Author Contact: Jay Jay Billings, jayjaybillings <at> gmail <dot> com
@@ -61,7 +61,16 @@ if(MAGMA_ROOT)
   endif(MAGMA_FOUND)
 endif()
 
-#FIXME!!!! Commented out so the build works fine tonight.
+#Look for CVODE if the user set CVODE_ROOT
+if (CVODE_ROOT)
+  message(STATUS 
+     "CVODE support requested. Searching at CVODE_ROOT=${CVODE_ROOT}.")
+# FIXME! - Implement this!
+find_package(CVODE)
+if (CVODE_FOUND)
+   message(STATUS "Adding.... CVODE...")
+endif(CVODE_FOUND)
+endif()
 
 #Add the source code to the library
 #add_library(${LIBRARY_NAME} STATIC ${SRC})
