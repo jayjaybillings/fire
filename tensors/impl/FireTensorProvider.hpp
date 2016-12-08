@@ -49,6 +49,9 @@ public:
 			TensorProvider<Scalar, Rank>(firstDim, dims...) {
 	}
 
+	virtual int dimension(int index) {
+	}
+
 	/**
 	 *
 	 * @param other
@@ -78,14 +81,15 @@ public:
 
 	}
 
-	virtual ~FireTensorProvider() {}
+	virtual ~FireTensorProvider() {
+	}
 
 };
 
-class FireBuilder : ProviderBuilder {
+class FireBuilder: ProviderBuilder {
 public:
 	template<typename Scalar, int Rank>
-    FireTensorProvider<Scalar, Rank> build() {
+	FireTensorProvider<Scalar, Rank> build() {
 	}
 };
 }

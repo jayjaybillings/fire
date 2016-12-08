@@ -43,7 +43,6 @@
 
 namespace fire {
 
-
 /**
  * The Tensor class provides an extensible data structure describing
  * tensors. It realizes the ITensor interface but delegates all
@@ -52,7 +51,7 @@ namespace fire {
  * extensible to any number of 3rd party tensor algebra libraries.
  */
 template<typename Scalar, int Rank, typename Builder = EigenTensor>
-class Tensor : public virtual ITensor {
+class Tensor { //: public virtual ITensor {
 
 private:
 
@@ -75,19 +74,37 @@ public:
 	 * @param firstDim The dimension of the first rank
 	 * @param otherDims The dimension of the remaining ranks
 	 */
-	template<typename... Dimension>
+	template<typename ... Dimension>
 	Tensor(int firstDim, Dimension ... otherDims) {
 		// Assert that our input parameters are consistent
-		static_assert( sizeof...(otherDims) + 1 == Rank, "Incorrect number of dimension integers");
-		static_assert( std::is_fundamental<Scalar>::value, "Fire Tensors can only contain C++ fundamental types (double, int, etc)." );
-		static_assert( std::is_base_of<ProviderBuilder, Builder>::value, "Third Tensor Template Parameter must be of type fire::ProviderBuilder.");
+		static_assert( sizeof...(otherDims) + 1 == Rank,
+				"Incorrect number of dimension integers");
+		static_assert( std::is_fundamental<Scalar>::value,
+				"Fire Tensors can only contain C++ fundamental types (double, int, etc)." );
+		static_assert( std::is_base_of<ProviderBuilder, Builder>::value,
+				"Third Tensor Template Parameter must be of type fire::ProviderBuilder.");
 
 		// Create the requested TensorProvider
 		provider = std::make_shared<Provider>(firstDim, otherDims...);
 	}
 
-	template<typename... Indices>
-	Scalar operator() (Indices... indices) const {
+	template<typename ... Indices>
+	Scalar& operator()(Indices ... indices) const {
+		return provider->operator()(indices...);
+	}
+
+	/**
+	 * Return the dimension of the given rank index.
+	 *
+	 * @param index The rank index
+	 * @return dim The dimension
+	 */
+	virtual int dimension(int index) {
+		return provider->dimension(index);
+	}
+
+	virtual int rank() {
+		return Rank;
 	}
 
 	/**
@@ -98,7 +115,8 @@ public:
 	 * @param dimensions The indices to contract
 	 * @return result The result of the contraction.
 	 */
-	virtual ITensor& contract(ITensor& other, std::vector<std::pair<int,int>>& dimensions) {
+	virtual auto contract(Tensor& other,
+			std::vector<std::pair<int, int>>& dimensions) -> decltype(Tensor<Scalar, Rank + other.rank() - 2>) {
 		return provider->contract(other, dimensions);
 	}
 
@@ -110,7 +128,7 @@ public:
 	 * @param scale Scale factor to multiply other tensor by before addition.
 	 */
 	virtual void add(ITensor& other, double scale = 1.0) {
-		 provider->add(other);
+		provider->add(other);
 	}
 
 	/**
@@ -136,8 +154,8 @@ public:
 	/**
 	 * The destructor
 	 */
-	virtual ~Tensor() {}
-
+	virtual ~Tensor() {
+	}
 
 };
 

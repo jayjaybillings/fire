@@ -38,6 +38,7 @@
 #include <vector>
 #include <iostream>
 #include <numeric>
+#include "Tensor.hpp"
 
 namespace fire {
 
@@ -88,6 +89,14 @@ public:
 	virtual double norm2() = 0;
 
 	/**
+	 * Return the dimension of the given rank index.
+	 *
+	 * @param index The rank index
+	 * @return dim The dimension
+	 */
+	virtual int dimension(int index) = 0;
+
+	/**
 	 * The destructor
 	 */
 	virtual ~ITensor() {
@@ -114,7 +123,7 @@ enum DEVICE {
  * @author Alex McCaskey
  */
 template<typename Scalar, int Rank>
-class TensorProvider: public virtual ITensor {
+class TensorProvider: public Tensor<Scalar, Rank> {
 
 protected:
 
@@ -158,8 +167,14 @@ public:
 		throw "Base TensorProvider does not have GPU support";
 	}
 
+	template<typename ... Indices>
+	Scalar& operator()(Indices ... indices) const {
+		throw "Base TensorProvider does not implement this method.";
+	}
 };
 
+// Create a struct name that derived types can inherit
+// to indicate to Fire that they are TensorProvider builders
 struct ProviderBuilder {};
 }
 
