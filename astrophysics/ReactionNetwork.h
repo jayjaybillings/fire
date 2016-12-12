@@ -483,7 +483,6 @@ public:
 				fMinusSum[i] += fMinus[j];
 			}
 			species->at(i).flux = fPlusSum[i] - fMinusSum[i];
-			cout << species->at(i).flux << endl;
 		}
 
 		return;

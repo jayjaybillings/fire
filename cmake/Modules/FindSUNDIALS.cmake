@@ -49,7 +49,7 @@
 #                                 under this path
 
 # Configure the basic set of libraries
-set(SUNDIALS_LIBRARIES_LIST sundials_cvode)
+set(SUNDIALS_LIBRARIES_LIST sundials_cvode sundials_nvecserial)
 
 # If Spack is available and SUNDIALS_ROOT specified, see if Spack has an
 # installation of Sundials hanging around.
@@ -67,14 +67,16 @@ endif(NOT SUNDIALS_ROOT AND SPACK_ROOT)
 # Assign the variables
 if(SUNDIALS_ROOT)
   message(STATUS "SUNDIALS found at ${SUNDIALS_ROOT}")
-  # Set base paths
+  # Set base paths - this is probably no robust enough if using a system
+  # installation on Fedora because it would use lib64 versus lib, although
+  # this will work just fine is Spack was used to install SUNDIALS.
   set(SUNDIALS_INCLUDE_DIRS "${SUNDIALS_ROOT}/include")
   set(SUNDIALS_LIBRARY_DIRS "${SUNDIALS_ROOT}/lib")
   # Find each library in the list by full path and add them to the master list.
   foreach(LIB ${SUNDIALS_LIBRARIES_LIST})
-       find_library(SUNDIALS_LIB NAMES ${LIB} HINTS ${SUNDIALS_LIBRARY_DIRS})
-       message(STATUS "Found SUNDIALS library ${LIB} at ${SUNDIALS_LIB}.")
-       set(SUNDIALS_LIBRARIES ${SUNDIALS_LIBRARIES} ${SUNDIALS_LIB})
+       find_library(SUNDIALS_${LIB} NAMES ${LIB} HINTS ${SUNDIALS_LIBRARY_DIRS})
+       message(STATUS "Found SUNDIALS library ${LIB} at ${SUNDIALS_${LIB}}.")
+       set(SUNDIALS_LIBRARIES ${SUNDIALS_LIBRARIES} ${SUNDIALS_${LIB}})
   endforeach()
   # Print some information for debugging, etc.
   message(STATUS "Found SUNDIALS libraries: ${SUNDIALS_LIBRARIES}")

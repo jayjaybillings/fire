@@ -51,20 +51,44 @@ if(MAGMA_ROOT)
   message(STATUS 
      "MAGMA support requested. Searching at MAGMA_ROOT=${MAGMA_ROOT}.")
   find_package(MAGMA)
-  # Add a MAGMA example to the unit tests to make sure Fire can build against it 
-  # correctly.
-  if(MAGMA_FOUND)
-    message(STATUS "Adding a MAGMA example to the tests to test integration.")
-    # Add the tests
-    add_tests_with_flags("tests/example_v2.c" "${MAGMA_INCLUDE_DIRS}" 
-                         "${MAGMA_LIBRARIES}" "${MAGMA_CFLAGS}")   
-  endif(MAGMA_FOUND)
+  # Add a MAGMA example to the unit tests to make sure Fire can build against 
+  # it correctly.
+  message(STATUS "Adding a MAGMA example to the tests to test integration.")
+  # Add the tests
+  add_tests_with_flags("tests/example_v2.c" "${MAGMA_INCLUDE_DIRS}" 
+                       "${MAGMA_LIBRARIES}" "${MAGMA_CFLAGS}")
+  # Add the libraries to the package library list
+  set(FIRE_SOLVERS_LIBRARIES ${FIRE_SOLVERS_LIBRARIES} ${MAGMA_LIBRARIES} 
+      PARENT_SCOPE)
+  # Add the include directories
+  set(FIRE_SOLVERS_INCLUDE_DIRS ${FIRE_SOLVERS_INCLUDE_DIRS} 
+      ${MAGMA_INCLUDE_DIRS} PARENT_SCOPE)
 endif(MAGMA_ROOT)
 
-#Look for CVODE if the user set CVODE_ROOT
+#Look for SUNDIALS if some hints are specified
 if(SUNDIALS_ROOT OR SPACK_ROOT)
+  # Find SUNDIALS
   message(STATUS "SUNDIALS support requested.")
-find_package(SUNDIALS)
+  find_package(SUNDIALS)
+  # SUNDIALS needs BLAS
+  find_package(BLAS)
+  # SUNDIALS needs LAPACK
+  find_package(LAPACK)
+  # SUNDIALS needs libm - the math library
+  find_library(mathlib NAMES "m")
+  set(SUNDIALS_LIBRARIES ${SUNDIALS_LIBRARIES} ${BLAS_LIBRARIES} 
+      ${LAPACK_LIBRARIES} ${mathlib})
+  # Add a SUNDIALS example to the unit tests to make sure Fire can build 
+  # against it correctly.
+  message(STATUS "Adding a SUNDIALS example to the tests to test integration.")
+  add_tests("tests/cvAdvDiff_bnd.c" "${SUNDIALS_INCLUDE_DIRS}"
+            "${SUNDIALS_LIBRARIES}")
+  # Add the libraries to the package library list
+  set(FIRE_SOLVERS_LIBRARIES ${FIRE_SOLVERS_LIBRARIES} ${SUNDIALS_LIBRARIES}
+      PARENT_SCOPE)
+  # Add the include directories
+  set(FIRE_SOLVERS_INCLUDE_DIRS ${FIRE_SOLVERS_INCLUDE_DIRS} 
+      ${SUNDIALS_INCLUDE_DIRS} PARENT_SCOPE)
 endif(SUNDIALS_ROOT OR SPACK_ROOT)
 
 #Add the source code to the library

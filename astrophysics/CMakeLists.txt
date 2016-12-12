@@ -51,14 +51,15 @@ file(GLOB SRC *.cpp)
     
 # Get the test files
 file(GLOB test_files tests/*Test.cpp)
+# Add the solver include libraries
+set(FIRE_ASTRO_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR} ${FIRE_SOLVERS_INCLUDE_DIRS})
 # Add the tests
-add_tests("${test_files}" "${CMAKE_CURRENT_SOURCE_DIR}" "")   
+add_tests("${test_files}" "${FIRE_ASTRO_INCLUDE_DIRS}" "${FIRE_SOLVERS_LIBRARIES}")   
 # Copy the data file for Species parsing tests
 configure_file(tests/CUDAnet_alpha.inp CUDAnet_alpha.inp COPYONLY)
 # Copy the data file for Reaction parsing tests
 configure_file(tests/rateLibrary_alpha.data rateLibrary_alpha.data COPYONLY)
 # Copy the parameter file for the network test
 configure_file(tests/alpha_gold.ini alpha_gold.ini COPYONLY)
-
 #Install the Fire header files
 install(FILES ${HEADERS} DESTINATION include)
