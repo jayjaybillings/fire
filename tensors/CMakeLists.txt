@@ -50,11 +50,19 @@ endif()
 #and glob them in HEADERS
 file(GLOB HEADERS *.hpp impl/*.hpp)
 
+#Grab all of the source files
+#file(GLOB FIRESRC impl/Fire*.cpp)
+#file(GLOB EIGENSRC impl/Eigen*.cpp)
+
+#Add the source code to the library
+#add_library(fire-tensor SHARED ${FIRESRC})
+#add_library(fire-tensor-eigen SHARED ${EIGENSRC})
+
 # Get the test files
 file(GLOB test_files tests/*Test.cpp)
 
 # Add the tests
-add_tests("${test_files}" "${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_SOURCE_DIR}/impl" "")   
+add_tests("${test_files}" "${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_SOURCE_DIR}/impl" "")#fire-tensor;fire-tensor-eigen")   
 
 #Install the Fire header files
 install(FILES ${HEADERS} DESTINATION include)

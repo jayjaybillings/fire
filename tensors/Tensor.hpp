@@ -39,30 +39,58 @@
 #include <iostream>
 #include <boost/variant.hpp>
 #include <numeric>
-#include "EigenTensorProvider.hpp"
+#include <TensorOperationProvider.hpp>
+#include "TensorShape.hpp"
+#include <unsupported/Eigen/CXX11/Tensor>
 
 namespace fire {
 
 /**
- * The Tensor class provides an extensible data structure describing
- * tensors. It realizes the ITensor interface but delegates all
- * actual tensor-work to a user-specified TensorProvider. This class enables
- * the expression of Tensors and operations on Tensors in a familiar way that is
- * extensible to any number of 3rd party tensor algebra libraries.
  */
-template<typename Scalar, int Rank, typename Builder = EigenTensor>
-class Tensor { //: public virtual ITensor {
+template<typename DerivedTensorBackend>
+class Tensor {
 
-private:
-
-	// This is some cool voodoo...
-	// Setting the type of the Provider based on the provided Builder.
-	using Provider = decltype(Builder().template build<Scalar, Rank>());
+protected:
 
 	/**
-	 * Reference to the TensorProvider backing this Tensor.
 	 */
-	std::shared_ptr<Provider> provider;
+	std::shared_ptr<DerivedTensorBackend> provider;
+
+	/**
+	 *
+	 */
+	std::shared_ptr<TensorShape> shape;
+
+	/**
+	 *
+	 * @param data
+	 * @param newShape
+	 */
+	Tensor(double * data, TensorShape& newShape) {
+
+		shape = std::make_shared<TensorShape>(newShape.dimensions());
+
+		// Create the requested TensorProvider
+		provider = std::make_shared<DerivedTensorBackend>();
+		if (!provider)
+			throw "Could not find provider";
+
+		provider->initializeFromData(data, newShape);
+
+	}
+
+	TensorReference createReference() {
+		auto ref = fire::make_tensor_reference(provider->getTensorData(),
+				*shape.get());
+		return ref;
+	}
+
+	Tensor<DerivedTensorBackend> createFromReference(TensorReference& ref) {
+		auto data = ref.first.data();
+		auto refShape = ref.second;
+		Tensor<DerivedTensorBackend> newTensor(data, refShape);
+		return newTensor;
+	}
 
 public:
 
@@ -76,81 +104,59 @@ public:
 	 */
 	template<typename ... Dimension>
 	Tensor(int firstDim, Dimension ... otherDims) {
-		// Assert that our input parameters are consistent
-		static_assert( sizeof...(otherDims) + 1 == Rank,
-				"Incorrect number of dimension integers");
-		static_assert( std::is_fundamental<Scalar>::value,
-				"Fire Tensors can only contain C++ fundamental types (double, int, etc)." );
-		static_assert( std::is_base_of<ProviderBuilder, Builder>::value,
-				"Third Tensor Template Parameter must be of type fire::ProviderBuilder.");
+
+		// assert rank is right number
+
+		shape = std::make_shared<TensorShape>(firstDim, otherDims...);
 
 		// Create the requested TensorProvider
-		provider = std::make_shared<Provider>(firstDim, otherDims...);
+		provider = std::make_shared<DerivedTensorBackend>();
+		if (!provider)
+			throw "Could not find provider";
+
+		provider->initialize(firstDim, otherDims...);
 	}
 
+	/**
+	 *
+	 * @param indices
+	 * @return
+	 */
 	template<typename ... Indices>
-	Scalar& operator()(Indices ... indices) const {
+	double& operator()(Indices ... indices) const {
 		return provider->operator()(indices...);
 	}
 
 	/**
-	 * Return the dimension of the given rank index.
 	 *
-	 * @param index The rank index
-	 * @return dim The dimension
+	 * @param other
+	 * @return
 	 */
-	virtual int dimension(int index) {
-		return provider->dimension(index);
-	}
-
-	virtual int rank() {
-		return Rank;
+	Tensor<DerivedTensorBackend> operator+(
+			Tensor<DerivedTensorBackend>& other) {
+		// Create a reference for other
+		auto otherReference = other.createReference();
+		auto ref = provider->addTensors(otherReference);
+		Tensor<DerivedTensorBackend> result = createFromReference(ref);
+		return result;
 	}
 
 	/**
-	 * See ITensor::contract for details on this method. Tensor delegates this
-	 * work to the TensorProvider.
 	 *
-	 * @param other The other Tensor to contract with
-	 * @param dimensions The indices to contract
-	 * @return result The result of the contraction.
+	 * @param index
+	 * @return
 	 */
-	virtual auto contract(Tensor& other,
-			std::vector<std::pair<int, int>>& dimensions) -> decltype(Tensor<Scalar, Rank + other.rank() - 2>) {
-		return provider->contract(other, dimensions);
+	int dimension(int index) {
+		return shape->dimension(index);
 	}
 
 	/**
-	 * See ITensor::add for details on this method. Tensor delegates this
-	 * work to the TensorProvider.
 	 *
-	 * @param other Tensor to add to this one.
-	 * @param scale Scale factor to multiply other tensor by before addition.
+	 * @return
 	 */
-	virtual void add(ITensor& other, double scale = 1.0) {
-		provider->add(other);
+	const int rank() {
+		return provider->rank();
 	}
-
-	/**
-	 * See ITensor::norm1 for details on this method. Tensor delegates this
-	 * work to the TensorProvider.
-	 *
-	 * @return norm The 1-norm value
-	 */
-	virtual double norm1() {
-		return provider->norm1();
-	}
-
-	/**
-	 * See ITensor::norm2 for details on this method. Tensor delegates this
-	 * work to the TensorProvider.
-	 *
-	 * @return norm The 2-norm value
-	 */
-	virtual double norm2() {
-		return provider->norm1();
-	}
-
 	/**
 	 * The destructor
 	 */
@@ -162,3 +168,4 @@ public:
 }
 
 #endif
+

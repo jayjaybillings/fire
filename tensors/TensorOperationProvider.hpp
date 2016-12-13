@@ -29,71 +29,76 @@
 
  Author(s): Alex McCaskey (mccaskeyaj <at> ornl <dot> gov)
  -----------------------------------------------------------------------------*/
-#ifndef TENSORS_FIRETENSORPROVIDER_HPP_
-#define TENSORS_FIRETENSORPROVIDER_HPP_
+#ifndef TENSORS_TENSOROPERATIONPROVIDER_HPP_
+#define TENSORS_TENSOROPERATIONPROVIDER_HPP_
 
-#include "TensorProvider.hpp"
+#include <memory>
+#include <string>
+#include <map>
+#include <vector>
+#include <iostream>
+#include <boost/variant.hpp>
+#include <numeric>
+#include "TensorShape.hpp"
 
 namespace fire {
 
-/**
- *
- */
-template<typename Scalar, int Rank>
-class FireTensorProvider: public TensorProvider<Scalar, Rank> {
+using TensorReference = std::pair<std::vector<double>, TensorShape>;
 
-public:
-
-	template<typename ... Args>
-	FireTensorProvider(int firstDim, Args ... dims) :
-			TensorProvider<Scalar, Rank>(firstDim, dims...) {
-	}
-
-	virtual int dimension(int index) {
-	}
-
-	/**
-	 *
-	 * @param other
-	 * @param dimensions
-	 * @return
-	 */
-	virtual ITensor& contract(ITensor& other,
-			std::vector<std::pair<int, int>>& dimensions) {
-
-	}
-
-	/**
-	 *
-	 * @param other
-	 * @param scale
-	 * @return
-	 */
-	virtual void add(ITensor& other, double scale = 1.0) {
-
-	}
-
-	virtual double norm1() {
-
-	}
-
-	virtual double norm2() {
-
-	}
-
-	virtual ~FireTensorProvider() {
-	}
-
-};
-
-class FireBuilder: ProviderBuilder {
-public:
-	template<typename Scalar, int Rank>
-	FireTensorProvider<Scalar, Rank> build() {
-	}
-};
+TensorReference make_tensor_reference(double* data, TensorShape& shape) {
+	std::vector<double> v;
+	std::copy(data, data + shape.size(), std::back_inserter(v));
+	auto pair = std::make_pair(v, shape);
+	return pair;
 }
 
-using FireTensor = fire::FireBuilder;
+
+/**
+ *
+ * @author Alex McCaskey
+ */
+template<typename Derived>
+class TensorOperationProvider  {
+
+private:
+
+	Derived& getAsDerived() {
+		return *static_cast<Derived*>(this);
+	}
+
+public:
+
+	TensorOperationProvider() {
+	}
+
+	template<typename ... Dimensions>
+	void initialize(int firstDim, Dimensions... otherDims) {
+		getAsDerived().initializeTensorBackend(firstDim, otherDims...);
+	}
+
+	void initializeFromData(double * data, TensorShape& shape) {
+		getAsDerived().initializeTensorBackendWithData(data, shape);
+	}
+
+	template<typename... Indices>
+	double& operator()(Indices... indices) {
+		return getAsDerived().tensorCoefficient(indices...);
+	}
+
+	double* getTensorData() {
+		return getAsDerived().data();
+	}
+
+	TensorReference addTensors(TensorReference& other) {
+		auto r = getAsDerived().add(other);
+		return r;
+	}
+
+	const int rank() {
+		return getAsDerived().getRank();
+	}
+};
+
+}
 
 #endif
