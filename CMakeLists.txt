@@ -82,7 +82,7 @@ add_subdirectory(integrators)
 add_subdirectory(solvers)
 add_subdirectory(tensors)
 # Add the domain source directories
-add_subdirectory(astrophysics)
+#add_subdirectory(astrophysics)
 # Add the third party libraries
 ADD_SUBDIRECTORY(tpls)
     

@@ -43,11 +43,11 @@ BOOST_AUTO_TEST_CASE(checkConstruction) {
 
 	fire::Tensor<fire::EigenTensorOperationProvider<5>> a(1, 2, 3, 4, 5);
 
-	BOOST_VERIFY (a.dimension(0) == 1);
-	BOOST_VERIFY (a.dimension(1) == 2);
-	BOOST_VERIFY (a.dimension(2) == 3);
-	BOOST_VERIFY (a.dimension(3) == 4);
-	BOOST_VERIFY (a.dimension(4) == 5);
+	BOOST_VERIFY(a.dimension(0) == 1);
+	BOOST_VERIFY(a.dimension(1) == 2);
+	BOOST_VERIFY(a.dimension(2) == 3);
+	BOOST_VERIFY(a.dimension(3) == 4);
+	BOOST_VERIFY(a.dimension(4) == 5);
 
 	int counter = 0;
 	for (int i = 0; i < 1; i++) {
@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(checkConstruction) {
 				for (int l = 0; l < 4; l++) {
 					for (int m = 0; m < 5; m++) {
 						counter++;
-						BOOST_VERIFY(a(i,j,k,l,m) == 0.0);
+						BOOST_VERIFY(a(i, j, k, l, m) == 0.0);
 					}
 				}
 			}
@@ -64,42 +64,47 @@ BOOST_AUTO_TEST_CASE(checkConstruction) {
 	}
 	BOOST_VERIFY(counter == 120);
 
-	fire::Tensor<fire::EigenTensorOperationProvider<3>> epsilon(3,3,3);
-	epsilon(0,1,2) = 1;
-	BOOST_VERIFY(epsilon(0,1,2) == 1);
-	epsilon(1,2,0) = 1;
-	BOOST_VERIFY(epsilon(1,2,0) == 1);
-	epsilon(2,0,1) = 1;
-	BOOST_VERIFY(epsilon(2,0,1) == 1);
-	epsilon(1,0,2) = -1;
-	BOOST_VERIFY(epsilon(1,0,2) == -1);
-	epsilon(2,1,0) = -1;
-	BOOST_VERIFY(epsilon(2,1,0) == -1);
-	epsilon(0,2,1) = -1;
-	BOOST_VERIFY(epsilon(0,2,1) == -1);
+	fire::Tensor<fire::EigenTensorOperationProvider<3>> epsilon(3, 3, 3);
+	epsilon(0, 1, 2) = 1;
+	BOOST_VERIFY(epsilon(0, 1, 2) == 1);
+	epsilon(1, 2, 0) = 1;
+	BOOST_VERIFY(epsilon(1, 2, 0) == 1);
+	epsilon(2, 0, 1) = 1;
+	BOOST_VERIFY(epsilon(2, 0, 1) == 1);
+	epsilon(1, 0, 2) = -1;
+	BOOST_VERIFY(epsilon(1, 0, 2) == -1);
+	epsilon(2, 1, 0) = -1;
+	BOOST_VERIFY(epsilon(2, 1, 0) == -1);
+	epsilon(0, 2, 1) = -1;
+	BOOST_VERIFY(epsilon(0, 2, 1) == -1);
 
-	fire::Tensor<fire::EigenTensorOperationProvider<4>> grassmannIdentity(3,3,3,3);
+	fire::Tensor<fire::EigenTensorOperationProvider<4>> grassmannIdentity(3, 3,
+			3, 3);
 	for (int i = 0; i < 3; i++) {
-	  for (int j = 0; j < 3; j++) {
-	    for (int k = 0; k < 3; k++) {
-	      for (int l = 0; l < 3; l++) {
-	        for (int m = 0; m < 3; m++) {
-	          grassmannIdentity(i,j,l,m) += epsilon(i,j,k) * epsilon(k,l,m);
-	        }
-	      }
-	    }
-	  }
+		for (int j = 0; j < 3; j++) {
+			for (int k = 0; k < 3; k++) {
+				for (int l = 0; l < 3; l++) {
+					for (int m = 0; m < 3; m++) {
+						grassmannIdentity(i, j, l, m) += epsilon(i, j, k)
+								* epsilon(k, l, m);
+					}
+				}
+			}
+		}
 	}
 
 	// verify
 	for (int i = 0; i < 3; i++) {
-	  for (int j = 0; j < 3; j++) {
-	    for (int l = 0; l < 3; l++) {
-	      for (int m = 0; m < 3; m++) {
-	        BOOST_VERIFY(grassmannIdentity(i,j,l,m) == (int(i == l) * int(j == m) - int(i == m) * int(j == l)));
-	      }
-	    }
-	  }
+		for (int j = 0; j < 3; j++) {
+			for (int l = 0; l < 3; l++) {
+				for (int m = 0; m < 3; m++) {
+					BOOST_VERIFY(
+							grassmannIdentity(i, j, l, m)
+									== (int(i == l) * int(j == m)
+											- int(i == m) * int(j == l)));
+				}
+			}
+		}
 	}
 
 	// dimensionalities
@@ -109,22 +114,69 @@ BOOST_AUTO_TEST_CASE(checkConstruction) {
 }
 
 BOOST_AUTO_TEST_CASE(checkAddition) {
-	fire::Tensor<fire::EigenTensorOperationProvider<2>> a(2,2);
-	fire::Tensor<fire::EigenTensorOperationProvider<2>> b(2,2);
+	fire::Tensor<fire::EigenTensorOperationProvider<2>> a(2, 2);
+	fire::Tensor<fire::EigenTensorOperationProvider<2>> b(2, 2);
 
-	a(0,0) = 1;
-	b(0,0) = 1;
+	a(0, 0) = 1;
+	b(0, 0) = 1;
 
 	auto result = a + b;
 
-	BOOST_VERIFY(result.rank() == 2);
+	BOOST_VERIFY(result.getRank() == 2);
 	BOOST_VERIFY(result.dimension(0) == 2);
 	BOOST_VERIFY(result.dimension(1) == 2);
-	BOOST_VERIFY(result(0,0) == 2);
-	BOOST_VERIFY(result(0,1) == 0);
-	BOOST_VERIFY(result(1,0) == 0);
-	BOOST_VERIFY(result(1,1) == 0);
+	BOOST_VERIFY(result(0, 0) == 2);
+	BOOST_VERIFY(result(0, 1) == 0);
+	BOOST_VERIFY(result(1, 0) == 0);
+	BOOST_VERIFY(result(1, 1) == 0);
 
-	fire::Tensor<fire::EigenTensorOperationProvider<2>> expected(2,2);
+	fire::Tensor<fire::EigenTensorOperationProvider<2>> expected(2, 2);
+}
+
+BOOST_AUTO_TEST_CASE(checkEquality) {
+	fire::Tensor<fire::EigenTensorOperationProvider<2>> a(2, 2);
+	fire::Tensor<fire::EigenTensorOperationProvider<2>> b(2, 2);
+
+	a(0, 0) = 1;
+	b(0, 0) = 1;
+
+	BOOST_VERIFY(a == b);
+
+	a(0,0) = 2;
+
+	BOOST_VERIFY(!(a == b));
+	BOOST_VERIFY(a != b);
+}
+
+BOOST_AUTO_TEST_CASE(checkContraction) {
+
+	using namespace fire;
+
+	Tensor<fire::EigenTensorOperationProvider<2>> mat1(2, 3);
+	Tensor<fire::EigenTensorOperationProvider<2>> mat2(2, 3);
+	Tensor<fire::EigenTensorOperationProvider<2>> mat3(3, 2);
+
+//	  mat1.setRandom();
+//	  mat2.setRandom();
+//	  mat3.setRandom();
+
+	  Tensor<fire::EigenTensorOperationProvider<2>> mat4(3,3);
+
+	  std::array<std::pair<int,int>, 1> contractionIndices;
+	  contractionIndices[0] = std::make_pair(0,0);
+	  mat1.contract(mat2, contractionIndices);
+
+
+	  BOOST_VERIFY(mat4(0,0) == (mat1(0,0)*mat2(0,0) + mat1(1,0)*mat2(1,0)));
+	  BOOST_VERIFY(mat4(0,1) == (mat1(0,0)*mat2(0,1) + mat1(1,0)*mat2(1,1)));
+	  BOOST_VERIFY(mat4(0,2) == (mat1(0,0)*mat2(0,2) + mat1(1,0)*mat2(1,2)));
+	  BOOST_VERIFY(mat4(1,0) == (mat1(0,1)*mat2(0,0) + mat1(1,1)*mat2(1,0)));
+	  BOOST_VERIFY(mat4(1,1) == (mat1(0,1)*mat2(0,1) + mat1(1,1)*mat2(1,1)));
+	  BOOST_VERIFY(mat4(1,2) == (mat1(0,1)*mat2(0,2) + mat1(1,1)*mat2(1,2)));
+	  BOOST_VERIFY(mat4(2,0) == (mat1(0,2)*mat2(0,0) + mat1(1,2)*mat2(1,0)));
+	  BOOST_VERIFY(mat4(2,1) == (mat1(0,2)*mat2(0,1) + mat1(1,2)*mat2(1,1)));
+	  BOOST_VERIFY(mat4(2,2) == (mat1(0,2)*mat2(0,2) + mat1(1,2)*mat2(1,2)));
+
+
 
 }

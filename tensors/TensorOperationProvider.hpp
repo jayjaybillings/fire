@@ -40,8 +40,14 @@
 #include <boost/variant.hpp>
 #include <numeric>
 #include "TensorShape.hpp"
+#include "build.h"
 
 namespace fire {
+
+template <typename T> struct array_size;
+template<class T, std::size_t N> struct array_size<std::array<T,N> > {
+  static const size_t value = N;
+};
 
 using TensorReference = std::pair<std::vector<double>, TensorShape>;
 
@@ -85,6 +91,10 @@ public:
 		return getAsDerived().tensorCoefficient(indices...);
 	}
 
+	bool equalTensors(TensorReference& other) {
+		return getAsDerived().checkEquality(other);
+	}
+
 	double* getTensorData() {
 		return getAsDerived().data();
 	}
@@ -94,9 +104,19 @@ public:
 		return r;
 	}
 
-	const int rank() {
+	static constexpr int getRank() {
 		return getAsDerived().getRank();
 	}
+
+	template<typename OtherDerived, typename ContractionDims>
+	TensorReference contract(OtherDerived& t2, ContractionDims indices) {
+		getAsDerived().executeContraction(t2, indices);
+	}
+
+//	template<const int r>
+//	createNewBackend() {
+//
+//	}
 };
 
 }
