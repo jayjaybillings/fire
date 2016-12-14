@@ -82,6 +82,8 @@ protected:
 	 */
 	std::shared_ptr<TensorShape> shape;
 
+public:
+
 	/**
 	 * The constructor, takes a TensorReference
 	 * which encapsulates the 1-D array of tensor
@@ -104,8 +106,6 @@ protected:
 		provider->initializeFromReference(reference);
 
 	}
-
-public:
 
 	/**
 	 * The constructor for creating Tensors of any shape. The number
@@ -226,7 +226,11 @@ public:
 	 * @param other
 	 */
 	template<typename OtherDerived>
-	void operator*(OtherDerived& other) {
+	Tensor<DerivedTensorBackend::getRank() * OtherDerived::getRank(),
+			DerivedTensorBackendBuilder, Scalar> operator*(
+			OtherDerived& other) {
+		auto emptyIndices = std::array<std::pair<int,int>, 0>{{}};
+		return contract(other, emptyIndices);
 	}
 
 	/**

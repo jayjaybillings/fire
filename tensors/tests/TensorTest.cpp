@@ -41,8 +41,6 @@ BOOST_AUTO_TEST_CASE(checkConstruction) {
 
 	fire::Tensor<5> a(1, 2, 3, 4, 5);
 
-//	fire::Tensor<2, fire::EigenBuilder> b(1,1);
-
 	BOOST_VERIFY(a.dimension(0) == 1);
 	BOOST_VERIFY(a.dimension(1) == 2);
 	BOOST_VERIFY(a.dimension(2) == 3);
@@ -151,7 +149,6 @@ BOOST_AUTO_TEST_CASE(checkEquality) {
 BOOST_AUTO_TEST_CASE(checkContraction) {
 
 	using namespace fire;
-
 	using IndexPair = std::pair<int,int>;
 
 	Tensor<2> mat1(2, 3);
@@ -185,6 +182,31 @@ BOOST_AUTO_TEST_CASE(checkContraction) {
 	BOOST_VERIFY(
 			mat4(2, 2) == (mat1(0, 2) * mat2(0, 2) + mat1(1, 2) * mat2(1, 2)));
 
+}
 
+BOOST_AUTO_TEST_CASE(checkTensorProduct) {
+	using namespace fire;
+	using IndexPair = std::pair<int,int>;
 
+	Tensor<2> mat1(2, 3);
+	Tensor<2> mat2(4, 1);
+	mat1.setRandom();
+	mat2.setRandom();
+
+	// Note user must know tensor product produces rank n*m
+	Tensor<4> result = mat1 * mat2;
+
+	BOOST_VERIFY(result.dimension(0) == 2);
+	BOOST_VERIFY(result.dimension(1) == 3);
+	BOOST_VERIFY(result.dimension(2) == 4);
+	BOOST_VERIFY(result.dimension(3) == 1);
+	for (int i = 0; i < result.dimension(0); ++i) {
+		for (int j = 0; j < result.dimension(1); ++j) {
+			for (int k = 0; k < result.dimension(2); ++k) {
+				for (int l = 0; l < result.dimension(3); ++l) {
+					BOOST_VERIFY(result(i, j, k, l) == mat1(i, j) * mat2(k, l));
+				}
+			}
+		}
+	}
 }
