@@ -196,6 +196,11 @@ public:
 		return newRef;
 	}
 
+	template<typename InitList>
+	void setTensorValues(InitList& vals) {
+		tensor->setValues(vals);
+	}
+
 	/**
 	 * Set the Eigen Tensor values to random values.
 	 */

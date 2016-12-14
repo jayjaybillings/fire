@@ -38,28 +38,9 @@
 #include <vector>
 #include <iostream>
 #include "TensorShape.hpp"
+#include "TensorUtils.hpp"
 
 namespace fire {
-
-/**
- * This utility template enables the use of std::array size integer.
- */
-template <typename T> struct array_size;
-template<class T, std::size_t N> struct array_size<std::array<T,N> > {
-  static const size_t value = N;
-};
-
-// A TensorReference is just a pair of the Tensors data array and its TensorShape
-using TensorReference = std::pair<std::vector<double>, TensorShape>;
-
-// Utility method for creating TensorReferences.
-TensorReference make_tensor_reference(double* data, TensorShape& shape) {
-	std::vector<double> v;
-	std::copy(data, data + shape.size(), std::back_inserter(v));
-	auto pair = std::make_pair(v, shape);
-	return pair;
-}
-
 
 /**
  * The TensorProvider is the base class for injecting 3rd-party
@@ -189,6 +170,15 @@ public:
 		return getAsDerived().executeContraction(t2, indices);
 	}
 
+	/**
+	 * Set the tensor values using nested initializer_list
+	 *
+	 * @param vals The values as a nest std::initializer_lists
+	 */
+	template <typename InitList>
+	void setValues(InitList& vals) {
+		getAsDerived().setTensorValues(vals);
+	}
 	/**
 	 * Set the tensor values wrapped by this TensorProvider to random values.
 	 */

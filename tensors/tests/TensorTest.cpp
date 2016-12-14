@@ -210,3 +210,18 @@ BOOST_AUTO_TEST_CASE(checkTensorProduct) {
 		}
 	}
 }
+
+BOOST_AUTO_TEST_CASE(checkSetValuesInitializerList) {
+	using namespace fire;
+
+	Tensor<2> t(2,3);
+
+	t.setValues({{0,1,2},{3,4,5}});
+
+	BOOST_VERIFY(t(0,0) == 0);
+	BOOST_VERIFY(t(0,1) == 1);
+	BOOST_VERIFY(t(0,2) == 2);
+	BOOST_VERIFY(t(1,0) == 3);
+	BOOST_VERIFY(t(1,1) == 4);
+	BOOST_VERIFY(t(1,2) == 5);
+}

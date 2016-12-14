@@ -271,6 +271,18 @@ public:
 	}
 
 	/**
+	 * Set the tensor values using nested initializer_list
+	 *
+	 * @param vals The values as a nest std::initializer_lists
+	 */
+	void setValues(
+			const typename fire::Initializer<
+					Tensor<Rank, DerivedTensorBackendBuilder, Scalar>, Scalar,
+					Rank>::InitList& vals) {
+		provider->setValues(vals);
+	}
+
+	/**
 	 * The destructor
 	 */
 	virtual ~Tensor() {
