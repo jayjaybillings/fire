@@ -91,7 +91,8 @@ public:
 	 * @param reference
 	 */
 	void initializeTensorBackendWithReference(TensorReference& reference) {
-		Eigen::TensorMap<Eigen::Tensor<Scalar, Rank>> t = getEigenTensorFromReference(reference);
+		Eigen::TensorMap<Eigen::Tensor<Scalar, Rank>> t =
+				getEigenTensorFromReference(reference);
 		tensor = std::make_shared<EigenTensor>(t);
 	}
 
@@ -127,8 +128,7 @@ public:
 	 * @param indices The contraction indices.
 	 * @return result The contraction result as a TensorReference
 	 */
-	template<typename OtherDerived,
-			typename ContractionDims>
+	template<typename OtherDerived, typename ContractionDims>
 	TensorReference executeContraction(OtherDerived& t2,
 			ContractionDims& cIndices) {
 
@@ -196,9 +196,23 @@ public:
 		return newRef;
 	}
 
+	/**
+	 * Set the Eigen Tensor values using nested initializer_list
+	 *
+	 * @param vals The values as a nest std::initializer_lists
+	 */
 	template<typename InitList>
 	void setTensorValues(InitList& vals) {
 		tensor->setValues(vals);
+	}
+
+	/**
+	 * Output this Eigen Tensor to the provided output stream.
+	 *
+	 * @param outputStream The output stream to write the tensor to.
+	 */
+	void printTensor(std::ostream& stream) {
+		stream << *tensor.get();
 	}
 
 	/**
@@ -206,6 +220,56 @@ public:
 	 */
 	void fillWithRandomValues() {
 		tensor->setRandom();
+	}
+
+	/**
+	 * Multiply all elements of this Eigen Tensor by the provided Scalar.
+	 *
+	 * @param val Scalar to multiply this tensor by.
+	 * @return result A TensorReference representing the result
+	 */
+	TensorReference scalarProduct(Scalar& val) {
+		Eigen::Tensor<Scalar, Rank> result = tensor->operator*(val);
+		// Create TensorShape
+		std::vector<int> dimensions(Rank);
+		for (int i = 0; i < Rank; i++) {
+			dimensions[i] = result.dimension(i);
+		}
+		TensorShape newShape(dimensions);
+
+		// Create and return a reference to the new Tensor.
+		TensorReference newReference = fire::make_tensor_reference(
+				result.data(), newShape);
+
+		return newReference;
+	}
+
+	/**
+	 * Reshape the Eigen Tensor with a new array of dimensions
+	 *
+	 * @param array Array of new dimensions for each rank index
+	 * @return reshapedTensor A TensorReference representing new reshaped tensor.
+	 */
+	template<typename DimArray>
+	TensorReference reshapeTensor(DimArray& array) {
+
+		static constexpr int newRank = array_size<DimArray>::value;
+
+		Eigen::Tensor<Scalar, newRank> result =
+				tensor->reshape(array);
+
+		// Create TensorShape
+		std::vector<int> dimensions(newRank);
+		for (int i = 0; i < newRank; i++) {
+			dimensions[i] = result.dimension(i);
+		}
+		TensorShape newShape(dimensions);
+
+		// Create and return a reference to the new Tensor.
+		TensorReference newReference = fire::make_tensor_reference(
+				result.data(), newShape);
+
+		return newReference;
 	}
 
 };
@@ -216,10 +280,10 @@ public:
  * class to appropriately construct a TensorProvider
  * backed by Eigen Tensors.
  */
-class EigenProvider : ProviderBuilder {
+class EigenProvider: ProviderBuilder {
 public:
 	template<const int Rank, typename Scalar>
-    EigenTensorProvider<Rank, Scalar> build() {
+	EigenTensorProvider<Rank, Scalar> build() {
 		EigenTensorProvider<Rank, Scalar> prov;
 		return prov;
 	}

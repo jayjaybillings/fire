@@ -224,4 +224,46 @@ BOOST_AUTO_TEST_CASE(checkSetValuesInitializerList) {
 	BOOST_VERIFY(t(1,0) == 3);
 	BOOST_VERIFY(t(1,1) == 4);
 	BOOST_VERIFY(t(1,2) == 5);
+
+	std::cout << "Checking setValues with initializer_list.\nTensor<2>(2,3) = \n";
+	t.print(std::cout);
+	std::cout << std::endl;
+}
+
+BOOST_AUTO_TEST_CASE(checkScalarMultiply) {
+	using namespace fire;
+
+	Tensor<2> s(2,3);
+
+	s.setValues({{0,1,2},{3,4,5}});
+
+	Tensor<2> t = s*2.0;
+
+	BOOST_VERIFY(t(0,0) == 0);
+	BOOST_VERIFY(t(0,1) == 2);
+	BOOST_VERIFY(t(0,2) == 4);
+	BOOST_VERIFY(t(1,0) == 6);
+	BOOST_VERIFY(t(1,1) == 8);
+	BOOST_VERIFY(t(1,2) == 10);
+
+	std::cout << "Checking setValues with initializer_list.\nTensor<2>(2,3) = \n";
+	t.print(std::cout);
+
+}
+
+BOOST_AUTO_TEST_CASE(checkTensorReshape) {
+	using namespace fire;
+
+	Tensor<2> tensor(7,11);
+
+	std::array<int, 3> newShape{{7,11,1}};
+
+	Tensor<3> reShapedTensor = tensor.reshape(newShape);
+
+	BOOST_VERIFY(reShapedTensor.getRank() == 3);
+	BOOST_VERIFY(reShapedTensor.dimension(0) == 7);
+	BOOST_VERIFY(reShapedTensor.dimension(1) == 11);
+	BOOST_VERIFY(reShapedTensor.dimension(2) == 1);
+
+
 }

@@ -72,6 +72,9 @@ protected:
 	// Get reference to the type the provided builder builds.
 	using DerivedTensorBackend = decltype(DerivedTensorBackendBuilder().template build<Rank, Scalar>());
 
+	// This makes typing easier...
+	using ThisTensorType = Tensor<Rank, DerivedTensorBackendBuilder, Scalar>;
+
 	/**
 	 * Reference to the backend tensor algebra provider.
 	 */
@@ -154,8 +157,7 @@ public:
 	 * @param other The tensor to add to this one
 	 * @return result A new tensor representing the sum of this and other.
 	 */
-	Tensor<Rank, DerivedTensorBackendBuilder, Scalar> operator+(
-			Tensor<Rank, DerivedTensorBackendBuilder, Scalar>& other) {
+	ThisTensorType operator+(ThisTensorType& other) {
 		// Create a reference for other
 		auto otherReference = other.createReference();
 		auto ref = provider->addTensors(otherReference);
@@ -171,7 +173,7 @@ public:
 	 * @param other The tensor to check equality against.
 	 * @return equal A boolean indicating if these Tensors are equal
 	 */
-	bool operator==(Tensor<Rank, DerivedTensorBackendBuilder, Scalar>& other) {
+	bool operator==(ThisTensorType& other) {
 		auto ref = other.createReference();
 		return provider->equalTensors(ref);
 	}
@@ -184,7 +186,7 @@ public:
 	 * @return notEqual A boolean indicating if these Tensors are not equal
 	 *
 	 */
-	bool operator!=(Tensor<Rank, DerivedTensorBackendBuilder, Scalar>& other) {
+	bool operator!=(ThisTensorType& other) {
 		return !operator==(other);
 	}
 
@@ -222,14 +224,15 @@ public:
 	}
 
 	/**
-	 *
+	 * This operator performs the tensor product operation on thi s
+	 * Tensor and the provided other tensor.
 	 * @param other
 	 */
 	template<typename OtherDerived>
 	Tensor<DerivedTensorBackend::getRank() * OtherDerived::getRank(),
 			DerivedTensorBackendBuilder, Scalar> operator*(
 			OtherDerived& other) {
-		auto emptyIndices = std::array<std::pair<int,int>, 0>{{}};
+		auto emptyIndices = std::array<std::pair<int, int>, 0> { { } };
 		return contract(other, emptyIndices);
 	}
 
@@ -271,17 +274,84 @@ public:
 	}
 
 	/**
-	 * Set the tensor values using nested initializer_list
+	 * Set the tensor values using nested initializer_list. For a Tensor of
+	 * rank N, this method takes an std::initializer_list with N nested
+	 * std::initializer_lists. The deepest nested list should contain M scalars
+	 * where M is the size of the LAST dimension of the Tensor. An example:
+	 *
+	 * @code
+	 * Tensor<2> tensor(2,3);
+	 * tensor.setValues({{1, 2, 3},{4, 5, 6}});
+	 * @endcode
 	 *
 	 * @param vals The values as a nest std::initializer_lists
 	 */
 	void setValues(
-			const typename fire::Initializer<
-					Tensor<Rank, DerivedTensorBackendBuilder, Scalar>, Scalar,
-					Rank>::InitList& vals) {
+			const typename fire::Initializer<ThisTensorType, Scalar, Rank>::InitList& vals) {
 		provider->setValues(vals);
 	}
 
+	/**
+	 * Multiply all elements of this Tensor by the provided Scalar.
+	 *
+	 * @param val Scalar to multiply this tensor by.
+	 * @return result A TensorReference representing the result
+	 */
+	ThisTensorType operator*(Scalar val) {
+		auto ref = provider->template multiplyByScalar<Scalar>(val);
+		ThisTensorType result(ref);
+		return result;
+	}
+
+	/**
+	 * Output this Tensor to the provided output stream.
+	 *
+	 * @param outputStream The output stream to write the tensor to.
+	 */
+	void print(std::ostream& outputStream) {
+		provider->print(outputStream);
+	}
+
+	/**
+	 * Return the total number of elements in this tensor.
+	 * @return
+	 */
+	const int size() {
+		return shape->size();
+	}
+
+	/**
+	 * Reshape the tensor with a new array of dimensions.
+	 * Note that the new dimensions must correspond to a Tensor
+	 * that has the same number of elements as before.
+	 *
+	 * @param array Array of new dimensions for each rank index
+	 * @return reshapedTensor A new reshaped tensor.
+	 */
+	template<typename DimArray>
+	Tensor<array_size<DimArray>::value, DerivedTensorBackendBuilder, Scalar> reshape(
+			DimArray& array) {
+
+		// First make sure that the new shape will retain the
+		// same total number of elements.
+
+		// Count the elements for the new shape
+		int nNewElements = 1;
+		for (int i = 0; i < array_size<DimArray>::value; i++) {
+			nNewElements *= array[i];
+		}
+
+		// Assert it won't change
+		assert(nNewElements == size());
+
+		// Reshape the tensor
+		auto ref = provider->reshape(array);
+
+		// Create the result from the TensorReference
+		Tensor<array_size<DimArray>::value, DerivedTensorBackendBuilder, Scalar> result(ref);
+
+		return result;
+	}
 	/**
 	 * The destructor
 	 */

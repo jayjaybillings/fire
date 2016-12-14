@@ -67,7 +67,7 @@ namespace fire {
  * @author Alex McCaskey
  */
 template<typename Derived>
-class TensorProvider  {
+class TensorProvider {
 
 private:
 
@@ -91,7 +91,7 @@ public:
 	 * @param otherDims The parameter pack of other tensor dimensions
 	 */
 	template<typename ... Dimensions>
-	void initialize(int firstDim, Dimensions... otherDims) {
+	void initialize(int firstDim, Dimensions ... otherDims) {
 		getAsDerived().initializeTensorBackend(firstDim, otherDims...);
 	}
 
@@ -111,8 +111,8 @@ public:
 	 * @param indices The indices for the desired value
 	 * @return val The value at the indices.
 	 */
-	template<typename Scalar, typename... Indices>
-	Scalar& coeff(Indices... indices) {
+	template<typename Scalar, typename ... Indices>
+	Scalar& coeff(Indices ... indices) {
 		return getAsDerived().tensorCoefficient(indices...);
 	}
 
@@ -175,15 +175,47 @@ public:
 	 *
 	 * @param vals The values as a nest std::initializer_lists
 	 */
-	template <typename InitList>
+	template<typename InitList>
 	void setValues(InitList& vals) {
 		getAsDerived().setTensorValues(vals);
 	}
+
+	/**
+	 * Output this Tensor to the provided output stream.
+	 *
+	 * @param outputStream The output stream to write the tensor to.
+	 */
+	void print(std::ostream& stream) {
+		getAsDerived().printTensor(stream);
+	}
+
 	/**
 	 * Set the tensor values wrapped by this TensorProvider to random values.
 	 */
 	void setRandomValues() {
 		getAsDerived().fillWithRandomValues();
+	}
+
+	/**
+	 * Multiply all elements of this tensor by the provided Scalar.
+	 *
+	 * @param val Scalar to multiply this tensor by.
+	 * @return result A TensorReference representing the result
+	 */
+	template<typename Scalar>
+	TensorReference multiplyByScalar(Scalar& val) {
+		return getAsDerived().scalarProduct(val);
+	}
+
+	/**
+	 * Reshape the Tensor with a new array of dimensions
+	 *
+	 * @param array Array of new dimensions for each rank index
+	 * @return reshapedTensor A TensorReference representing new reshaped tensor.
+	 */
+	template<typename DimArray>
+	TensorReference reshape(DimArray& array) {
+		return getAsDerived().reshapeTensor(array);
 	}
 
 };
