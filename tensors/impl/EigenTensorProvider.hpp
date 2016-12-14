@@ -272,6 +272,25 @@ public:
 		return newReference;
 	}
 
+	template<typename DimArray>
+	TensorReference shuffleTensor(DimArray& array) {
+		Eigen::Tensor<Scalar, Rank> result = tensor->shuffle(array);
+
+		// Create TensorShape
+		std::vector<int> dimensions(Rank);
+		for (int i = 0; i < Rank; i++) {
+			dimensions[i] = result.dimension(i);
+		}
+		TensorShape newShape(dimensions);
+
+		// Create and return a reference to the new Tensor.
+		TensorReference newReference = fire::make_tensor_reference(
+				result.data(), newShape);
+
+		return newReference;
+	}
+
+
 };
 
 /**

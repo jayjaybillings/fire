@@ -218,6 +218,11 @@ public:
 		return getAsDerived().reshapeTensor(array);
 	}
 
+	template<typename DimArray>
+	TensorReference shuffle(DimArray& array) {
+		return getAsDerived().shuffleTensor(array);
+	}
+
 };
 
 /**

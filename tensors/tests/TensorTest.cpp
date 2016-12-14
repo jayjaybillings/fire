@@ -251,7 +251,7 @@ BOOST_AUTO_TEST_CASE(checkScalarMultiply) {
 
 }
 
-BOOST_AUTO_TEST_CASE(checkTensorReshape) {
+BOOST_AUTO_TEST_CASE(checkTensorReshapeAndShuffle) {
 	using namespace fire;
 
 	Tensor<2> tensor(7,11);
@@ -265,5 +265,14 @@ BOOST_AUTO_TEST_CASE(checkTensorReshape) {
 	BOOST_VERIFY(reShapedTensor.dimension(1) == 11);
 	BOOST_VERIFY(reShapedTensor.dimension(2) == 1);
 
+	Tensor<3> input(20, 30, 50);
+	input.setRandom();
 
+	std::array<int, 3> permutation {{1,2,0}};
+	Tensor<3> output = input.shuffle(permutation);
+	BOOST_VERIFY(output.dimension(0) == 30);
+	BOOST_VERIFY(output.dimension(1) == 50);
+	BOOST_VERIFY(output.dimension(2) == 20);
+
+	BOOST_VERIFY(output(3,7,11) == input(11,3,7));
 }

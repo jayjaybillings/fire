@@ -70,6 +70,7 @@ class Tensor {
 protected:
 
 	// Get reference to the type the provided builder builds.
+	// This is some cool voodoo...
 	using DerivedTensorBackend = decltype(DerivedTensorBackendBuilder().template build<Rank, Scalar>());
 
 	// This makes typing easier...
@@ -348,10 +349,43 @@ public:
 		auto ref = provider->reshape(array);
 
 		// Create the result from the TensorReference
-		Tensor<array_size<DimArray>::value, DerivedTensorBackendBuilder, Scalar> result(ref);
+		Tensor<array_size<DimArray>::value, DerivedTensorBackendBuilder, Scalar> result(
+				ref);
 
 		return result;
 	}
+	/**
+	 * Shuffle the provided indices in the tensor. The
+	 * provided array is a permutation of Tensor indices.
+	 * An example of this method's use follows (shuffling all
+	 * indices to the left):
+	 *
+	 * @code
+	 * Tensor<3> t(20, 30, 50);
+	 * Tensor<3> shuffled = t.shuffle({1, 2, 0});
+	 * assert (shuffled.dimension(0) == 30);
+	 * assert (shuffled.dimension(0) == 50);
+	 * assert (shuffled.dimension(0) == 20);
+	 * @endcode
+	 *
+	 * @param array Array of indices to shuffle;
+	 * @return shuffledTensor A new shuffled tensor.
+	 */
+	template<typename DimArray>
+	ThisTensorType shuffle(DimArray& array) {
+
+		// Assert it won't change
+		assert(array_size<DimArray>::value == Rank);
+
+		// Reshape the tensor
+		auto ref = provider->shuffle(array);
+
+		// Create the result from the TensorReference
+		ThisTensorType result(ref);
+
+		return result;
+	}
+
 	/**
 	 * The destructor
 	 */
