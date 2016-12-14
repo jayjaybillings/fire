@@ -32,6 +32,10 @@
 #ifndef TENSORS_TENSORUTILS_HPP_
 #define TENSORS_TENSORUTILS_HPP_
 
+#if defined __GNUC__ && __GNUC__>=6
+  #pragma GCC diagnostic ignored "-Wignored-attributes"
+#endif
+
 namespace fire {
 /**
  * This utility template enables the use of std::array size integer.
