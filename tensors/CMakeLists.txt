@@ -39,30 +39,22 @@ SET(PACKAGE_DESCRIPTION "Fire Tensor Library")
 #Set the library name
 SET(LIBRARY_NAME "FireTensors")
 
-find_package(Eigen3)
-
-if (EIGEN3_FOUND)
-   message (STATUS "Eigen found at ${EIGEN3_INCLUDE_DIR}")
-   include_directories(${EIGEN3_INCLUDE_DIR})
+if (EXISTS ${CMAKE_SOURCE_DIR}/tpls/eigen)
+   message (STATUS "Eigen found in fire/tpls")
+   include_directories(${CMAKE_SOURCE_DIR}/tpls/eigen)
+else()
+  message (FATAL_ERROR "Eigen not found in fire/tpls directory. Run 'git submodule init && git submodule update' from the top-level fire directory.")
 endif()
 
-#Collect all header filenames in this project 
-#and glob them in HEADERS
+# Collect all header filenames in this project 
+# and glob them in HEADERS
 file(GLOB HEADERS *.hpp impl/*.hpp)
-
-#Grab all of the source files
-#file(GLOB FIRESRC impl/Fire*.cpp)
-#file(GLOB EIGENSRC impl/Eigen*.cpp)
-
-#Add the source code to the library
-#add_library(fire-tensor SHARED ${FIRESRC})
-#add_library(fire-tensor-eigen SHARED ${EIGENSRC})
 
 # Get the test files
 file(GLOB test_files tests/*Test.cpp)
 
 # Add the tests
-add_tests("${test_files}" "${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_SOURCE_DIR}/impl" "")#fire-tensor;fire-tensor-eigen")   
+add_tests("${test_files}" "${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_SOURCE_DIR}/impl" "")
 
 #Install the Fire header files
 install(FILES ${HEADERS} DESTINATION include)
