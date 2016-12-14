@@ -38,53 +38,81 @@
 
 namespace fire {
 
-template<int n>
-struct store_int {
-	static const int num = n;
-	static const int den = 1;
-};
-
+/**
+ * TensorShape is a simple class that holds reference to a
+ * vector of integers representing the dimensions of each
+ * rank for a given Tensor. It also keeps reference to the
+ * total number of values in the tensor.
+ */
 class TensorShape {
 
 protected:
 
-	const int tensorRank = 0;
-
+	/**
+	 * Reference to the vector of tensor dimensions
+	 */
 	std::vector<int> shape;
 
+	/**
+	 * Reference to the number of tensor elements
+	 */
 	int nElements;
 
 public:
 
-//	static store_int<Rank> rankStorage;
-
+	/**
+	 * The constructor, takes a variadic list of
+	 * tensor dimensions.
+	 *
+	 * @param firstDim The dimension of the first rank
+	 * @param otherDims The dimension of the remaining ranks
+	 */
 	template<typename ... Dims>
 	TensorShape(int firstDim, Dims ... otherDims) :
-			shape { static_cast<int>(otherDims)... }, tensorRank(1+shape.size()) {
+			shape { static_cast<int>(otherDims)... } {
 		shape.insert(shape.begin(), firstDim);
 		nElements = std::accumulate(shape.begin(), shape.end(),
 						1, std::multiplies<double>());
 	}
 
+	/**
+	 * The constructor, takes an existing vector of
+	 * tensor dimensions
+	 *
+	 * @param dimensions The vector of tensor dimensions
+	 */
 	TensorShape(std::vector<int> dimensions) : shape(dimensions) {
 		nElements = std::accumulate(shape.begin(), shape.end(),
 								1, std::multiplies<double>());
 	}
+
+	/**
+	 * Return the total number of tensor elements. This is the
+	 * size of the tensors 1-D array of tensor data.
+	 * @return
+	 */
     const int size() {
     	return nElements;
     }
 
+    /**
+     * Return the dimension at the given rank index.
+     *
+ 	 * @param index The index of the tensor rank
+	 * @return dim The dimension of the rank
+    */
     const int dimension(int index) {
     	assert(index < shape.size());
     	return shape[index];
     }
 
+    /**
+     * Return the vector of tensor dimensions
+     *
+     * @return dims The vector of tensor dimensions
+     */
     std::vector<int> dimensions() {
     	return shape;
-    }
-
-    const int rank() {
-    	return tensorRank;
     }
 
 };

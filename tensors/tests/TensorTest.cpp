@@ -41,6 +41,8 @@ BOOST_AUTO_TEST_CASE(checkConstruction) {
 
 	fire::Tensor<5> a(1, 2, 3, 4, 5);
 
+//	fire::Tensor<2, fire::EigenBuilder> b(1,1);
+
 	BOOST_VERIFY(a.dimension(0) == 1);
 	BOOST_VERIFY(a.dimension(1) == 2);
 	BOOST_VERIFY(a.dimension(2) == 3);

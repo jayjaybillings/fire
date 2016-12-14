@@ -41,13 +41,18 @@
 
 namespace fire {
 
+/**
+ * This utility template enables the use of std::array size integer.
+ */
 template <typename T> struct array_size;
 template<class T, std::size_t N> struct array_size<std::array<T,N> > {
   static const size_t value = N;
 };
 
+// A TensorReference is just a pair of the Tensors data array and its TensorShape
 using TensorReference = std::pair<std::vector<double>, TensorShape>;
 
+// Utility method for creating TensorReferences.
 TensorReference make_tensor_reference(double* data, TensorShape& shape) {
 	std::vector<double> v;
 	std::copy(data, data + shape.size(), std::back_inserter(v));
@@ -57,6 +62,26 @@ TensorReference make_tensor_reference(double* data, TensorShape& shape) {
 
 
 /**
+ * The TensorProvider is the base class for injecting 3rd-party
+ * tensor algebra libraries into the Fire framework. It utilizes the
+ * curiously recurring template pattern to enable static polymorphism of
+ * TensorProvider subclasses. The Tensor class delegates all tensor-related data
+ * storage and work to the methods provided by TensorProvider. TensorProvider takes
+ * as a template parameter a derived TensorProvider and delegates all work to that
+ * subclass. It is up to subclasses of TensorProvider (subclassed with themselves as the
+ * TensorProvider template parameter) to perform the actual work with their
+ * representative tensor algebra library.
+ *
+ * Subclasses of TensorProvider must provide a subclass of the ProviderBuilder
+ * struct with the following public method (see EigenTensorProvider.hpp for example):
+ *
+ * @code
+ * 	template<const int Rank, typename Scalar>
+ *  MyTensorProvider<Rank, Scalar> build() {
+ *		MyTensorProvider<Rank, Scalar> prov;
+ *		return prov;
+ *	}
+ * @endcode
  *
  * @author Alex McCaskey
  */
@@ -65,68 +90,126 @@ class TensorProvider  {
 
 private:
 
+	/**
+	 * Return a reference of this TensorProvider as its
+	 * derived subclass. Used to delegate work to subclasses.
+	 *
+	 * @return
+	 */
 	Derived& getAsDerived() {
 		return *static_cast<Derived*>(this);
 	}
 
 public:
 
-	TensorProvider() {
-	}
-
+	/**
+	 * Initialize this TensorProvider with the provided
+	 * set of tensor dimensions.
+	 *
+	 * @param firstDim The first tensor dimension
+	 * @param otherDims The parameter pack of other tensor dimensions
+	 */
 	template<typename ... Dimensions>
 	void initialize(int firstDim, Dimensions... otherDims) {
 		getAsDerived().initializeTensorBackend(firstDim, otherDims...);
 	}
 
-	void initializeFromData(double * data, TensorShape& shape) {
-		getAsDerived().initializeTensorBackendWithData(data, shape);
+	/**
+	 * Initialize this TensorProvider from an existing TensorReference.
+	 *
+	 * @param reference The set of data and dimensions as a TensorReference
+	 */
+	void initializeFromReference(TensorReference& reference) {
+		getAsDerived().initializeTensorBackendWithReference(reference);
 	}
 
+	/**
+	 * Return the coefficient value at the provided set
+	 * of indices.
+	 *
+	 * @param indices The indices for the desired value
+	 * @return val The value at the indices.
+	 */
 	template<typename Scalar, typename... Indices>
 	Scalar& coeff(Indices... indices) {
 		return getAsDerived().tensorCoefficient(indices...);
 	}
 
+	/**
+	 * Return if the tensor wrapped by this TensorProvider is
+	 * equal to the tensor represented by the provided TensorReference.
+	 *
+	 * @param other TensorReference view of the other Tensor
+	 * @return equal A boolean indicating if these Tensors are equal
+	 */
 	bool equalTensors(TensorReference& other) {
 		return getAsDerived().checkEquality(other);
 	}
 
+	/**
+	 * Return the data wrapped by the tensor in this TensorProvider.
+	 *
+	 * @return data 1-D array of data representing the tensor in this TensorProvider
+	 */
 	template<typename Scalar>
 	Scalar * getTensorData() {
 		return getAsDerived().data();
 	}
 
+	/**
+	 * Return a TensorReference representing the sum of this TensorProvider's tensor
+	 * and the one represented by the other TensorReference.
+	 *
+	 * @param other TensorReference view of the other Tensor
+	 * @return result A new TensorReference representing the sum of this and other.
+	 */
 	TensorReference addTensors(TensorReference& other) {
 		auto r = getAsDerived().add(other);
 		return r;
 	}
 
+	/**
+	 * Return the rank of this TensorProvider's tensor
+	 *
+	 * @return rank The rank of this Tensor
+	 */
 	static constexpr int getRank() {
 		return Derived::getRank();
 	}
 
+	/**
+	 * Perform tensor contraction, returning the result as a TensorReference.
+	 *
+	 * @param t2 The other Tensor
+	 * @param indices The contraction indices.
+	 * @return result The contraction result as a TensorReference
+	 */
 	template<typename OtherDerived, typename ContractionDims>
 	TensorReference contract(OtherDerived& t2, ContractionDims& indices) {
 		return getAsDerived().executeContraction(t2, indices);
 	}
 
+	/**
+	 * Set the tensor values wrapped by this TensorProvider to random values.
+	 */
 	void setRandomValues() {
 		getAsDerived().fillWithRandomValues();
 	}
 
-//	template<const int r>
-//	createNewBackend() {
-//
-//	}
 };
 
+/**
+ * A placeholder to ensure that clients give the Tensor an
+ * appropriate TensorProvider Builder.
+ */
 struct ProviderBuilder {
 };
 
 }
 
-// Fire defaults to Eigen...
+// Fire defaults to Eigen so go ahead and include it...
+// This lets users just #include "Tensor.hpp" and get all
+// Eigen support.
 #include "EigenTensorProvider.hpp"
 
 #endif

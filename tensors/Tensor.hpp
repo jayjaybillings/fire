@@ -37,43 +37,71 @@
 namespace fire {
 
 /**
+ * The Tensor class provides an abstraction for data and operations on
+ * general multi-dimensional arrays, otherwise known as tensors. It provides
+ * a high-level API for tensor data composition and operations but delegates all work to
+ * a provided 3rd party tensor algebra backend (eigen, TAL-SH, etc). By default,
+ * Tensor uses Eigen's unsupported Tensor module as its backend.
  *
+ * Tensor relies on three template parameters - the rank of the tensor, the
+ * type of data this tensor contains (double by default), and the 3rd party
+ * backend tensor provider (Eigen by default).
+ *
+ * Furthermore, Tensors also keep track of their TensorShape - a data structure that
+ * encapsulates knowledge of the number of dimensions along each rank.
+ *
+ * Tensors can be used by clients in the following manner:
+ *
+ * @code
+ * Tensor<2> matrix(2,2); // A 2x2 matrix of doubles backed by Eigen
+ * Tensor<3, MyTensorBackend> tensor(1,2,3); // A rank-3 tensor with shape (1,2,3) backed by MyTensorBackend
+ * Tensor<4, Eigen, float> tensor(2,2,3,3); // A rank-4 tensor with shape (2,2,3,3) backed by Eigen
+ * @endcode
+ *
+ * Note, due to C++ template parameter syntax, if you want to specify the tensor data type
+ * (something other than double) you must also specify the tensor provider backend as the
+ * second tensor parameter.
  */
-template<const int Rank, typename Scalar = double,
-		typename DerivedTensorBackendBuilder = fire::EigenBuilder>
+template<const int Rank,
+		typename DerivedTensorBackendBuilder = fire::EigenProvider,
+		typename Scalar = double>
 class Tensor {
 
 protected:
 
+	// Get reference to the type the provided builder builds.
 	using DerivedTensorBackend = decltype(DerivedTensorBackendBuilder().template build<Rank, Scalar>());
 
 	/**
+	 * Reference to the backend tensor algebra provider.
 	 */
 	std::shared_ptr<DerivedTensorBackend> provider;
 
 	/**
-	 *
+	 * Reference to this Tensors shape
 	 */
 	std::shared_ptr<TensorShape> shape;
 
 	/**
-	 *
+	 * The constructor, takes a TensorReference
+	 * which encapsulates the 1-D array of tensor
+	 * data and the tensors shape.
 	 * @param data
 	 * @param newShape
 	 */
 	Tensor(TensorReference& reference) {
 
-		auto newShape = reference.second;
-		auto data = reference.first.data();
-
-		shape = std::make_shared<TensorShape>(newShape.dimensions());
+		// Create a new TensorShape and set it as this Tensor's shape
+		shape = std::make_shared<TensorShape>(reference.second.dimensions());
 
 		// Create the requested TensorProvider
 		provider = std::make_shared<DerivedTensorBackend>();
 		if (!provider)
 			throw "Could not find provider";
 
-		provider->initializeFromData(data, newShape);
+		// Initialize the backend tensor provider with
+		// the provided tensor data and shape
+		provider->initializeFromReference(reference);
 
 	}
 
@@ -90,8 +118,12 @@ public:
 	template<typename ... Dimension>
 	Tensor(int firstDim, Dimension ... otherDims) {
 
-		// assert rank is right number
+		// Assert at compile time that this will be a valid Tensor
+		static_assert( sizeof...(otherDims) + 1 == Rank, "Incorrect number of dimension integers");
+		static_assert( std::is_fundamental<Scalar>::value, "Fire Tensors can only contain C++ fundamental types (double, int, etc)." );
+		static_assert( std::is_base_of<ProviderBuilder, DerivedTensorBackendBuilder>::value, "Third Tensor Template Parameter must be of type fire::ProviderBuilder.");
 
+		// Create the TensorShape from the given dimensions
 		shape = std::make_shared<TensorShape>(firstDim, otherDims...);
 
 		// Create the requested TensorProvider
@@ -99,47 +131,80 @@ public:
 		if (!provider)
 			throw "Could not find provider";
 
+		// Initialize the backend tensor provider
 		provider->initialize(firstDim, otherDims...);
 	}
 
 	/**
+	 * Return the value at the given set of
+	 * tensor indices.
 	 *
-	 * @param indices
-	 * @return
+	 * @param indices The indices for the desired value
+	 * @return val The value at the indices.
 	 */
 	template<typename ... Indices>
-	double& operator()(Indices ... indices) const {
+	Scalar& operator()(Indices ... indices) const {
+		static_assert( sizeof...(indices) == Rank, "Incorrect number of indices");
 		return provider->template coeff<Scalar>(indices...);
 	}
 
 	/**
+	 * Add the given Tensor to this Tensor and return a new Tensor
 	 *
-	 * @param other
-	 * @return
+	 * @param other The tensor to add to this one
+	 * @return result A new tensor representing the sum of this and other.
 	 */
-	Tensor<Rank, Scalar, DerivedTensorBackendBuilder> operator+(
-			Tensor<Rank, Scalar, DerivedTensorBackendBuilder>& other) {
+	Tensor<Rank, DerivedTensorBackendBuilder, Scalar> operator+(
+			Tensor<Rank, DerivedTensorBackendBuilder, Scalar>& other) {
 		// Create a reference for other
 		auto otherReference = other.createReference();
 		auto ref = provider->addTensors(otherReference);
-		Tensor<Rank, Scalar, DerivedTensorBackendBuilder> result(ref);
+		Tensor<Rank, DerivedTensorBackendBuilder, Scalar> result(ref);
 		return result;
 	}
 
-	bool operator==(Tensor<Rank, Scalar, DerivedTensorBackendBuilder>& other) {
+	/**
+	 * Return true if this Tensor is equal to the provided other Tensor.
+	 * Here equality means same rank, same dimension, and all values
+	 * at corresponding indices equal.
+	 *
+	 * @param other The tensor to check equality against.
+	 * @return equal A boolean indicating if these Tensors are equal
+	 */
+	bool operator==(Tensor<Rank, DerivedTensorBackendBuilder, Scalar>& other) {
 		auto ref = other.createReference();
 		return provider->equalTensors(ref);
 	}
 
-	bool operator!=(Tensor<Rank, Scalar, DerivedTensorBackendBuilder>& other) {
+	/**
+	 * Return true if this Tensor is not equal to the provided other Tensor.
+	 * See operator==() for definition of equal.
+	 *
+	 * @param other The other Tensor to check not equal against
+	 * @return notEqual A boolean indicating if these Tensors are not equal
+	 *
+	 */
+	bool operator!=(Tensor<Rank, DerivedTensorBackendBuilder, Scalar>& other) {
 		return !operator==(other);
 	}
 
+	/**
+	 * This operation performs Tensor contraction between this Tensor
+	 * and the provided other Tensor resulting in a new Tensor of
+	 * appropriate rank. It requires a std::array of integer pairs indicating
+	 * which indices between the two tensor are to be contracted. Passing
+	 * an empty set of contraction indices here will result in the
+	 * computation of the tensor product.
+	 *
+	 * @param other The other Tensor to contract with.
+	 * @param indices The contraction indices.
+	 * @return result The result Tensor of this contraction
+	 */
 	template<typename OtherDerived, typename ContractionDims>
 	Tensor<
 			DerivedTensorBackend::getRank() + OtherDerived::getRank()
-					- 2 * array_size<ContractionDims>::value, Scalar,
-			DerivedTensorBackendBuilder> contract(OtherDerived& other,
+					- 2 * array_size<ContractionDims>::value,
+			DerivedTensorBackendBuilder, Scalar> contract(OtherDerived& other,
 			ContractionDims& indices) {
 
 		// Compute new Tensor rank
@@ -150,29 +215,39 @@ public:
 		// Compute the contraction, get reference data on new Tensor
 		auto ref = provider->contract(other, indices);
 
-		Tensor<newRank, Scalar, DerivedTensorBackendBuilder> result(ref);
+		// Create the result from the TensorReference
+		Tensor<newRank, DerivedTensorBackendBuilder, Scalar> result(ref);
 
 		return result;
 	}
 
+	/**
+	 *
+	 * @param other
+	 */
 	template<typename OtherDerived>
 	void operator*(OtherDerived& other) {
 	}
 
+	/**
+	 * This method sets all tensor values to a random number.
+	 */
 	void setRandom() {
 		provider->setRandomValues();
 	}
 
 	/**
+	 * Return the dimension of the provided rank index.
 	 *
-	 * @param index
-	 * @return
+	 * @param index The index of the tensor rank
+	 * @return dim The dimension of the rank
 	 */
 	int dimension(int index) {
 		return shape->dimension(index);
 	}
 
 	/**
+	 * Return the rank of this Tensor
 	 *
 	 * @return
 	 */
@@ -180,6 +255,11 @@ public:
 		return DerivedTensorBackend::getRank();
 	}
 
+	/**
+	 * Return a TensorReference view for this Tensor.
+	 *
+	 * @return
+	 */
 	TensorReference createReference() {
 		auto ref = fire::make_tensor_reference(
 				provider->template getTensorData<Scalar>(), *shape.get());
