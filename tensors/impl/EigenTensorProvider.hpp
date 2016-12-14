@@ -1,7 +1,7 @@
-#ifndef TENSORS_EIGENTENSOR_HPP_
-#define TENSORS_EIGENTENSOR_HPP_
+#ifndef TENSORS_EIGENTENSORPROVIDER_HPP_
+#define TENSORS_EIGENTENSORPROVIDER_HPP_
 
-#include "TensorOperationProvider.hpp"
+#include "TensorProvider.hpp"
 #include <unsupported/Eigen/CXX11/Tensor>
 
 namespace fire {
@@ -10,8 +10,8 @@ namespace fire {
  *
  */
 template<const int Rank>
-class EigenTensorOperationProvider: public TensorOperationProvider<
-		EigenTensorOperationProvider<Rank>> {
+class EigenTensorProvider: public TensorProvider<
+		EigenTensorProvider<Rank>> {
 
 private:
 
@@ -39,7 +39,7 @@ public:
 	/**
 	 *
 	 */
-	EigenTensorOperationProvider() {/*std::cout << "Using Eigen\n";*/
+	EigenTensorProvider() {/*std::cout << "Using Eigen\n";*/
 	}
 
 	template<typename ... Dimensions>
@@ -71,8 +71,8 @@ public:
 	}
 
 	template<const int r>
-	static EigenTensorOperationProvider<r> makeTensorProvider() {
-		EigenTensorOperationProvider<r> tp;
+	static EigenTensorProvider<r> makeTensorProvider() {
+		EigenTensorProvider<r> tp;
 		return tp;
 	}
 

@@ -39,10 +39,8 @@
 #include <iostream>
 #include <boost/variant.hpp>
 #include <numeric>
-#include <TensorOperationProvider.hpp>
+#include "TensorProvider.hpp"
 #include "TensorShape.hpp"
-#include <unsupported/Eigen/CXX11/Tensor>
-#include "EigenTensorOperationProvider.hpp"
 
 namespace fire {
 

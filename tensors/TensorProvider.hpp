@@ -64,7 +64,7 @@ TensorReference make_tensor_reference(double* data, TensorShape& shape) {
  * @author Alex McCaskey
  */
 template<typename Derived>
-class TensorOperationProvider  {
+class TensorProvider  {
 
 private:
 
@@ -74,7 +74,7 @@ private:
 
 public:
 
-	TensorOperationProvider() {
+	TensorProvider() {
 	}
 
 	template<typename ... Dimensions>
