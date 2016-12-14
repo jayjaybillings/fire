@@ -56,11 +56,5 @@ if (EXISTS ${CMAKE_SOURCE_DIR}/tpls/eigen/Eigen)
    #Install the Fire header files
    install(FILES ${HEADERS} DESTINATION include)
 else()
-  message (WARNING "Eigen not found in fire/tpls 
-			directory. Fire Tensor support will 
-			be turned off. If you want to include 
-			Fire Tensor support in this build, 
-			run 'git submodule init 
-			&& git submodule update' from the 
-			top-level fire directory.")
+  message (WARNING "Eigen not found in fire/tpls directory. Fire Tensor support will be turned off. If you want to include Fire Tensor support in this build, run 'git submodule init && git submodule update' from the top-level fire directory.")
 endif()
