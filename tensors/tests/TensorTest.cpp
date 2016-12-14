@@ -34,13 +34,12 @@
 
 #include <boost/test/included/unit_test.hpp>
 #include "Tensor.hpp"
-#include "EigenTensorProvider.hpp"
 
 using namespace boost;
 
 BOOST_AUTO_TEST_CASE(checkConstruction) {
 
-	fire::Tensor<fire::EigenTensorProvider<5>> a(1, 2, 3, 4, 5);
+	fire::Tensor<5> a(1, 2, 3, 4, 5);
 
 	BOOST_VERIFY(a.dimension(0) == 1);
 	BOOST_VERIFY(a.dimension(1) == 2);
@@ -63,7 +62,7 @@ BOOST_AUTO_TEST_CASE(checkConstruction) {
 	}
 	BOOST_VERIFY(counter == 120);
 
-	fire::Tensor<fire::EigenTensorProvider<3>> epsilon(3, 3, 3);
+	fire::Tensor<3> epsilon(3, 3, 3);
 	epsilon(0, 1, 2) = 1;
 	BOOST_VERIFY(epsilon(0, 1, 2) == 1);
 	epsilon(1, 2, 0) = 1;
@@ -77,7 +76,7 @@ BOOST_AUTO_TEST_CASE(checkConstruction) {
 	epsilon(0, 2, 1) = -1;
 	BOOST_VERIFY(epsilon(0, 2, 1) == -1);
 
-	fire::Tensor<fire::EigenTensorProvider<4>> grassmannIdentity(3, 3,
+	fire::Tensor<4> grassmannIdentity(3, 3,
 			3, 3);
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
@@ -113,13 +112,13 @@ BOOST_AUTO_TEST_CASE(checkConstruction) {
 }
 
 BOOST_AUTO_TEST_CASE(checkAddition) {
-	fire::Tensor<fire::EigenTensorProvider<2>> a(2, 2);
-	fire::Tensor<fire::EigenTensorProvider<2>> b(2, 2);
+	fire::Tensor<2> a(2, 2);
+	fire::Tensor<2> b(2, 2);
 
 	a(0, 0) = 1;
 	b(0, 0) = 1;
 
-	auto result = a + b;
+	fire::Tensor<2> result = a + b;
 
 	BOOST_VERIFY(result.getRank() == 2);
 	BOOST_VERIFY(result.dimension(0) == 2);
@@ -129,12 +128,12 @@ BOOST_AUTO_TEST_CASE(checkAddition) {
 	BOOST_VERIFY(result(1, 0) == 0);
 	BOOST_VERIFY(result(1, 1) == 0);
 
-	fire::Tensor<fire::EigenTensorProvider<2>> expected(2, 2);
+	fire::Tensor<2> expected(2, 2);
 }
 
 BOOST_AUTO_TEST_CASE(checkEquality) {
-	fire::Tensor<fire::EigenTensorProvider<2>> a(2, 2);
-	fire::Tensor<fire::EigenTensorProvider<2>> b(2, 2);
+	fire::Tensor<2> a(2, 2);
+	fire::Tensor<2> b(2, 2);
 
 	a(0, 0) = 1;
 	b(0, 0) = 1;
@@ -151,30 +150,38 @@ BOOST_AUTO_TEST_CASE(checkContraction) {
 
 	using namespace fire;
 
-	Tensor<fire::EigenTensorProvider<2>> mat1(2, 3);
-	Tensor<fire::EigenTensorProvider<2>> mat2(2, 3);
-	Tensor<fire::EigenTensorProvider<2>> mat3(3, 2);
+	using IndexPair = std::pair<int,int>;
 
-//	  mat1.setRandom();
-//	  mat2.setRandom();
-//	  mat3.setRandom();
+	Tensor<2> mat1(2, 3);
+	Tensor<2> mat2(2, 3);
 
-	  Tensor<fire::EigenTensorProvider<2>> mat4(3,3);
+	mat1.setRandom();
+	mat2.setRandom();
 
-	  std::array<std::pair<int,int>, 1> contractionIndices;
-	  contractionIndices[0] = std::make_pair(0,0);
-	  mat1.contract(mat2, contractionIndices);
+	Tensor<2> mat4(3, 3);
 
+	std::array<IndexPair, 1> contractionIndices;
+	contractionIndices[0] = std::make_pair(0, 0);
+	mat4 = mat1.contract(mat2, contractionIndices);
 
-	  BOOST_VERIFY(mat4(0,0) == (mat1(0,0)*mat2(0,0) + mat1(1,0)*mat2(1,0)));
-	  BOOST_VERIFY(mat4(0,1) == (mat1(0,0)*mat2(0,1) + mat1(1,0)*mat2(1,1)));
-	  BOOST_VERIFY(mat4(0,2) == (mat1(0,0)*mat2(0,2) + mat1(1,0)*mat2(1,2)));
-	  BOOST_VERIFY(mat4(1,0) == (mat1(0,1)*mat2(0,0) + mat1(1,1)*mat2(1,0)));
-	  BOOST_VERIFY(mat4(1,1) == (mat1(0,1)*mat2(0,1) + mat1(1,1)*mat2(1,1)));
-	  BOOST_VERIFY(mat4(1,2) == (mat1(0,1)*mat2(0,2) + mat1(1,1)*mat2(1,2)));
-	  BOOST_VERIFY(mat4(2,0) == (mat1(0,2)*mat2(0,0) + mat1(1,2)*mat2(1,0)));
-	  BOOST_VERIFY(mat4(2,1) == (mat1(0,2)*mat2(0,1) + mat1(1,2)*mat2(1,1)));
-	  BOOST_VERIFY(mat4(2,2) == (mat1(0,2)*mat2(0,2) + mat1(1,2)*mat2(1,2)));
+	BOOST_VERIFY(
+			mat4(0, 0) == (mat1(0, 0) * mat2(0, 0) + mat1(1, 0) * mat2(1, 0)));
+	BOOST_VERIFY(
+			mat4(0, 1) == (mat1(0, 0) * mat2(0, 1) + mat1(1, 0) * mat2(1, 1)));
+	BOOST_VERIFY(
+			mat4(0, 2) == (mat1(0, 0) * mat2(0, 2) + mat1(1, 0) * mat2(1, 2)));
+	BOOST_VERIFY(
+			mat4(1, 0) == (mat1(0, 1) * mat2(0, 0) + mat1(1, 1) * mat2(1, 0)));
+	BOOST_VERIFY(
+			mat4(1, 1) == (mat1(0, 1) * mat2(0, 1) + mat1(1, 1) * mat2(1, 1)));
+	BOOST_VERIFY(
+			mat4(1, 2) == (mat1(0, 1) * mat2(0, 2) + mat1(1, 1) * mat2(1, 2)));
+	BOOST_VERIFY(
+			mat4(2, 0) == (mat1(0, 2) * mat2(0, 0) + mat1(1, 2) * mat2(1, 0)));
+	BOOST_VERIFY(
+			mat4(2, 1) == (mat1(0, 2) * mat2(0, 1) + mat1(1, 2) * mat2(1, 1)));
+	BOOST_VERIFY(
+			mat4(2, 2) == (mat1(0, 2) * mat2(0, 2) + mat1(1, 2) * mat2(1, 2)));
 
 
 

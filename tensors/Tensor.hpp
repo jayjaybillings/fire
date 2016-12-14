@@ -32,25 +32,20 @@
 #ifndef TENSORS_TENSOR_HPP_
 #define TENSORS_TENSOR_HPP_
 
-#include <memory>
-#include <string>
-#include <map>
-#include <vector>
-#include <iostream>
-#include <boost/variant.hpp>
-#include <numeric>
 #include "TensorProvider.hpp"
-#include "TensorShape.hpp"
 
 namespace fire {
 
 /**
  *
  */
-template<typename DerivedTensorBackend>
+template<const int Rank, typename Scalar = double,
+		typename DerivedTensorBackendBuilder = fire::EigenBuilder>
 class Tensor {
 
 protected:
+
+	using DerivedTensorBackend = decltype(DerivedTensorBackendBuilder().template build<Rank, Scalar>());
 
 	/**
 	 */
@@ -66,7 +61,10 @@ protected:
 	 * @param data
 	 * @param newShape
 	 */
-	Tensor(double * data, TensorShape& newShape) {
+	Tensor(TensorReference& reference) {
+
+		auto newShape = reference.second;
+		auto data = reference.first.data();
 
 		shape = std::make_shared<TensorShape>(newShape.dimensions());
 
@@ -77,13 +75,6 @@ protected:
 
 		provider->initializeFromData(data, newShape);
 
-	}
-
-	Tensor<DerivedTensorBackend> createFromReference(TensorReference& ref) {
-		auto data = ref.first.data();
-		auto refShape = ref.second;
-		Tensor<DerivedTensorBackend> newTensor(data, refShape);
-		return newTensor;
 	}
 
 public:
@@ -118,7 +109,7 @@ public:
 	 */
 	template<typename ... Indices>
 	double& operator()(Indices ... indices) const {
-		return provider->operator()(indices...);
+		return provider->template coeff<Scalar>(indices...);
 	}
 
 	/**
@@ -126,47 +117,52 @@ public:
 	 * @param other
 	 * @return
 	 */
-	Tensor<DerivedTensorBackend> operator+(
-			Tensor<DerivedTensorBackend>& other) {
+	Tensor<Rank, Scalar, DerivedTensorBackendBuilder> operator+(
+			Tensor<Rank, Scalar, DerivedTensorBackendBuilder>& other) {
 		// Create a reference for other
 		auto otherReference = other.createReference();
 		auto ref = provider->addTensors(otherReference);
-		Tensor<DerivedTensorBackend> result = createFromReference(ref);
+		Tensor<Rank, Scalar, DerivedTensorBackendBuilder> result(ref);
 		return result;
 	}
 
-	bool operator==(Tensor<DerivedTensorBackend>& other) {
+	bool operator==(Tensor<Rank, Scalar, DerivedTensorBackendBuilder>& other) {
 		auto ref = other.createReference();
 		return provider->equalTensors(ref);
 	}
 
-	bool operator!=(Tensor<DerivedTensorBackend>& other) {
+	bool operator!=(Tensor<Rank, Scalar, DerivedTensorBackendBuilder>& other) {
 		return !operator==(other);
 	}
 
 	template<typename OtherDerived, typename ContractionDims>
-	void contract(OtherDerived& other,
-		ContractionDims indices) {
+	Tensor<
+			DerivedTensorBackend::getRank() + OtherDerived::getRank()
+					- 2 * array_size<ContractionDims>::value, Scalar,
+			DerivedTensorBackendBuilder> contract(OtherDerived& other,
+			ContractionDims& indices) {
 
 		// Compute new Tensor rank
 		static constexpr int newRank = DerivedTensorBackend::getRank()
-				+ OtherDerived::getRank() - 2 * array_size<ContractionDims>::value;
+				+ OtherDerived::getRank()
+				- 2 * array_size<ContractionDims>::value;
 
-//		Tensor<fire::EigenTensorOperationProvider<newRank>> result(new double[0], *shape.get());
+		// Compute the contraction, get reference data on new Tensor
+		auto ref = provider->contract(other, indices);
 
-		auto ref = other.createReference();
+		Tensor<newRank, Scalar, DerivedTensorBackendBuilder> result(ref);
 
-		provider->contract(other, indices);
-
-//		provider->makeTensorProvider<newRank>();
-//		using ResultTensorBackend = decltype(fire::EigenTensorOperationProvider<newRank>);
-		return;
+		return result;
 	}
 
 	template<typename OtherDerived>
 	void operator*(OtherDerived& other) {
-
 	}
+
+	void setRandom() {
+		provider->setRandomValues();
+	}
+
 	/**
 	 *
 	 * @param index
@@ -185,8 +181,8 @@ public:
 	}
 
 	TensorReference createReference() {
-		auto ref = fire::make_tensor_reference(provider->getTensorData(),
-				*shape.get());
+		auto ref = fire::make_tensor_reference(
+				provider->template getTensorData<Scalar>(), *shape.get());
 		return ref;
 	}
 

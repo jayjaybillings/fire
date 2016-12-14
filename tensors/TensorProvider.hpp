@@ -37,10 +37,7 @@
 #include <map>
 #include <vector>
 #include <iostream>
-#include <boost/variant.hpp>
-#include <numeric>
 #include "TensorShape.hpp"
-#include "build.h"
 
 namespace fire {
 
@@ -86,8 +83,8 @@ public:
 		getAsDerived().initializeTensorBackendWithData(data, shape);
 	}
 
-	template<typename... Indices>
-	double& operator()(Indices... indices) {
+	template<typename Scalar, typename... Indices>
+	Scalar& coeff(Indices... indices) {
 		return getAsDerived().tensorCoefficient(indices...);
 	}
 
@@ -95,7 +92,8 @@ public:
 		return getAsDerived().checkEquality(other);
 	}
 
-	double* getTensorData() {
+	template<typename Scalar>
+	Scalar * getTensorData() {
 		return getAsDerived().data();
 	}
 
@@ -105,12 +103,16 @@ public:
 	}
 
 	static constexpr int getRank() {
-		return Derived::getRank();//getAsDerived().getRank();
+		return Derived::getRank();
 	}
 
 	template<typename OtherDerived, typename ContractionDims>
-	TensorReference contract(OtherDerived& t2, ContractionDims indices) {
-		getAsDerived().executeContraction(t2, indices);
+	TensorReference contract(OtherDerived& t2, ContractionDims& indices) {
+		return getAsDerived().executeContraction(t2, indices);
+	}
+
+	void setRandomValues() {
+		getAsDerived().fillWithRandomValues();
 	}
 
 //	template<const int r>
@@ -119,6 +121,12 @@ public:
 //	}
 };
 
+struct ProviderBuilder {
+};
+
 }
+
+// Fire defaults to Eigen...
+#include "EigenTensorProvider.hpp"
 
 #endif

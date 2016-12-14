@@ -9,14 +9,14 @@ namespace fire {
 /**
  *
  */
-template<const int Rank>
+template<const int Rank, typename Scalar = double>
 class EigenTensorProvider: public TensorProvider<
-		EigenTensorProvider<Rank>> {
+		EigenTensorProvider<Rank, Scalar>> {
 
 private:
 
 	// Declare a Eigen Tensor member
-	using EigenTensor = Eigen::Tensor<double, Rank>;
+	using EigenTensor = Eigen::Tensor<Scalar, Rank>;
 	std::shared_ptr<EigenTensor> tensor;
 
 	Eigen::TensorMap<EigenTensor> getEigenTensorFromReference(
@@ -28,7 +28,7 @@ private:
 		for (int d = 0; d < Rank; d++) {
 			dsizes[d] = shape.dimension(d);
 		}
-		Eigen::TensorMap<Eigen::Tensor<double, Rank>> t(data, dsizes);
+		Eigen::TensorMap<Eigen::Tensor<Scalar, Rank>> t(data, dsizes);
 		return t;
 	}
 
@@ -49,13 +49,13 @@ public:
 		tensor->setZero();
 	}
 
-	void initializeTensorBackendWithData(double * data, TensorShape& shape) {
+	void initializeTensorBackendWithData(Scalar * data, TensorShape& shape) {
 		Eigen::DSizes<Eigen::DenseIndex, Rank> dsizes;
 		for (int d = 0; d < Rank; d++) {
 			dsizes[d] = shape.dimension(d);
 		}
 
-		Eigen::TensorMap<Eigen::Tensor<double, Rank>> t(data, dsizes);
+		Eigen::TensorMap<Eigen::Tensor<Scalar, Rank>> t(data, dsizes);
 		tensor = std::make_shared<EigenTensor>(t);
 	}
 
@@ -78,32 +78,37 @@ public:
 
 	template<typename OtherDerived,
 			typename ContractionDims>
-	void executeContraction(OtherDerived& t2,
-			ContractionDims cIndices) {
+	TensorReference executeContraction(OtherDerived& t2,
+			ContractionDims& cIndices) {
 
 		// Compute new Tensor rank
-		static constexpr int newRank = Rank
-				+ OtherDerived::getRank()
+		static constexpr int newRank = Rank + OtherDerived::getRank()
 				- 2 * array_size<ContractionDims>::value;
 
+		// Create an Eigen Tensor from OtherDerived...
 		auto otherRef = t2.createReference();
-		Eigen::DSizes<Eigen::DenseIndex, OtherDerived::getRank()> dsizes;
-		for (int d = 0; d < Rank; d++) {
-			dsizes[d] = otherRef.second.dimension(d);
+		Eigen::TensorMap<Eigen::Tensor<Scalar, OtherDerived::getRank()>> otherTensor =
+				getEigenTensorFromReference(otherRef);
+
+		// Perform the Tensor Contraction
+		Eigen::Tensor<Scalar, newRank> result = tensor->contract(otherTensor,
+				cIndices);
+
+		// Create TensorShape
+		std::vector<int> dimensions(newRank);
+		for (int i = 0; i < newRank; i++) {
+			dimensions[i] = result.dimension(i);
 		}
-		Eigen::TensorMap<Eigen::Tensor<double, OtherDerived::getRank()>> otherTensor(otherRef.first.data(), dsizes);
+		TensorShape newShape(dimensions);
 
-		Eigen::Tensor<double, newRank> result = tensor->contract(otherTensor, cIndices);
+		// Create and return a reference to the new Tensor.
+		TensorReference newReference = fire::make_tensor_reference(
+				result.data(), newShape);
 
-//		Eigen::array<DimPair, 1> dims3 = { { DimPair(0, 0) } };
-//		typedef TensorEvaluator<decltype(tensor->contract(otherTensor, cIndices)),
-//				DefaultDevice> Evaluator;
-//		Evaluator eval(tensor->contract(otherTensor, cIndices), DefaultDevice());
-//		eval.evalTo(result.data());
-
+		return newReference;
 	}
 
-	double * data() {
+	Scalar * data() {
 		return tensor->data();
 	}
 
@@ -121,6 +126,20 @@ public:
 		auto newRef = fire::make_tensor_reference(result.data(), other.second);
 
 		return newRef;
+	}
+
+	void fillWithRandomValues() {
+		tensor->setRandom();
+	}
+
+};
+
+class EigenBuilder : ProviderBuilder {
+public:
+	template<const int Rank, typename Scalar>
+    EigenTensorProvider<Rank, Scalar> build() {
+		EigenTensorProvider<Rank, Scalar> prov;
+		return prov;
 	}
 };
 
