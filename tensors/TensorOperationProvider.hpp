@@ -105,7 +105,7 @@ public:
 	}
 
 	static constexpr int getRank() {
-		return getAsDerived().getRank();
+		return Derived::getRank();//getAsDerived().getRank();
 	}
 
 	template<typename OtherDerived, typename ContractionDims>

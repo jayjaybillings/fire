@@ -91,7 +91,7 @@ public:
 		for (int d = 0; d < Rank; d++) {
 			dsizes[d] = otherRef.second.dimension(d);
 		}
-		Eigen::TensorMap<Eigen::Tensor<double, OtherDerived::getRank()>> otherTensor(otherRef.first, dsizes);
+		Eigen::TensorMap<Eigen::Tensor<double, OtherDerived::getRank()>> otherTensor(otherRef.first.data(), dsizes);
 
 		Eigen::Tensor<double, newRank> result = tensor->contract(otherTensor, cIndices);
 
