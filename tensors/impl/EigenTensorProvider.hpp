@@ -32,6 +32,9 @@
 #ifndef TENSORS_EIGENTENSORPROVIDER_HPP_
 #define TENSORS_EIGENTENSORPROVIDER_HPP_
 
+// Turn on ability to use Eigen ThreadPool
+#define EIGEN_USE_THREADS 1
+
 #include "TensorProvider.hpp"
 #include <unsupported/Eigen/CXX11/Tensor>
 
@@ -50,6 +53,23 @@ private:
 	// Declare a Eigen Tensor member
 	using EigenTensor = Eigen::Tensor<Scalar, Rank>;
 	std::shared_ptr<EigenTensor> tensor;
+
+	/**
+	 * Keep track of the number of available OMP threads
+	 */
+	int nThreads = 0;
+
+	/**
+	 * Reference to the ThreadPool
+	 */
+	std::shared_ptr<Eigen::ThreadPool> pool;
+
+	/**
+	 * Reference to the thread pool device used for
+	 * performing computational intensive operaitons
+	 * with multiple threads.
+	 */
+	std::shared_ptr<Eigen::ThreadPoolDevice> device;
 
 	// Return a new Eigen::Tensor (really a TensorMap) from the
 	// provided TensorReference.
@@ -79,6 +99,24 @@ public:
 	 */
 	static const int rank = Rank;
 
+	/**
+	 * The Constructor
+	 */
+	EigenTensorProvider() {
+		int n = 0;
+#pragma omp parallel reduction(+:n)
+		n += 1;
+		nThreads = n;
+		pool = std::make_shared<Eigen::ThreadPool>(nThreads);
+		device = std::make_shared<Eigen::ThreadPoolDevice>(pool.get(),
+				nThreads);
+	}
+
+	/**
+	 * Initialize the Eigen Tensor with all zeros.
+	 * @param firstDim
+	 * @param otherDims
+	 */
 	template<typename ... Dimensions>
 	void initializeTensorBackend(int firstDim, Dimensions ... otherDims) {
 		// static assert here on rank and dims
@@ -141,9 +179,44 @@ public:
 		Eigen::TensorMap<Eigen::Tensor<Scalar, OtherDerived::getRank()>> otherTensor =
 				getEigenTensorFromReference(otherRef);
 
-		// Perform the Tensor Contraction
-		Eigen::Tensor<Scalar, newRank> result = tensor->contract(otherTensor,
-				cIndices);
+		// ---------------------------------------------------------
+		// Need to compute dimensions of new tensor
+		Eigen::DSizes<Eigen::DenseIndex, newRank> newDimensions;
+		int counter = 0;
+		if (array_size<ContractionDims>::value != 0) {
+			for (int i = 0; i < tensor->dimensions().size(); i++) {
+				for (auto c : cIndices) {
+					if (i != c.first) {
+						newDimensions[counter] = tensor->dimension(i);
+						counter++;
+					}
+				}
+			}
+			for (int i = 0; i < otherTensor.dimensions().size(); i++) {
+				for (auto c : cIndices) {
+					if (i != c.second) {
+						newDimensions[counter] = otherTensor.dimension(i);
+						counter++;
+					}
+				}
+			}
+		} else {
+			// If there are no contraction dims, then keep all
+			// dimensions
+			for (int i = 0; i < tensor->dimensions().size(); i++) {
+				newDimensions[counter] = tensor->dimension(i);
+				counter++;
+			}
+			for (int i = 0; i < otherTensor.dimensions().size(); i++) {
+				newDimensions[counter] = otherTensor.dimension(i);
+				counter++;
+			}
+		}
+		// ---------------------------------------------------------
+
+		// Perform the Tensor Contraction multi-threaded
+		Eigen::Tensor<Scalar, newRank> result(newDimensions);
+		result.device(*device.get()) = tensor->contract(otherTensor, cIndices);
 
 		// Create TensorShape
 		std::vector<int> dimensions(newRank);
@@ -188,7 +261,9 @@ public:
 
 		auto t = getEigenTensorFromReference(other);
 
-		EigenTensor result = *tensor.get() + t;
+		EigenTensor result(tensor->dimensions());
+
+		result.device(*device.get()) = *tensor.get() + t;
 
 		// Shape should be the same...
 		auto newRef = fire::make_tensor_reference(result.data(), other.second);
@@ -229,7 +304,9 @@ public:
 	 * @return result A TensorReference representing the result
 	 */
 	TensorReference scalarProduct(Scalar& val) {
-		Eigen::Tensor<Scalar, Rank> result = tensor->operator*(val);
+		Eigen::Tensor<Scalar, Rank> result(tensor->dimensions());
+		result.device(*device.get()) = tensor->operator*(val);
+
 		// Create TensorShape
 		std::vector<int> dimensions(Rank);
 		for (int i = 0; i < Rank; i++) {
@@ -255,8 +332,7 @@ public:
 
 		static constexpr int newRank = array_size<DimArray>::value;
 
-		Eigen::Tensor<Scalar, newRank> result =
-				tensor->reshape(array);
+		Eigen::Tensor<Scalar, newRank> result = tensor->reshape(array);
 
 		// Create TensorShape
 		std::vector<int> dimensions(newRank);
@@ -289,7 +365,6 @@ public:
 
 		return newReference;
 	}
-
 
 };
 

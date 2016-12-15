@@ -43,6 +43,13 @@ if (EXISTS ${CMAKE_SOURCE_DIR}/tpls/eigen/Eigen)
    message (STATUS "Eigen found in fire/tpls")
    include_directories(${CMAKE_SOURCE_DIR}/tpls/eigen)
 
+   find_package(OpenMP)
+   if (OPENMP_FOUND)
+     set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+     set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+   endif()
+
+
    # Collect all header filenames in this project 
    # and glob them in HEADERS
    file(GLOB HEADERS *.hpp impl/*.hpp)
