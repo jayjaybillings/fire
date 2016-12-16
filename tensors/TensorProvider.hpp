@@ -183,7 +183,7 @@ public:
 	/**
 	 * Output this Tensor to the provided output stream.
 	 *
-	 * @param outputStream The output stream to write the tensor to.
+	 * @param stream The output stream to write the tensor to.
 	 */
 	void print(std::ostream& stream) {
 		getAsDerived().printTensor(stream);
@@ -218,6 +218,14 @@ public:
 		return getAsDerived().reshapeTensor(array);
 	}
 
+	/**
+	 * This method directs the derived TensorProvider to
+	 * shuffle the indices of its tensor given the provided
+	 * index permutation array.
+	 *
+	 * @param array Permutation of indices
+	 * @return result New tensor represented as a TensorReference
+	 */
 	template<typename DimArray>
 	TensorReference shuffle(DimArray& array) {
 		return getAsDerived().shuffleTensor(array);

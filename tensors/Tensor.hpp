@@ -27,7 +27,7 @@
  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
- Author(s): Alex McCaskey (mccaskeyaj <at> ornl <dot> gov)
+ Author(s): Alex McCaskey (mccaskeyaj@ornl.gov)
  -----------------------------------------------------------------------------*/
 #ifndef TENSORS_TENSOR_HPP_
 #define TENSORS_TENSOR_HPP_
@@ -69,11 +69,15 @@ class Tensor {
 
 protected:
 
-	// Get reference to the type the provided builder builds.
+	/**
+	 * Reference to the type the provided builder builds.
+	 */
 	// This is some cool voodoo...
 	using DerivedTensorBackend = decltype(DerivedTensorBackendBuilder().template build<Rank, Scalar>());
 
-	// This makes typing easier...
+	/**
+	 * This makes typing easier... Reference to the type name of this Tensor
+	 */
 	using ThisTensorType = Tensor<Rank, DerivedTensorBackendBuilder, Scalar>;
 
 	/**
@@ -92,8 +96,7 @@ public:
 	 * The constructor, takes a TensorReference
 	 * which encapsulates the 1-D array of tensor
 	 * data and the tensors shape.
-	 * @param data
-	 * @param newShape
+	 * @param reference The TensorReference to construct this Tensor from
 	 */
 	Tensor(TensorReference& reference) {
 
