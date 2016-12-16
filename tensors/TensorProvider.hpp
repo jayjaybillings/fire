@@ -231,6 +231,9 @@ public:
 		return getAsDerived().shuffleTensor(array);
 	}
 
+	std::pair<TensorReference, TensorReference> svd(TensorReference& ref, double cutoff) {
+		return getAsDerived().computeSvd(ref, cutoff);
+	}
 };
 
 /**

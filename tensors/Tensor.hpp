@@ -143,6 +143,30 @@ public:
 	}
 
 	/**
+	 *
+	 * @param dimensions
+	 */
+	Tensor(std::array<int, Rank> dimensions) {
+		std::vector<int> temp(Rank);
+		for (int i = 0; i < Rank; i++) {
+			temp[i] = dimensions[i];
+		}
+		shape = std::make_shared<TensorShape>(temp);
+		double data[shape->size()] = {0};
+
+		auto ref = fire::make_tensor_reference(data, *shape.get());
+
+		// Create the requested TensorProvider
+		provider = std::make_shared<DerivedTensorBackend>();
+		if (!provider)
+			throw "Could not find provider";
+
+		// Initialize the backend tensor provider
+		provider->initializeFromReference(ref);
+
+	}
+
+	/**
 	 * Return the value at the given set of
 	 * tensor indices.
 	 *
@@ -357,6 +381,7 @@ public:
 
 		return result;
 	}
+
 	/**
 	 * Shuffle the provided indices in the tensor. The
 	 * provided array is a permutation of Tensor indices.
@@ -367,8 +392,8 @@ public:
 	 * Tensor<3> t(20, 30, 50);
 	 * Tensor<3> shuffled = t.shuffle({1, 2, 0});
 	 * assert (shuffled.dimension(0) == 30);
-	 * assert (shuffled.dimension(0) == 50);
-	 * assert (shuffled.dimension(0) == 20);
+	 * assert (shuffled.dimension(1) == 50);
+	 * assert (shuffled.dimension(2) == 20);
 	 * @endcode
 	 *
 	 * @param array Array of indices to shuffle;
@@ -390,10 +415,64 @@ public:
 	}
 
 	/**
+	 *
+	 * @param leftCutIndices
+	 * @param rightCutIndices
+	 * @param cutoff
+	 * @return
+	 */
+	template<typename LeftIndices, typename RightIndices>
+	std::pair<
+			Tensor<array_size<LeftIndices>::value, DerivedTensorBackendBuilder, Scalar>,
+			Tensor<array_size<RightIndices>::value, DerivedTensorBackendBuilder, Scalar>> svd(
+			LeftIndices& leftCutIndices, RightIndices& rightCutIndices,
+			double cutoff = 0.0) {
+
+		static_assert (Rank == array_size<LeftIndices>::value + array_size<RightIndices>::value,
+				"Error - You must allocate all tensor indices to either the left or right side of this SVD cut.");
+
+		// Keep track of the current shape of this Tensor
+		auto currentDims = shape->dimensions();
+
+		// Reshape the Tensor to be Rank 2 such that the LeftIndices are combined
+		// into one index and the RightIndices are combined into another index
+		std::array<int, 2> dims;
+		int nDims = 0;
+		for (auto l : leftCutIndices) {
+			nDims += currentDims[l];
+		}
+		dims[0] = nDims;
+		nDims = 0;
+		for (auto r : rightCutIndices) {
+			nDims += currentDims[r];
+		}
+		dims[1] = nDims;
+
+		// Reshape this tensor to be a Rank 2 tensor, this creates a new Tensor
+		Tensor<2, DerivedTensorBackendBuilder, Scalar> newRankTwoTensor = reshape(dims);
+		std::cout << "----- Tensor.hpp -----\n" << " Tensor reshaped as rank 2\n";
+		newRankTwoTensor.print(std::cout);
+		std::cout << "\n--------" << std::endl;
+
+		// Get a reference to the reshaped tensor
+		auto ref = newRankTwoTensor.createReference();
+
+		// Compute the SVD of the Rank 2 tensor and
+		// return the U, V, pair.
+		auto UandV = provider->svd(ref, cutoff);
+
+		// Return U and V as tensors
+		return std::make_pair(
+				Tensor<array_size<LeftIndices>::value,
+						DerivedTensorBackendBuilder, Scalar>(UandV.first),
+				Tensor<array_size<RightIndices>::value,
+						DerivedTensorBackendBuilder, Scalar>(UandV.second));
+	}
+
+	/**
 	 * The destructor
 	 */
-	virtual ~Tensor() {
-	}
+	virtual ~Tensor() {}
 
 };
 

@@ -76,8 +76,7 @@ BOOST_AUTO_TEST_CASE(checkConstruction) {
 	epsilon(0, 2, 1) = -1;
 	BOOST_VERIFY(epsilon(0, 2, 1) == -1);
 
-	fire::Tensor<4> grassmannIdentity(3, 3,
-			3, 3);
+	fire::Tensor<4> grassmannIdentity(3, 3, 3, 3);
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
 			for (int k = 0; k < 3; k++) {
@@ -140,7 +139,7 @@ BOOST_AUTO_TEST_CASE(checkEquality) {
 
 	BOOST_VERIFY(a == b);
 
-	a(0,0) = 2;
+	a(0, 0) = 2;
 
 	BOOST_VERIFY(!(a == b));
 	BOOST_VERIFY(a != b);
@@ -214,49 +213,51 @@ BOOST_AUTO_TEST_CASE(checkTensorProduct) {
 BOOST_AUTO_TEST_CASE(checkSetValuesInitializerList) {
 	using namespace fire;
 
-	Tensor<2> t(2,3);
+	Tensor<2> t(2, 3);
 
-	t.setValues({{0,1,2},{3,4,5}});
+	t.setValues( { { 0, 1, 2 }, { 3, 4, 5 } });
 
-	BOOST_VERIFY(t(0,0) == 0);
-	BOOST_VERIFY(t(0,1) == 1);
-	BOOST_VERIFY(t(0,2) == 2);
-	BOOST_VERIFY(t(1,0) == 3);
-	BOOST_VERIFY(t(1,1) == 4);
-	BOOST_VERIFY(t(1,2) == 5);
+	BOOST_VERIFY(t(0, 0) == 0);
+	BOOST_VERIFY(t(0, 1) == 1);
+	BOOST_VERIFY(t(0, 2) == 2);
+	BOOST_VERIFY(t(1, 0) == 3);
+	BOOST_VERIFY(t(1, 1) == 4);
+	BOOST_VERIFY(t(1, 2) == 5);
 
-	std::cout << "Checking setValues with initializer_list.\nTensor<2>(2,3) = \n";
-	t.print(std::cout);
-	std::cout << std::endl;
+//	std::cout
+//			<< "Checking setValues with initializer_list.\nTensor<2>(2,3) = \n";
+//	t.print(std::cout);
+//	std::cout << std::endl;
 }
 
 BOOST_AUTO_TEST_CASE(checkScalarMultiply) {
 	using namespace fire;
 
-	Tensor<2> s(2,3);
+	Tensor<2> s(2, 3);
 
-	s.setValues({{0,1,2},{3,4,5}});
+	s.setValues( { { 0, 1, 2 }, { 3, 4, 5 } });
 
-	Tensor<2> t = s*2.0;
+	Tensor<2> t = s * 2.0;
 
-	BOOST_VERIFY(t(0,0) == 0);
-	BOOST_VERIFY(t(0,1) == 2);
-	BOOST_VERIFY(t(0,2) == 4);
-	BOOST_VERIFY(t(1,0) == 6);
-	BOOST_VERIFY(t(1,1) == 8);
-	BOOST_VERIFY(t(1,2) == 10);
+	BOOST_VERIFY(t(0, 0) == 0);
+	BOOST_VERIFY(t(0, 1) == 2);
+	BOOST_VERIFY(t(0, 2) == 4);
+	BOOST_VERIFY(t(1, 0) == 6);
+	BOOST_VERIFY(t(1, 1) == 8);
+	BOOST_VERIFY(t(1, 2) == 10);
 
-	std::cout << "Checking setValues with initializer_list.\nTensor<2>(2,3) = \n";
-	t.print(std::cout);
+//	std::cout
+//			<< "Checking setValues with initializer_list.\nTensor<2>(2,3) = \n";
+//	t.print(std::cout);
 
 }
 
 BOOST_AUTO_TEST_CASE(checkTensorReshapeAndShuffle) {
 	using namespace fire;
 
-	Tensor<2> tensor(7,11);
+	Tensor<2> tensor(7, 11);
 
-	std::array<int, 3> newShape{{7,11,1}};
+	std::array<int, 3> newShape { { 7, 11, 1 } };
 
 	Tensor<3> reShapedTensor = tensor.reshape(newShape);
 
@@ -268,11 +269,27 @@ BOOST_AUTO_TEST_CASE(checkTensorReshapeAndShuffle) {
 	Tensor<3> input(20, 30, 50);
 	input.setRandom();
 
-	std::array<int, 3> permutation {{1,2,0}};
+	std::array<int, 3> permutation { { 1, 2, 0 } };
 	Tensor<3> output = input.shuffle(permutation);
 	BOOST_VERIFY(output.dimension(0) == 30);
 	BOOST_VERIFY(output.dimension(1) == 50);
 	BOOST_VERIFY(output.dimension(2) == 20);
 
-	BOOST_VERIFY(output(3,7,11) == input(11,3,7));
+	BOOST_VERIFY(output(3, 7, 11) == input(11, 3, 7));
+}
+
+BOOST_AUTO_TEST_CASE(checkSVD) {
+	using namespace fire;
+
+	Tensor<4> tensor(2, 2, 2, 2);
+	tensor.setRandom();
+
+	std::cout << "\n-----TensorTest.cpp------\nRandom Rank 4 Tensor = \n"; tensor.print(std::cout); std::cout << "\n----------" << std::endl << std::endl;
+	std::array<int,2> leftCut {0, 1}, rightCut {2, 3};
+
+	auto result = tensor.svd(leftCut, rightCut);
+
+	std::cout << "\n----TensorTest.cpp------\n\nTENSOR U: \n"; result.first.print(std::cout); std::cout << std::endl;
+	std::cout << "TENSOR V: \n"; result.second.print(std::cout); std::cout << "\n--------" << std::endl;
+
 }

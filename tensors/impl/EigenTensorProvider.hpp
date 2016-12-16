@@ -37,6 +37,8 @@
 
 #include "TensorProvider.hpp"
 #include <unsupported/Eigen/CXX11/Tensor>
+#include <Eigen/Dense>
+#include <Eigen/SVD>
 
 namespace fire {
 
@@ -366,6 +368,56 @@ public:
 		return newReference;
 	}
 
+	std::pair<TensorReference, TensorReference> computeSvd(TensorReference& ref, double cutoff) {
+
+		// Get the data and shape
+		auto shape = ref.second;
+		auto data = ref.first.data();
+		// Express the Tensor as an Eigen Matrix. We know
+		// at this point the Tensor is Rank 2. Double check anyway
+		assert(shape.dimensions().size() == 2);
+
+		std::cout << "\n----- EigenTensorProvider.hpp ----- \nDimension = " << shape.dimension(0) << ", " << shape.dimension(1) << "\n";
+
+		Eigen::Map<Eigen::MatrixXd> matrix(data,
+				shape.dimension(0), shape.dimension(1));
+
+		Eigen::JacobiSVD<Eigen::MatrixXd> svd(matrix, Eigen::ComputeThinU | Eigen::ComputeThinV);
+
+		auto singularValues = svd.singularValues();
+		auto u = svd.matrixU();
+		auto v = svd.matrixV();
+
+		Eigen::MatrixXd S(shape.dimension(0), shape.dimension(1));
+		S.setZero();
+		int limit = S.rows() < S.cols() ? S.rows() : S.cols();
+		for (int i = 0; i < limit; i++) S(i,i) = singularValues(i);
+
+		// Perform cutoff
+		std::cout << "Singular Values: \n" << singularValues << "\n\n";
+		std::cout << "S as Matrix:\n" << S << "\n\n";
+		std::cout << "U: \n" << u << "\n\n";
+		std::cout << "V: \n" << v << "\n\n";
+		Eigen::DSizes<Eigen::DenseIndex, 2> dsizes;
+		std::array<int, 0> nullindices {{}};
+		dsizes[0] = shape.dimension(0);
+		dsizes[1] = shape.dimension(1);
+
+		// Absorb the Singular values into U through a contraction
+		Eigen::TensorMap<Eigen::Tensor<double, 2>> STensor(S.data(), dsizes);
+		Eigen::TensorMap<Eigen::Tensor<double, 2>> UTensor(u.data(), dsizes);
+
+//		Eigen::Tensor<double, 4> result(dsizes);
+//		result.device(*device.get()) = UTensor.contract(STensor, nullindices);
+
+//		std::cout << "RESULT: \n" << result << "\n\n";
+		// Shape should be the same as the given tensor ref
+		// for the computed U and V tensors
+		std::cout << "--------------\n";
+		return std::make_pair(fire::make_tensor_reference(u.data(), shape),
+				fire::make_tensor_reference(v.data(), shape));
+
+	}
 };
 
 /**
