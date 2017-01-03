@@ -1,3 +1,5 @@
 /.ptp-sync/
 /build/
 **/.ptp*
+/.cproject
+/.project
