@@ -51,10 +51,46 @@ file(GLOB SRC *.cpp)
     
 # Get the test files
 file(GLOB test_files tests/*Test.cpp)
+
+# BUG Cannot use variables from another non-parent directory, 
+# each new directory uses a new scope + parent's scope
+# so try to find sundials even though we did it in solvers.
+
+#Look for SUNDIALS if some hints are specified
+if(SUNDIALS_ROOT OR SPACK_ROOT)
+  # Find SUNDIALS
+  message(STATUS "SUNDIALS support requested.")
+  find_package(SUNDIALS)
+  # SUNDIALS needs BLAS
+  find_package(BLAS)
+  # SUNDIALS needs LAPACK
+  find_package(LAPACK)
+  # SUNDIALS needs libm - the math library
+  find_library(mathlib NAMES "m")
+  set(SUNDIALS_LIBRARIES ${SUNDIALS_LIBRARIES} ${BLAS_LIBRARIES} 
+      ${LAPACK_LIBRARIES} ${mathlib})
+
+  # Add the libraries to the package library list
+  set(FIRE_SOLVERS_LIBRARIES ${FIRE_SOLVERS_LIBRARIES} ${SUNDIALS_LIBRARIES}
+      PARENT_SCOPE)
+  # Add the include directories
+  set(FIRE_SOLVERS_INCLUDE_DIRS ${FIRE_SOLVERS_INCLUDE_DIRS} 
+      ${SUNDIALS_INCLUDE_DIRS} PARENT_SCOPE)
+endif(SUNDIALS_ROOT OR SPACK_ROOT)
+
+# If we don't have SUNDIALS, then we can't build the following 
+# tests. 
+if (NOT SUNDIALS_FOUND) 
+  message (STATUS "No Sundials - Removing Astrophysics NetworkIntegration Test")
+  message (STATUS "To use SUNDIALS: install blas-devel, lapack-devel, and sundials-devel, then set -DSUNDIALS_ROOT=/path/to/sundials")
+  list (REMOVE_ITEM test_files "${CMAKE_CURRENT_SOURCE_DIR}/tests/NetworkIntegrationTest.cpp")
+endif()
+
 # Add the solver include libraries
 set(FIRE_ASTRO_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR} ${FIRE_SOLVERS_INCLUDE_DIRS})
 # Add the tests
-add_tests("${test_files}" "${FIRE_ASTRO_INCLUDE_DIRS}" "${FIRE_SOLVERS_LIBRARIES}")   
+add_tests("${test_files}" "${FIRE_ASTRO_INCLUDE_DIRS}" "${FIRE_SOLVERS_LIBRARIES}")
+  
 # Copy the data file for Species parsing tests
 configure_file(tests/CUDAnet_alpha.inp CUDAnet_alpha.inp COPYONLY)
 # Copy the data file for Reaction parsing tests
