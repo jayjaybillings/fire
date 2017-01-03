@@ -38,6 +38,8 @@
 #include <build.h>
 #include <SimpleIni.h>
 #include <iostream>
+#include <vector>
+#include <map>
 
 namespace fire {
 
