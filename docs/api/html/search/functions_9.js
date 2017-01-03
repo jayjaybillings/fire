@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['updatestep',['updateStep',['../a00016.html#a44dfccb90ee5ef6e080b54113c215458',1,'fire::IStepper::updateStep()'],['../a00021.html#a2c13fd4da5550f1e58df2b54bbfe4c2c',1,'fire::ProfileStepper::updateStep()']]],
-  ['usingspaces',['UsingSpaces',['../a00007.html#a9c967faf796cf5babea67e97975bed9b',1,'CSimpleIniTempl']]]
+  ['make_5ftensor_5freference',['make_tensor_reference',['../a00103.html#a6dee95c23e122d0f744cde59dbdb1a4c',1,'fire']]],
+  ['multiplybyscalar',['multiplyByScalar',['../a00047.html#ad65a3028e102ab9ff8c3830c6c383519',1,'fire::TensorProvider']]]
 ];

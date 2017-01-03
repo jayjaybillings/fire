@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['massexcess',['massExcess',['../a00028.html#a3fd8c01bcbb27c20fb80cf9a9e6e1f66',1,'fire::astrophysics::Species']]],
-  ['massfraction',['massFraction',['../a00028.html#aa23c930af303e0c2b09491b18888855b',1,'fire::astrophysics::Species']]],
-  ['massnumber',['massNumber',['../a00028.html#a403a85b9ffb625643b0bd5cf2e944376',1,'fire::astrophysics::Species']]],
-  ['masstol',['massTol',['../a00023.html#ad3d95ecac758ca7efce6376904455123',1,'fire::astrophysics::ReactionNetwork']]]
+  ['make_5ftensor_5freference',['make_tensor_reference',['../a00103.html#a6dee95c23e122d0f744cde59dbdb1a4c',1,'fire']]],
+  ['massexcess',['massExcess',['../a00039.html#a3fd8c01bcbb27c20fb80cf9a9e6e1f66',1,'fire::astrophysics::Species']]],
+  ['massfraction',['massFraction',['../a00039.html#aa23c930af303e0c2b09491b18888855b',1,'fire::astrophysics::Species']]],
+  ['massnumber',['massNumber',['../a00039.html#a403a85b9ffb625643b0bd5cf2e944376',1,'fire::astrophysics::Species']]],
+  ['masstol',['massTol',['../a00034.html#ad3d95ecac758ca7efce6376904455123',1,'fire::astrophysics::ReactionNetwork']]],
+  ['multiplybyscalar',['multiplyByScalar',['../a00047.html#ad65a3028e102ab9ff8c3830c6c383519',1,'fire::TensorProvider']]]
 ];

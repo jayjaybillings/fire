@@ -1,64 +1,50 @@
-\hypertarget{a00015}{}\section{fire\+:\+:I\+Property\+Parser Class Reference}
-\label{a00015}\index{fire\+::\+I\+Property\+Parser@{fire\+::\+I\+Property\+Parser}}
+\hypertarget{a00015}{}\section{C\+Simple\+Ini\+Templ$<$ S\+I\+\_\+\+C\+H\+A\+R, S\+I\+\_\+\+S\+T\+R\+L\+E\+S\+S, S\+I\+\_\+\+C\+O\+N\+V\+E\+R\+T\+E\+R $>$\+:\+:Entry Struct Reference}
+\label{a00015}\index{C\+Simple\+Ini\+Templ$<$ S\+I\+\_\+\+C\+H\+A\+R, S\+I\+\_\+\+S\+T\+R\+L\+E\+S\+S, S\+I\+\_\+\+C\+O\+N\+V\+E\+R\+T\+E\+R $>$\+::\+Entry@{C\+Simple\+Ini\+Templ$<$ S\+I\+\_\+\+C\+H\+A\+R, S\+I\+\_\+\+S\+T\+R\+L\+E\+S\+S, S\+I\+\_\+\+C\+O\+N\+V\+E\+R\+T\+E\+R $>$\+::\+Entry}}
 
 
-{\ttfamily \#include $<$I\+Property\+Parser.\+h$>$}
+{\ttfamily \#include $<$Simple\+Ini.\+h$>$}
 
-Inheritance diagram for fire\+:\+:I\+Property\+Parser\+:\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[height=5.000000cm]{a00015}
-\end{center}
-\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{a00027}{Key\+Order}
+\item 
+struct \hyperlink{a00028}{Load\+Order}
+\end{DoxyCompactItemize}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-virtual const std\+::vector$<$ std\+::string $>$ \& \hyperlink{a00015_a34602687f9d1affac7bd842102d4a6aa}{get\+Property\+Block\+Names} ()=0
+\hypertarget{a00015_a20fc446e1f56f562333042a19bb57c9c}{}{\bfseries Entry} (const S\+I\+\_\+\+C\+H\+A\+R $\ast$a\+\_\+psz\+Item=N\+U\+L\+L, int a\+\_\+n\+Order=0)\label{a00015_a20fc446e1f56f562333042a19bb57c9c}
+
 \item 
-virtual const std\+::map$<$ std\+::string, std\+::string $>$ \& \hyperlink{a00015_a34201371cb36dd09e96a66242ececb86}{get\+Property\+Block} (const std\+::string \&name)=0
+\hypertarget{a00015_aaa6fc487377a2fc91dc4f0b83e572996}{}{\bfseries Entry} (const S\+I\+\_\+\+C\+H\+A\+R $\ast$a\+\_\+psz\+Item, const S\+I\+\_\+\+C\+H\+A\+R $\ast$a\+\_\+psz\+Comment, int a\+\_\+n\+Order)\label{a00015_aaa6fc487377a2fc91dc4f0b83e572996}
+
+\item 
+\hypertarget{a00015_afbe8b9d3c87d5de3c6aa8d8984f011f6}{}{\bfseries Entry} (const \hyperlink{a00015}{Entry} \&rhs)\label{a00015_afbe8b9d3c87d5de3c6aa8d8984f011f6}
+
+\item 
+\hypertarget{a00015_a7f4dd11cc944c140d751ae22ef6cd034}{}\hyperlink{a00015}{Entry} \& {\bfseries operator=} (const \hyperlink{a00015}{Entry} \&rhs)\label{a00015_a7f4dd11cc944c140d751ae22ef6cd034}
+
 \end{DoxyCompactItemize}
-\subsection*{Additional Inherited Members}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{a00015_a0f987914bf6076156c2a7c40e8e09c89}{}const S\+I\+\_\+\+C\+H\+A\+R $\ast$ {\bfseries p\+Item}\label{a00015_a0f987914bf6076156c2a7c40e8e09c89}
+
+\item 
+\hypertarget{a00015_a84364bcded2d32c5ae4241bf197a74c4}{}const S\+I\+\_\+\+C\+H\+A\+R $\ast$ {\bfseries p\+Comment}\label{a00015_a84364bcded2d32c5ae4241bf197a74c4}
+
+\item 
+\hypertarget{a00015_ac08ed1fec5743b35aebfa8635e1bdb5a}{}int {\bfseries n\+Order}\label{a00015_ac08ed1fec5743b35aebfa8635e1bdb5a}
+
+\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-This is an extension of the parser interface that focuses on parsing a set of properties. Properties are returned in blocks represented by maps.. 
+\subsubsection*{template$<$class S\+I\+\_\+\+C\+H\+A\+R, class S\+I\+\_\+\+S\+T\+R\+L\+E\+S\+S, class S\+I\+\_\+\+C\+O\+N\+V\+E\+R\+T\+E\+R$>$struct C\+Simple\+Ini\+Templ$<$ S\+I\+\_\+\+C\+H\+A\+R, S\+I\+\_\+\+S\+T\+R\+L\+E\+S\+S, S\+I\+\_\+\+C\+O\+N\+V\+E\+R\+T\+E\+R $>$\+::\+Entry}
 
-\subsection{Member Function Documentation}
-\index{fire\+::\+I\+Property\+Parser@{fire\+::\+I\+Property\+Parser}!get\+Property\+Block@{get\+Property\+Block}}
-\index{get\+Property\+Block@{get\+Property\+Block}!fire\+::\+I\+Property\+Parser@{fire\+::\+I\+Property\+Parser}}
-\subsubsection[{\texorpdfstring{get\+Property\+Block(const std\+::string \&name)=0}{getPropertyBlock(const std::string \&name)=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual const std\+::map$<$std\+::string, std\+::string$>$\& fire\+::\+I\+Property\+Parser\+::get\+Property\+Block (
-\begin{DoxyParamCaption}
-\item[{const std\+::string \&}]{name}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{a00015_a34201371cb36dd09e96a66242ececb86}{}\label{a00015_a34201371cb36dd09e96a66242ececb86}
-This operation returns the property block with the given name. 
-\begin{DoxyParams}{Parameters}
-{\em name} & the block name \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-the property block with the given name 
-\end{DoxyReturn}
+key entry 
 
-
-Implemented in \hyperlink{a00013_a3591312590a66659ebd377cdde9ab9ad}{fire\+::\+I\+N\+I\+Property\+Parser}.
-
-\index{fire\+::\+I\+Property\+Parser@{fire\+::\+I\+Property\+Parser}!get\+Property\+Block\+Names@{get\+Property\+Block\+Names}}
-\index{get\+Property\+Block\+Names@{get\+Property\+Block\+Names}!fire\+::\+I\+Property\+Parser@{fire\+::\+I\+Property\+Parser}}
-\subsubsection[{\texorpdfstring{get\+Property\+Block\+Names()=0}{getPropertyBlockNames()=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual const std\+::vector$<$std\+::string$>$\& fire\+::\+I\+Property\+Parser\+::get\+Property\+Block\+Names (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{a00015_a34602687f9d1affac7bd842102d4a6aa}{}\label{a00015_a34602687f9d1affac7bd842102d4a6aa}
-This operation returns the names of the property blocks parsed from the source. \begin{DoxyReturn}{Returns}
-the block names 
-\end{DoxyReturn}
-
-
-Implemented in \hyperlink{a00013_aed0f1f47111794659564dcddb4d25bc6}{fire\+::\+I\+N\+I\+Property\+Parser}.
-
-
-
-The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-I\+Property\+Parser.\+h\end{DoxyCompactItemize}
+Simple\+Ini.\+h\end{DoxyCompactItemize}

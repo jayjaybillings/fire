@@ -1,8 +1,5 @@
 var searchData=
 [
-  ['computeprefactors',['computePrefactors',['../a00023.html#ac5b97490e667b011b5e2bea92e16f8b7',1,'fire::astrophysics::ReactionNetwork']]],
-  ['computerates',['computeRates',['../a00023.html#a3b1fee4e28576c677d7b852e91c6fa98',1,'fire::astrophysics::ReactionNetwork']]],
-  ['convertfromstore',['ConvertFromStore',['../a00024.html#a5176a6dc2dc6482280e9a08dd3607f9e',1,'SI_ConvertA::ConvertFromStore()'],['../a00025.html#a132a9317a6f69780fa6b818d3fcf59e9',1,'SI_ConvertW::ConvertFromStore()']]],
-  ['converttostore',['ConvertToStore',['../a00024.html#a188fd6d6fcba6ba8d769e70e5fbea742',1,'SI_ConvertA::ConvertToStore()'],['../a00025.html#ab30993d03cdc7b5d5635b95add8b7133',1,'SI_ConvertW::ConvertToStore()']]],
-  ['csimpleinitempl',['CSimpleIniTempl',['../a00007.html#af878d0a2aa780255b621e95f58f691d8',1,'CSimpleIniTempl']]]
+  ['build',['build',['../a00103.html#abca66b4f2a1543308b663714bd8b4855',1,'fire::build(const vector&lt; string &gt; &amp;lines)'],['../a00103.html#aaf82cc265522a41ebc36e8405e0c7559',1,'fire::build(const string &amp;source)'],['../a00103.html#a138f22945f7a7ec642432fd24a94b414',1,'fire::build(const string &amp;source)'],['../a00103.html#a5c0e80ce60cddb0a4ac83333b41fded1',1,'fire::build()'],['../a00103.html#a45fa78347513e865dc6c767cff0b4ef1',1,'fire::build(K values)'],['../a00103.html#a624f274bd6de1d7b829c9883ac3397cd',1,'fire::build(const std::string &amp;source)']]],
+  ['buildfluxmaps',['buildFluxMaps',['../a00034.html#aa0c06237ae72e698aee9cf72d0032fd8',1,'fire::astrophysics::ReactionNetwork']]]
 ];

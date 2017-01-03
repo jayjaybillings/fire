@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['entry',['Entry',['../a00009.html',1,'CSimpleIniTempl']]]
+  ['delimitedtextparser',['DelimitedTextParser',['../a00012.html',1,'fire']]]
 ];
