@@ -160,6 +160,9 @@ public:
 	 */
 	int numFMinus;
 
+	double & operator()(int i) { return species->at(i).massFraction; }
+
+
 	/**
 	 * This operation sets the properties of the network from a map. It is
 	 * designed to work with property blocks pulled from INI files. It expects

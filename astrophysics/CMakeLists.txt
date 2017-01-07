@@ -39,27 +39,32 @@ SET(PACKAGE_DESCRIPTION "Fire Astrophysics Library")
 #Set the library name
 SET(LIBRARY_NAME "FireAstro")
 
-#Collect all header filenames in this project 
-#and glob them in HEADERS
-file(GLOB HEADERS *.h)
+# Only build if solvers are available
+if (FIRE_SOLVERS_LIBRARIES)
 
-#Grab all of the source files
-file(GLOB SRC *.cpp)
+  #Collect all header filenames in this project 
+  #and glob them in HEADERS
+  file(GLOB HEADERS *.h)
 
-#Add the source code to the library
-#add_library(${LIBRARY_NAME} STATIC ${SRC})
+  #Grab all of the source files
+  file(GLOB SRC *.cpp)
+
+  #Add the source code to the library
+  #add_library(${LIBRARY_NAME} STATIC ${SRC})
     
-# Get the test files
-file(GLOB test_files tests/*Test.cpp)
-# Add the solver include libraries
-set(FIRE_ASTRO_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR} ${FIRE_SOLVERS_INCLUDE_DIRS})
-# Add the tests
-add_tests("${test_files}" "${FIRE_ASTRO_INCLUDE_DIRS}" "${FIRE_SOLVERS_LIBRARIES}")   
-# Copy the data file for Species parsing tests
-configure_file(tests/CUDAnet_alpha.inp CUDAnet_alpha.inp COPYONLY)
-# Copy the data file for Reaction parsing tests
-configure_file(tests/rateLibrary_alpha.data rateLibrary_alpha.data COPYONLY)
-# Copy the parameter file for the network test
-configure_file(tests/alpha_gold.ini alpha_gold.ini COPYONLY)
-#Install the Fire header files
-install(FILES ${HEADERS} DESTINATION include)
+  # Get the test files
+  file(GLOB test_files tests/*Test.cpp)
+  # Add the solver include libraries
+  set(FIRE_ASTRO_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR} ${FIRE_SOLVERS_INCLUDE_DIRS})
+  # Add the tests
+  add_tests("${test_files}" "${FIRE_ASTRO_INCLUDE_DIRS}" "${FIRE_SOLVERS_LIBRARIES}")   
+  # Copy the data file for Species parsing tests
+  configure_file(tests/CUDAnet_alpha.inp CUDAnet_alpha.inp COPYONLY)
+  # Copy the data file for Reaction parsing tests
+  configure_file(tests/rateLibrary_alpha.data rateLibrary_alpha.data COPYONLY)
+  # Copy the parameter file for the network test
+  configure_file(tests/alpha_gold.ini alpha_gold.ini COPYONLY)
+  #Install the Fire header files
+  install(FILES ${HEADERS} DESTINATION include)
+
+endif ()
