@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['converter',['Converter',['../a00006.html',1,'CSimpleIniTempl']]],
-  ['csimpleinitempl',['CSimpleIniTempl',['../a00007.html',1,'']]]
+  ['blockgenerator',['BlockGenerator',['../a00009.html',1,'']]]
 ];

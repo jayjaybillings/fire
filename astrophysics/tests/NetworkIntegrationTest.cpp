@@ -32,6 +32,10 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE Astro
 
+#if defined __GNUC__ && __GNUC__>=6
+  #pragma GCC diagnostic ignored "-Wwrite-strings"
+#endif
+
 #include <boost/test/included/unit_test.hpp>
 #include <vector>
 #include <string>

@@ -1,19 +1,129 @@
-\hypertarget{a00035}{}\section{Test Class Reference}
-\label{a00035}\index{Test@{Test}}
+\hypertarget{a00035}{}\section{S\+I\+\_\+\+Convert\+A$<$ S\+I\+\_\+\+C\+H\+A\+R $>$ Class Template Reference}
+\label{a00035}\index{S\+I\+\_\+\+Convert\+A$<$ S\+I\+\_\+\+C\+H\+A\+R $>$@{S\+I\+\_\+\+Convert\+A$<$ S\+I\+\_\+\+C\+H\+A\+R $>$}}
+
+
+{\ttfamily \#include $<$Simple\+Ini.\+h$>$}
+
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\bfseries Test} (const char $\ast$a\+\_\+psz\+Name)\hypertarget{a00035_a00dc4afd42c3d98cd00a42510665b568}{}\label{a00035_a00dc4afd42c3d98cd00a42510665b568}
+\hypertarget{a00035_ab9c32530dc603974c3fdca06aad5b801}{}{\bfseries S\+I\+\_\+\+Convert\+A} (bool a\+\_\+b\+Store\+Is\+Utf8)\label{a00035_ab9c32530dc603974c3fdca06aad5b801}
 
 \item 
-bool {\bfseries Success} ()\hypertarget{a00035_af14a8e1aeac799d34e623b91d1e95df1}{}\label{a00035_af14a8e1aeac799d34e623b91d1e95df1}
+\hypertarget{a00035_a532fa9943ae417518e370a489bdea0f5}{}{\bfseries S\+I\+\_\+\+Convert\+A} (const \hyperlink{a00035}{S\+I\+\_\+\+Convert\+A} \&rhs)\label{a00035_a532fa9943ae417518e370a489bdea0f5}
 
 \item 
-bool {\bfseries Failure} (const char $\ast$psz\+Reason)\hypertarget{a00035_a0de2fcc2b34ad6b393d277deaa9ad59d}{}\label{a00035_a0de2fcc2b34ad6b393d277deaa9ad59d}
+\hypertarget{a00035_a4296011c45379c08309ce2b0709b387b}{}\hyperlink{a00035}{S\+I\+\_\+\+Convert\+A} \& {\bfseries operator=} (const \hyperlink{a00035}{S\+I\+\_\+\+Convert\+A} \&rhs)\label{a00035_a4296011c45379c08309ce2b0709b387b}
 
+\item 
+size\+\_\+t \hyperlink{a00035_a30ce0eee2556184d41130311d3c8cc84}{Size\+From\+Store} (const char $\ast$a\+\_\+p\+Input\+Data, size\+\_\+t a\+\_\+u\+Input\+Data\+Len)
+\item 
+bool \hyperlink{a00035_a5176a6dc2dc6482280e9a08dd3607f9e}{Convert\+From\+Store} (const char $\ast$a\+\_\+p\+Input\+Data, size\+\_\+t a\+\_\+u\+Input\+Data\+Len, S\+I\+\_\+\+C\+H\+A\+R $\ast$a\+\_\+p\+Output\+Data, size\+\_\+t a\+\_\+u\+Output\+Data\+Size)
+\item 
+size\+\_\+t \hyperlink{a00035_a39e7a8c49712c295b24ff2ae788c01c5}{Size\+To\+Store} (const S\+I\+\_\+\+C\+H\+A\+R $\ast$a\+\_\+p\+Input\+Data)
+\item 
+bool \hyperlink{a00035_a188fd6d6fcba6ba8d769e70e5fbea742}{Convert\+To\+Store} (const S\+I\+\_\+\+C\+H\+A\+R $\ast$a\+\_\+p\+Input\+Data, char $\ast$a\+\_\+p\+Output\+Data, size\+\_\+t a\+\_\+u\+Output\+Data\+Size)
 \end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class S\+I\+\_\+\+C\+H\+A\+R$>$class S\+I\+\_\+\+Convert\+A$<$ S\+I\+\_\+\+C\+H\+A\+R $>$}
+
+Null conversion class for M\+B\+C\+S/\+U\+T\+F-\/8 to char (or equivalent). 
+
+\subsection{Member Function Documentation}
+\hypertarget{a00035_a5176a6dc2dc6482280e9a08dd3607f9e}{}\index{S\+I\+\_\+\+Convert\+A@{S\+I\+\_\+\+Convert\+A}!Convert\+From\+Store@{Convert\+From\+Store}}
+\index{Convert\+From\+Store@{Convert\+From\+Store}!S\+I\+\_\+\+Convert\+A@{S\+I\+\_\+\+Convert\+A}}
+\subsubsection[{Convert\+From\+Store(const char $\ast$a\+\_\+p\+Input\+Data, size\+\_\+t a\+\_\+u\+Input\+Data\+Len, S\+I\+\_\+\+C\+H\+A\+R $\ast$a\+\_\+p\+Output\+Data, size\+\_\+t a\+\_\+u\+Output\+Data\+Size)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class S\+I\+\_\+\+C\+H\+A\+R $>$ bool {\bf S\+I\+\_\+\+Convert\+A}$<$ S\+I\+\_\+\+C\+H\+A\+R $>$\+::Convert\+From\+Store (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{a\+\_\+p\+Input\+Data, }
+\item[{size\+\_\+t}]{a\+\_\+u\+Input\+Data\+Len, }
+\item[{S\+I\+\_\+\+C\+H\+A\+R $\ast$}]{a\+\_\+p\+Output\+Data, }
+\item[{size\+\_\+t}]{a\+\_\+u\+Output\+Data\+Size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{a00035_a5176a6dc2dc6482280e9a08dd3607f9e}
+Convert the input string from the storage format to S\+I\+\_\+\+C\+H\+A\+R. The storage format is always U\+T\+F-\/8 or M\+B\+C\+S.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+p\+Input\+Data} & Data in storage format to be converted to S\+I\+\_\+\+C\+H\+A\+R. \\
+\hline
+{\em a\+\_\+u\+Input\+Data\+Len} & Length of storage format data in bytes. This must be the actual length of the data, including N\+U\+L\+L byte if N\+U\+L\+L terminated string is required. \\
+\hline
+{\em a\+\_\+p\+Output\+Data} & Pointer to the output buffer to received the converted data. \\
+\hline
+{\em a\+\_\+u\+Output\+Data\+Size} & Size of the output buffer in S\+I\+\_\+\+C\+H\+A\+R. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if all of the input data was successfully converted. 
+\end{DoxyReturn}
+\hypertarget{a00035_a188fd6d6fcba6ba8d769e70e5fbea742}{}\index{S\+I\+\_\+\+Convert\+A@{S\+I\+\_\+\+Convert\+A}!Convert\+To\+Store@{Convert\+To\+Store}}
+\index{Convert\+To\+Store@{Convert\+To\+Store}!S\+I\+\_\+\+Convert\+A@{S\+I\+\_\+\+Convert\+A}}
+\subsubsection[{Convert\+To\+Store(const S\+I\+\_\+\+C\+H\+A\+R $\ast$a\+\_\+p\+Input\+Data, char $\ast$a\+\_\+p\+Output\+Data, size\+\_\+t a\+\_\+u\+Output\+Data\+Size)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class S\+I\+\_\+\+C\+H\+A\+R $>$ bool {\bf S\+I\+\_\+\+Convert\+A}$<$ S\+I\+\_\+\+C\+H\+A\+R $>$\+::Convert\+To\+Store (
+\begin{DoxyParamCaption}
+\item[{const S\+I\+\_\+\+C\+H\+A\+R $\ast$}]{a\+\_\+p\+Input\+Data, }
+\item[{char $\ast$}]{a\+\_\+p\+Output\+Data, }
+\item[{size\+\_\+t}]{a\+\_\+u\+Output\+Data\+Size}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{a00035_a188fd6d6fcba6ba8d769e70e5fbea742}
+Convert the input string to the storage format of this data. The storage format is always U\+T\+F-\/8 or M\+B\+C\+S.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+p\+Input\+Data} & N\+U\+L\+L terminated source string to convert. All of the data will be converted including the terminating N\+U\+L\+L character. \\
+\hline
+{\em a\+\_\+p\+Output\+Data} & Pointer to the buffer to receive the converted string. \\
+\hline
+{\em a\+\_\+u\+Output\+Data\+Size} & Size of the output buffer in char. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if all of the input data, including the terminating N\+U\+L\+L character was successfully converted. 
+\end{DoxyReturn}
+\hypertarget{a00035_a30ce0eee2556184d41130311d3c8cc84}{}\index{S\+I\+\_\+\+Convert\+A@{S\+I\+\_\+\+Convert\+A}!Size\+From\+Store@{Size\+From\+Store}}
+\index{Size\+From\+Store@{Size\+From\+Store}!S\+I\+\_\+\+Convert\+A@{S\+I\+\_\+\+Convert\+A}}
+\subsubsection[{Size\+From\+Store(const char $\ast$a\+\_\+p\+Input\+Data, size\+\_\+t a\+\_\+u\+Input\+Data\+Len)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class S\+I\+\_\+\+C\+H\+A\+R $>$ size\+\_\+t {\bf S\+I\+\_\+\+Convert\+A}$<$ S\+I\+\_\+\+C\+H\+A\+R $>$\+::Size\+From\+Store (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{a\+\_\+p\+Input\+Data, }
+\item[{size\+\_\+t}]{a\+\_\+u\+Input\+Data\+Len}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{a00035_a30ce0eee2556184d41130311d3c8cc84}
+Calculate the number of S\+I\+\_\+\+C\+H\+A\+R required for converting the input from the storage format. The storage format is always U\+T\+F-\/8 or M\+B\+C\+S.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+p\+Input\+Data} & Data in storage format to be converted to S\+I\+\_\+\+C\+H\+A\+R. \\
+\hline
+{\em a\+\_\+u\+Input\+Data\+Len} & Length of storage format data in bytes. This must be the actual length of the data, including N\+U\+L\+L byte if N\+U\+L\+L terminated string is required. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of S\+I\+\_\+\+C\+H\+A\+R required by the string when converted. If there are embedded N\+U\+L\+L bytes in the input data, only the string up and not including the N\+U\+L\+L byte will be converted. 
+
+-\/1 cast to size\+\_\+t on a conversion error. 
+\end{DoxyReturn}
+\hypertarget{a00035_a39e7a8c49712c295b24ff2ae788c01c5}{}\index{S\+I\+\_\+\+Convert\+A@{S\+I\+\_\+\+Convert\+A}!Size\+To\+Store@{Size\+To\+Store}}
+\index{Size\+To\+Store@{Size\+To\+Store}!S\+I\+\_\+\+Convert\+A@{S\+I\+\_\+\+Convert\+A}}
+\subsubsection[{Size\+To\+Store(const S\+I\+\_\+\+C\+H\+A\+R $\ast$a\+\_\+p\+Input\+Data)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$class S\+I\+\_\+\+C\+H\+A\+R $>$ size\+\_\+t {\bf S\+I\+\_\+\+Convert\+A}$<$ S\+I\+\_\+\+C\+H\+A\+R $>$\+::Size\+To\+Store (
+\begin{DoxyParamCaption}
+\item[{const S\+I\+\_\+\+C\+H\+A\+R $\ast$}]{a\+\_\+p\+Input\+Data}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{a00035_a39e7a8c49712c295b24ff2ae788c01c5}
+Calculate the number of char required by the storage format of this data. The storage format is always U\+T\+F-\/8 or M\+B\+C\+S.
+
+
+\begin{DoxyParams}{Parameters}
+{\em a\+\_\+p\+Input\+Data} & N\+U\+L\+L terminated string to calculate the number of bytes required to be converted to storage format. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number of bytes required by the string when converted to storage format. This size always includes space for the terminating N\+U\+L\+L character. 
+
+-\/1 cast to size\+\_\+t on a conversion error. 
+\end{DoxyReturn}
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-test1.\+cpp\end{DoxyCompactItemize}
+Simple\+Ini.\+h\end{DoxyCompactItemize}

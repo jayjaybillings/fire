@@ -29,7 +29,7 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Author(s): Jay Jay Billings
+# Author(s): Jay Jay Billings, Alex McCaskey
 #----------------------------------------------------------------------------*/
 
 # Set a name for this project.
@@ -73,12 +73,14 @@ endif(DOXYGEN_FOUND)
 # directories must come before add subdirectory!
 include_directories("${CMAKE_SOURCE_DIR}/parsers")
 include_directories("${CMAKE_SOURCE_DIR}/solvers")
+include_directories("${CMAKE_SOURCE_DIR}/tensors")
 include_directories("${CMAKE_SOURCE_DIR}/tpls/simpleini-4.17")
 
 # Add the main source directories
 add_subdirectory(parsers)
 add_subdirectory(integrators)
 add_subdirectory(solvers)
+add_subdirectory(tensors)
 # Add the domain source directories
 add_subdirectory(astrophysics)
 # Add the third party libraries

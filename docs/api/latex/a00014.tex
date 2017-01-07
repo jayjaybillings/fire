@@ -1,169 +1,277 @@
-\hypertarget{a00014}{}\section{fire\+:\+:I\+Parser Class Reference}
-\label{a00014}\index{fire\+::\+I\+Parser@{fire\+::\+I\+Parser}}
+\hypertarget{a00014}{}\section{fire\+:\+:Eigen\+Tensor\+Provider$<$ Rank, Scalar $>$ Class Template Reference}
+\label{a00014}\index{fire\+::\+Eigen\+Tensor\+Provider$<$ Rank, Scalar $>$@{fire\+::\+Eigen\+Tensor\+Provider$<$ Rank, Scalar $>$}}
 
 
-{\ttfamily \#include $<$I\+Parser.\+h$>$}
+{\ttfamily \#include $<$Eigen\+Tensor\+Provider.\+hpp$>$}
 
-Inheritance diagram for fire\+:\+:I\+Parser\+:\begin{figure}[H]
+Inheritance diagram for fire\+:\+:Eigen\+Tensor\+Provider$<$ Rank, Scalar $>$\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[height=5.000000cm]{a00014}
+\includegraphics[height=2.000000cm]{a00014}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-virtual void \hyperlink{a00014_a0dbeff2b9bd8dbfb2aad7a424eef87d1}{set\+Source} (const std\+::string \&source)=0
+\hyperlink{a00014_a666937cbdec96978bdd47132a95ab9e6}{Eigen\+Tensor\+Provider} ()
 \item 
-virtual const std\+::string \& \hyperlink{a00014_ab55d2644dfa6d950d1f874e1e02df095}{get\+Source} ()=0
+{\footnotesize template$<$typename... Dimensions$>$ }\\void \hyperlink{a00014_a2d624402c063c0398f018417aae2fe28}{initialize\+Tensor\+Backend} (int first\+Dim, Dimensions...\+other\+Dims)
 \item 
-virtual void \hyperlink{a00014_a7748a633910e9bfc27411d6bd840496b}{set\+Source} (const std\+::istream \&source)=0
+void \hyperlink{a00014_a135f00852433ce76d65d8e97e742b60f}{initialize\+Tensor\+Backend\+With\+Reference} (\hyperlink{a00103_a744d7805ef98562de55f32012ab11cfb}{Tensor\+Reference} \&reference)
 \item 
-virtual const std\+::istream \& \hyperlink{a00014_ac94c7a288bf669322b93ba171c43f90e}{get\+Source\+Stream} ()=0
+{\footnotesize template$<$typename... Indices$>$ }\\double \& \hyperlink{a00014_af546ed4af5f2085c29fc499303bd681a}{tensor\+Coefficient} (Indices...\+indices)
 \item 
-virtual void \hyperlink{a00014_af36ac6eedd8c27d2f418869193d7d03c}{parse} ()=0
+bool \hyperlink{a00014_af0f8d3e7d83dbd3271ace3f1380d8c7f}{check\+Equality} (\hyperlink{a00103_a744d7805ef98562de55f32012ab11cfb}{Tensor\+Reference} \&other)
 \item 
-virtual bool \hyperlink{a00014_a616c42c85d781c916e97f0ad8f1e9010}{is\+File} ()=0
+{\footnotesize template$<$typename Other\+Derived , typename Contraction\+Dims $>$ }\\\hyperlink{a00103_a744d7805ef98562de55f32012ab11cfb}{Tensor\+Reference} \hyperlink{a00014_a399a801dc4b785e93893030b84d6b3e2}{execute\+Contraction} (Other\+Derived \&t2, Contraction\+Dims \&c\+Indices)
 \item 
-virtual bool \hyperlink{a00014_a97b9e58493b3cadbc63e670b0b0e759f}{is\+Local} ()=0
+Scalar $\ast$ \hyperlink{a00014_aff5626be9e55f593f0a6b71174ecbd8a}{data} ()
 \item 
-virtual bool \hyperlink{a00014_a83d2882a466d694fb0aea3d846bcbed4}{is\+Parallel} ()=0
+\hyperlink{a00103_a744d7805ef98562de55f32012ab11cfb}{Tensor\+Reference} \hyperlink{a00014_a4bda8a253c803e650987c20628c81c65}{add} (\hyperlink{a00103_a744d7805ef98562de55f32012ab11cfb}{Tensor\+Reference} \&other)
+\item 
+{\footnotesize template$<$typename Init\+List $>$ }\\void \hyperlink{a00014_a3d02dbf7e2d255a1378084aa6459cf25}{set\+Tensor\+Values} (Init\+List \&vals)
+\item 
+void \hyperlink{a00014_a607ad28d9f0b8b7f639dc1b0693dfd03}{print\+Tensor} (std\+::ostream \&stream)
+\item 
+void \hyperlink{a00014_a461c3348c66ae011167d8c194c79dce9}{fill\+With\+Random\+Values} ()
+\item 
+\hyperlink{a00103_a744d7805ef98562de55f32012ab11cfb}{Tensor\+Reference} \hyperlink{a00014_a0c28a71c68f8ba5f07a45421900e8af5}{scalar\+Product} (Scalar \&val)
+\item 
+{\footnotesize template$<$typename Dim\+Array $>$ }\\\hyperlink{a00103_a744d7805ef98562de55f32012ab11cfb}{Tensor\+Reference} \hyperlink{a00014_adca448f3689d78ea3f4b306904feccb0}{reshape\+Tensor} (Dim\+Array \&array)
+\item 
+\hypertarget{a00014_a224630f48894240b4e0e0720a505fc1d}{}{\footnotesize template$<$typename Dim\+Array $>$ }\\\hyperlink{a00103_a744d7805ef98562de55f32012ab11cfb}{Tensor\+Reference} {\bfseries shuffle\+Tensor} (Dim\+Array \&array)\label{a00014_a224630f48894240b4e0e0720a505fc1d}
+
+\item 
+\hypertarget{a00014_a31efdc5a7e4620e799e5d91ba9d069fd}{}std\+::pair$<$ \hyperlink{a00103_a744d7805ef98562de55f32012ab11cfb}{Tensor\+Reference}, \hyperlink{a00103_a744d7805ef98562de55f32012ab11cfb}{Tensor\+Reference} $>$ {\bfseries compute\+Svd} (\hyperlink{a00103_a744d7805ef98562de55f32012ab11cfb}{Tensor\+Reference} \&ref, double cutoff)\label{a00014_a31efdc5a7e4620e799e5d91ba9d069fd}
+
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr int \hyperlink{a00014_a68f0ad7ead91dec2ea56f173981465c8}{get\+Rank} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const int \hyperlink{a00014_ae8f0217985d78dba31d7bdb95ace1e43}{rank} = Rank
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-This is the base interface for parsers in Fire and it defines the contract that can be expected of all parsers.
+\subsubsection*{template$<$const int Rank, typename Scalar = double$>$class fire\+::\+Eigen\+Tensor\+Provider$<$ Rank, Scalar $>$}
 
-This source string is only a reference to the source or some sort of handle that points to it, such as a file or stream name. The exact type of the source -\/ file, stream, socket, etc. -\/ is determined by the implementing class. Check the documentation of implementing classes for the exact way the source string is used.
+The \hyperlink{a00014}{Eigen\+Tensor\+Provider} is a \hyperlink{a00047}{Tensor\+Provider} that provides tensor data and operations using the Eigen C++ tensor module. 
 
-I\+Parsers should always be used by setting the source and then parsing the source\+:
-
-
-\begin{DoxyCode}
-IParser parser = ...;\textcolor{comment}{// somehow create your parser}
-parser.setSource(sourceName);
-parser.parser();
-\end{DoxyCode}
-
-
-Subclasses must always be sure that they implement \hyperlink{a00014_af36ac6eedd8c27d2f418869193d7d03c}{parse()} and \hyperlink{a00014_a0dbeff2b9bd8dbfb2aad7a424eef87d1}{set\+Source()}. 
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{a00014_a666937cbdec96978bdd47132a95ab9e6}{}\index{fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}!Eigen\+Tensor\+Provider@{Eigen\+Tensor\+Provider}}
+\index{Eigen\+Tensor\+Provider@{Eigen\+Tensor\+Provider}!fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}}
+\subsubsection[{Eigen\+Tensor\+Provider()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const int Rank, typename Scalar = double$>$ {\bf fire\+::\+Eigen\+Tensor\+Provider}$<$ Rank, Scalar $>$\+::{\bf Eigen\+Tensor\+Provider} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{a00014_a666937cbdec96978bdd47132a95ab9e6}
+The Constructor 
 
 \subsection{Member Function Documentation}
-\index{fire\+::\+I\+Parser@{fire\+::\+I\+Parser}!get\+Source@{get\+Source}}
-\index{get\+Source@{get\+Source}!fire\+::\+I\+Parser@{fire\+::\+I\+Parser}}
-\subsubsection[{\texorpdfstring{get\+Source()=0}{getSource()=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual const std\+::string\& fire\+::\+I\+Parser\+::get\+Source (
+\hypertarget{a00014_a4bda8a253c803e650987c20628c81c65}{}\index{fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}!add@{add}}
+\index{add@{add}!fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}}
+\subsubsection[{add(\+Tensor\+Reference \&other)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const int Rank, typename Scalar = double$>$ {\bf Tensor\+Reference} {\bf fire\+::\+Eigen\+Tensor\+Provider}$<$ Rank, Scalar $>$\+::add (
 \begin{DoxyParamCaption}
-{}
+\item[{{\bf Tensor\+Reference} \&}]{other}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{a00014_ab55d2644dfa6d950d1f874e1e02df095}{}\label{a00014_ab55d2644dfa6d950d1f874e1e02df095}
-This operation gets the data source for the parser. \begin{DoxyReturn}{Returns}
-the name of the source 
-\end{DoxyReturn}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{a00014_a4bda8a253c803e650987c20628c81c65}
+Return a Tensor\+Reference representing the sum of this Eigen \hyperlink{a00046}{Tensor} and an Eigen \hyperlink{a00046}{Tensor} represented by the other Tensor\+Reference.
 
 
-Implemented in \hyperlink{a00019_aedb7fe10911182525a719963b9b56726}{fire\+::\+Local\+Parser$<$ T $>$}, \hyperlink{a00019_aedb7fe10911182525a719963b9b56726}{fire\+::\+Local\+Parser$<$ std\+::string $>$}, and \hyperlink{a00013_ad02c9a530f20a706d7bb2554813e8d3a}{fire\+::\+I\+N\+I\+Property\+Parser}.
-
-\index{fire\+::\+I\+Parser@{fire\+::\+I\+Parser}!get\+Source\+Stream@{get\+Source\+Stream}}
-\index{get\+Source\+Stream@{get\+Source\+Stream}!fire\+::\+I\+Parser@{fire\+::\+I\+Parser}}
-\subsubsection[{\texorpdfstring{get\+Source\+Stream()=0}{getSourceStream()=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual const std\+::istream\& fire\+::\+I\+Parser\+::get\+Source\+Stream (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{a00014_ac94c7a288bf669322b93ba171c43f90e}{}\label{a00014_ac94c7a288bf669322b93ba171c43f90e}
-This operation gets the data source for the parser as a stream if and only if it was set as such. \begin{DoxyReturn}{Returns}
-source the stream of delimited text data 
-\end{DoxyReturn}
-
-
-Implemented in \hyperlink{a00019_a9bf19a3cc9ae8ac0e6e7a0e7f6212cdc}{fire\+::\+Local\+Parser$<$ T $>$}, and \hyperlink{a00019_a9bf19a3cc9ae8ac0e6e7a0e7f6212cdc}{fire\+::\+Local\+Parser$<$ std\+::string $>$}.
-
-\index{fire\+::\+I\+Parser@{fire\+::\+I\+Parser}!is\+File@{is\+File}}
-\index{is\+File@{is\+File}!fire\+::\+I\+Parser@{fire\+::\+I\+Parser}}
-\subsubsection[{\texorpdfstring{is\+File()=0}{isFile()=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool fire\+::\+I\+Parser\+::is\+File (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{a00014_a616c42c85d781c916e97f0ad8f1e9010}{}\label{a00014_a616c42c85d781c916e97f0ad8f1e9010}
-This operation indicates whether or not the parser\textquotesingle{}s source is a file. \begin{DoxyReturn}{Returns}
-true if this parser is working with a file, false otherwise. 
-\end{DoxyReturn}
-
-
-Implemented in \hyperlink{a00012_a091d5cf56bf8f407854ef87f460b2958}{fire\+::\+I\+Local\+Parser$<$ T $>$}, and \hyperlink{a00012_a091d5cf56bf8f407854ef87f460b2958}{fire\+::\+I\+Local\+Parser$<$ std\+::string $>$}.
-
-\index{fire\+::\+I\+Parser@{fire\+::\+I\+Parser}!is\+Local@{is\+Local}}
-\index{is\+Local@{is\+Local}!fire\+::\+I\+Parser@{fire\+::\+I\+Parser}}
-\subsubsection[{\texorpdfstring{is\+Local()=0}{isLocal()=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool fire\+::\+I\+Parser\+::is\+Local (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{a00014_a97b9e58493b3cadbc63e670b0b0e759f}{}\label{a00014_a97b9e58493b3cadbc63e670b0b0e759f}
-This operation indicates whether or not the parser is using a local source. \begin{DoxyReturn}{Returns}
-true if this parser is working with a local source, false otherwise. 
-\end{DoxyReturn}
-
-
-Implemented in \hyperlink{a00012_a770acae6e216de3a9c7140a12de25d58}{fire\+::\+I\+Local\+Parser$<$ T $>$}, and \hyperlink{a00012_a770acae6e216de3a9c7140a12de25d58}{fire\+::\+I\+Local\+Parser$<$ std\+::string $>$}.
-
-\index{fire\+::\+I\+Parser@{fire\+::\+I\+Parser}!is\+Parallel@{is\+Parallel}}
-\index{is\+Parallel@{is\+Parallel}!fire\+::\+I\+Parser@{fire\+::\+I\+Parser}}
-\subsubsection[{\texorpdfstring{is\+Parallel()=0}{isParallel()=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual bool fire\+::\+I\+Parser\+::is\+Parallel (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{a00014_a83d2882a466d694fb0aea3d846bcbed4}{}\label{a00014_a83d2882a466d694fb0aea3d846bcbed4}
-This operation indicates whether or not the parser reads in parallel. \begin{DoxyReturn}{Returns}
-true if this parser reads in parallel, false otherwise. 
-\end{DoxyReturn}
-
-
-Implemented in \hyperlink{a00012_ad46898c516adcce38acbb4800dc9777b}{fire\+::\+I\+Local\+Parser$<$ T $>$}, and \hyperlink{a00012_ad46898c516adcce38acbb4800dc9777b}{fire\+::\+I\+Local\+Parser$<$ std\+::string $>$}.
-
-\index{fire\+::\+I\+Parser@{fire\+::\+I\+Parser}!parse@{parse}}
-\index{parse@{parse}!fire\+::\+I\+Parser@{fire\+::\+I\+Parser}}
-\subsubsection[{\texorpdfstring{parse()=0}{parse()=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual void fire\+::\+I\+Parser\+::parse (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{a00014_af36ac6eedd8c27d2f418869193d7d03c}{}\label{a00014_af36ac6eedd8c27d2f418869193d7d03c}
-This operation directs the parser to parse its source. 
-
-Implemented in \hyperlink{a00008_a773fa7ed28cb9d8c384ad94bd81fc93f}{fire\+::\+Delimited\+Text\+Parser$<$ T, K $>$}, \hyperlink{a00008_a686df5548771cae833d5e721442a821a}{fire\+::\+Delimited\+Text\+Parser$<$ T, K $>$}, \hyperlink{a00019_abd8929aea06c2dda40256d2e58236650}{fire\+::\+Local\+Parser$<$ T $>$}, \hyperlink{a00019_abd8929aea06c2dda40256d2e58236650}{fire\+::\+Local\+Parser$<$ std\+::string $>$}, \hyperlink{a00013_a31b6bad01e65ed4bb5f1ba297616c641}{fire\+::\+I\+N\+I\+Property\+Parser}, \hyperlink{a00019_ae904e264fe16708b3e434adea59e1b88}{fire\+::\+Local\+Parser$<$ T $>$}, and \hyperlink{a00019_a34fd9ffb0196c612c75b5288ed5e219b}{fire\+::\+Local\+Parser$<$ T $>$}.
-
-\index{fire\+::\+I\+Parser@{fire\+::\+I\+Parser}!set\+Source@{set\+Source}}
-\index{set\+Source@{set\+Source}!fire\+::\+I\+Parser@{fire\+::\+I\+Parser}}
-\subsubsection[{\texorpdfstring{set\+Source(const std\+::string \&source)=0}{setSource(const std::string \&source)=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual void fire\+::\+I\+Parser\+::set\+Source (
-\begin{DoxyParamCaption}
-\item[{const std\+::string \&}]{source}
-\end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{a00014_a0dbeff2b9bd8dbfb2aad7a424eef87d1}{}\label{a00014_a0dbeff2b9bd8dbfb2aad7a424eef87d1}
-This operation sets the data source for the parser. 
 \begin{DoxyParams}{Parameters}
-{\em source} & the name of the source that the parser should parse. \\
+{\em other} & Tensor\+Reference view of the other \hyperlink{a00046}{Tensor} \\
 \hline
 \end{DoxyParams}
-
-
-Implemented in \hyperlink{a00019_afcaec6429fdd6e5d53642a32c001ff73}{fire\+::\+Local\+Parser$<$ T $>$}, \hyperlink{a00019_afcaec6429fdd6e5d53642a32c001ff73}{fire\+::\+Local\+Parser$<$ std\+::string $>$}, and \hyperlink{a00013_a06793909bc707a69d0c5772b14bc946d}{fire\+::\+I\+N\+I\+Property\+Parser}.
-
-\index{fire\+::\+I\+Parser@{fire\+::\+I\+Parser}!set\+Source@{set\+Source}}
-\index{set\+Source@{set\+Source}!fire\+::\+I\+Parser@{fire\+::\+I\+Parser}}
-\subsubsection[{\texorpdfstring{set\+Source(const std\+::istream \&source)=0}{setSource(const std::istream \&source)=0}}]{\setlength{\rightskip}{0pt plus 5cm}virtual void fire\+::\+I\+Parser\+::set\+Source (
+\begin{DoxyReturn}{Returns}
+result A new Tensor\+Reference representing the sum of this and other. 
+\end{DoxyReturn}
+\hypertarget{a00014_af0f8d3e7d83dbd3271ace3f1380d8c7f}{}\index{fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}!check\+Equality@{check\+Equality}}
+\index{check\+Equality@{check\+Equality}!fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}}
+\subsubsection[{check\+Equality(\+Tensor\+Reference \&other)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const int Rank, typename Scalar = double$>$ bool {\bf fire\+::\+Eigen\+Tensor\+Provider}$<$ Rank, Scalar $>$\+::check\+Equality (
 \begin{DoxyParamCaption}
-\item[{const std\+::istream \&}]{source}
+\item[{{\bf Tensor\+Reference} \&}]{other}
 \end{DoxyParamCaption}
-)\hspace{0.3cm}{\ttfamily [pure virtual]}}\hypertarget{a00014_a7748a633910e9bfc27411d6bd840496b}{}\label{a00014_a7748a633910e9bfc27411d6bd840496b}
-This operation sets the data source for the parser using a stream instead of a string. 
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{a00014_af0f8d3e7d83dbd3271ace3f1380d8c7f}
+Return true if the provided Tensor\+Reference as a tensor is equal to this tensor.
+
+
 \begin{DoxyParams}{Parameters}
-{\em source} & the stream of delimited text data \\
+{\em other} & Tensor\+Reference view of the other \hyperlink{a00046}{Tensor} \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+equal A boolean indicating if these Tensors are equal 
+\end{DoxyReturn}
+\hypertarget{a00014_aff5626be9e55f593f0a6b71174ecbd8a}{}\index{fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}!data@{data}}
+\index{data@{data}!fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}}
+\subsubsection[{data()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const int Rank, typename Scalar = double$>$ Scalar$\ast$ {\bf fire\+::\+Eigen\+Tensor\+Provider}$<$ Rank, Scalar $>$\+::data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{a00014_aff5626be9e55f593f0a6b71174ecbd8a}
+Return the 1-\/\+D array wrapped by this Eigen \hyperlink{a00046}{Tensor}
+
+\begin{DoxyReturn}{Returns}
+data 1-\/\+D array of data representing the tensor in this \hyperlink{a00047}{Tensor\+Provider} 
+\end{DoxyReturn}
+\hypertarget{a00014_a399a801dc4b785e93893030b84d6b3e2}{}\index{fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}!execute\+Contraction@{execute\+Contraction}}
+\index{execute\+Contraction@{execute\+Contraction}!fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}}
+\subsubsection[{execute\+Contraction(\+Other\+Derived \&t2, Contraction\+Dims \&c\+Indices)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const int Rank, typename Scalar = double$>$ template$<$typename Other\+Derived , typename Contraction\+Dims $>$ {\bf Tensor\+Reference} {\bf fire\+::\+Eigen\+Tensor\+Provider}$<$ Rank, Scalar $>$\+::execute\+Contraction (
+\begin{DoxyParamCaption}
+\item[{Other\+Derived \&}]{t2, }
+\item[{Contraction\+Dims \&}]{c\+Indices}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{a00014_a399a801dc4b785e93893030b84d6b3e2}
+Compute the tensor contraction of this Eigen \hyperlink{a00046}{Tensor} with the provided Other \hyperlink{a00046}{Tensor}.
 
 
-Implemented in \hyperlink{a00019_aed4357541f2ff7d46f8846bd07bb3c42}{fire\+::\+Local\+Parser$<$ T $>$}, and \hyperlink{a00019_aed4357541f2ff7d46f8846bd07bb3c42}{fire\+::\+Local\+Parser$<$ std\+::string $>$}.
+\begin{DoxyParams}{Parameters}
+{\em t2} & The other \hyperlink{a00046}{Tensor} \\
+\hline
+{\em indices} & The contraction indices. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+result The contraction result as a Tensor\+Reference 
+\end{DoxyReturn}
+\hypertarget{a00014_a461c3348c66ae011167d8c194c79dce9}{}\index{fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}!fill\+With\+Random\+Values@{fill\+With\+Random\+Values}}
+\index{fill\+With\+Random\+Values@{fill\+With\+Random\+Values}!fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}}
+\subsubsection[{fill\+With\+Random\+Values()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const int Rank, typename Scalar = double$>$ void {\bf fire\+::\+Eigen\+Tensor\+Provider}$<$ Rank, Scalar $>$\+::fill\+With\+Random\+Values (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{a00014_a461c3348c66ae011167d8c194c79dce9}
+Set the Eigen \hyperlink{a00046}{Tensor} values to random values. \hypertarget{a00014_a68f0ad7ead91dec2ea56f173981465c8}{}\index{fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}!get\+Rank@{get\+Rank}}
+\index{get\+Rank@{get\+Rank}!fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}}
+\subsubsection[{get\+Rank()}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const int Rank, typename Scalar = double$>$ static constexpr int {\bf fire\+::\+Eigen\+Tensor\+Provider}$<$ Rank, Scalar $>$\+::get\+Rank (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}\label{a00014_a68f0ad7ead91dec2ea56f173981465c8}
+Return the rank of this Eigen \hyperlink{a00046}{Tensor}
+
+\begin{DoxyReturn}{Returns}
+rank The rank of this \hyperlink{a00046}{Tensor} 
+\end{DoxyReturn}
+\hypertarget{a00014_a2d624402c063c0398f018417aae2fe28}{}\index{fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}!initialize\+Tensor\+Backend@{initialize\+Tensor\+Backend}}
+\index{initialize\+Tensor\+Backend@{initialize\+Tensor\+Backend}!fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}}
+\subsubsection[{initialize\+Tensor\+Backend(int first\+Dim, Dimensions...\+other\+Dims)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const int Rank, typename Scalar = double$>$ template$<$typename... Dimensions$>$ void {\bf fire\+::\+Eigen\+Tensor\+Provider}$<$ Rank, Scalar $>$\+::initialize\+Tensor\+Backend (
+\begin{DoxyParamCaption}
+\item[{int}]{first\+Dim, }
+\item[{Dimensions...}]{other\+Dims}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{a00014_a2d624402c063c0398f018417aae2fe28}
+Initialize the Eigen \hyperlink{a00046}{Tensor} with all zeros. 
+\begin{DoxyParams}{Parameters}
+{\em first\+Dim} & \\
+\hline
+{\em other\+Dims} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{a00014_a135f00852433ce76d65d8e97e742b60f}{}\index{fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}!initialize\+Tensor\+Backend\+With\+Reference@{initialize\+Tensor\+Backend\+With\+Reference}}
+\index{initialize\+Tensor\+Backend\+With\+Reference@{initialize\+Tensor\+Backend\+With\+Reference}!fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}}
+\subsubsection[{initialize\+Tensor\+Backend\+With\+Reference(\+Tensor\+Reference \&reference)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const int Rank, typename Scalar = double$>$ void {\bf fire\+::\+Eigen\+Tensor\+Provider}$<$ Rank, Scalar $>$\+::initialize\+Tensor\+Backend\+With\+Reference (
+\begin{DoxyParamCaption}
+\item[{{\bf Tensor\+Reference} \&}]{reference}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{a00014_a135f00852433ce76d65d8e97e742b60f}
+Initialize the Eigen \hyperlink{a00046}{Tensor} from an existing Tensor\+Reference 
+\begin{DoxyParams}{Parameters}
+{\em reference} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{a00014_a607ad28d9f0b8b7f639dc1b0693dfd03}{}\index{fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}!print\+Tensor@{print\+Tensor}}
+\index{print\+Tensor@{print\+Tensor}!fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}}
+\subsubsection[{print\+Tensor(std\+::ostream \&stream)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const int Rank, typename Scalar = double$>$ void {\bf fire\+::\+Eigen\+Tensor\+Provider}$<$ Rank, Scalar $>$\+::print\+Tensor (
+\begin{DoxyParamCaption}
+\item[{std\+::ostream \&}]{stream}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{a00014_a607ad28d9f0b8b7f639dc1b0693dfd03}
+Output this Eigen \hyperlink{a00046}{Tensor} to the provided output stream.
 
 
+\begin{DoxyParams}{Parameters}
+{\em output\+Stream} & The output stream to write the tensor to. \\
+\hline
+\end{DoxyParams}
+\hypertarget{a00014_adca448f3689d78ea3f4b306904feccb0}{}\index{fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}!reshape\+Tensor@{reshape\+Tensor}}
+\index{reshape\+Tensor@{reshape\+Tensor}!fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}}
+\subsubsection[{reshape\+Tensor(\+Dim\+Array \&array)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const int Rank, typename Scalar = double$>$ template$<$typename Dim\+Array $>$ {\bf Tensor\+Reference} {\bf fire\+::\+Eigen\+Tensor\+Provider}$<$ Rank, Scalar $>$\+::reshape\+Tensor (
+\begin{DoxyParamCaption}
+\item[{Dim\+Array \&}]{array}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{a00014_adca448f3689d78ea3f4b306904feccb0}
+Reshape the Eigen \hyperlink{a00046}{Tensor} with a new array of dimensions
+
+
+\begin{DoxyParams}{Parameters}
+{\em array} & Array of new dimensions for each rank index \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+reshaped\+Tensor A Tensor\+Reference representing new reshaped tensor. 
+\end{DoxyReturn}
+\hypertarget{a00014_a0c28a71c68f8ba5f07a45421900e8af5}{}\index{fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}!scalar\+Product@{scalar\+Product}}
+\index{scalar\+Product@{scalar\+Product}!fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}}
+\subsubsection[{scalar\+Product(\+Scalar \&val)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const int Rank, typename Scalar = double$>$ {\bf Tensor\+Reference} {\bf fire\+::\+Eigen\+Tensor\+Provider}$<$ Rank, Scalar $>$\+::scalar\+Product (
+\begin{DoxyParamCaption}
+\item[{Scalar \&}]{val}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{a00014_a0c28a71c68f8ba5f07a45421900e8af5}
+Multiply all elements of this Eigen \hyperlink{a00046}{Tensor} by the provided Scalar.
+
+
+\begin{DoxyParams}{Parameters}
+{\em val} & Scalar to multiply this tensor by. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+result A Tensor\+Reference representing the result 
+\end{DoxyReturn}
+\hypertarget{a00014_a3d02dbf7e2d255a1378084aa6459cf25}{}\index{fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}!set\+Tensor\+Values@{set\+Tensor\+Values}}
+\index{set\+Tensor\+Values@{set\+Tensor\+Values}!fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}}
+\subsubsection[{set\+Tensor\+Values(\+Init\+List \&vals)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const int Rank, typename Scalar = double$>$ template$<$typename Init\+List $>$ void {\bf fire\+::\+Eigen\+Tensor\+Provider}$<$ Rank, Scalar $>$\+::set\+Tensor\+Values (
+\begin{DoxyParamCaption}
+\item[{Init\+List \&}]{vals}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{a00014_a3d02dbf7e2d255a1378084aa6459cf25}
+Set the Eigen \hyperlink{a00046}{Tensor} values using nested initializer\+\_\+list
+
+
+\begin{DoxyParams}{Parameters}
+{\em vals} & The values as a nest std\+::initializer\+\_\+lists \\
+\hline
+\end{DoxyParams}
+\hypertarget{a00014_af546ed4af5f2085c29fc499303bd681a}{}\index{fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}!tensor\+Coefficient@{tensor\+Coefficient}}
+\index{tensor\+Coefficient@{tensor\+Coefficient}!fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}}
+\subsubsection[{tensor\+Coefficient(\+Indices...\+indices)}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const int Rank, typename Scalar = double$>$ template$<$typename... Indices$>$ double\& {\bf fire\+::\+Eigen\+Tensor\+Provider}$<$ Rank, Scalar $>$\+::tensor\+Coefficient (
+\begin{DoxyParamCaption}
+\item[{Indices...}]{indices}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}}\label{a00014_af546ed4af5f2085c29fc499303bd681a}
+Return the coefficient at the given tensor indices.
+
+
+\begin{DoxyParams}{Parameters}
+{\em indices} & The indices for the desired value \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+val The value at the indices. 
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\hypertarget{a00014_ae8f0217985d78dba31d7bdb95ace1e43}{}\index{fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}!rank@{rank}}
+\index{rank@{rank}!fire\+::\+Eigen\+Tensor\+Provider@{fire\+::\+Eigen\+Tensor\+Provider}}
+\subsubsection[{rank}]{\setlength{\rightskip}{0pt plus 5cm}template$<$const int Rank, typename Scalar = double$>$ const int {\bf fire\+::\+Eigen\+Tensor\+Provider}$<$ Rank, Scalar $>$\+::rank = Rank\hspace{0.3cm}{\ttfamily [static]}}\label{a00014_ae8f0217985d78dba31d7bdb95ace1e43}
+Static reference to the rank of the tensor wrapped by this provider 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-I\+Parser.\+h\end{DoxyCompactItemize}
+Eigen\+Tensor\+Provider.\+hpp\end{DoxyCompactItemize}
