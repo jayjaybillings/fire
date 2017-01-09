@@ -152,7 +152,7 @@ public:
 			temp[i] = dimensions[i];
 		}
 		shape = std::make_shared<TensorShape>(temp);
-		double data[shape->size()] = {0};
+		double data[shape->size()] = { 0 };
 
 		auto ref = fire::make_tensor_reference(data, *shape.get());
 
@@ -422,9 +422,12 @@ public:
 	 * @return
 	 */
 	template<typename LeftIndices, typename RightIndices>
-	std::pair<
-			Tensor<array_size<LeftIndices>::value, DerivedTensorBackendBuilder, Scalar>,
-			Tensor<array_size<RightIndices>::value, DerivedTensorBackendBuilder, Scalar>> svd(
+	std::tuple<
+			Tensor<array_size<LeftIndices>::value + 1,
+					DerivedTensorBackendBuilder, Scalar>,
+			Tensor<2, DerivedTensorBackendBuilder, Scalar>,
+			Tensor<array_size<RightIndices>::value + 1,
+					DerivedTensorBackendBuilder, Scalar>> svd(
 			LeftIndices& leftCutIndices, RightIndices& rightCutIndices,
 			double cutoff = 0.0) {
 
@@ -449,8 +452,10 @@ public:
 		dims[1] = nDims;
 
 		// Reshape this tensor to be a Rank 2 tensor, this creates a new Tensor
-		Tensor<2, DerivedTensorBackendBuilder, Scalar> newRankTwoTensor = reshape(dims);
-		std::cout << "----- Tensor.hpp -----\n" << " Tensor reshaped as rank 2\n";
+		Tensor<2, DerivedTensorBackendBuilder, Scalar> newRankTwoTensor =
+				reshape(dims);
+		std::cout << "----- Tensor.hpp -----\n"
+				<< " Tensor reshaped as rank 2\n";
 		newRankTwoTensor.print(std::cout);
 		std::cout << "\n--------" << std::endl;
 
@@ -459,20 +464,48 @@ public:
 
 		// Compute the SVD of the Rank 2 tensor and
 		// return the U, V, pair.
-		auto UandV = provider->svd(ref, cutoff);
+		auto USV = provider->svd(ref, cutoff);
+
+		auto UMat = std::get<0>(USV);
+		auto SMat = std::get<1>(USV);
+		auto VMat = std::get<2>(USV);
+
+		int nSingularValues = SMat.second.dimension(0);
+
+		// Get U, S, and V new tensor shape
+		std::vector<int> uDims(array_size<LeftIndices>::value + 1), vDims(
+				array_size<RightIndices>::value + 1);
+
+		for (int i = 0; i < array_size<LeftIndices>::value; i++) {
+			uDims[i] = currentDims[leftCutIndices[i]];
+		}
+
+		uDims[array_size<LeftIndices>::value] = nSingularValues;
+
+		for (int i = 0; i < array_size<RightIndices>::value; i++) {
+			vDims[i] = currentDims[rightCutIndices[i]];
+		}
+		vDims[array_size<RightIndices>::value] = nSingularValues;
+
+		TensorShape uShape(uDims), vShape(vDims);
+		auto uRef = fire::make_tensor_reference(UMat.first.data(), uShape);
+		auto vRef = fire::make_tensor_reference(VMat.first.data(), vShape);
+		auto sRef = fire::make_tensor_reference(SMat.first.data(), SMat.second);
 
 		// Return U and V as tensors
-		return std::make_pair(
-				Tensor<array_size<LeftIndices>::value,
-						DerivedTensorBackendBuilder, Scalar>(UandV.first),
-				Tensor<array_size<RightIndices>::value,
-						DerivedTensorBackendBuilder, Scalar>(UandV.second));
+		return std::make_tuple(
+				Tensor<array_size<LeftIndices>::value + 1,
+						DerivedTensorBackendBuilder, Scalar>(uRef),
+				Tensor<2, DerivedTensorBackendBuilder, Scalar>(sRef),
+				Tensor<array_size<RightIndices>::value + 1,
+						DerivedTensorBackendBuilder, Scalar>(vRef));
 	}
 
 	/**
 	 * The destructor
 	 */
-	virtual ~Tensor() {}
+	virtual ~Tensor() {
+	}
 
 };
 

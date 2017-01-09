@@ -93,6 +93,24 @@ private:
 		return t;
 	}
 
+	template<const int NewRank>
+	Eigen::TensorMap<Eigen::Tensor<Scalar, NewRank>> getEigenTensorFromReferenceWithRank(
+			TensorReference& ref) {
+
+		// Get the data and shape
+		auto shape = ref.second;
+		auto data = ref.first.data();
+
+		// Create an Eigen dimension array
+		Eigen::DSizes<Eigen::DenseIndex, NewRank> dsizes;
+		for (int d = 0; d < NewRank; d++) {
+			dsizes[d] = shape.dimension(d);
+		}
+
+		// Create the Tensor and return it
+		Eigen::TensorMap<Eigen::Tensor<Scalar, NewRank>> t(data, dsizes);
+		return t;
+	}
 public:
 
 	/**
@@ -179,41 +197,45 @@ public:
 		// Create an Eigen Tensor from OtherDerived...
 		auto otherRef = t2.createReference();
 		Eigen::TensorMap<Eigen::Tensor<Scalar, OtherDerived::getRank()>> otherTensor =
-				getEigenTensorFromReference(otherRef);
+				getEigenTensorFromReferenceWithRank<OtherDerived::getRank()>(
+						otherRef);
 
 		// ---------------------------------------------------------
 		// Need to compute dimensions of new tensor
 		Eigen::DSizes<Eigen::DenseIndex, newRank> newDimensions;
-		int counter = 0;
-		if (array_size<ContractionDims>::value != 0) {
-			for (int i = 0; i < tensor->dimensions().size(); i++) {
-				for (auto c : cIndices) {
-					if (i != c.first) {
-						newDimensions[counter] = tensor->dimension(i);
-						counter++;
+		if (newRank != 0) {
+			int counter = 0;
+			if (array_size<ContractionDims>::value != 0) {
+				for (int i = 0; i < tensor->dimensions().size(); i++) {
+					for (auto c : cIndices) {
+						if (i != c.first) {
+							newDimensions[counter] = tensor->dimension(i);
+							counter++;
+						}
 					}
 				}
-			}
-			for (int i = 0; i < otherTensor.dimensions().size(); i++) {
-				for (auto c : cIndices) {
-					if (i != c.second) {
-						newDimensions[counter] = otherTensor.dimension(i);
-						counter++;
+				for (int i = 0; i < otherTensor.dimensions().size(); i++) {
+					for (auto c : cIndices) {
+						if (i != c.second) {
+							newDimensions[counter] = otherTensor.dimension(i);
+							counter++;
+						}
 					}
 				}
-			}
-		} else {
-			// If there are no contraction dims, then keep all
-			// dimensions
-			for (int i = 0; i < tensor->dimensions().size(); i++) {
-				newDimensions[counter] = tensor->dimension(i);
-				counter++;
-			}
-			for (int i = 0; i < otherTensor.dimensions().size(); i++) {
-				newDimensions[counter] = otherTensor.dimension(i);
-				counter++;
+			} else {
+				// If there are no contraction dims, then keep all
+				// dimensions
+				for (int i = 0; i < tensor->dimensions().size(); i++) {
+					newDimensions[counter] = tensor->dimension(i);
+					counter++;
+				}
+				for (int i = 0; i < otherTensor.dimensions().size(); i++) {
+					newDimensions[counter] = otherTensor.dimension(i);
+					counter++;
+				}
 			}
 		}
+
 		// ---------------------------------------------------------
 
 		// Perform the Tensor Contraction multi-threaded
@@ -368,54 +390,82 @@ public:
 		return newReference;
 	}
 
-	std::pair<TensorReference, TensorReference> computeSvd(TensorReference& ref, double cutoff) {
+	std::tuple<TensorReference, TensorReference, TensorReference> computeSvd(
+			TensorReference& ref, double cutoff) {
 
 		// Get the data and shape
 		auto shape = ref.second;
 		auto data = ref.first.data();
+
 		// Express the Tensor as an Eigen Matrix. We know
 		// at this point the Tensor is Rank 2. Double check anyway
 		assert(shape.dimensions().size() == 2);
 
-		std::cout << "\n----- EigenTensorProvider.hpp ----- \nDimension = " << shape.dimension(0) << ", " << shape.dimension(1) << "\n";
+		std::cout << "\n----- EigenTensorProvider.hpp ----- \nDimension = "
+				<< shape.dimension(0) << ", " << shape.dimension(1) << "\n";
 
-		Eigen::Map<Eigen::MatrixXd> matrix(data,
-				shape.dimension(0), shape.dimension(1));
+		Eigen::Map<Eigen::MatrixXd> matrix(data, shape.dimension(0),
+				shape.dimension(1));
 
-		Eigen::JacobiSVD<Eigen::MatrixXd> svd(matrix, Eigen::ComputeThinU | Eigen::ComputeThinV);
+		Eigen::JacobiSVD<Eigen::MatrixXd> svd(matrix,
+				Eigen::ComputeThinU | Eigen::ComputeThinV);
 
 		auto singularValues = svd.singularValues();
 		auto u = svd.matrixU();
 		auto v = svd.matrixV();
 
-		Eigen::MatrixXd S(shape.dimension(0), shape.dimension(1));
+		std::cout << "PreS:\n" << singularValues << "\n\n";
+		// These values are in decreasing order,
+		// so we just need to get the first one less than
+		// the cutoff, the rest will be too
+		int truncIndex = singularValues.rows() - 1;
+		for (int i = 0; i < singularValues.rows(); i++) {
+			if (singularValues(i) < cutoff) {
+				truncIndex = i;
+				break;
+			}
+		}
+
+		std::cout << "TRUNC: " << truncIndex << "\n";
+		Eigen::MatrixXd S(truncIndex + 1, truncIndex + 1);
 		S.setZero();
-		int limit = S.rows() < S.cols() ? S.rows() : S.cols();
-		for (int i = 0; i < limit; i++) S(i,i) = singularValues(i);
+		for (int i = 0; i < truncIndex + 1; i++)
+			S(i, i) = singularValues(i);
+
+		std::cout << "HELLO: \n" << S << "\n\n";
+		std::cout << "HI: \n" << u << "\n";
+		Eigen::MatrixXd truncatedU = u.block(0, 0, truncIndex + 1,
+				truncIndex + 1);
+		Eigen::MatrixXd truncatedV = v.block(0, 0, truncIndex + 1,
+				truncIndex + 1);
 
 		// Perform cutoff
 		std::cout << "Singular Values: \n" << singularValues << "\n\n";
 		std::cout << "S as Matrix:\n" << S << "\n\n";
 		std::cout << "U: \n" << u << "\n\n";
 		std::cout << "V: \n" << v << "\n\n";
-		Eigen::DSizes<Eigen::DenseIndex, 2> dsizes;
-		std::array<int, 0> nullindices {{}};
-		dsizes[0] = shape.dimension(0);
-		dsizes[1] = shape.dimension(1);
+		std::cout << "UTruncated: \n" << truncatedU << "\n\n";
+		std::cout << "VTruncated: \n" << truncatedV << "\n\n";
 
-		// Absorb the Singular values into U through a contraction
-		Eigen::TensorMap<Eigen::Tensor<double, 2>> STensor(S.data(), dsizes);
-		Eigen::TensorMap<Eigen::Tensor<double, 2>> UTensor(u.data(), dsizes);
+		std::cout << "MULTIPLYTHEM: \n" << (u * S * v) << "\n";
 
-//		Eigen::Tensor<double, 4> result(dsizes);
-//		result.device(*device.get()) = UTensor.contract(STensor, nullindices);
+		std::vector<int> uDims(2), sDims(2), vDims(2);
+		uDims[0] = truncatedU.rows();
+		uDims[1] = truncatedU.cols();
+		sDims[0] = S.rows();
+		sDims[1] = S.cols();
+		vDims[0] = truncatedV.rows();
+		vDims[1] = truncatedV.cols();
 
-//		std::cout << "RESULT: \n" << result << "\n\n";
+		TensorShape uShape(uDims), sShape(sDims), vShape(vDims);
+
 		// Shape should be the same as the given tensor ref
 		// for the computed U and V tensors
 		std::cout << "--------------\n";
-		return std::make_pair(fire::make_tensor_reference(u.data(), shape),
-				fire::make_tensor_reference(v.data(), shape));
+		return std::make_tuple(
+				fire::make_tensor_reference(truncatedU.data(), uShape),
+				fire::make_tensor_reference(S.data(), sShape),
+				fire::make_tensor_reference(truncatedV.data(), vShape));
 
 	}
 };

@@ -280,16 +280,61 @@ BOOST_AUTO_TEST_CASE(checkTensorReshapeAndShuffle) {
 
 BOOST_AUTO_TEST_CASE(checkSVD) {
 	using namespace fire;
+	using IndexPair = std::pair<int,int>;
 
+	// Create a Rank 4 tensor - the GHZ state...
 	Tensor<4> tensor(2, 2, 2, 2);
-	tensor.setRandom();
+	tensor(0,0,0,0) = 1.0 / sqrt(2.0);
+	tensor(1,1,1,1) = 1.0 / sqrt(2.0);
 
-	std::cout << "\n-----TensorTest.cpp------\nRandom Rank 4 Tensor = \n"; tensor.print(std::cout); std::cout << "\n----------" << std::endl << std::endl;
+	// Pretty print
+	std::cout << "\n-----TensorTest.cpp------\nRandom Rank 4 Tensor = \n";
+	tensor.print(std::cout);
+	std::cout << "\n----------" << std::endl << std::endl;
+
+	// Setup the SVD Cut
 	std::array<int,2> leftCut {0, 1}, rightCut {2, 3};
 
+	// Perform the SVD, this gives us a U, S, and V tensor
+	// with the default truncation of 0.0
 	auto result = tensor.svd(leftCut, rightCut);
 
-	std::cout << "\n----TensorTest.cpp------\n\nTENSOR U: \n"; result.first.print(std::cout); std::cout << std::endl;
-	std::cout << "TENSOR V: \n"; result.second.print(std::cout); std::cout << "\n--------" << std::endl;
+	// Get them individually...
+	auto U = std::get<0>(result);
+	auto S = std::get<1>(result);
+	auto V = std::get<2>(result);
+
+	// Pretty Print
+	std::cout << "\n----TensorTest.cpp------\n\nTENSOR U: \n";
+	U.print(std::cout);
+	std::cout << std::endl;
+	std::cout << "TENSOR V: \n";
+	V.print(std::cout);
+	std::cout << "\nSingular Values:\n";
+	S.print(std::cout);
+	std::cout << std::endl;
+	std::cout << "\n--------" << std::endl;
+
+	// Now let's verify the result. Contracting
+	// U, S, V with the original tensor should
+	// result in a value of 1.0
+
+	// Contract U and S
+	std::array<IndexPair, 1> dims;
+	dims[0] = std::make_pair(2, 0);
+	auto us = U.contract(S, dims);
+	BOOST_VERIFY(us.getRank() == 3);
+
+	// Contract new U and V
+	dims[0] = std::make_pair(2, 2);
+	auto uv = us.contract(V, dims);
+	BOOST_VERIFY(uv.getRank() == 4);
+
+	// Now contract the UV rank 4 tensor
+	// with the original GHZ rank 4 tensor
+	std::array<IndexPair, 4> totalDims { std::make_pair(0,0), std::make_pair(1,1), std::make_pair(2,2), std::make_pair(3,3) };
+	auto scalarTensor = uv.contract(tensor, totalDims);
+	BOOST_VERIFY(scalarTensor.getRank() == 0);
+	BOOST_VERIFY(fabs(scalarTensor() - 1) < 1e-6);
 
 }
