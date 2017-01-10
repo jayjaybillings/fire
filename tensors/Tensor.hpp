@@ -454,10 +454,6 @@ public:
 		// Reshape this tensor to be a Rank 2 tensor, this creates a new Tensor
 		Tensor<2, DerivedTensorBackendBuilder, Scalar> newRankTwoTensor =
 				reshape(dims);
-		std::cout << "----- Tensor.hpp -----\n"
-				<< " Tensor reshaped as rank 2\n";
-		newRankTwoTensor.print(std::cout);
-		std::cout << "\n--------" << std::endl;
 
 		// Get a reference to the reshaped tensor
 		auto ref = newRankTwoTensor.createReference();

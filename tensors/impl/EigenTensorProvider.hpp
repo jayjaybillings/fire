@@ -401,20 +401,16 @@ public:
 		// at this point the Tensor is Rank 2. Double check anyway
 		assert(shape.dimensions().size() == 2);
 
-		std::cout << "\n----- EigenTensorProvider.hpp ----- \nDimension = "
-				<< shape.dimension(0) << ", " << shape.dimension(1) << "\n";
-
 		Eigen::Map<Eigen::MatrixXd> matrix(data, shape.dimension(0),
 				shape.dimension(1));
 
-		Eigen::JacobiSVD<Eigen::MatrixXd> svd(matrix,
+		Eigen::BDCSVD<Eigen::MatrixXd> svd(matrix,
 				Eigen::ComputeThinU | Eigen::ComputeThinV);
 
 		auto singularValues = svd.singularValues();
 		auto u = svd.matrixU();
 		auto v = svd.matrixV();
 
-		std::cout << "PreS:\n" << singularValues << "\n\n";
 		// These values are in decreasing order,
 		// so we just need to get the first one less than
 		// the cutoff, the rest will be too
@@ -426,28 +422,17 @@ public:
 			}
 		}
 
-		std::cout << "TRUNC: " << truncIndex << "\n";
 		Eigen::MatrixXd S(truncIndex + 1, truncIndex + 1);
 		S.setZero();
 		for (int i = 0; i < truncIndex + 1; i++)
 			S(i, i) = singularValues(i);
 
-		std::cout << "HELLO: \n" << S << "\n\n";
-		std::cout << "HI: \n" << u << "\n";
 		Eigen::MatrixXd truncatedU = u.block(0, 0, truncIndex + 1,
 				truncIndex + 1);
 		Eigen::MatrixXd truncatedV = v.block(0, 0, truncIndex + 1,
 				truncIndex + 1);
 
-		// Perform cutoff
-		std::cout << "Singular Values: \n" << singularValues << "\n\n";
-		std::cout << "S as Matrix:\n" << S << "\n\n";
-		std::cout << "U: \n" << u << "\n\n";
-		std::cout << "V: \n" << v << "\n\n";
-		std::cout << "UTruncated: \n" << truncatedU << "\n\n";
-		std::cout << "VTruncated: \n" << truncatedV << "\n\n";
-
-		std::cout << "MULTIPLYTHEM: \n" << (u * S * v) << "\n";
+		assert ( (u*S*v.transpose() - matrix).array().abs().sum() < 1e-6 );
 
 		std::vector<int> uDims(2), sDims(2), vDims(2);
 		uDims[0] = truncatedU.rows();
@@ -461,7 +446,6 @@ public:
 
 		// Shape should be the same as the given tensor ref
 		// for the computed U and V tensors
-		std::cout << "--------------\n";
 		return std::make_tuple(
 				fire::make_tensor_reference(truncatedU.data(), uShape),
 				fire::make_tensor_reference(S.data(), sShape),

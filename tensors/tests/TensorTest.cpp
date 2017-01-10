@@ -284,16 +284,11 @@ BOOST_AUTO_TEST_CASE(checkSVD) {
 
 	// Create a Rank 4 tensor - the GHZ state...
 	Tensor<4> tensor(2, 2, 2, 2);
-	tensor(0,0,0,0) = 1.0 / sqrt(2.0);
-	tensor(1,1,1,1) = 1.0 / sqrt(2.0);
-
-	// Pretty print
-	std::cout << "\n-----TensorTest.cpp------\nRandom Rank 4 Tensor = \n";
-	tensor.print(std::cout);
-	std::cout << "\n----------" << std::endl << std::endl;
+	tensor(0, 0, 0, 0) = 1.0 / sqrt(2.0);
+	tensor(1, 1, 1, 1) = 1.0 / sqrt(2.0);
 
 	// Setup the SVD Cut
-	std::array<int,2> leftCut {0, 1}, rightCut {2, 3};
+	std::array<int, 2> leftCut { 0, 1 }, rightCut { 2, 3 };
 
 	// Perform the SVD, this gives us a U, S, and V tensor
 	// with the default truncation of 0.0
@@ -303,17 +298,6 @@ BOOST_AUTO_TEST_CASE(checkSVD) {
 	auto U = std::get<0>(result);
 	auto S = std::get<1>(result);
 	auto V = std::get<2>(result);
-
-	// Pretty Print
-	std::cout << "\n----TensorTest.cpp------\n\nTENSOR U: \n";
-	U.print(std::cout);
-	std::cout << std::endl;
-	std::cout << "TENSOR V: \n";
-	V.print(std::cout);
-	std::cout << "\nSingular Values:\n";
-	S.print(std::cout);
-	std::cout << std::endl;
-	std::cout << "\n--------" << std::endl;
 
 	// Now let's verify the result. Contracting
 	// U, S, V with the original tensor should
@@ -332,9 +316,53 @@ BOOST_AUTO_TEST_CASE(checkSVD) {
 
 	// Now contract the UV rank 4 tensor
 	// with the original GHZ rank 4 tensor
-	std::array<IndexPair, 4> totalDims { std::make_pair(0,0), std::make_pair(1,1), std::make_pair(2,2), std::make_pair(3,3) };
+	std::array<IndexPair, 4> totalDims { std::make_pair(0, 0), std::make_pair(1,
+			1), std::make_pair(2, 2), std::make_pair(3, 3) };
 	auto scalarTensor = uv.contract(tensor, totalDims);
 	BOOST_VERIFY(scalarTensor.getRank() == 0);
 	BOOST_VERIFY(fabs(scalarTensor() - 1) < 1e-6);
+
+	// Test a more complicated tensor with random values...
+
+	// Create a Rank 4 random tensor - but it has to be
+	// orthonormal to perform our contration == 1.0 test.
+	// Start off by creating a 4x4 matrix that has
+	// orthogonal columns (taken from blogs.sas.com/content/iml/2012/03/28/generating-a-random-orthogonal-matrix.html)
+	Eigen::MatrixXd m(4,4);
+	m << .1427043 , -.386502 , -.123226 , 0.9028106 ,.1922906 , .345096 , -.918623 , -.00804 ,
+			.3633545 , .7887484 , .3694716 , .3306664 ,-0.900352 , .3307579 , -.066617 , .2748238;
+
+	// Now normalize that matrix, and create a rank 4 tensor from the
+	// data...
+	std::vector<int> r4shape = {2, 2, 2, 2};
+	m = (1.0 / m.norm()) * m;
+	TensorShape shape(r4shape);
+	TensorReference ref = fire::make_tensor_reference(m.data(), shape);
+	Tensor<4> randomTensor(ref);
+
+	// Perform the SVD, this gives us a U, S, and V tensor
+	// with the default truncation of 0.0
+	auto randomResult = randomTensor.svd(leftCut, rightCut);
+
+	// Get them individually...
+	auto randomU = std::get<0>(randomResult);
+	auto randomS = std::get<1>(randomResult);
+	auto randomV = std::get<2>(randomResult);
+
+	// Contract randomU and randomS
+	dims[0] = std::make_pair(2, 0);
+	auto randomus = randomU.contract(randomS, dims);
+	BOOST_VERIFY(randomus.getRank() == 3);
+
+	// Contract new randomus and randomV
+	dims[0] = std::make_pair(2, 2);
+	auto randomuv = randomus.contract(randomV, dims);
+	BOOST_VERIFY(randomuv.getRank() == 4);
+
+	// Now contract the randomuv rank 4 tensor
+	// with the original random rank 4 tensor
+	auto randomScalarTensor = randomuv.contract(randomTensor, totalDims);
+	BOOST_VERIFY(randomScalarTensor.getRank() == 0);
+	BOOST_VERIFY(fabs(randomScalarTensor() - 1) < 1e-6);
 
 }
