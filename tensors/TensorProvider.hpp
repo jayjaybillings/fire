@@ -234,6 +234,10 @@ public:
 	std::tuple<TensorReference, TensorReference, TensorReference> svd(TensorReference& ref, double cutoff) {
 		return getAsDerived().computeSvd(ref, cutoff);
 	}
+
+	TensorReference kroneckerProduct(TensorReference& other) {
+		return getAsDerived().kronProd(other);
+	}
 };
 
 /**

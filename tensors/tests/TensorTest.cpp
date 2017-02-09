@@ -325,7 +325,7 @@ BOOST_AUTO_TEST_CASE(checkSVD) {
 	// Test a more complicated tensor with random values...
 
 	// Create a Rank 4 random tensor - but it has to be
-	// orthonormal to perform our contration == 1.0 test.
+	// orthonormal to perform our contraction == 1.0 test.
 	// Start off by creating a 4x4 matrix that has
 	// orthogonal columns (taken from blogs.sas.com/content/iml/2012/03/28/generating-a-random-orthogonal-matrix.html)
 	Eigen::MatrixXd m(4,4);
@@ -365,4 +365,35 @@ BOOST_AUTO_TEST_CASE(checkSVD) {
 	BOOST_VERIFY(randomScalarTensor.getRank() == 0);
 	BOOST_VERIFY(fabs(randomScalarTensor() - 1) < 1e-6);
 
+}
+
+BOOST_AUTO_TEST_CASE(checkTransposeRank2) {
+	fire::Tensor<2> a(2,2);
+	a.setValues({{0,1},{2,0}});
+	auto b = a.transpose();
+	BOOST_VERIFY(b(0,1) == 2);
+	BOOST_VERIFY(b(1,0) == 1);
+}
+
+BOOST_AUTO_TEST_CASE(checkKronProd) {
+	fire::Tensor<2> x(2,2), I(2,2);
+	x.setValues({{0,1},{1,0}});
+	I.setValues({{1,0},{0,1}});
+
+	fire::Tensor<2> result = x.kronProd(I);
+
+	BOOST_VERIFY(result.dimension(0) == 4);
+	BOOST_VERIFY(result.dimension(1) == 4);
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			if ((i == 0 && j == 2) ||
+					(i == 1 && j == 3) ||
+					(i == 2 && j == 0) ||
+					(i == 3 && j == 1)) {
+				BOOST_VERIFY(result(i,j) == 1);
+			} else {
+				BOOST_VERIFY(result(i,j) == 0);
+			}
+		}
+	}
 }

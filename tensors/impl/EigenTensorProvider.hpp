@@ -39,6 +39,7 @@
 #include <unsupported/Eigen/CXX11/Tensor>
 #include <Eigen/Dense>
 #include <Eigen/SVD>
+#include <unsupported/Eigen/KroneckerProduct>
 
 namespace fire {
 
@@ -451,6 +452,29 @@ public:
 				fire::make_tensor_reference(S.data(), sShape),
 				fire::make_tensor_reference(truncatedV.data(), vShape));
 
+	}
+
+	TensorReference kronProd(TensorReference& other) {
+		// Get the data and shape
+		auto shape = other.second;
+		auto d = other.first.data();
+
+		// Express the Tensor as an Eigen Matrix. We know
+		// at this point the Tensor is Rank 2. Double check anyway
+		assert(shape.dimensions().size() == 2);
+
+		Eigen::Map<Eigen::MatrixXd> matrix(d, shape.dimension(0),
+				shape.dimension(1));
+
+		Eigen::Map<Eigen::MatrixXd> thisAsMat(data(), tensor->dimension(0),
+				tensor->dimension(1));
+
+		auto result = kroneckerProduct(thisAsMat, matrix).eval();
+		std::vector<int> dims(2);
+		dims[0] = result.rows();
+		dims[1] = result.cols();
+		TensorShape newShape(dims);
+		return fire::make_tensor_reference(result.data(), newShape);
 	}
 };
 

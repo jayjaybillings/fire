@@ -498,6 +498,36 @@ public:
 	}
 
 	/**
+	 * This is a convenience method for Rank 2 tensors only.
+	 * It returns a new tensor that is the matrix transpose of
+	 * this tensor.
+	 *
+	 * @return
+	 */
+	ThisTensorType transpose() {
+		static_assert(Rank == 2, "Transpose only supported for Rank 2 tensors.");
+		std::array<int, 2> shuffle({1,0});
+		return this->shuffle(shuffle);
+	}
+
+	/**
+	 * This is a convencience method for Rank 2 tensors only.
+	 * It returns a tensor that is the matrix kronecker product
+	 * of this tensor and the provided OtherTensor.
+	 *
+	 * @param other
+	 * @return
+	 */
+	template<typename OtherTensor>
+	ThisTensorType kronProd(OtherTensor& other) {
+		static_assert(Rank == 2 && OtherTensor::getRank() == 2, "");
+		auto ref = other.createReference();
+		auto kronProdRef = provider->kroneckerProduct(ref);
+		ThisTensorType result(kronProdRef);
+		return result;
+	}
+
+	/**
 	 * The destructor
 	 */
 	virtual ~Tensor() {
