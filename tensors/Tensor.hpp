@@ -257,7 +257,7 @@ public:
 	 * @param other
 	 */
 	template<typename OtherDerived>
-	Tensor<DerivedTensorBackend::getRank() * OtherDerived::getRank(),
+	Tensor<DerivedTensorBackend::getRank() + OtherDerived::getRank(),
 			DerivedTensorBackendBuilder, Scalar> operator*(
 			OtherDerived& other) {
 		auto emptyIndices = std::array<std::pair<int, int>, 0> { { } };

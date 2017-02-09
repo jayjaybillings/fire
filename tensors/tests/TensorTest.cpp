@@ -397,3 +397,25 @@ BOOST_AUTO_TEST_CASE(checkKronProd) {
 		}
 	}
 }
+
+BOOST_AUTO_TEST_CASE(checkRank1OuterProduct) {
+	fire::Tensor<1> vec(4);
+	vec.setValues({1.0/std::sqrt(2.0), 0, 0, 1.0/std::sqrt(2.0)});
+	auto rho = vec * vec;
+	BOOST_VERIFY(rho.getRank() == 2);
+	BOOST_VERIFY(rho.dimension(0) == 4);
+	BOOST_VERIFY(rho.dimension(1) == 4);
+
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			if ((i == 0 && j == 0) ||
+					(i == 0 && j == 3) ||
+					(i == 3 && j == 0) ||
+					(i == 3 && j == 3)) {
+				BOOST_VERIFY(fabs(rho(i,j) - 0.5) < 1e-3);
+			} else {
+				BOOST_VERIFY(rho(i,j) == 0);
+			}
+		}
+	}
+}
