@@ -402,10 +402,10 @@ public:
 		// at this point the Tensor is Rank 2. Double check anyway
 		assert(shape.dimensions().size() == 2);
 
-		Eigen::Map<Eigen::MatrixXd> matrix(data, shape.dimension(0),
+		Eigen::Map<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>> matrix(data, shape.dimension(0),
 				shape.dimension(1));
 
-		Eigen::BDCSVD<Eigen::MatrixXd> svd(matrix,
+		Eigen::BDCSVD<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>> svd(matrix,
 				Eigen::ComputeThinU | Eigen::ComputeThinV);
 
 		auto singularValues = svd.singularValues();
@@ -423,14 +423,14 @@ public:
 			}
 		}
 
-		Eigen::MatrixXd S(truncIndex + 1, truncIndex + 1);
+		Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> S(truncIndex + 1, truncIndex + 1);
 		S.setZero();
 		for (int i = 0; i < truncIndex + 1; i++)
 			S(i, i) = singularValues(i);
 
-		Eigen::MatrixXd truncatedU = u.block(0, 0, truncIndex + 1,
+		Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> truncatedU = u.block(0, 0, truncIndex + 1,
 				truncIndex + 1);
-		Eigen::MatrixXd truncatedV = v.block(0, 0, truncIndex + 1,
+		Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> truncatedV = v.block(0, 0, truncIndex + 1,
 				truncIndex + 1);
 
 		assert ( (u*S*v.transpose() - matrix).array().abs().sum() < 1e-6 );
@@ -463,10 +463,10 @@ public:
 		// at this point the Tensor is Rank 2. Double check anyway
 		assert(shape.dimensions().size() == 2);
 
-		Eigen::Map<Eigen::MatrixXd> matrix(d, shape.dimension(0),
+		Eigen::Map<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>> matrix(d, shape.dimension(0),
 				shape.dimension(1));
 
-		Eigen::Map<Eigen::MatrixXd> thisAsMat(data(), tensor->dimension(0),
+		Eigen::Map<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>> thisAsMat(data(), tensor->dimension(0),
 				tensor->dimension(1));
 
 		auto result = kroneckerProduct(thisAsMat, matrix).eval();
