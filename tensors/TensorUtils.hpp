@@ -49,7 +49,8 @@ template<class T, std::size_t N> struct array_size<std::array<T,N> > {
 /**
  * A TensorReference is just a pair of the Tensors data array and its TensorShape
  */
-using TensorReference = std::pair<std::vector<double>, TensorShape>;
+template<typename Scalar>
+using TensorReference = std::pair<std::vector<Scalar>, TensorShape>;
 
 /**
  * Utility method for creating TensorReferences.
@@ -58,8 +59,9 @@ using TensorReference = std::pair<std::vector<double>, TensorShape>;
  * @param shape
  * @return
  */
-TensorReference make_tensor_reference(double* data, TensorShape& shape) {
-	std::vector<double> v;
+template<typename Scalar>
+auto make_tensor_reference(Scalar* data, TensorShape& shape) -> TensorReference<Scalar> {
+	std::vector<Scalar> v;
 	std::copy(data, data + shape.size(), std::back_inserter(v));
 	auto pair = std::make_pair(v, shape);
 	return pair;

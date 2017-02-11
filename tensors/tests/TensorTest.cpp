@@ -30,16 +30,19 @@
  Author(s): Alex McCaskey (mccaskeyaj <at> ornl <dot> gov)
  -----------------------------------------------------------------------------*/
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE Tensors
+#define BOOST_TEST_MODULE FireTensors
 
 #include <boost/test/included/unit_test.hpp>
 #include "Tensor.hpp"
 
 using namespace boost;
 
+template<const int Rank>
+using FireTensor = fire::Tensor<Rank, fire::EigenProvider, double>;
+
 BOOST_AUTO_TEST_CASE(checkConstruction) {
 
-	fire::Tensor<5> a(1, 2, 3, 4, 5);
+	FireTensor<5> a(1, 2, 3, 4, 5);
 
 	BOOST_VERIFY(a.dimension(0) == 1);
 	BOOST_VERIFY(a.dimension(1) == 2);
@@ -62,7 +65,7 @@ BOOST_AUTO_TEST_CASE(checkConstruction) {
 	}
 	BOOST_VERIFY(counter == 120);
 
-	fire::Tensor<3> epsilon(3, 3, 3);
+	FireTensor<3> epsilon(3, 3, 3);
 	epsilon(0, 1, 2) = 1;
 	BOOST_VERIFY(epsilon(0, 1, 2) == 1);
 	epsilon(1, 2, 0) = 1;
@@ -76,7 +79,7 @@ BOOST_AUTO_TEST_CASE(checkConstruction) {
 	epsilon(0, 2, 1) = -1;
 	BOOST_VERIFY(epsilon(0, 2, 1) == -1);
 
-	fire::Tensor<4> grassmannIdentity(3, 3, 3, 3);
+	FireTensor<4> grassmannIdentity(3, 3, 3, 3);
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
 			for (int k = 0; k < 3; k++) {
@@ -111,13 +114,13 @@ BOOST_AUTO_TEST_CASE(checkConstruction) {
 }
 
 BOOST_AUTO_TEST_CASE(checkAddition) {
-	fire::Tensor<2> a(2, 2);
-	fire::Tensor<2> b(2, 2);
+	FireTensor<2> a(2, 2);
+	FireTensor<2> b(2, 2);
 
 	a(0, 0) = 1;
 	b(0, 0) = 1;
 
-	fire::Tensor<2> result = a + b;
+	FireTensor<2> result = a + b;
 
 	BOOST_VERIFY(result.getRank() == 2);
 	BOOST_VERIFY(result.dimension(0) == 2);
@@ -127,12 +130,12 @@ BOOST_AUTO_TEST_CASE(checkAddition) {
 	BOOST_VERIFY(result(1, 0) == 0);
 	BOOST_VERIFY(result(1, 1) == 0);
 
-	fire::Tensor<2> expected(2, 2);
+	FireTensor<2> expected(2, 2);
 }
 
 BOOST_AUTO_TEST_CASE(checkEquality) {
-	fire::Tensor<2> a(2, 2);
-	fire::Tensor<2> b(2, 2);
+	FireTensor<2> a(2, 2);
+	FireTensor<2> b(2, 2);
 
 	a(0, 0) = 1;
 	b(0, 0) = 1;
@@ -150,13 +153,13 @@ BOOST_AUTO_TEST_CASE(checkContraction) {
 	using namespace fire;
 	using IndexPair = std::pair<int,int>;
 
-	Tensor<2> mat1(2, 3);
-	Tensor<2> mat2(2, 3);
+	FireTensor<2> mat1(2, 3);
+	FireTensor<2> mat2(2, 3);
 
 	mat1.setRandom();
 	mat2.setRandom();
 
-	Tensor<2> mat4(3, 3);
+	FireTensor<2> mat4(3, 3);
 
 	std::array<IndexPair, 1> contractionIndices;
 	contractionIndices[0] = std::make_pair(0, 0);
@@ -183,17 +186,17 @@ BOOST_AUTO_TEST_CASE(checkContraction) {
 
 }
 
-BOOST_AUTO_TEST_CASE(checkTensorProduct) {
+BOOST_AUTO_TEST_CASE(checkFireTensorProduct) {
 	using namespace fire;
 	using IndexPair = std::pair<int,int>;
 
-	Tensor<2> mat1(2, 3);
-	Tensor<2> mat2(4, 1);
+	FireTensor<2> mat1(2, 3);
+	FireTensor<2> mat2(4, 1);
 	mat1.setRandom();
 	mat2.setRandom();
 
 	// Note user must know tensor product produces rank n*m
-	Tensor<4> result = mat1 * mat2;
+	FireTensor<4> result = mat1 * mat2;
 
 	BOOST_VERIFY(result.dimension(0) == 2);
 	BOOST_VERIFY(result.dimension(1) == 3);
@@ -213,7 +216,7 @@ BOOST_AUTO_TEST_CASE(checkTensorProduct) {
 BOOST_AUTO_TEST_CASE(checkSetValuesInitializerList) {
 	using namespace fire;
 
-	Tensor<2> t(2, 3);
+	FireTensor<2> t(2, 3);
 
 	t.setValues( { { 0, 1, 2 }, { 3, 4, 5 } });
 
@@ -225,7 +228,7 @@ BOOST_AUTO_TEST_CASE(checkSetValuesInitializerList) {
 	BOOST_VERIFY(t(1, 2) == 5);
 
 //	std::cout
-//			<< "Checking setValues with initializer_list.\nTensor<2>(2,3) = \n";
+//			<< "Checking setValues with initializer_list.\nFireTensor<2>(2,3) = \n";
 //	t.print(std::cout);
 //	std::cout << std::endl;
 }
@@ -233,11 +236,11 @@ BOOST_AUTO_TEST_CASE(checkSetValuesInitializerList) {
 BOOST_AUTO_TEST_CASE(checkScalarMultiply) {
 	using namespace fire;
 
-	Tensor<2> s(2, 3);
+	FireTensor<2> s(2, 3);
 
 	s.setValues( { { 0, 1, 2 }, { 3, 4, 5 } });
 
-	Tensor<2> t = s * 2.0;
+	FireTensor<2> t = s * 2.0;
 
 	BOOST_VERIFY(t(0, 0) == 0);
 	BOOST_VERIFY(t(0, 1) == 2);
@@ -247,30 +250,30 @@ BOOST_AUTO_TEST_CASE(checkScalarMultiply) {
 	BOOST_VERIFY(t(1, 2) == 10);
 
 //	std::cout
-//			<< "Checking setValues with initializer_list.\nTensor<2>(2,3) = \n";
+//			<< "Checking setValues with initializer_list.\nFireTensor<2>(2,3) = \n";
 //	t.print(std::cout);
 
 }
 
-BOOST_AUTO_TEST_CASE(checkTensorReshapeAndShuffle) {
+BOOST_AUTO_TEST_CASE(checkFireTensorReshapeAndShuffle) {
 	using namespace fire;
 
-	Tensor<2> tensor(7, 11);
+	FireTensor<2> tensor(7, 11);
 
 	std::array<int, 3> newShape { { 7, 11, 1 } };
 
-	Tensor<3> reShapedTensor = tensor.reshape(newShape);
+	FireTensor<3> reShapedFireTensor = tensor.reshape(newShape);
 
-	BOOST_VERIFY(reShapedTensor.getRank() == 3);
-	BOOST_VERIFY(reShapedTensor.dimension(0) == 7);
-	BOOST_VERIFY(reShapedTensor.dimension(1) == 11);
-	BOOST_VERIFY(reShapedTensor.dimension(2) == 1);
+	BOOST_VERIFY(reShapedFireTensor.getRank() == 3);
+	BOOST_VERIFY(reShapedFireTensor.dimension(0) == 7);
+	BOOST_VERIFY(reShapedFireTensor.dimension(1) == 11);
+	BOOST_VERIFY(reShapedFireTensor.dimension(2) == 1);
 
-	Tensor<3> input(20, 30, 50);
+	FireTensor<3> input(20, 30, 50);
 	input.setRandom();
 
 	std::array<int, 3> permutation { { 1, 2, 0 } };
-	Tensor<3> output = input.shuffle(permutation);
+	FireTensor<3> output = input.shuffle(permutation);
 	BOOST_VERIFY(output.dimension(0) == 30);
 	BOOST_VERIFY(output.dimension(1) == 50);
 	BOOST_VERIFY(output.dimension(2) == 20);
@@ -283,7 +286,7 @@ BOOST_AUTO_TEST_CASE(checkSVD) {
 	using IndexPair = std::pair<int,int>;
 
 	// Create a Rank 4 tensor - the GHZ state...
-	Tensor<4> tensor(2, 2, 2, 2);
+	FireTensor<4> tensor(2, 2, 2, 2);
 	tensor(0, 0, 0, 0) = 1.0 / sqrt(2.0);
 	tensor(1, 1, 1, 1) = 1.0 / sqrt(2.0);
 
@@ -318,9 +321,9 @@ BOOST_AUTO_TEST_CASE(checkSVD) {
 	// with the original GHZ rank 4 tensor
 	std::array<IndexPair, 4> totalDims { std::make_pair(0, 0), std::make_pair(1,
 			1), std::make_pair(2, 2), std::make_pair(3, 3) };
-	auto scalarTensor = uv.contract(tensor, totalDims);
-	BOOST_VERIFY(scalarTensor.getRank() == 0);
-	BOOST_VERIFY(fabs(scalarTensor() - 1) < 1e-6);
+	auto scalarFireTensor = uv.contract(tensor, totalDims);
+	BOOST_VERIFY(scalarFireTensor.getRank() == 0);
+	BOOST_VERIFY(fabs(scalarFireTensor() - 1) < 1e-6);
 
 	// Test a more complicated tensor with random values...
 
@@ -337,12 +340,12 @@ BOOST_AUTO_TEST_CASE(checkSVD) {
 	std::vector<int> r4shape = {2, 2, 2, 2};
 	m = (1.0 / m.norm()) * m;
 	TensorShape shape(r4shape);
-	TensorReference ref = fire::make_tensor_reference(m.data(), shape);
-	Tensor<4> randomTensor(ref);
+	auto ref = fire::make_tensor_reference(m.data(), shape);
+	FireTensor<4> randomFireTensor(ref);
 
 	// Perform the SVD, this gives us a U, S, and V tensor
 	// with the default truncation of 0.0
-	auto randomResult = randomTensor.svd(leftCut, rightCut);
+	auto randomResult = randomFireTensor.svd(leftCut, rightCut);
 
 	// Get them individually...
 	auto randomU = std::get<0>(randomResult);
@@ -361,14 +364,14 @@ BOOST_AUTO_TEST_CASE(checkSVD) {
 
 	// Now contract the randomuv rank 4 tensor
 	// with the original random rank 4 tensor
-	auto randomScalarTensor = randomuv.contract(randomTensor, totalDims);
-	BOOST_VERIFY(randomScalarTensor.getRank() == 0);
-	BOOST_VERIFY(fabs(randomScalarTensor() - 1) < 1e-6);
+	auto randomScalarFireTensor = randomuv.contract(randomFireTensor, totalDims);
+	BOOST_VERIFY(randomScalarFireTensor.getRank() == 0);
+	BOOST_VERIFY(fabs(randomScalarFireTensor() - 1) < 1e-6);
 
 }
 
 BOOST_AUTO_TEST_CASE(checkTransposeRank2) {
-	fire::Tensor<2> a(2,2);
+	FireTensor<2> a(2,2);
 	a.setValues({{0,1},{2,0}});
 	auto b = a.transpose();
 	BOOST_VERIFY(b(0,1) == 2);
@@ -376,11 +379,11 @@ BOOST_AUTO_TEST_CASE(checkTransposeRank2) {
 }
 
 BOOST_AUTO_TEST_CASE(checkKronProd) {
-	fire::Tensor<2> x(2,2), I(2,2);
+	FireTensor<2> x(2,2), I(2,2);
 	x.setValues({{0,1},{1,0}});
 	I.setValues({{1,0},{0,1}});
 
-	fire::Tensor<2> result = x.kronProd(I);
+	FireTensor<2> result = x.kronProd(I);
 
 	BOOST_VERIFY(result.dimension(0) == 4);
 	BOOST_VERIFY(result.dimension(1) == 4);
@@ -399,7 +402,7 @@ BOOST_AUTO_TEST_CASE(checkKronProd) {
 }
 
 BOOST_AUTO_TEST_CASE(checkRank1OuterProduct) {
-	fire::Tensor<1> vec(4);
+	FireTensor<1> vec(4);
 	vec.setValues({1.0/std::sqrt(2.0), 0, 0, 1.0/std::sqrt(2.0)});
 	auto rho = vec * vec;
 	BOOST_VERIFY(rho.getRank() == 2);
@@ -418,4 +421,249 @@ BOOST_AUTO_TEST_CASE(checkRank1OuterProduct) {
 			}
 		}
 	}
+}
+
+template<const int Rank>
+using ComplexFireTensor = fire::Tensor<Rank, fire::EigenProvider, std::complex<double>>;
+
+BOOST_AUTO_TEST_CASE(checkComplexConstruction) {
+
+	ComplexFireTensor<5> a(1, 2, 3, 4, 5);
+
+	BOOST_VERIFY(a.dimension(0) == 1);
+	BOOST_VERIFY(a.dimension(1) == 2);
+	BOOST_VERIFY(a.dimension(2) == 3);
+	BOOST_VERIFY(a.dimension(3) == 4);
+	BOOST_VERIFY(a.dimension(4) == 5);
+
+	int counter = 0;
+	for (int i = 0; i < 1; i++) {
+		for (int j = 0; j < 2; j++) {
+			for (int k = 0; k < 3; k++) {
+				for (int l = 0; l < 4; l++) {
+					for (int m = 0; m < 5; m++) {
+						counter++;
+						BOOST_VERIFY(a(i, j, k, l, m) == 0.0);
+					}
+				}
+			}
+		}
+	}
+	BOOST_VERIFY(counter == 120);
+
+	ComplexFireTensor<3> epsilon(3, 3, 3);
+	epsilon(0, 1, 2) = 1;
+	BOOST_VERIFY(std::real(epsilon(0, 1, 2)) == 1);
+	epsilon(1, 2, 0) = 1;
+	BOOST_VERIFY(std::real(epsilon(1, 2, 0)) == 1);
+	epsilon(2, 0, 1) = 1;
+	BOOST_VERIFY(std::real(epsilon(2, 0, 1)) == 1);
+	epsilon(1, 0, 2) = -1;
+	BOOST_VERIFY(std::real(epsilon(1, 0, 2)) == -1);
+	epsilon(2, 1, 0) = -1;
+	BOOST_VERIFY(std::real(epsilon(2, 1, 0)) == -1);
+	epsilon(0, 2, 1) = -1;
+	BOOST_VERIFY(std::real(epsilon(0, 2, 1)) == -1);
+
+	ComplexFireTensor<4> grassmannIdentity(3, 3, 3, 3);
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			for (int k = 0; k < 3; k++) {
+				for (int l = 0; l < 3; l++) {
+					for (int m = 0; m < 3; m++) {
+						grassmannIdentity(i, j, l, m) += epsilon(i, j, k)
+								* epsilon(k, l, m);
+					}
+				}
+			}
+		}
+	}
+
+	// verify
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			for (int l = 0; l < 3; l++) {
+				for (int m = 0; m < 3; m++) {
+					BOOST_VERIFY(
+							std::real(grassmannIdentity(i, j, l, m))
+									== (int(i == l) * int(j == m)
+											- int(i == m) * int(j == l)));
+				}
+			}
+		}
+	}
+
+	// dimensionalities
+	BOOST_VERIFY(epsilon.dimension(0) == 3);
+	BOOST_VERIFY(epsilon.dimension(1) == 3);
+	BOOST_VERIFY(epsilon.dimension(2) == 3);
+}
+
+
+BOOST_AUTO_TEST_CASE(checkComplexAddition) {
+	ComplexFireTensor<2> a(2, 2);
+	ComplexFireTensor<2> b(2, 2);
+
+	a(0, 0) = 1;
+	b(0, 0) = 1;
+
+	ComplexFireTensor<2> result = a + b;
+
+	BOOST_VERIFY(result.getRank() == 2);
+	BOOST_VERIFY(result.dimension(0) == 2);
+	BOOST_VERIFY(result.dimension(1) == 2);
+	BOOST_VERIFY(std::real(result(0, 0)) == 2);
+	BOOST_VERIFY(std::real(result(0, 1)) == 0);
+	BOOST_VERIFY(std::real(result(1, 0)) == 0);
+	BOOST_VERIFY(std::real(result(1, 1)) == 0);
+
+}
+
+BOOST_AUTO_TEST_CASE(checkComplexEquality) {
+	ComplexFireTensor<2> a(2, 2);
+	ComplexFireTensor<2> b(2, 2);
+
+	a(0, 0) = 1;
+	b(0, 0) = 1;
+
+	BOOST_VERIFY(a == b);
+
+	a(0, 0) = 2;
+
+	BOOST_VERIFY(!(a == b));
+	BOOST_VERIFY(a != b);
+}
+
+BOOST_AUTO_TEST_CASE(checkComplexContraction) {
+
+//	using namespace fire;
+//	using IndexPair = std::pair<int,int>;
+//
+//	ComplexFireTensor<2> t_left(30, 30)
+//	ComplexFireTensor<2> t_right(30, 30);
+//	ComplexFireTensor<2> t_result(30, 30);
+//
+//	t_left.setRandom();
+//	t_right.setRandom();
+//
+//	using namespace Eigen;
+//
+//	typedef Map<Matrix<std::complex<double>, Dynamic, Dynamic>> MapXcf;
+//	MapXcf m_left(t_left.createReference().first.data(), 1500, 248);
+//	MapXcf m_right(t_right.createReference().first.data(), 248, 1400);
+//	Matrix<std::complex<double>, Dynamic, Dynamic> m_result(1500, 1400);
+//
+//	using DimPair = Eigen::Tensor<float, 1>::DimensionPair;
+//	Eigen::array<DimPair, 2> dims;
+//	dims[0] = DimPair(2,0);
+//	dims[1] = DimPair(3,1);
+//
+//	// This contraction should be equivalent to a regular matrix multiplication
+////	std::array<IndexPair, 2> dims;
+////	dims[0] = std::make_pair(2, 0);
+////	dims[1] = std::make_pair(3, 1);
+//	t_result = t_left.contract(t_right, dims);
+//	m_result = m_left * m_right;
+//	auto ref = t_result.createReference();
+//	for (int i = 0; i < t_result.size(); i++) {
+//		auto diff = ref.first.data()[i] - m_result.data()[i];
+//		BOOST_VERIFY(fabs(std::real(diff)) < 1e-6);
+//	}
+
+}
+
+
+BOOST_AUTO_TEST_CASE(checkComplexFireTensorProduct) {
+	using namespace fire;
+	using IndexPair = std::pair<int,int>;
+
+	ComplexFireTensor<2> mat1(2, 3);
+	ComplexFireTensor<2> mat2(4, 1);
+	mat1.setRandom();
+	mat2.setRandom();
+
+	// Note user must know tensor product produces rank n*m
+	ComplexFireTensor<4> result = mat1 * mat2;
+
+	BOOST_VERIFY(result.dimension(0) == 2);
+	BOOST_VERIFY(result.dimension(1) == 3);
+	BOOST_VERIFY(result.dimension(2) == 4);
+	BOOST_VERIFY(result.dimension(3) == 1);
+	for (int i = 0; i < result.dimension(0); ++i) {
+		for (int j = 0; j < result.dimension(1); ++j) {
+			for (int k = 0; k < result.dimension(2); ++k) {
+				for (int l = 0; l < result.dimension(3); ++l) {
+					BOOST_VERIFY(result(i, j, k, l) == mat1(i, j) * mat2(k, l));
+				}
+			}
+		}
+	}
+}
+
+BOOST_AUTO_TEST_CASE(checkComplexSetValuesInitializerList) {
+	using namespace fire;
+
+	ComplexFireTensor<2> t(2, 3);
+
+	t.setValues( { { 0, 1, 2 }, { 3, 4, 5 } });
+
+	BOOST_VERIFY(std::real(t(0, 0)) == 0);
+	BOOST_VERIFY(std::real(t(0, 1)) == 1);
+	BOOST_VERIFY(std::real(t(0, 2)) == 2);
+	BOOST_VERIFY(std::real(t(1, 0)) == 3);
+	BOOST_VERIFY(std::real(t(1, 1)) == 4);
+	BOOST_VERIFY(std::real(t(1, 2)) == 5);
+
+//	std::cout
+//			<< "Checking setValues with initializer_list.\nFireTensor<2>(2,3) = \n";
+//	t.print(std::cout);
+//	std::cout << std::endl;
+}
+
+BOOST_AUTO_TEST_CASE(checkComplexScalarMultiply) {
+	using namespace fire;
+
+	ComplexFireTensor<2> s(2, 3);
+
+	s.setValues( { { 0, 1, 2 }, { 3, 4, 5 } });
+
+	ComplexFireTensor<2> t = s * 2.0;
+
+	BOOST_VERIFY(std::real(t(0, 0)) == 0);
+	BOOST_VERIFY(std::real(t(0, 1)) == 2);
+	BOOST_VERIFY(std::real(t(0, 2)) == 4);
+	BOOST_VERIFY(std::real(t(1, 0)) == 6);
+	BOOST_VERIFY(std::real(t(1, 1)) == 8);
+	BOOST_VERIFY(std::real(t(1, 2)) == 10);
+
+//	std::cout
+//			<< "Checking setValues with initializer_list.\nFireTensor<2>(2,3) = \n";
+//	t.print(std::cout);
+
+}
+
+BOOST_AUTO_TEST_CASE(checkComplexFireTensorReshapeAndShuffle) {
+	using namespace fire;
+
+	ComplexFireTensor<2> tensor(7, 11);
+
+	std::array<int, 3> newShape { { 7, 11, 1 } };
+
+	ComplexFireTensor<3> reShapedFireTensor = tensor.reshape(newShape);
+
+	BOOST_VERIFY(reShapedFireTensor.getRank() == 3);
+	BOOST_VERIFY(reShapedFireTensor.dimension(0) == 7);
+	BOOST_VERIFY(reShapedFireTensor.dimension(1) == 11);
+	BOOST_VERIFY(reShapedFireTensor.dimension(2) == 1);
+
+	ComplexFireTensor<3> input(20, 30, 50);
+	input.setRandom();
+
+	std::array<int, 3> permutation { { 1, 2, 0 } };
+	ComplexFireTensor<3> output = input.shuffle(permutation);
+	BOOST_VERIFY(output.dimension(0) == 30);
+	BOOST_VERIFY(output.dimension(1) == 50);
+	BOOST_VERIFY(output.dimension(2) == 20);
+
+	BOOST_VERIFY(output(3, 7, 11) == input(11, 3, 7));
 }

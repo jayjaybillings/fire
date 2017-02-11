@@ -100,7 +100,8 @@ public:
 	 *
 	 * @param reference The set of data and dimensions as a TensorReference
 	 */
-	void initializeFromReference(TensorReference& reference) {
+	template<typename Scalar>
+	void initializeFromReference(TensorReference<Scalar>& reference) {
 		getAsDerived().initializeTensorBackendWithReference(reference);
 	}
 
@@ -123,7 +124,8 @@ public:
 	 * @param other TensorReference view of the other Tensor
 	 * @return equal A boolean indicating if these Tensors are equal
 	 */
-	bool equalTensors(TensorReference& other) {
+	template<typename Scalar>
+	bool equalTensors(TensorReference<Scalar>& other) {
 		return getAsDerived().checkEquality(other);
 	}
 
@@ -144,7 +146,8 @@ public:
 	 * @param other TensorReference view of the other Tensor
 	 * @return result A new TensorReference representing the sum of this and other.
 	 */
-	TensorReference addTensors(TensorReference& other) {
+	template<typename Scalar>
+	TensorReference<Scalar> addTensors(TensorReference<Scalar>& other) {
 		auto r = getAsDerived().add(other);
 		return r;
 	}
@@ -165,8 +168,8 @@ public:
 	 * @param indices The contraction indices.
 	 * @return result The contraction result as a TensorReference
 	 */
-	template<typename OtherDerived, typename ContractionDims>
-	TensorReference contract(OtherDerived& t2, ContractionDims& indices) {
+	template<typename OtherDerived, typename ContractionDims, typename Scalar>
+	TensorReference<Scalar> contract(OtherDerived& t2, ContractionDims& indices) {
 		return getAsDerived().executeContraction(t2, indices);
 	}
 
@@ -203,7 +206,7 @@ public:
 	 * @return result A TensorReference representing the result
 	 */
 	template<typename Scalar>
-	TensorReference multiplyByScalar(Scalar& val) {
+	TensorReference<Scalar> multiplyByScalar(Scalar& val) {
 		return getAsDerived().scalarProduct(val);
 	}
 
@@ -213,8 +216,8 @@ public:
 	 * @param array Array of new dimensions for each rank index
 	 * @return reshapedTensor A TensorReference representing new reshaped tensor.
 	 */
-	template<typename DimArray>
-	TensorReference reshape(DimArray& array) {
+	template<typename DimArray, typename Scalar>
+	TensorReference<Scalar> reshape(DimArray& array) {
 		return getAsDerived().reshapeTensor(array);
 	}
 
@@ -226,16 +229,18 @@ public:
 	 * @param array Permutation of indices
 	 * @return result New tensor represented as a TensorReference
 	 */
-	template<typename DimArray>
-	TensorReference shuffle(DimArray& array) {
+	template<typename DimArray, typename Scalar>
+	TensorReference<Scalar> shuffle(DimArray& array) {
 		return getAsDerived().shuffleTensor(array);
 	}
 
-	std::tuple<TensorReference, TensorReference, TensorReference> svd(TensorReference& ref, double cutoff) {
+	template<typename Scalar>
+	std::tuple<TensorReference<Scalar>, TensorReference<Scalar>, TensorReference<Scalar>> svd(TensorReference<Scalar>& ref, double cutoff) {
 		return getAsDerived().computeSvd(ref, cutoff);
 	}
 
-	TensorReference kroneckerProduct(TensorReference& other) {
+	template<typename Scalar>
+	TensorReference<Scalar> kroneckerProduct(TensorReference<Scalar>& other) {
 		return getAsDerived().kronProd(other);
 	}
 };
