@@ -1,5 +1,5 @@
 /**----------------------------------------------------------------------------
- Copyright (c) 2015-, UT-Battelle, LLC
+ Copyright (c) 2016-, UT-Battelle, LLC
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -34,8 +34,6 @@
 
 #include <iostream>
 #include <vector>
-
-using namespace std;
 
 namespace fire {
 
@@ -79,13 +77,14 @@ T build(K values) {
  * @param a delimiter that marks where tokens should be split.
  * @return a vector with a string for each entry in the original.
  */
-inline vector<string> splitString(const string & line, const string & delimiter) {
+inline std::vector<std::string> splitString(const std::string & line,
+		const std::string & delimiter) {
 
-	string value;
-	istringstream ss(line);
-	vector < string > lineVec;
+	std::string value;
+	std::istringstream ss(line);
+	std::vector < std::string > lineVec;
 	//Split the line and push each element into the line list.
-	while (getline(ss, value, *delimiter.c_str())) {
+	while (std::getline(ss, value, *delimiter.c_str())) {
 	      lineVec.push_back(value);
 	}
 	return lineVec;
@@ -98,8 +97,8 @@ inline vector<string> splitString(const string & line, const string & delimiter)
  * @param the strings to be split
  * @return a vector with a string for each entry in the original.
  */
-inline vector<string> splitString(const string & line) {
-	string delimiter = " ";
+inline std::vector<std::string> splitString(const std::string & line) {
+	std::string delimiter = " ";
 	return splitString(line,delimiter);
 }
 

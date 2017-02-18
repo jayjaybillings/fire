@@ -43,10 +43,13 @@
 #include <ReactionNetwork.h>
 #include <ODESolver.h>
 #include <StringCaster.h>
+#include <State.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+
+// BEGIN CVODE HEADER
 
 /* Header files with a description of contents used in cvbanx.c */
 
@@ -76,6 +79,8 @@
 #define TWO  RCONST(2.0)
 #define FIVE RCONST(5.0)
 
+// END CVODE HEADER
+
 using namespace std;
 using namespace fire;
 using namespace fire::astrophysics;
@@ -83,8 +88,6 @@ using namespace fire::astrophysics;
 static const string & propertyFileName = "alpha_gold.ini";
 
 /* Private Helper Functions */
-
-static void SetIC(N_Vector u, ReactionNetwork & data);
 static void PrintHeader(realtype reltol, realtype abstol, realtype umax);
 static void PrintOutput(realtype t, realtype umax, long int nst);
 static void PrintFinalStats(void *cvode_mem);
@@ -95,7 +98,111 @@ static int check_flag(void *flagvalue, char *funcname, int opt);
 
 /* Functions Called by the Solver */
 
-static int f(realtype t, N_Vector u, N_Vector udot, void *user_data);
+//static int f(realtype t, N_Vector u, N_Vector udot, void *user_data);
+
+
+/** Custom template functions (and a state variable) **/
+
+//vector<double> dataVec;
+
+//template<typename T>
+//int getSystemSize(const T & state) {}
+//
+//template<>
+//int getSystemSize(const ReactionNetwork & state) {
+//	return state.species->size();
+//}
+
+/* Set initial conditions in u vector */
+//template<typename T>
+//void initialize(double * u, const T & state) {}
+//
+//template<>
+//void initialize(double u[], const ReactionNetwork & state) {
+//
+//	// In the actual class, this would be a class variable.
+//	int size = getSystemSize(state);
+//
+//	/* TEMPORARY! Initialize local storage vector */
+//	dataVec.resize(size);
+//
+//	/* Load initial conditions into u vector */
+//	for (int j=0; j < size; j++) {
+//	  u[j] = state.species->at(j).massFraction;
+//	}
+//
+//}
+
+//template<typename T>
+//double * getRHS(State<T> & state, const double udata[], const double & t) {
+//    return reinterpret_cast<double *>(state);
+//}
+
+//template<>
+//double * getRHS(ReactionNetwork & state, const double udata[], const double & t) {
+
+//    int size = getSystemSize(state);
+
+    /* The thing is that there are two arrays here - u_m and du_m/dt. u_m is updated so that
+     * du_m/dt can be computed. u is wo and du/dt is ro. So a workable interface might be:
+     * ...
+     * system.update(u,t)
+     * system(i,t) // returns the RHS value at point (i,t).
+     * ...
+     *
+     * More general idea:
+     * int n = 14, D = 1;
+     * T state;
+     * System<T> system;
+     * system.setSize(n,D);
+     * system.setState(state);
+     * Solver<System<T>> solver;
+     * solver.setSystem(system);
+     * solver.run(); // Calls update, etc.
+     *
+     * I just redesigned this to use a class State<T>, so all the above is moot.
+     * State<ReactionNetwork> will absorb all the code below such that each loop
+     * is just playing with array pointers.
+     */
+
+	// Update the mass fractions to match the solve at the last timestep.
+//	for (int i=0; i < size; i++) {
+//	    state.species->at(i).massFraction = udata[i];
+//	}
+	// What I want:
+	// Update the state data
+	// state.u(udata,t);
+
+	// Compute the new flux values
+//	state.computeFluxes();
+
+	// Update the RHS data vector (derivative in this case)
+//	for (int i = 0; i < size; i++) {
+//		dataVec[i] = state.species->at(i).flux;
+//	}
+
+	// What I want:
+	// Get the time derivative
+	// return state.du(); // This should call state.computeFluxes() in the wrapper.
+
+	// Makes me wonder why I need system? Maybe this should be system.u() and system.du()?
+	// That would essentially define the state to be the point state. That would mean...
+	// * No single instance of State<T> would manage all the state.
+	// * System would need an array of State<T>, one for each point.
+	// * System would need to manage global options for I/O and history.
+
+	// Separate idea: What if State<T> stored state data in an octtree? Would that simplify
+	// things? Alternatively, use a hashset on t,x,y,z,etc.
+
+	// I think that System should hold the data - mathematical functions, operators,
+	// etc. - that define the PDEs and State should hold the state data of the unknowns.
+	// Solver holds the instructions on how to solve the PDE.
+
+//	return dataVec.data();
+//}
+
+
+/*----- End custom functions -----*/
 
 /*
  *-------------------------------
@@ -103,35 +210,45 @@ static int f(realtype t, N_Vector u, N_Vector udot, void *user_data);
  *-------------------------------
  */
 
-/* f routine. Compute f(t,u). */
 
-static int f(realtype t, N_Vector u,N_Vector udot, void *user_data) {
+template<typename T>
+void setICs(N_Vector u, const State<T> & state) {
+	  int i, j;
+	  realtype *udata;
+
+	  /* Set pointer to data array in vector u. */
+	  udata = NV_DATA_S(u);
+
+	  // Get the user's state data.
+	  double * stateU = state.u(0.0);
+	  int size = state.size();
+	  // Copy the initial state from the state structure to the u vector.
+	  for (int i = 0; i < size; i++) {
+		  udata[i] = stateU[i];
+	  }
+
+	  return;
+}
+
+/* f routine. Compute f(t,u). */
+template<typename T>
+int f(realtype t, N_Vector u,N_Vector udot, void *user_data) {
   realtype *udata, *dudata;
   int i, j;
-  ReactionNetwork * network;
+  State<T> * state = reinterpret_cast<State<T> *>(user_data);
 
   udata = NV_DATA_S(u);
   dudata = NV_DATA_S(udot);
 
-  /* Extract needed constants from data */
+  // Update the state
+  state->u(udata,t);
 
-  network = (ReactionNetwork *) user_data;
-
-  // Update the solution values from the array
-  for (j=0; j < network->species->size(); j++) {
-      network->species->at(j).massFraction = udata[j];
+  // Compute the time derivatives
+  double * rhs = state->dudt(t);
+  int size = state->size(); // FIXME!
+  for (j=0; j < size; j++) {
+      dudata[j] = rhs[j];
   }
-
-  // Compute the fluxes
-  network->computeFluxes();
-
-  // Update the derivative values in the array
-  cout << t;
-  for (j=0; j < network->species->size(); j++) {
-      dudata[j] = network->species->at(j).flux;
-      cout << ", " << udata[j];
-  }
-  cout << endl;
 
   return(0);
 }
@@ -141,25 +258,6 @@ static int f(realtype t, N_Vector u,N_Vector udot, void *user_data) {
  * Private helper functions
  *-------------------------------
  */
-
-/* Set initial conditions in u vector */
-
-static void SetIC(N_Vector u, ReactionNetwork & network)
-{
-  int i, j;
-  realtype *udata;
-
-  /* Set pointer to data array in vector u. */
-
-  udata = NV_DATA_S(u);
-
-  /* Load initial profile into u vector */
-
-  for (j=0; j < network.species->size(); j++) {
-    udata[j] = network.species->at(j).massFraction;
-    cout << network.species->at(j).massFraction << endl;
-  }
-}
 
 /* Print first lines of output (problem description) */
 
@@ -271,31 +369,10 @@ static int check_flag(void *flagvalue, char *funcname, int opt)
   return(0);
 }
 
-/**
- * This operation checks the ability of the Network to load itself properly
- * from an input parameter file.
- */
-BOOST_AUTO_TEST_CASE(checkLoading) {
+template<typename T>
+void solve(State<T> & state) {
 
-	// Load the properties
-	INIPropertyParser parser = build<INIPropertyParser,const string &>(propertyFileName);
-
-	// Create the network
-	ReactionNetwork network;
-	// Set the properties from the property block and load the network
-	auto props = parser.getPropertyBlock("network");
-	network.setProperties(props);
-	// Load the remaining data
-	network.load();
-	// Compute the prefactors and rates
-	props = parser.getPropertyBlock("initialConditions");
-	double temperature = StringCaster<double>::cast(props.at("T9"));
-	double density = StringCaster<double>::cast(props.at("density"));
-	network.computePrefactors(density);
-	network.computeRates(temperature);
-
-	// Delete later
-    foo myFoo;
+    // BEGIN CVODE
 
     realtype dx, dy, reltol, abstol, t, tout, umax;
     N_Vector u;
@@ -305,17 +382,18 @@ BOOST_AUTO_TEST_CASE(checkLoading) {
 
     u = NULL;
     cvode_mem = NULL;
+    int size = state.size();
 
     /* Create a serial vector */
 
-    u = N_VNew_Serial(network.species->size());  /* Allocate u vector */
+    u = N_VNew_Serial(size);  /* Allocate u vector */ // USER STATE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if(check_flag((void*)u, "N_VNew_Serial", 0)) return;
 
     reltol = ZERO;  /* Set the tolerances */
     abstol = ATOL;
 
     // Set the initial conditions
-    SetIC(u, network);  /* Initialize u vector */
+    setICs<T>(u, state);  /* Initialize u vector */ // USER STATE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     /* Call CVodeCreate to create the solver memory and specify the
      * Backward Differentiation Formula and the use of a Newton iteration */
@@ -325,7 +403,7 @@ BOOST_AUTO_TEST_CASE(checkLoading) {
     /* Call CVodeInit to initialize the integrator memory and specify the
      * user's right hand side function in u'=f(t,u), the inital time T0, and
      * the initial dependent variable vector u. */
-    flag = CVodeInit(cvode_mem, f, T0, u);
+    flag = CVodeInit(cvode_mem, f<T>, T0, u);
     if(check_flag(&flag, "CVodeInit", 1)) return;
 
     /* Call CVodeSStolerances to specify the scalar relative tolerance
@@ -334,11 +412,11 @@ BOOST_AUTO_TEST_CASE(checkLoading) {
     if (check_flag(&flag, "CVodeSStolerances", 1)) return;
 
     /* Set the pointer to user-defined data */
-    flag = CVodeSetUserData(cvode_mem, &network);
+    flag = CVodeSetUserData(cvode_mem, &state);
     if(check_flag(&flag, "CVodeSetUserData", 1)) return;
 
     /* Call CVBand to specify the CVBAND band linear solver */
-    flag = CVDense(cvode_mem, network.species->size());
+    flag = CVDense(cvode_mem, size);
     if(check_flag(&flag, "CVDense", 1)) return;
 
     /* Set the user-supplied Jacobian routine Jac */
@@ -362,6 +440,45 @@ BOOST_AUTO_TEST_CASE(checkLoading) {
 
     N_VDestroy_Serial(u);   /* Free the u vector */
     CVodeFree(&cvode_mem);  /* Free the integrator memory */
+
+	return;
+}
+
+/**
+ * This operation checks the ability of the Network to load itself properly
+ * from an input parameter file.
+ */
+BOOST_AUTO_TEST_CASE(checkLoading) {
+
+
+	// USER STATE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	// Load the properties
+	INIPropertyParser parser = build<INIPropertyParser,const string &>(propertyFileName);
+
+	// Create the network
+	ReactionNetwork network;
+	// Set the properties from the property block and load the network
+	auto props = parser.getPropertyBlock("network");
+	network.setProperties(props);
+	// Load the remaining data
+	network.load();
+	// Compute the prefactors and rates
+	props = parser.getPropertyBlock("initialConditions");
+	double temperature = StringCaster<double>::cast(props.at("T9"));
+	double density = StringCaster<double>::cast(props.at("density"));
+	network.computePrefactors(density);
+	network.computeRates(temperature);
+	State<ReactionNetwork> networkState;
+	networkState.size(network.species->size());
+	networkState.set(std::make_shared<ReactionNetwork>(network));
+
+	// USER STATE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+	// Delete later
+    foo myFoo; // USER STATE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! (Temp class declaration)
+
+    solve<ReactionNetwork>(networkState);
 
 	// Good enough for government work
 	return;
