@@ -58,16 +58,29 @@ namespace fire {
  * matrix with a total of 300 elements. Note that whether or not "the matrix"
  * is stored in column or row major format is not important.
  *
- * Using the operations on this class that work directly with doubles is the
- * most efficient way to interact with instances. With respect to setting data
- * using the templated functions that work with shared pointers, these can be
- * expensive because of atomic increments and decrements required for reference
- * counting in the shared pointer. The author's own experience has showed that
- * in tight loops this can kill performance by as much as 60% for a single
- * shared pointer. However, as the state class is responsible for maintaining
- * state and must subscribe to the memory life cycle of its own data, using
- * std::shared_ptrs is preferable to raw pointers because of the easy of
- * managing the data. FIXME! - Rewrite and finish this paragraph.
+ * This class is designed to be greedy and narcissistic. In lieu of allowing
+ * users to create and store their own instances of T, it creates (add()) those
+ * instances and forces users to interact with references retrieved using the
+ * getters. Being so greedy makes it possible to this class to efficiently
+ * manage memory with lower implementation overhead and no need to rely on
+ * clients to correctly initialize data. The original design of this class
+ * called for extensive use of smart pointers (using std::share), but there
+ * are few computational advantages - if any - compared to simple references.
+ * This is because simple references do not incur atomic increment and
+ * decrement costs when crossing function boundaries, but smart pointers do.
+ * In the author's personal experience, the cost of working with
+ * smart pointers can be as much as a factor of two in tight loops with
+ * function boundaries. References are, by comparison, free in tight loops.
+ * Alternatively, passing a reference to the smart pointer is also free, but it
+ * is hardly necessary to share a smart pointer at all if the client does not
+ * need to participate in the memory lifecycle of the class, and indeed the
+ * practice is not recommended (c.f. - Sutter's 2014 talk) at all in that
+ * case.
+ *
+ * Three operations are provided for working with "fundamental state
+ * vectors" as arrays of doubles, but casual users are warned that these
+ * operations are for those implementing fast solvers based on this class and,
+ * in general, casual users should stick to add() and get().
  */
 template<typename T>
 class State {
@@ -81,11 +94,18 @@ protected:
 
 	/**
 	 * Does this class need to use set(shared_ptr<T>) or can it use set(T*)?
-	 * Does this class need to return shared_ptr<T> from get or can it return T*?
-	 * How should this class store data internally? unique_ptr? shared_ptr? Packed in a map with t values?
+	 *   - No.
+	 * 	 - Return reference to all states, including initial. Don't accept _any_ shared pointers. That is:
+	 *     _if you going to be greedy, then be greedy!_ Don't share ownership!
 	 *
-	 * Return reference to all states, including initial. Don't accept _any_ shared pointers. That is:
-	 * _if you going to be greedy, then be greedy!_ Don't share ownership!
+	 * Does this class need to return shared_ptr<T> from get or can it return T*?
+	 *   - No.
+	 *
+	 * How should this class store data internally? unique_ptr? shared_ptr? Packed in a map with t values?
+	 *  - unique_ptr
+	 *  -
+	 *
+
 	 */
 
 public:
@@ -104,8 +124,9 @@ public:
 	 * @param t the value of the independent variable, typically time
 	 * @param deltaT the difference between the current t and the last t
 	 */
-	void set(std::shared_ptr<T> data, const double & t,
-			const double & deltaT) {}
+	T & add(const double & t, const double & deltaT) {
+		return *(refTest.get());
+	}
 
 	/**
 	 * This operation sets the state to the contents of the shared pointer at
@@ -115,9 +136,8 @@ public:
 	 * @param data the data for the given value of t
 	 * @param t the value of the independent variable, typically time
 	 */
-	void set(std::shared_ptr<T> data, const double & t) {
-		double dt = t-tLast;
-		set(data,t,dt);
+	T & add(const double & t) {
+		return add(t,0.0); // FIXME! - Does this work? Needs to be |t - tLast| not 0!
 	}
 
 	/**
@@ -128,58 +148,73 @@ public:
 	 *
 	 * @param data the initial conditions at t = 0
 	 */
-	void set(std::shared_ptr<T> data) {
-		set(data,0.0);
-	}
-
-	T & add(const double & t, const double & deltaT) {
-		return *(refTest.get());
-	}
-
-	T & add(const double & t) {
-		return add(t,0.0); // FIXME! - Does this work? Needs to be |t - tLast| not 0!
-	}
-
 	T & add() {
 		return add(0.0);
 	}
 
 	/**
+	 * This operation returns the state at the specified value of t.
+	 * @param t the value of the free variable, normally time, at which the
+	 * state should be retrieved
+	 * @return state the state at the given value of t
+	 */
+	T & get(const double t) const {
+		return *(refTest.get());
+	}
+
+	/**
 	 * This operation returns the state at the most recent value of t.
-	 * @return state the state
+	 * @return state the state at the most recent value of t
 	 */
 	T & get() const {
 		return get(tLast);
 	}
 
-	T & get(const double t) const {
-		*(refTest.get());
-	}
-
 	/**
-	 * This operation returns the state at the specified value of t.
-	 * @param t the value of t at which the state should be retrieved
-	 * @return state the state
-	 */
-	std::shared_ptr<T> get(double t) const {
-		return userState;
-	}
-
-	/**
-	 * @param t
-	 * @return uValues
+	 * This function returns a simple array of size State.size() which contains
+	 * the values of the fundamental state vector for this state. This vector
+	 * is normally used by independent solvers looking to solve systems of
+	 * equations or analysis routines (regression, etc.) in which case it
+	 * represents the most recent values of the "unknowns" in the (thus the
+	 * name "u"). So, for example, this could include a vector of temperature
+	 * values at a given time, but it wouldn't contain diffusion
+	 * coefficients or reaction rates.
+	 *
+	 * In general, this function should only be used for coupling to Solvers
+	 * and other systems by developers and most clients should work with their
+	 * classes retrieved via the get() operations.
+	 *
+	 * @param t the value of the free variable, normally time, at which the
+	 * state should be retrieved
+	 * @return uValues the state at the given value of t
 	 */
 	double * u(const double & t) const {return 0;}
 
 	/**
-	 * @param data
-	 * @param t
+	 * This function sets the values of the unknown quantities at a specific
+	 * value of t, which usually represents time. It is the inverse of u(t)
+	 * and is meant to set the values, at the given value of t, for the same
+	 * fundamental state vector for t_n > t_(n-1). So, for example, this
+	 * operation could take an input array for t > t_(n-1) that represents the
+	 * values of temperature just solved for in a coupled thermomechanices
+	 * system. However, it would not take diffusion coefficient or other
+	 * quantities.
+	 * @param data the values of the unknown state variables to be set for
+	 * the specified value of t. The size of this array is expected to be
+	 * equal to State.size().
+	 * @param t the value of the free variable, normally time, at which the
+	 * state should be set.
 	 */
 	void u(double * data, const double & t) {}
 
 	/**
-	 * @param t
-	 * @return dudtValues
+	 * This function returns a simple array of size State.size() which contains
+	 * the derivatives of the primary State variables with respect to t. Thus
+	 * it behaves identically to u(t), but provides derivatives instead.
+	 *
+	 * @param t the value of the free variable, normally time, at which the
+	 * derivatives of state should be retrieved
+	 * @return dudtValues the derivatives at the given value of t
 	 */
 	double * dudt(const double & t) const {return 0;}
 

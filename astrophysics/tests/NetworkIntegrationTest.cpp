@@ -469,6 +469,8 @@ BOOST_AUTO_TEST_CASE(checkLoading) {
 	double density = StringCaster<double>::cast(props.at("density"));
 	network.computePrefactors(density);
 	network.computeRates(temperature);
+
+
 	State<ReactionNetwork> networkState;
 	networkState.size(network.species->size());
 	networkState.set(std::make_shared<ReactionNetwork>(network));

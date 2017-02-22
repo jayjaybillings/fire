@@ -93,70 +93,67 @@ BOOST_AUTO_TEST_CASE(checkAccessors) {
 BOOST_AUTO_TEST_CASE(checkStateAccessors) {
 
 	// Create the state
-	shared_ptr<TestStruct> testStruct = make_shared<TestStruct>();
 	State<TestStruct> state;
 	state.size(2);
 
 	// Set the state
-	state.set(testStruct);
+	auto testStruct = state.add(0.0);
 	// Get it at the most recent time
 	auto retStruct = state.get();
 
 	// Check the state
-	BOOST_REQUIRE_CLOSE(testStruct->A[0],retStruct.A[0],1.0e-8);
-	BOOST_REQUIRE_CLOSE(testStruct->A[1],retStruct.A[1],1.0e-8);
-	BOOST_REQUIRE_CLOSE(testStruct->dAdt[0],retStruct.dAdt[0],1.0e-8);
-	BOOST_REQUIRE_CLOSE(testStruct->dAdt[1],retStruct.dAdt[1],1.0e-8);
+	BOOST_REQUIRE_CLOSE(testStruct.A[0],retStruct.A[0],1.0e-8);
+	BOOST_REQUIRE_CLOSE(testStruct.A[1],retStruct.A[1],1.0e-8);
+	BOOST_REQUIRE_CLOSE(testStruct.dAdt[0],retStruct.dAdt[0],1.0e-8);
+	BOOST_REQUIRE_CLOSE(testStruct.dAdt[1],retStruct.dAdt[1],1.0e-8);
 
 	// Set the state at t = 1
-//	shared_ptr<TestStruct> ts1 = make_shared<TestStruct>();
-//	ts1->A[0] = 15.0;
-//	ts1->A[1] = 12.0;
-//	ts1->dAdt[0] = 3.0;
-//	ts1->dAdt[1] = 21.0;
-//	state.set(ts1,1.0);
-//
-//	// Check the newly added state
-//	retStruct = state.get(1.0);
-//	BOOST_REQUIRE_CLOSE(ts1->A[0],retStruct->A[0],1.0e-8);
-//	BOOST_REQUIRE_CLOSE(ts1->A[1],retStruct->A[1],1.0e-8);
-//	BOOST_REQUIRE_CLOSE(ts1->dAdt[0],retStruct->dAdt[0],1.0e-8);
-//	BOOST_REQUIRE_CLOSE(ts1->dAdt[1],retStruct->dAdt[1],1.0e-8);
-//
-//	// Make sure the old state is still available too
-//	retStruct = state.get(0.0);
-//	BOOST_REQUIRE_CLOSE(testStruct->A[0],retStruct->A[0],1.0e-8);
-//	BOOST_REQUIRE_CLOSE(testStruct->A[1],retStruct->A[1],1.0e-8);
-//	BOOST_REQUIRE_CLOSE(testStruct->dAdt[0],retStruct->dAdt[0],1.0e-8);
-//	BOOST_REQUIRE_CLOSE(testStruct->dAdt[1],retStruct->dAdt[1],1.0e-8);
-//
-//	// Test the final setter with a time step size
-//	// Set the state at t = 1
-//	shared_ptr<TestStruct> ts2 = make_shared<TestStruct>();
-//	ts1->A[0] = 51.0;
-//	ts1->A[1] = 21.0;
-//	ts1->dAdt[0] = 30.0;
-//	ts1->dAdt[1] = 210.0;
-//	state.set(ts2,2.5,1.5);
-//
-//	// Check the newly added state
-//	retStruct = state.get(2.5);
-//	BOOST_REQUIRE_CLOSE(ts2->A[0],retStruct->A[0],1.0e-8);
-//	BOOST_REQUIRE_CLOSE(ts2->A[1],retStruct->A[1],1.0e-8);
-//	BOOST_REQUIRE_CLOSE(ts2->dAdt[0],retStruct->dAdt[0],1.0e-8);
-//	BOOST_REQUIRE_CLOSE(ts2->dAdt[1],retStruct->dAdt[1],1.0e-8);
-//
-//	// Make sure the old states are still available too
-//	retStruct = state.get(1.0);
-//	BOOST_REQUIRE_CLOSE(ts1->A[0],retStruct->A[0],1.0e-8);
-//	BOOST_REQUIRE_CLOSE(ts1->A[1],retStruct->A[1],1.0e-8);
-//	BOOST_REQUIRE_CLOSE(ts1->dAdt[0],retStruct->dAdt[0],1.0e-8);
-//	BOOST_REQUIRE_CLOSE(ts1->dAdt[1],retStruct->dAdt[1],1.0e-8);
-//	retStruct = state.get(0.0);
-//	BOOST_REQUIRE_CLOSE(testStruct->A[0],retStruct->A[0],1.0e-8);
-//	BOOST_REQUIRE_CLOSE(testStruct->A[1],retStruct->A[1],1.0e-8);
-//	BOOST_REQUIRE_CLOSE(testStruct->dAdt[0],retStruct->dAdt[0],1.0e-8);
-//	BOOST_REQUIRE_CLOSE(testStruct->dAdt[1],retStruct->dAdt[1],1.0e-8);
+	auto ts1 = state.add(1.0);
+	ts1.A[0] = 15.0;
+	ts1.A[1] = 12.0;
+	ts1.dAdt[0] = 3.0;
+	ts1.dAdt[1] = 21.0;
+
+	// Check the newly added state
+	retStruct = state.get(1.0);
+	BOOST_REQUIRE_CLOSE(ts1.A[0],retStruct.A[0],1.0e-8);
+	BOOST_REQUIRE_CLOSE(ts1.A[1],retStruct.A[1],1.0e-8);
+	BOOST_REQUIRE_CLOSE(ts1.dAdt[0],retStruct.dAdt[0],1.0e-8);
+	BOOST_REQUIRE_CLOSE(ts1.dAdt[1],retStruct.dAdt[1],1.0e-8);
+
+	// Make sure the old state is still available too
+	retStruct = state.get(0.0);
+	BOOST_REQUIRE_CLOSE(testStruct.A[0],retStruct.A[0],1.0e-8);
+	BOOST_REQUIRE_CLOSE(testStruct.A[1],retStruct.A[1],1.0e-8);
+	BOOST_REQUIRE_CLOSE(testStruct.dAdt[0],retStruct.dAdt[0],1.0e-8);
+	BOOST_REQUIRE_CLOSE(testStruct.dAdt[1],retStruct.dAdt[1],1.0e-8);
+
+	// Test the final setter with a time step size
+	// Set the state at t = 1
+	auto ts2 = state.add(2.5, 1.5);
+	ts1.A[0] = 51.0;
+	ts1.A[1] = 21.0;
+	ts1.dAdt[0] = 30.0;
+	ts1.dAdt[1] = 210.0;
+
+	// Check the newly added state
+	retStruct = state.get(2.5);
+	BOOST_REQUIRE_CLOSE(ts2.A[0],retStruct.A[0],1.0e-8);
+	BOOST_REQUIRE_CLOSE(ts2.A[1],retStruct.A[1],1.0e-8);
+	BOOST_REQUIRE_CLOSE(ts2.dAdt[0],retStruct.dAdt[0],1.0e-8);
+	BOOST_REQUIRE_CLOSE(ts2.dAdt[1],retStruct.dAdt[1],1.0e-8);
+
+	// Make sure the old states are still available too
+	retStruct = state.get(1.0);
+	BOOST_REQUIRE_CLOSE(ts1.A[0],retStruct.A[0],1.0e-8);
+	BOOST_REQUIRE_CLOSE(ts1.A[1],retStruct.A[1],1.0e-8);
+	BOOST_REQUIRE_CLOSE(ts1.dAdt[0],retStruct.dAdt[0],1.0e-8);
+	BOOST_REQUIRE_CLOSE(ts1.dAdt[1],retStruct.dAdt[1],1.0e-8);
+	retStruct = state.get(0.0);
+	BOOST_REQUIRE_CLOSE(testStruct.A[0],retStruct.A[0],1.0e-8);
+	BOOST_REQUIRE_CLOSE(testStruct.A[1],retStruct.A[1],1.0e-8);
+	BOOST_REQUIRE_CLOSE(testStruct.dAdt[0],retStruct.dAdt[0],1.0e-8);
+	BOOST_REQUIRE_CLOSE(testStruct.dAdt[1],retStruct.dAdt[1],1.0e-8);
 
 	return;
 }
