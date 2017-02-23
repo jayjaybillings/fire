@@ -92,28 +92,12 @@ protected:
 
 	double tLast = 0.0;
 
-	/**
-	 * Does this class need to use set(shared_ptr<T>) or can it use set(T*)?
-	 *   - No.
-	 * 	 - Return reference to all states, including initial. Don't accept _any_ shared pointers. That is:
-	 *     _if you going to be greedy, then be greedy!_ Don't share ownership!
-	 *
-	 * Does this class need to return shared_ptr<T> from get or can it return T*?
-	 *   - No.
-	 *
-	 * How should this class store data internally? unique_ptr? shared_ptr? Packed in a map with t values?
-	 *  - unique_ptr
-	 *  -
-	 *
-
-	 */
-
 public:
 
 	/**
 	 * This operation sets the state to the contents of the shared pointer at
 	 * the given value of t. This is the main operation for setting the state
-	 * at a given value of t and other operations are covenience
+	 * at a given value of t and other operations are convenience
 	 * implementations of this one.
 	 *
 	 * This operation may be operationally advantageous when deltaT has already
