@@ -34,6 +34,7 @@
 #define SOLVERS_STATE_H_
 
 #include <memory>
+#include <utility>
 
 namespace fire {
 
@@ -82,68 +83,35 @@ namespace fire {
  * operations are for those implementing fast solvers based on this class and,
  * in general, casual users should stick to add() and get().
  */
-template<typename T>
+template<typename T, typename... Args>
 class State {
 protected:
 
-	std::shared_ptr<T> userState;
+	/**
+	 * The managed instance of the State of type T.
+	 */
+	std::unique_ptr<T> state;
 
-	std::unique_ptr<T> refTest;
+	/**
+	 * The most recent value of t provided by State.t().
+	 */
+	double tVal;
 
-	double tLast = 0.0;
+	/**
+	 * The system size of the state.
+	 */
+	int systemSize;
 
 public:
 
 	/**
-	 * This operation sets the state to the contents of the shared pointer at
-	 * the given value of t. This is the main operation for setting the state
-	 * at a given value of t and other operations are convenience
-	 * implementations of this one.
-	 *
-	 * This operation may be operationally advantageous when deltaT has already
-	 * been computed by the client code, even though calling the other set()
-	 * operations will only result in one extra subtraction.
-	 *
-	 * @param data the data for the given value of t
-	 * @param t the value of the independent variable, typically time
-	 * @param deltaT the difference between the current t and the last t
+	 * Constructor with optional arguments for T.
+	 * @param Optional argument list for constructing T.
 	 */
-	T & add(const double & t, const double & deltaT) {
-		return *(refTest.get());
-	}
-
-	/**
-	 * This operation sets the state to the contents of the shared pointer at
-	 * the given value of t. This is a convenience method for set(data,t,dt)
-	 * where dt = tlast - t.
-	 *
-	 * @param data the data for the given value of t
-	 * @param t the value of the independent variable, typically time
-	 */
-	T & add(const double & t) {
-		return add(t,0.0); // FIXME! - Does this work? Needs to be |t - tLast| not 0!
-	}
-
-	/**
-	 * This operation will set the state to the contents of the shared pointer
-	 * at t = 0. That is, it sets the initial conditions.
-	 *
-	 * It is a convenience operation equivalent to State.set(data,0.0,0.0).
-	 *
-	 * @param data the initial conditions at t = 0
-	 */
-	T & add() {
-		return add(0.0);
-	}
-
-	/**
-	 * This operation returns the state at the specified value of t.
-	 * @param t the value of the free variable, normally time, at which the
-	 * state should be retrieved
-	 * @return state the state at the given value of t
-	 */
-	T & get(const double t) const {
-		return *(refTest.get());
+	State(Args&& ... args) {
+		state = std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+		tVal = 0.0;
+		systemSize = 0;
 	}
 
 	/**
@@ -151,56 +119,63 @@ public:
 	 * @return state the state at the most recent value of t
 	 */
 	T & get() const {
-		return get(tLast);
+		return *(state.get());
+	}
+
+	/**
+	 * This operation updates the value of t.
+	 * @param t the new value of t
+	 */
+	void t(double t) {
+		tVal = t;
+	}
+
+	/**
+	 * This operation retrieves the most recent value of t.
+	 * @return the most recent value of t
+	 */
+	const double & t() const {
+		return tVal;
 	}
 
 	/**
 	 * This function returns a simple array of size State.size() which contains
-	 * the values of the fundamental state vector for this state. This vector
-	 * is normally used by independent solvers looking to solve systems of
+	 * the values of the fundamental state vector for this type. This vector is
+	 * normally used by independent solvers looking to solve systems of
 	 * equations or analysis routines (regression, etc.) in which case it
 	 * represents the most recent values of the "unknowns" in the (thus the
-	 * name "u"). So, for example, this could include a vector of temperature
-	 * values at a given time, but it wouldn't contain diffusion
-	 * coefficients or reaction rates.
+	 * name "u"). So, for example, when solving the heat equation this could
+	 * include a vector of temperatures at a given t, but it wouldn't, in
+	 * general, contain the heat transfer coefficients. The distinction is
+	 * that the temperature is the unknown in the system and coefficients are
+	 * already well known.
 	 *
 	 * In general, this function should only be used for coupling to Solvers
 	 * and other systems by developers and most clients should work with their
-	 * classes retrieved via the get() operations.
+	 * classes retrieved via the get() operation.
 	 *
-	 * @param t the value of the free variable, normally time, at which the
-	 * state should be retrieved
-	 * @return uValues the state at the given value of t
+	 * @return uValues the state
 	 */
-	double * u(const double & t) const {return 0;}
-
-	/**
-	 * This function sets the values of the unknown quantities at a specific
-	 * value of t, which usually represents time. It is the inverse of u(t)
-	 * and is meant to set the values, at the given value of t, for the same
-	 * fundamental state vector for t_n > t_(n-1). So, for example, this
-	 * operation could take an input array for t > t_(n-1) that represents the
-	 * values of temperature just solved for in a coupled thermomechanices
-	 * system. However, it would not take diffusion coefficient or other
-	 * quantities.
-	 * @param data the values of the unknown state variables to be set for
-	 * the specified value of t. The size of this array is expected to be
-	 * equal to State.size().
-	 * @param t the value of the free variable, normally time, at which the
-	 * state should be set.
-	 */
-	void u(double * data, const double & t) {}
+	double * u() const {
+		throw "Operation not implemented for this type.";
+	}
 
 	/**
 	 * This function returns a simple array of size State.size() which contains
 	 * the derivatives of the primary State variables with respect to t. Thus
 	 * it behaves identically to u(t), but provides derivatives instead.
 	 *
+	 * Note that calling this function with the value t will not reset the
+	 * stored value of t! So calling t() before and after this function will
+	 * always return the same value.
+	 *
 	 * @param t the value of the free variable, normally time, at which the
 	 * derivatives of state should be retrieved
 	 * @return dudtValues the derivatives at the given value of t
 	 */
-	double * dudt(const double & t) const {return 0;}
+	double * dudt(const double & t) const {
+		throw "Operation not implemented for this type.";
+	}
 
 	/**
 	 * This operation explicitly sets the number of unique data elements in the
@@ -208,7 +183,9 @@ public:
 	 * present in the state.
 	 * @param int the number of unique data elements in the state
 	 */
-	void size(const int & dataSize) {};
+	void size(const int & numElements) {
+		systemSize = numElements;
+	};
 
 	/**
 	 * This operation returns the number of unique elements in the state. At
@@ -216,7 +193,7 @@ public:
 	 * This is the size of the arrays u and dudt.
 	 * @return int the size of the state and the state arrays
 	 */
-	int size() const {return 0;}
+	int size() const {return systemSize;}
 };
 
 } /* namespace fire */
