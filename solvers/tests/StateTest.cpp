@@ -57,15 +57,11 @@ namespace fire {
 
 // Getter for test struct data from a State<TestStruct>
 template<>
-double * State<TestStruct>::u(const double & time) const {return userState->A.data();};
-
-// Setter for test struct data from a State<TestStruct>
-template<>
-void State<TestStruct>::u(double * data, const double & time) {};
+double * State<TestStruct>::u() const {return state->A.data();};
 
 // Getter for test struct derivative data from a State<TestStruct>
 template<>
-double * State<TestStruct>::dudt(const double & time) const {return userState->dAdt.data();};
+double * State<TestStruct>::dudt(const double & t) const {return state->dAdt.data();};
 
 } // end namespace fire
 
@@ -81,8 +77,14 @@ BOOST_AUTO_TEST_CASE(checkAccessors) {
 	State<TestStruct> state;
 
 	// Test the size setters
+	BOOST_REQUIRE_EQUAL(0,state.size());
 	state.size(2);
 	BOOST_REQUIRE_EQUAL(2,state.size());
+
+	// Test the t setters
+	BOOST_REQUIRE_CLOSE(0.0,state.t(),1.0e-8);
+	state.t(1.5998);
+	BOOST_REQUIRE_CLOSE(1.5998,state.t(),1.0e-8);
 
 	return;
 }
@@ -95,10 +97,9 @@ BOOST_AUTO_TEST_CASE(checkStateAccessors) {
 	// Create the state
 	State<TestStruct> state;
 	state.size(2);
+	TestStruct testStruct;
 
-	// Set the state
-	auto testStruct = state.add(0.0);
-	// Get it at the most recent time
+	// Get the initial state
 	auto retStruct = state.get();
 
 	// Check the state
@@ -107,58 +108,6 @@ BOOST_AUTO_TEST_CASE(checkStateAccessors) {
 	BOOST_REQUIRE_CLOSE(testStruct.dAdt[0],retStruct.dAdt[0],1.0e-8);
 	BOOST_REQUIRE_CLOSE(testStruct.dAdt[1],retStruct.dAdt[1],1.0e-8);
 
-	// Set the state at t = 1
-	auto ts1 = state.add(1.0);
-	ts1.A[0] = 15.0;
-	ts1.A[1] = 12.0;
-	ts1.dAdt[0] = 3.0;
-	ts1.dAdt[1] = 21.0;
-
-	// Check the newly added state
-	retStruct = state.get(1.0);
-	BOOST_REQUIRE_CLOSE(ts1.A[0],retStruct.A[0],1.0e-8);
-	BOOST_REQUIRE_CLOSE(ts1.A[1],retStruct.A[1],1.0e-8);
-	BOOST_REQUIRE_CLOSE(ts1.dAdt[0],retStruct.dAdt[0],1.0e-8);
-	BOOST_REQUIRE_CLOSE(ts1.dAdt[1],retStruct.dAdt[1],1.0e-8);
-
-	// Make sure the old state is still available too
-	retStruct = state.get(0.0);
-	BOOST_REQUIRE_CLOSE(testStruct.A[0],retStruct.A[0],1.0e-8);
-	BOOST_REQUIRE_CLOSE(testStruct.A[1],retStruct.A[1],1.0e-8);
-	BOOST_REQUIRE_CLOSE(testStruct.dAdt[0],retStruct.dAdt[0],1.0e-8);
-	BOOST_REQUIRE_CLOSE(testStruct.dAdt[1],retStruct.dAdt[1],1.0e-8);
-
-	// Test the final setter with a time step size
-	// Set the state at t = 1
-	auto ts2 = state.add(2.5, 1.5);
-	ts1.A[0] = 51.0;
-	ts1.A[1] = 21.0;
-	ts1.dAdt[0] = 30.0;
-	ts1.dAdt[1] = 210.0;
-
-	// Check the newly added state
-	retStruct = state.get(2.5);
-	BOOST_REQUIRE_CLOSE(ts2.A[0],retStruct.A[0],1.0e-8);
-	BOOST_REQUIRE_CLOSE(ts2.A[1],retStruct.A[1],1.0e-8);
-	BOOST_REQUIRE_CLOSE(ts2.dAdt[0],retStruct.dAdt[0],1.0e-8);
-	BOOST_REQUIRE_CLOSE(ts2.dAdt[1],retStruct.dAdt[1],1.0e-8);
-
-	// Make sure the old states are still available too
-	retStruct = state.get(1.0);
-	BOOST_REQUIRE_CLOSE(ts1.A[0],retStruct.A[0],1.0e-8);
-	BOOST_REQUIRE_CLOSE(ts1.A[1],retStruct.A[1],1.0e-8);
-	BOOST_REQUIRE_CLOSE(ts1.dAdt[0],retStruct.dAdt[0],1.0e-8);
-	BOOST_REQUIRE_CLOSE(ts1.dAdt[1],retStruct.dAdt[1],1.0e-8);
-	retStruct = state.get(0.0);
-	BOOST_REQUIRE_CLOSE(testStruct.A[0],retStruct.A[0],1.0e-8);
-	BOOST_REQUIRE_CLOSE(testStruct.A[1],retStruct.A[1],1.0e-8);
-	BOOST_REQUIRE_CLOSE(testStruct.dAdt[0],retStruct.dAdt[0],1.0e-8);
-	BOOST_REQUIRE_CLOSE(testStruct.dAdt[1],retStruct.dAdt[1],1.0e-8);
-
 	return;
 }
 
-BOOST_AUTO_TEST_CASE(checkStateUAndDUAccessors) {
-	BOOST_FAIL("Test not yet implemented.");
-	return;
-}
