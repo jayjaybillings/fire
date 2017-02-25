@@ -82,6 +82,19 @@ namespace fire {
  * vectors" as arrays of doubles, but casual users are warned that these
  * operations are for those implementing fast solvers based on this class and,
  * in general, casual users should stick to add() and get().
+ *
+ * Common Errors:
+ * Declaring T instead of T& - The C++ compiler will not throw an error in the
+ * following scenario and will create a copy instead:
+ * @code
+ * T myT1 = state.get(); // WRONG - Creates a copy of the state!
+ * T & myT2 = state.get(); // Correct - Uses the state by reference.
+ * auto myT3 = state.get(); // WRONG - Same as the first case.
+ * auto & myT4 = state.get(); // Correct - Same as the second case.
+ * @endcode
+ *
+ * FIXME! - Right now the auxilliary storage buffers uArr and udtArr are
+ * always allocated. It should be possible to enable or disable this.
  */
 template<typename T, typename... Args>
 class State {
@@ -102,6 +115,19 @@ protected:
 	 */
 	int systemSize;
 
+	/**
+	 * This is a utility array that can be used by clients a buffer for holding
+	 * state values if they cannot be directly mapped to a member on T.
+	 */
+	std::unique_ptr<double> uArr;
+
+	/**
+	 * This is a utility array that can be used by clients a buffer for holding
+	 * state derivative values if they cannot be directly mapped to a member on
+	 * T.
+	 */
+	std::unique_ptr<double> dudtArr;
+
 public:
 
 	/**
@@ -116,10 +142,17 @@ public:
 
 	/**
 	 * This operation returns the state at the most recent value of t.
-	 * @return state the state at the most recent value of t
+	 * Please note the following nuances related to the use of "auto:"
+	 * @code
+	 * State<T> state;
+	 * T & myT1 = state.get(); // Work
+	 * auto & myT2 = state.get(); // Works - myT2 has type T &
+	 * auto myT3 = state.get(); // Fails - myT3 has type T and is a copy
+	 * @endcode
+	 * @return state a reference to the state.
 	 */
 	T & get() const {
-		return *(state.get());
+		return *state;
 	}
 
 	/**
@@ -161,6 +194,59 @@ public:
 	}
 
 	/**
+	 * This function sets the values of the unknown quantities. It is the
+	 * inverse of double * u() above and is meant to set the values, at the
+	 * given value of t, for the same fundamental state vector for t_n >
+	 * t_(n-1). So, for example, this operation could take an input array for
+	 * t > t_(n-1) that represents the values of temperature just solved for in
+	 * a coupled thermomechanics system. However, it would not take diffusion
+	 * coefficient or other quantities.
+	 *
+	 * If the result of the getter State.u():double* (see above) is a pointer
+	 * that is mapped to an array in the stored instance of T, then it is not
+	 * necessary to call this operation because editing u* directly will update
+	 * the state. However, in cases where it is desirable to either not map
+	 * directly to the managed data structure or to use "test values" of u,
+	 * then this function is a handy convenience function. For example,
+	 * @code
+	 * double * u = state.u()  // Get the current state
+	 * double t = state.t()    // and t
+	 * int size = state.size() // and size
+	 *
+	 * // Make some test updates to u
+	 * double * myU = new double[size];
+	 * for (int i = 0; i < size; i++) {
+	 *     myU[i] = u[i] + delta();
+	 *     ... bunch of other stuff...
+	 * }
+	 *
+	 * // Submit the new values
+	 * state.u(myU);
+	 * double * myDudt = state.dudt();
+	 *
+	 * ... other stuff ...
+	 *
+	 * delete myU;
+	 * @endcode
+	 *
+	 * The default implementation assumes that u is direct pointer to an array
+	 * in the underlying type T, so implementations may need to override this
+	 * operation if they do not map directly to the state instance.
+	 * Furthermore, this operation assumes that the incoming array should be
+	 * copied instead of referred to directly.
+	 *
+	 * @param data the values of the unknown state variables to be set. The
+	 * size of this array is expected to be equal to State.size().
+	 */
+	void u(double * data) {
+		auto uLoc = u();
+		for (int i = 0; i < systemSize; i++) {
+			uLoc[i] = data[i];
+		}
+		return;
+	}
+
+	/**
 	 * This function returns a simple array of size State.size() which contains
 	 * the derivatives of the primary State variables with respect to t. Thus
 	 * it behaves identically to u(t), but provides derivatives instead.
@@ -185,6 +271,9 @@ public:
 	 */
 	void size(const int & numElements) {
 		systemSize = numElements;
+		// Allocate the storage arrays for u and dudt
+		uArr = std::unique_ptr<double>(new double[systemSize]);
+		dudtArr = std::unique_ptr<double>(new double[systemSize]);
 	};
 
 	/**

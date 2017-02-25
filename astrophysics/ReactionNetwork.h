@@ -37,6 +37,7 @@
 #include <ReactionLocalParser.h>
 #include <Species.h>
 #include <SpeciesLocalParser.h>
+#include <State.h>
 #include <map>
 #include <memory>
 #include <StringCaster.h>
@@ -494,6 +495,55 @@ public:
 };
 
 } /** namespace astrophysics **/
+
+/**
+ * The following operations are explicit instantiations for the State
+ * state class so that ReactionNetwork can be used in the solver.
+ * See State.h in solvers/ for more information.
+ */
+
+template<>
+double * State<ReactionNetwork>::u() const {
+
+	// Get the pointer to the handy storage array
+	double * uPtr = uArr.get();
+
+	// Transfer the data
+	for (int i = 0; i < systemSize; i++) {
+		uPtr[i] = state->species->at(i).massFraction;
+	}
+
+	return uPtr;
+};
+
+template<>
+void State<ReactionNetwork>::u(double * uData) {
+
+	// Update the mass fractions to match the solve at the last timestep.
+	for (int i = 0; i < systemSize; i++) {
+	    state->species->at(i).massFraction = uData[i];
+	}
+
+	return;
+}
+
+template<>
+double * State<ReactionNetwork>::dudt(const double & t) const {
+
+	// Get the pointer to the handy storage array.
+	double * dudtPtr = dudtArr.get();
+
+	// Compute the new flux values
+	state->computeFluxes();
+
+	// Update the RHS data vector (derivative in this case)
+	for (int i = 0; i < systemSize; i++) {
+		dudtPtr[i] = state->species->at(i).flux;
+	}
+
+	return dudtPtr;
+};
+
 } /** namespace fire **/
 
 

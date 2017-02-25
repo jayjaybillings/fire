@@ -96,114 +96,6 @@ static void PrintFinalStats(void *cvode_mem);
 
 static int check_flag(void *flagvalue, char *funcname, int opt);
 
-/* Functions Called by the Solver */
-
-//static int f(realtype t, N_Vector u, N_Vector udot, void *user_data);
-
-
-/** Custom template functions (and a state variable) **/
-
-//vector<double> dataVec;
-
-//template<typename T>
-//int getSystemSize(const T & state) {}
-//
-//template<>
-//int getSystemSize(const ReactionNetwork & state) {
-//	return state.species->size();
-//}
-
-/* Set initial conditions in u vector */
-//template<typename T>
-//void initialize(double * u, const T & state) {}
-//
-//template<>
-//void initialize(double u[], const ReactionNetwork & state) {
-//
-//	// In the actual class, this would be a class variable.
-//	int size = getSystemSize(state);
-//
-//	/* TEMPORARY! Initialize local storage vector */
-//	dataVec.resize(size);
-//
-//	/* Load initial conditions into u vector */
-//	for (int j=0; j < size; j++) {
-//	  u[j] = state.species->at(j).massFraction;
-//	}
-//
-//}
-
-//template<typename T>
-//double * getRHS(State<T> & state, const double udata[], const double & t) {
-//    return reinterpret_cast<double *>(state);
-//}
-
-//template<>
-//double * getRHS(ReactionNetwork & state, const double udata[], const double & t) {
-
-//    int size = getSystemSize(state);
-
-    /* The thing is that there are two arrays here - u_m and du_m/dt. u_m is updated so that
-     * du_m/dt can be computed. u is wo and du/dt is ro. So a workable interface might be:
-     * ...
-     * system.update(u,t)
-     * system(i,t) // returns the RHS value at point (i,t).
-     * ...
-     *
-     * More general idea:
-     * int n = 14, D = 1;
-     * T state;
-     * System<T> system;
-     * system.setSize(n,D);
-     * system.setState(state);
-     * Solver<System<T>> solver;
-     * solver.setSystem(system);
-     * solver.run(); // Calls update, etc.
-     *
-     * I just redesigned this to use a class State<T>, so all the above is moot.
-     * State<ReactionNetwork> will absorb all the code below such that each loop
-     * is just playing with array pointers.
-     */
-
-	// Update the mass fractions to match the solve at the last timestep.
-//	for (int i=0; i < size; i++) {
-//	    state.species->at(i).massFraction = udata[i];
-//	}
-	// What I want:
-	// Update the state data
-	// state.u(udata,t);
-
-	// Compute the new flux values
-//	state.computeFluxes();
-
-	// Update the RHS data vector (derivative in this case)
-//	for (int i = 0; i < size; i++) {
-//		dataVec[i] = state.species->at(i).flux;
-//	}
-
-	// What I want:
-	// Get the time derivative
-	// return state.du(); // This should call state.computeFluxes() in the wrapper.
-
-	// Makes me wonder why I need system? Maybe this should be system.u() and system.du()?
-	// That would essentially define the state to be the point state. That would mean...
-	// * No single instance of State<T> would manage all the state.
-	// * System would need an array of State<T>, one for each point.
-	// * System would need to manage global options for I/O and history.
-
-	// Separate idea: What if State<T> stored state data in an octtree? Would that simplify
-	// things? Alternatively, use a hashset on t,x,y,z,etc.
-
-	// I think that System should hold the data - mathematical functions, operators,
-	// etc. - that define the PDEs and State should hold the state data of the unknowns.
-	// Solver holds the instructions on how to solve the PDE.
-
-//	return dataVec.data();
-//}
-
-
-/*----- End custom functions -----*/
-
 /*
  *-------------------------------
  * Functions called by the solver
@@ -220,7 +112,7 @@ void setICs(N_Vector u, const State<T> & state) {
 	  udata = NV_DATA_S(u);
 
 	  // Get the user's state data.
-	  double * stateU = state.u(0.0);
+	  double * stateU = state.u();
 	  int size = state.size();
 	  // Copy the initial state from the state structure to the u vector.
 	  for (int i = 0; i < size; i++) {
@@ -241,7 +133,7 @@ int f(realtype t, N_Vector u,N_Vector udot, void *user_data) {
   dudata = NV_DATA_S(udot);
 
   // Update the state
-  state->u(udata,t);
+  state->u(udata);
 
   // Compute the time derivatives
   double * rhs = state->dudt(t);
@@ -450,14 +342,12 @@ void solve(State<T> & state) {
  */
 BOOST_AUTO_TEST_CASE(checkLoading) {
 
-
-	// USER STATE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 	// Load the properties
 	INIPropertyParser parser = build<INIPropertyParser,const string &>(propertyFileName);
 
 	// Create the network
-	ReactionNetwork network;
+	State<ReactionNetwork> state;
+	ReactionNetwork & network = state.get();
 	// Set the properties from the property block and load the network
 	auto props = parser.getPropertyBlock("network");
 	network.setProperties(props);
@@ -469,18 +359,16 @@ BOOST_AUTO_TEST_CASE(checkLoading) {
 	double density = StringCaster<double>::cast(props.at("density"));
 	network.computePrefactors(density);
 	network.computeRates(temperature);
+	// Set the state size;
+	state.size(network.species->size());
 
+	// Set the initial time
+	state.t(0.0);
 
-	State<ReactionNetwork> networkState;
-	networkState.size(network.species->size());
-	networkState.set(std::make_shared<ReactionNetwork>(network));
+	// Do the solve
+    solve<ReactionNetwork>(state);
 
-	// USER STATE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-	// Delete later
-    foo myFoo; // USER STATE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! (Temp class declaration)
-
-    solve<ReactionNetwork>(networkState);
+    // FIXME! - Actually add some tests!
 
 	// Good enough for government work
 	return;

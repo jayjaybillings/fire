@@ -68,7 +68,7 @@ double * State<TestStruct>::dudt(const double & t) const {return state->dAdt.dat
 
 
 /**
- * This operation checks all of the various accessors on State<T>.
+ * This operation checks all of the various simple accessors on State<T>.
  */
 BOOST_AUTO_TEST_CASE(checkAccessors) {
 
@@ -90,23 +90,37 @@ BOOST_AUTO_TEST_CASE(checkAccessors) {
 }
 
 /**
- * This operation checks build<TestStruct>().
+ * This operation checks the accessors for state data on State<T>.
  */
 BOOST_AUTO_TEST_CASE(checkStateAccessors) {
 
 	// Create the state
 	State<TestStruct> state;
-	state.size(2);
+	int size = 2;
+	state.size(size);
 	TestStruct testStruct;
 
 	// Get the initial state
-	auto retStruct = state.get();
+	auto & retStruct = state.get();
 
 	// Check the state
 	BOOST_REQUIRE_CLOSE(testStruct.A[0],retStruct.A[0],1.0e-8);
 	BOOST_REQUIRE_CLOSE(testStruct.A[1],retStruct.A[1],1.0e-8);
 	BOOST_REQUIRE_CLOSE(testStruct.dAdt[0],retStruct.dAdt[0],1.0e-8);
 	BOOST_REQUIRE_CLOSE(testStruct.dAdt[1],retStruct.dAdt[1],1.0e-8);
+
+	// Update the state with data from a second vector.
+	double * myU = new double[size];
+	myU[0] = 8.0;
+	myU[1] = 9.99;
+	state.u(myU);
+
+	// Check that the state updated.
+	BOOST_REQUIRE_CLOSE(8.0,retStruct.A[0],1.0e-8);
+	BOOST_REQUIRE_CLOSE(9.99,retStruct.A[1],1.0e-8);
+
+	// Note that u() the getter and dudt are not tested because they are
+	// explicitly instantiated above.
 
 	return;
 }
