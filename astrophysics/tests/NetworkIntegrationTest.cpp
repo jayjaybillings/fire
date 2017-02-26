@@ -1,3 +1,4 @@
+
 /**----------------------------------------------------------------------------
  Copyright (c) 2015-, UT-Battelle, LLC
  All rights reserved.
@@ -41,7 +42,7 @@
 #include <string>
 #include <INIPropertyParser.h>
 #include <ReactionNetwork.h>
-#include <ODESolver.h>
+#include <IVPSolver.h>
 #include <StringCaster.h>
 #include <State.h>
 
@@ -89,7 +90,7 @@ BOOST_AUTO_TEST_CASE(checkLoading) {
 	state.t(0.0);
 
 	// Do the solve
-	ODESolver<ReactionNetwork> solver;
+	IVPSolver<ReactionNetwork> solver;
     solver.solve(state);
 
     // FIXME! - Actually add some tests!
