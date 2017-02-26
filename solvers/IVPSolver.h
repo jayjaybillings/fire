@@ -29,8 +29,8 @@
 
  Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
-#ifndef SOLVERS_ODESOLVER_H_
-#define SOLVERS_ODESOLVER_H_
+#ifndef SOLVERS_IVPSOLVER_H_
+#define SOLVERS_IVPSOLVER_H_
 
 #include <State.h>
 #include <cvode/cvode.h>             /* prototypes for CVODE fcts., consts. */
@@ -242,7 +242,7 @@ static int check_flag(void *flagvalue, char *funcname, int opt)
  * !------------ ADD ODESolver Docs! ----------------------------!
  */
 template<typename T>
-class ODESolver {
+class IVPSolver {
 
 public:
 
@@ -332,4 +332,4 @@ public:
 
 } /* namespace fire */
 
-#endif /* SOLVERS_ODESOLVER_H_ */
+#endif /* SOLVERS_IVPSOLVER_H_ */
