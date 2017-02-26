@@ -98,7 +98,7 @@ public:
 	 * data and the tensors shape.
 	 * @param reference The TensorReference to construct this Tensor from
 	 */
-	Tensor(TensorReference& reference) {
+	Tensor(TensorReference<Scalar>& reference) {
 
 		// Create a new TensorShape and set it as this Tensor's shape
 		shape = std::make_shared<TensorShape>(reference.second.dimensions());
@@ -110,7 +110,7 @@ public:
 
 		// Initialize the backend tensor provider with
 		// the provided tensor data and shape
-		provider->initializeFromReference(reference);
+		provider->template initializeFromReference<Scalar>(reference);
 
 	}
 
@@ -127,7 +127,7 @@ public:
 
 		// Assert at compile time that this will be a valid Tensor
 		static_assert( sizeof...(otherDims) + 1 == Rank, "Incorrect number of dimension integers");
-		static_assert( std::is_fundamental<Scalar>::value, "Fire Tensors can only contain C++ fundamental types (double, int, etc)." );
+		static_assert( (std::is_fundamental<Scalar>::value || std::is_same<Scalar, std::complex<double>>::value), "Fire Tensors can only contain C++ fundamental types (double, int, etc)." );
 		static_assert( std::is_base_of<ProviderBuilder, DerivedTensorBackendBuilder>::value, "Third Tensor Template Parameter must be of type fire::ProviderBuilder.");
 
 		// Create the TensorShape from the given dimensions
@@ -152,7 +152,7 @@ public:
 			temp[i] = dimensions[i];
 		}
 		shape = std::make_shared<TensorShape>(temp);
-		double data[shape->size()] = { 0 };
+		Scalar data[shape->size()] = { 0 };
 
 		auto ref = fire::make_tensor_reference(data, *shape.get());
 
@@ -188,7 +188,7 @@ public:
 	ThisTensorType operator+(ThisTensorType& other) {
 		// Create a reference for other
 		auto otherReference = other.createReference();
-		auto ref = provider->addTensors(otherReference);
+		auto ref = provider->template addTensors<Scalar>(otherReference);
 		Tensor<Rank, DerivedTensorBackendBuilder, Scalar> result(ref);
 		return result;
 	}
@@ -203,7 +203,7 @@ public:
 	 */
 	bool operator==(ThisTensorType& other) {
 		auto ref = other.createReference();
-		return provider->equalTensors(ref);
+		return provider->template equalTensors<Scalar>(ref);
 	}
 
 	/**
@@ -243,7 +243,7 @@ public:
 				- 2 * array_size<ContractionDims>::value;
 
 		// Compute the contraction, get reference data on new Tensor
-		auto ref = provider->contract(other, indices);
+		auto ref = provider->template contract<OtherDerived, ContractionDims, Scalar>(other, indices);
 
 		// Create the result from the TensorReference
 		Tensor<newRank, DerivedTensorBackendBuilder, Scalar> result(ref);
@@ -257,7 +257,7 @@ public:
 	 * @param other
 	 */
 	template<typename OtherDerived>
-	Tensor<DerivedTensorBackend::getRank() * OtherDerived::getRank(),
+	Tensor<DerivedTensorBackend::getRank() + OtherDerived::getRank(),
 			DerivedTensorBackendBuilder, Scalar> operator*(
 			OtherDerived& other) {
 		auto emptyIndices = std::array<std::pair<int, int>, 0> { { } };
@@ -295,7 +295,7 @@ public:
 	 *
 	 * @return
 	 */
-	TensorReference createReference() {
+	TensorReference<Scalar> createReference() {
 		auto ref = fire::make_tensor_reference(
 				provider->template getTensorData<Scalar>(), *shape.get());
 		return ref;
@@ -373,7 +373,7 @@ public:
 		assert(nNewElements == size());
 
 		// Reshape the tensor
-		auto ref = provider->reshape(array);
+		auto ref = provider->template reshape<DimArray, Scalar>(array);
 
 		// Create the result from the TensorReference
 		Tensor<array_size<DimArray>::value, DerivedTensorBackendBuilder, Scalar> result(
@@ -406,7 +406,7 @@ public:
 		assert(array_size<DimArray>::value == Rank);
 
 		// Reshape the tensor
-		auto ref = provider->shuffle(array);
+		auto ref = provider->template shuffle<DimArray, Scalar>(array);
 
 		// Create the result from the TensorReference
 		ThisTensorType result(ref);
@@ -495,6 +495,36 @@ public:
 				Tensor<2, DerivedTensorBackendBuilder, Scalar>(sRef),
 				Tensor<array_size<RightIndices>::value + 1,
 						DerivedTensorBackendBuilder, Scalar>(vRef));
+	}
+
+	/**
+	 * This is a convenience method for Rank 2 tensors only.
+	 * It returns a new tensor that is the matrix transpose of
+	 * this tensor.
+	 *
+	 * @return
+	 */
+	ThisTensorType transpose() {
+		static_assert(Rank == 2, "Transpose only supported for Rank 2 tensors.");
+		std::array<int, 2> shuffle({1,0});
+		return this->shuffle(shuffle);
+	}
+
+	/**
+	 * This is a convencience method for Rank 2 tensors only.
+	 * It returns a tensor that is the matrix kronecker product
+	 * of this tensor and the provided OtherTensor.
+	 *
+	 * @param other
+	 * @return
+	 */
+	template<typename OtherTensor>
+	ThisTensorType kronProd(OtherTensor& other) {
+		static_assert(Rank == 2 && OtherTensor::getRank() == 2, "");
+		auto ref = other.createReference();
+		auto kronProdRef = provider->template kroneckerProduct<Scalar>(ref);
+		ThisTensorType result(kronProdRef);
+		return result;
 	}
 
 	/**

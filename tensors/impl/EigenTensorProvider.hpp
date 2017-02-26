@@ -39,6 +39,7 @@
 #include <unsupported/Eigen/CXX11/Tensor>
 #include <Eigen/Dense>
 #include <Eigen/SVD>
+#include <unsupported/Eigen/KroneckerProduct>
 
 namespace fire {
 
@@ -76,7 +77,7 @@ private:
 	// Return a new Eigen::Tensor (really a TensorMap) from the
 	// provided TensorReference.
 	Eigen::TensorMap<EigenTensor> getEigenTensorFromReference(
-			TensorReference& ref) {
+			TensorReference<Scalar>& ref) {
 
 		// Get the data and shape
 		auto shape = ref.second;
@@ -95,7 +96,7 @@ private:
 
 	template<const int NewRank>
 	Eigen::TensorMap<Eigen::Tensor<Scalar, NewRank>> getEigenTensorFromReferenceWithRank(
-			TensorReference& ref) {
+			TensorReference<Scalar>& ref) {
 
 		// Get the data and shape
 		auto shape = ref.second;
@@ -148,7 +149,7 @@ public:
 	 * Initialize the Eigen Tensor from an existing TensorReference
 	 * @param reference
 	 */
-	void initializeTensorBackendWithReference(TensorReference& reference) {
+	void initializeTensorBackendWithReference(TensorReference<Scalar>& reference) {
 		Eigen::TensorMap<Eigen::Tensor<Scalar, Rank>> t =
 				getEigenTensorFromReference(reference);
 		tensor = std::make_shared<EigenTensor>(t);
@@ -161,7 +162,7 @@ public:
 	 * @return val The value at the indices.
 	 */
 	template<typename ... Indices>
-	double& tensorCoefficient(Indices ... indices) {
+	Scalar& tensorCoefficient(Indices ... indices) {
 		return tensor->operator()(indices...);
 	}
 
@@ -172,7 +173,7 @@ public:
 	 * @param other TensorReference view of the other Tensor
 	 * @return equal A boolean indicating if these Tensors are equal
 	 */
-	bool checkEquality(TensorReference& other) {
+	bool checkEquality(TensorReference<Scalar>& other) {
 		auto t = getEigenTensorFromReference(other);
 		Eigen::Tensor<bool, 0> eq = tensor->operator==(t).all();
 		return eq(0);
@@ -187,7 +188,7 @@ public:
 	 * @return result The contraction result as a TensorReference
 	 */
 	template<typename OtherDerived, typename ContractionDims>
-	TensorReference executeContraction(OtherDerived& t2,
+	TensorReference<Scalar> executeContraction(OtherDerived& t2,
 			ContractionDims& cIndices) {
 
 		// Compute new Tensor rank
@@ -250,7 +251,7 @@ public:
 		TensorShape newShape(dimensions);
 
 		// Create and return a reference to the new Tensor.
-		TensorReference newReference = fire::make_tensor_reference(
+		TensorReference<Scalar> newReference = fire::make_tensor_reference(
 				result.data(), newShape);
 
 		return newReference;
@@ -281,7 +282,7 @@ public:
 	 * @param other TensorReference view of the other Tensor
 	 * @return result A new TensorReference representing the sum of this and other.
 	 */
-	TensorReference add(TensorReference& other) {
+	TensorReference<Scalar> add(TensorReference<Scalar>& other) {
 
 		auto t = getEigenTensorFromReference(other);
 
@@ -327,7 +328,7 @@ public:
 	 * @param val Scalar to multiply this tensor by.
 	 * @return result A TensorReference representing the result
 	 */
-	TensorReference scalarProduct(Scalar& val) {
+	TensorReference<Scalar> scalarProduct(Scalar& val) {
 		Eigen::Tensor<Scalar, Rank> result(tensor->dimensions());
 		result.device(*device.get()) = tensor->operator*(val);
 
@@ -339,7 +340,7 @@ public:
 		TensorShape newShape(dimensions);
 
 		// Create and return a reference to the new Tensor.
-		TensorReference newReference = fire::make_tensor_reference(
+		auto newReference = fire::make_tensor_reference(
 				result.data(), newShape);
 
 		return newReference;
@@ -352,7 +353,7 @@ public:
 	 * @return reshapedTensor A TensorReference representing new reshaped tensor.
 	 */
 	template<typename DimArray>
-	TensorReference reshapeTensor(DimArray& array) {
+	TensorReference<Scalar> reshapeTensor(DimArray& array) {
 
 		static constexpr int newRank = array_size<DimArray>::value;
 
@@ -366,14 +367,14 @@ public:
 		TensorShape newShape(dimensions);
 
 		// Create and return a reference to the new Tensor.
-		TensorReference newReference = fire::make_tensor_reference(
+		auto newReference = fire::make_tensor_reference(
 				result.data(), newShape);
 
 		return newReference;
 	}
 
 	template<typename DimArray>
-	TensorReference shuffleTensor(DimArray& array) {
+	TensorReference<Scalar> shuffleTensor(DimArray& array) {
 		Eigen::Tensor<Scalar, Rank> result = tensor->shuffle(array);
 
 		// Create TensorShape
@@ -384,14 +385,14 @@ public:
 		TensorShape newShape(dimensions);
 
 		// Create and return a reference to the new Tensor.
-		TensorReference newReference = fire::make_tensor_reference(
+		auto newReference = fire::make_tensor_reference(
 				result.data(), newShape);
 
 		return newReference;
 	}
 
-	std::tuple<TensorReference, TensorReference, TensorReference> computeSvd(
-			TensorReference& ref, double cutoff) {
+	std::tuple<TensorReference<Scalar>, TensorReference<Scalar>, TensorReference<Scalar>> computeSvd(
+			TensorReference<Scalar>& ref, double cutoff) {
 
 		// Get the data and shape
 		auto shape = ref.second;
@@ -401,10 +402,10 @@ public:
 		// at this point the Tensor is Rank 2. Double check anyway
 		assert(shape.dimensions().size() == 2);
 
-		Eigen::Map<Eigen::MatrixXd> matrix(data, shape.dimension(0),
+		Eigen::Map<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>> matrix(data, shape.dimension(0),
 				shape.dimension(1));
 
-		Eigen::BDCSVD<Eigen::MatrixXd> svd(matrix,
+		Eigen::BDCSVD<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>> svd(matrix,
 				Eigen::ComputeThinU | Eigen::ComputeThinV);
 
 		auto singularValues = svd.singularValues();
@@ -422,14 +423,14 @@ public:
 			}
 		}
 
-		Eigen::MatrixXd S(truncIndex + 1, truncIndex + 1);
+		Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> S(truncIndex + 1, truncIndex + 1);
 		S.setZero();
 		for (int i = 0; i < truncIndex + 1; i++)
 			S(i, i) = singularValues(i);
 
-		Eigen::MatrixXd truncatedU = u.block(0, 0, truncIndex + 1,
+		Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> truncatedU = u.block(0, 0, truncIndex + 1,
 				truncIndex + 1);
-		Eigen::MatrixXd truncatedV = v.block(0, 0, truncIndex + 1,
+		Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> truncatedV = v.block(0, 0, truncIndex + 1,
 				truncIndex + 1);
 
 		assert ( (u*S*v.transpose() - matrix).array().abs().sum() < 1e-6 );
@@ -451,6 +452,29 @@ public:
 				fire::make_tensor_reference(S.data(), sShape),
 				fire::make_tensor_reference(truncatedV.data(), vShape));
 
+	}
+
+	TensorReference<Scalar> kronProd(TensorReference<Scalar>& other) {
+		// Get the data and shape
+		auto shape = other.second;
+		auto d = other.first.data();
+
+		// Express the Tensor as an Eigen Matrix. We know
+		// at this point the Tensor is Rank 2. Double check anyway
+		assert(shape.dimensions().size() == 2);
+
+		Eigen::Map<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>> matrix(d, shape.dimension(0),
+				shape.dimension(1));
+
+		Eigen::Map<Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>> thisAsMat(data(), tensor->dimension(0),
+				tensor->dimension(1));
+
+		auto result = kroneckerProduct(thisAsMat, matrix).eval();
+		std::vector<int> dims(2);
+		dims[0] = result.rows();
+		dims[1] = result.cols();
+		TensorShape newShape(dims);
+		return fire::make_tensor_reference(result.data(), newShape);
 	}
 };
 
