@@ -245,79 +245,88 @@ template<typename T>
 class ODESolver {
 
 public:
-void solve(State<T> & state) {
 
-    // Begin CVODE code. Adapted from their examples.
 
-    realtype dx, dy, reltol, abstol, t, tout, umax;
-    N_Vector u;
-    void *cvode_mem;
-    int iout, flag;
-    long int nst;
+	void solve(State<T> & state) {
 
-    u = NULL;
-    cvode_mem = NULL;
-    int size = state.size();
+		// Begin CVODE code. Adapted from their examples.
 
-    /* Create a serial vector */
-    u = N_VNew_Serial(size);
-    /* Allocate the U vector */
-    if(fire::cvode::check_flag((void*)u, "N_VNew_Serial", 0)) return;
+		realtype dx, dy, reltol, abstol, t, tout, umax;
+		N_Vector u;
+		void *cvode_mem;
+		int iout, flag;
+		long int nst;
 
-    reltol = ZERO;  /* Set the tolerances */
-    abstol = ATOL;
+		u = NULL;
+		cvode_mem = NULL;
+		int size = state.size();
 
-    // Set the initial conditions in u from the states
-    fire::cvode::setICs<T>(u, state);
+		/* Create a serial vector */
+		u = N_VNew_Serial(size);
+		/* Allocate the U vector */
+		if (fire::cvode::check_flag((void*) u, "N_VNew_Serial", 0))
+			return;
 
-    /* Call CVodeCreate to create the solver memory and specify the
-     * Backward Differentiation Formula and the use of a Newton iteration */
-    cvode_mem = CVodeCreate(CV_BDF, CV_NEWTON);
-    if(fire::cvode::check_flag((void *)cvode_mem, "CVodeCreate", 0)) return;
+		reltol = ZERO; /* Set the tolerances */
+		abstol = ATOL;
 
-    /* Call CVodeInit to initialize the integrator memory and specify the
-     * user's right hand side function in u'=f(t,u), the inital time T0, and
-     * the initial dependent variable vector u. */
-    flag = CVodeInit(cvode_mem, fire::cvode::f<T>, T0, u);
-    if(fire::cvode::check_flag(&flag, "CVodeInit", 1)) return;
+		// Set the initial conditions in u from the states
+		fire::cvode::setICs<T>(u, state);
 
-    /* Call CVodeSStolerances to specify the scalar relative tolerance
-     * and scalar absolute tolerance */
-    flag = CVodeSStolerances(cvode_mem, reltol, abstol);
-    if (fire::cvode::check_flag(&flag, "CVodeSStolerances", 1)) return;
+		/* Call CVodeCreate to create the solver memory and specify the
+		 * Backward Differentiation Formula and the use of a Newton iteration */
+		cvode_mem = CVodeCreate(CV_BDF, CV_NEWTON);
+		if (fire::cvode::check_flag((void *) cvode_mem, "CVodeCreate", 0))
+			return;
 
-    /* Set the pointer to user-defined data */
-    flag = CVodeSetUserData(cvode_mem, &state);
-    if(fire::cvode::check_flag(&flag, "CVodeSetUserData", 1)) return;
+		/* Call CVodeInit to initialize the integrator memory and specify the
+		 * user's right hand side function in u'=f(t,u), the inital time T0, and
+		 * the initial dependent variable vector u. */
+		flag = CVodeInit(cvode_mem, fire::cvode::f<T>, T0, u);
+		if (fire::cvode::check_flag(&flag, "CVodeInit", 1))
+			return;
 
-    /* Call CVBand to specify the CVBAND band linear solver */
-    flag = CVDense(cvode_mem, size);
-    if(fire::cvode::check_flag(&flag, "CVDense", 1)) return;
+		/* Call CVodeSStolerances to specify the scalar relative tolerance
+		 * and scalar absolute tolerance */
+		flag = CVodeSStolerances(cvode_mem, reltol, abstol);
+		if (fire::cvode::check_flag(&flag, "CVodeSStolerances", 1))
+			return;
 
-    /* Set the user-supplied Jacobian routine Jac */
-//    flag = CVDlsSetBandJacFn(cvode_mem, Jac);
-//    if(fire::cvode::check_flag(&flag, "CVDlsSetBandJacFn", 1)) return;
+		/* Set the pointer to user-defined data */
+		flag = CVodeSetUserData(cvode_mem, &state);
+		if (fire::cvode::check_flag(&flag, "CVodeSetUserData", 1))
+			return;
 
-    /* In loop over output points: call CVode, print results, test for errors */
+		/* Call CVBand to specify the CVBAND band linear solver */
+		flag = CVDense(cvode_mem, size);
+		if (fire::cvode::check_flag(&flag, "CVDense", 1))
+			return;
 
-    umax = N_VMaxNorm(u);
-    fire::cvode::PrintHeader(reltol, abstol, umax);
-    for(iout=1, tout=T1; iout <= NOUT; iout++, tout += DTOUT) {
-      flag = CVode(cvode_mem, tout, u, &t, CV_NORMAL);
-      if(fire::cvode::check_flag(&flag, "CVode", 1)) break;
-      umax = N_VMaxNorm(u);
-      flag = CVodeGetNumSteps(cvode_mem, &nst);
-      fire::cvode::check_flag(&flag, "CVodeGetNumSteps", 1);
-      fire::cvode::PrintOutput(t, umax, nst);
-    }
+		/* Set the user-supplied Jacobian routine Jac */
+//        flag = CVDlsSetBandJacFn(cvode_mem, Jac);
+//        if(fire::cvode::check_flag(&flag, "CVDlsSetBandJacFn", 1)) return;
 
-    fire::cvode::PrintFinalStats(cvode_mem);  /* Print some final statistics   */
+		/* In loop over output points: call CVode, print results, test for errors */
 
-    N_VDestroy_Serial(u);   /* Free the u vector */
-    CVodeFree(&cvode_mem);  /* Free the integrator memory */
+		umax = N_VMaxNorm(u);
+		fire::cvode::PrintHeader(reltol, abstol, umax);
+		for (iout = 1, tout = T1; iout <= NOUT; iout++, tout += DTOUT) {
+			flag = CVode(cvode_mem, tout, u, &t, CV_NORMAL);
+			if (fire::cvode::check_flag(&flag, "CVode", 1))
+				break;
+			umax = N_VMaxNorm(u);
+			flag = CVodeGetNumSteps(cvode_mem, &nst);
+			fire::cvode::check_flag(&flag, "CVodeGetNumSteps", 1);
+			fire::cvode::PrintOutput(t, umax, nst);
+		}
 
-	return;
-}
+		fire::cvode::PrintFinalStats(cvode_mem); /* Print some final statistics   */
+
+		N_VDestroy_Serial(u); /* Free the u vector */
+		CVodeFree(&cvode_mem); /* Free the integrator memory */
+
+		return;
+	}
 
 };
 
