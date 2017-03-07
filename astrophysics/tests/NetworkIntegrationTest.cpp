@@ -89,6 +89,12 @@ BOOST_AUTO_TEST_CASE(checkLoading) {
 	// Set the initial time
 	state.t(0.0);
 
+	// Register an observer to write the results when the state changes.
+	state.addMonitor([](State<ReactionNetwork> & state) {
+		std::cout << "Lambda Test " << state.t() << std::endl;
+		return;
+	});
+
 	// Do the solve
 	IVPSolver<ReactionNetwork> solver;
     solver.solve(state);

@@ -317,6 +317,7 @@ public:
 			umax = N_VMaxNorm(u);
 			flag = CVodeGetNumSteps(cvode_mem, &nst);
 			fire::cvode::check_flag(&flag, "CVodeGetNumSteps", 1);
+			// Replace! - Notify observers that the state has changed
 			fire::cvode::PrintOutput(t, umax, nst);
 		}
 

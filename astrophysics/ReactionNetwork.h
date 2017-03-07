@@ -524,6 +524,8 @@ void State<ReactionNetwork>::u(double * uData) {
 	    state->species->at(i).massFraction = uData[i];
 	}
 
+	// Notify the monitors
+	notifyMonitors();
 	return;
 }
 

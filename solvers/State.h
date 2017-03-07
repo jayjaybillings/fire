@@ -35,6 +35,8 @@
 
 #include <memory>
 #include <utility>
+#include <functional>
+#include <vector>
 
 namespace fire {
 
@@ -83,6 +85,24 @@ namespace fire {
  * operations are for those implementing fast solvers based on this class and,
  * in general, casual users should stick to add() and get().
  *
+ * State objects can be monitored by registering a functor with the
+ * addMonitor() operation. The simplest example is to use a Lambda as follows:
+ * @code
+ * 	// Register an observer to write a message when the state changes.
+ *	state.add([](State<ReactionNetwork> & state) {
+ *		std::cout << "Lambda Test " << state.t() << std::endl;
+ *		return;
+ *	});
+ * @endcode
+ * Monitors are only called when u(double *) is called. Classes that create
+ * explicit specializations of that function should call notifyMonitors(), a
+ * protected notification function, to notify the monitors if they require that
+ * functionality. Simply calling the notifyMonitors() function immediately
+ * before return is sufficient.
+ *
+ * This class does not yet consider thread safety issues when calling the
+ * monitors or updating the state, so be warned.
+ *
  * Common Errors:
  * Declaring T instead of T& - The C++ compiler will not throw an error in the
  * following scenario and will create a copy instead:
@@ -93,8 +113,11 @@ namespace fire {
  * auto & myT4 = state.get(); // Correct - Same as the second case.
  * @endcode
  *
- * FIXME! - Right now the auxilliary storage buffers uArr and udtArr are
+ * Road Map:
+ * - Right now the auxilliary storage buffers uArr and udtArr are
  * always allocated. It should be possible to enable or disable this.
+ * - Should this be thread safe?
+ * - Would be interesting to name monitors.
  */
 template<typename T, typename... Args>
 class State {
@@ -128,6 +151,21 @@ protected:
 	 */
 	std::unique_ptr<double> dudtArr;
 
+	/**
+	 * The list of monitors that should be notified when the state changes.
+	 */
+	std::vector<std::function<void(State<T>&)>> monitors;
+
+	/**
+	 * This function notifies the monitors.
+	 */
+    void notifyMonitors() {
+    	// Nothing special - just fall them.
+    	for(auto const &monitor : monitors) {
+           monitor(*this);
+    	}
+    }
+
 public:
 
 	/**
@@ -138,6 +176,24 @@ public:
 		state = std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 		tVal = 0.0;
 		systemSize = 0;
+	}
+
+	/**
+	 * This operation registers a function with the state that will be called
+	 * when the state changes. Multiple functions may be registered with the
+	 * State and each will be notified when the state is modified. The monitor
+	 * may be implemented in many ways, but should only take a single
+	 * State<T>& as an input an return void.
+	 *
+	 * When the monitoring function is called, it will be passed a reference
+	 * to the instance of the State class that changed, not merely to the
+	 * maintained type.
+	 * @param monitor the functor that should be notified when the state
+	 * changes.
+	 */
+	void addMonitor(std::function<void(State<T>&)> monitor) {
+		// Just put the monitor on the list and try to call it later.
+		monitors.push_back(monitor);
 	}
 
 	/**
@@ -239,10 +295,14 @@ public:
 	 * size of this array is expected to be equal to State.size().
 	 */
 	void u(double * data) {
+		// Update the state - not the fastest way to handle this, but good
+		// enough for now.
 		auto uLoc = u();
 		for (int i = 0; i < systemSize; i++) {
 			uLoc[i] = data[i];
 		}
+		// Notify the monitors that the state changed.
+		notifyMonitors();
 		return;
 	}
 
