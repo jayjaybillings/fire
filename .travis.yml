@@ -1,0 +1,14 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build -t fire/fire-fedora -f docker/fedora/Dockerfile .
+  - docker build -t fire/fire-ubuntu -f docker/ubuntu/Dockerfile .
+  - docker ps -a
+  - env
+  
+script:
+  - echo ""
+
