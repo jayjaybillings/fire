@@ -34,38 +34,66 @@
 
 namespace fire {
 namespace util {
+
 /**
+ * The INetworkingTool interface provides methods that enable
+ * typical HTTP GET and POST behavior.
  *
  */
 class INetworkingTool {
 
 public:
 
-	virtual ~INetworkingTool() {
-	}
-
 	/**
-	 * Execute HTTP GET to return the contents located at url.
+	 * Issue an HTTP GET Command at the given relative path.
+	 * Clients can provide a map of header key values to modify the
+	 * GET request.
 	 *
-	 * @param url The URL of the GET request.
-	 * @param username The username. It is ignored if it is empty. It may not be null.
-	 * @param password The password. It is ignored if it is empty. It may not be null.
+	 * @param relativePath The path relative to the hostname/port provided to this NetworkingTool
 	 * @return The contents at the URL or an error message if one took place.
 	 */
-	virtual std::string get(const std::string& url, const std::string& username,
-			const std::string& password) = 0;
+	virtual std::string get(const std::string& relativePath,
+			const std::map<std::string, std::string>& header = std::map<
+					std::string, std::string>()) = 0;
 
 	/**
-	 * Execute HTTP POST to transmit value at url.
+	 * Issue an HTTP Post command at the given relative path with
+	 * the provided message. Clients can provide a map of header key values to modify the
+	 * POST request.
 	 *
-	 * @param url The url that is used to post the value.
-	 * @param username The username. It is ignored if it is empty. It may not be null.
-	 * @param password The password. It is ignored if it is empty. It may not be null.
-	 * @param value The value that is posted to the url.
-	 * @return A std::string containing the error if one took place. Else returns an empty std::string.
+	 * @param relativePath The path relative to the hostname/port provided to this NetworkingTool
+	 * @param message The message to post
+	 * @param header The map of additional HTTP POST header information
+	 * @return success Boolean indicating if post was successful
+	 *
 	 */
-	virtual std::string post(const std::string& url, const std::string& value,
-			const std::string& username, const std::string& password) = 0;
+	virtual bool post(const std::string& relativePath,
+			const std::string& message,
+			const std::map<std::string, std::string>& header = std::map<
+					std::string, std::string>()) = 0;
+
+	/**
+	 * Return the last received status code.
+	 *
+	 * @return code The status code as a string
+	 */
+	virtual std::string getLastStatusCode() = 0;
+
+	/**
+	 * virtual destructor
+	 */
+	virtual ~INetworkingTool() {}
+protected:
+
+	/**
+	 * The host name that this NetworkingTool interacts with
+	 */
+	std::string hostName;
+
+	/**
+	 * The port on the host to establish connection with.
+	 */
+	int port;
 
 };
 }

@@ -33,188 +33,134 @@
 #define ASIONETWORKINGTOOL_H_
 
 #include "INetworkingTool.hpp"
-
-#include <boost/asio.hpp>
+#include "client_http.hpp"
 #include <boost/algorithm/string.hpp>
 #include <thread>
 #include <chrono>
 
 namespace fire {
+
 namespace util {
 
 static const std::string base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 		"abcdefghijklmnopqrstuvwxyz"
 		"0123456789+/";
 
-std::string base64_encode(char const* bytes_to_encode, int in_len);
-
 /**
  * The AsioNetworkignTool is a realization of the INetworkingTool
- * interface that uses the stand-alone Asio library to post/get
+ * interface that uses the BOOST Asio library to post/get
  * http requests.
  */
 class AsioNetworkingTool: public INetworkingTool {
 
-protected:
 	/**
-	 * Reference to the io_service used by the client socket.
+	 * Convenience name for SimpleWeb Client
 	 */
-	std::shared_ptr<boost::asio::io_service> io_service;
+	using HttpClient = SimpleWeb::Client<SimpleWeb::HTTP>;
+
+protected:
 
 	/**
-	 * Reference to the client socket used in communicating with
-	 * the remote server.
+	 * Reference to the asio client we will use
 	 */
-	std::shared_ptr<boost::asio::ip::tcp::socket> socket;
+	std::shared_ptr<HttpClient> client;
+
+	/**
+	 * The last status recorded.
+	 */
+	std::string status;
 
 public:
 	/**
 	 * The constructor
 	 */
-	AsioNetworkingTool() {
-		io_service = std::make_shared<boost::asio::io_service>();
-		socket = std::make_shared<boost::asio::ip::tcp::socket>(*io_service);
+	AsioNetworkingTool(std::string host, int p) :
+			client(std::make_shared<HttpClient>(host + ":" + std::to_string(p))) {
 	}
 
 	/**
 	 * The destructor
 	 */
 	virtual ~AsioNetworkingTool() {
-		socket->close();
-		io_service->stop();
+		client->close();
 	}
 
 	/**
-	 * Use Asio Library to perform HTTP GET to return the contents located at url.
+	 * Return the last received status code.
 	 *
-	 * @param url The URL of the GET request.
-	 * @param username The username. It is ignored if it is empty. It may not be null.
-	 * @param password The password. It is ignored if it is empty. It may not be null.
+	 * @return code The status code as a string
+	 */
+	virtual std::string getLastStatusCode() {
+		return status;
+	}
+
+	/**
+	 * Issue an HTTP GET Command at the given relative path.
+	 * Clients can provide a map of header key values to modify the
+	 * GET request.
+	 *
+	 * @param relativePath The path relative to the hostname/port provided to this NetworkingTool
 	 * @return The contents at the URL or an error message if one took place.
 	 */
-	virtual std::string get(const std::string& url, const std::string& username,
-			const std::string& password) {
+	virtual std::string get(const std::string& relativePath,
+			const std::map<std::string, std::string>& header = std::map<
+					std::string, std::string>()) {
 		return "";
 	}
 
 	/**
-	 * Use Asio library to perform HTTP POST to transmit value at url.
+	 * Issue an HTTP Post command at the given relative path with
+	 * the provided message. Clients can provide a map of header key values to modify the
+	 * POST request.
 	 *
-	 * @param url The url that is used to post the value.
-	 * @param username The username. It is ignored if it is empty. It may not be null.
-	 * @param password The password. It is ignored if it is empty. It may not be null.
-	 * @param value The value that is posted to the url.
-	 * @return A std::string containing the error if one took place. Else returns an empty std::string.
+	 * @param relativePath The path relative to the hostname/port provided to this NetworkingTool
+	 * @param message The message to post
+	 * @param header The map of additional HTTP POST header information
+	 * @return success Boolean indicating if post was successful
+	 *
 	 */
-	virtual std::string post(const std::string& url, const std::string& value,
-			const std::string& username, const std::string& password) {
-		// Local error code
-		boost::system::error_code errorCode;
-
-		std::string localUrl = url;
-
-		// Get the hostname and the port
-		if (url.find("http://") != std::string::npos) {
-			localUrl = localUrl.erase(0, std::string("http://").size());
-		}
-
-		// Split to get the host and port
-		std::vector<std::string> hostAndPort;
-		boost::split(hostAndPort, localUrl, boost::is_any_of(":"));
-
-		// if the socket isn't open, then open it
-		if (!socket->is_open()) {
-
-			// Create the EndPoint and Connect the socket
-			boost::asio::ip::tcp::endpoint endPoint(
-					boost::asio::ip::address::from_string(
-							hostAndPort[0] == "localhost" ?
-									"127.0.0.1" : hostAndPort[0]),
-					std::stoi(hostAndPort[1]));
-			socket->connect(endPoint, errorCode);
-
-			if (errorCode) {
-				return "Error in connecting the socket to " + url + ".\n";
-			}
-		}
-
-		if (socket->is_open()) {
-			// Start the message construction
-			std::string message = "post=" + value;
-			std::string uNamePassword = username + ":" + password;
-			std::string credentials = base64_encode(uNamePassword.c_str(),
-					uNamePassword.length());
-
-			// Form the request
-			boost::asio::streambuf request;
-			std::ostream request_stream(&request);
-			request_stream << "POST /ice/update HTTP/1.1\r\n";
-//			request_stream << "POST / HTTP/1.1\r\n";
-			request_stream << "Host:" << hostAndPort[0] + ":" + hostAndPort[1]
-					<< "\r\n";
-			request_stream << "Authorization: Basic " + credentials + "\r\n";
-			request_stream << "User-Agent: C/1.0";
-			request_stream << "Accept: */*\r\n";
-			request_stream << "Content-Length: " << message.length() + 2
-					<< "\r\n";
-			request_stream
-					<< "Content-Type: application/x-www-form-urlencoded\r\n";
-			request_stream << "\r\n\r\n";  //NOTE THE Double line feed
-			request_stream << message;
-
-			// Write the message to the socket.
-			boost::asio::write(*socket, request);
-
-			// Read the response status line. The response streambuf will automatically
-			// grow to accommodate the entire line. The growth may be limited by passing
-			// a maximum size to the streambuf constructor.
-			boost::asio::streambuf response;
-			int len = boost::asio::read_until(*socket, response, "\r\n");
-
-			// Check that response is OK.
-			std::istream response_stream(&response);
-			std::string http_version;
-			response_stream >> http_version;
-			unsigned int status_code;
-			response_stream >> status_code;
-			std::string status_message;
-			if (!response_stream || http_version.substr(0, 5) != "HTTP/") {
-				return "Invalid response " + http_version + ", "
-						+ std::to_string(status_code) + ".";
-			}
-
-			if (status_code != 200) {
-				return "Response returned with status code "
-						+ std::to_string(status_code) + ".";
-			}
-
-			// Wait a little bit to ensure anyone sending
-			// gets their chance.
-			std::this_thread::sleep_for(std::chrono::milliseconds(200));
-
-			// Close this socket to reset it.
-			socket->close();
-
-			return "";
-
-		} else {
-			return "Asio Error: Could not open socket to " + url + ".";
-		}
-
+	virtual bool post(const std::string& relativePath,
+			const std::string& message,
+			const std::map<std::string, std::string>& header = std::map<
+					std::string, std::string>()) {
+		auto request = client->request("POST", relativePath, message, header);
+		status = request->status_code;
+		return boost::contains(status, "200 OK");
 	}
 
-};
+	/**
+	 *
+	 * @param bytes_to_encode
+	 * @param in_len
+	 * @return
+	 */
+	std::string base64_encode(char const* bytes_to_encode, int in_len) {
+		std::string ret;
+		int i = 0;
+		int j = 0;
+		unsigned char char_array_3[3];
+		unsigned char char_array_4[4];
 
-std::string base64_encode(char const* bytes_to_encode, int in_len) {
-	std::string ret;
-	int i = 0;
-	int j = 0;
-	unsigned char char_array_3[3];
-	unsigned char char_array_4[4];
+		while (in_len--) {
+			char_array_3[i++] = *(bytes_to_encode++);
+			if (i == 3) {
+				char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+				char_array_4[1] = ((char_array_3[0] & 0x03) << 4)
+						+ ((char_array_3[1] & 0xf0) >> 4);
+				char_array_4[2] = ((char_array_3[1] & 0x0f) << 2)
+						+ ((char_array_3[2] & 0xc0) >> 6);
+				char_array_4[3] = char_array_3[2] & 0x3f;
 
-	while (in_len--) {
-		char_array_3[i++] = *(bytes_to_encode++);
-		if (i == 3) {
+				for (i = 0; (i < 4); i++)
+					ret += base64_chars[char_array_4[i]];
+				i = 0;
+			}
+		}
+
+		if (i) {
+			for (j = i; j < 3; j++)
+				char_array_3[j] = '\0';
+
 			char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
 			char_array_4[1] = ((char_array_3[0] & 0x03) << 4)
 					+ ((char_array_3[1] & 0xf0) >> 4);
@@ -222,33 +168,18 @@ std::string base64_encode(char const* bytes_to_encode, int in_len) {
 					+ ((char_array_3[2] & 0xc0) >> 6);
 			char_array_4[3] = char_array_3[2] & 0x3f;
 
-			for (i = 0; (i < 4); i++)
-				ret += base64_chars[char_array_4[i]];
-			i = 0;
+			for (j = 0; (j < i + 1); j++)
+				ret += base64_chars[char_array_4[j]];
+
+			while ((i++ < 3))
+				ret += '=';
 		}
+
+		return ret;
 	}
 
-	if (i) {
-		for (j = i; j < 3; j++)
-			char_array_3[j] = '\0';
 
-		char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
-		char_array_4[1] = ((char_array_3[0] & 0x03) << 4)
-				+ ((char_array_3[1] & 0xf0) >> 4);
-		char_array_4[2] = ((char_array_3[1] & 0x0f) << 2)
-				+ ((char_array_3[2] & 0xc0) >> 6);
-		char_array_4[3] = char_array_3[2] & 0x3f;
-
-		for (j = 0; (j < i + 1); j++)
-			ret += base64_chars[char_array_4[j]];
-
-		while ((i++ < 3))
-			ret += '=';
-	}
-
-	return ret;
-}
-
+};
 
 }
 }

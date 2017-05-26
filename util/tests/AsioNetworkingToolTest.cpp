@@ -1,5 +1,5 @@
 /**----------------------------------------------------------------------------
- Copyright (c) 2016-, UT-Battelle LLC
+ Copyright (c) 2017-, UT-Battelle LLC
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -12,7 +12,7 @@
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
 
- * Neither the name of fern nor the names of its
+ * Neither the name of fire nor the names of its
  contributors may be used to endorse or promote products derived from
  this software without specific prior written permission.
 
@@ -34,35 +34,55 @@
 
 #include <boost/test/included/unit_test.hpp>
 #include "AsioNetworkingTool.hpp"
-#include "FakeServer.hpp"
+#include "server_http.hpp"
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 using namespace boost;
 
 using namespace fire::util;
 
+using HttpServer = SimpleWeb::Server<SimpleWeb::HTTP>;
 
+BOOST_AUTO_TEST_CASE(checkSimplePost) {
 
-void runServer(boost::asio::io_service& io_service) {
-}
+	HttpServer server;
+	server.config.port = 8080;
+	bool serverWasPinged = false;
 
-BOOST_AUTO_TEST_CASE(checkHelloWorld) {
+	auto postResponse = [&](std::shared_ptr<HttpServer::Response> response, std::shared_ptr<HttpServer::Request> request) {
+        try {
+        	using namespace boost::property_tree;
+            ptree pt;
+            read_json(request->content, pt);
+            std::string name=pt.get<std::string>("firstName")+" "+pt.get<std::string>("lastName");
+            *response << "HTTP/1.1 200 OK\r\n"
+                      << "Content-Type: application/json\r\n"
+                      << "Content-Length: " << name.length() << "\r\n\r\n"
+                      << name;
+            serverWasPinged = true;
+        } catch(std::exception& e) {
+            *response << "HTTP/1.1 400 Bad Request\r\nContent-Length: " << std::string(e.what()).length() << "\r\n\r\n" << e.what();
+        }
+    };
 
-	AsioNetworkingTool asioTool;
-	auto io_service = std::make_shared<boost::asio::io_service>();
-	server s(*io_service.get(), 37888);
-	ServerFunctor functor(io_service);
-	std::thread serverThread(functor);
-	std::cout << asioTool.post("http://localhost:37888", "hello world", "","")  << "\n";
+	server.resource["^/json$"]["POST"] = postResponse;
 
-	while(true) {
-		if (s.wasPinged()) {
-			io_service->stop();
-			break;
-		}
-	}
+	std::thread server_thread([&server]() {
+		server.start();
+	});
 
-	serverThread.join();
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 
-	// If we make it here, the server was pinged
-	BOOST_VERIFY(s.wasPinged());
+	AsioNetworkingTool asioTool("localhost", 8080);
+    std::string json_string="{\"firstName\": \"John\",\"lastName\": \"Smith\",\"age\": 25}";
+
+    BOOST_VERIFY(asioTool.post("/json", json_string));
+    BOOST_VERIFY(serverWasPinged);
+
+    // FIXME figure this out
+//    BOOST_VERIFY(!asioTool.post("/badpath", json_string));
+
+    server.stop();
+    server_thread.join();
 }

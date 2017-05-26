@@ -42,7 +42,8 @@ find_package(Boost COMPONENTS system regex)
 if (Boost_FOUND)
    message (STATUS "Boost ASIO found")
    include_directories(${Boost_INCLUDE_DIRS})
-
+   include_directories(${CMAKE_SOURCE_DIR}/tpls/simpleweb)
+   
    # Collect all header filenames in this project 
    # and glob them in HEADERS
    file(GLOB HEADERS *.hpp)
