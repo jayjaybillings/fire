@@ -38,11 +38,13 @@ SET(PACKAGE_NAME "FireUtils")
 SET(PACKAGE_DESCRIPTION "Fire Utility Data Structures")
 
 find_package(Boost COMPONENTS system regex)
+find_package(OpenSSL)
 
-if (Boost_FOUND)
-   message (STATUS "Boost ASIO found")
+if (Boost_FOUND AND OPENSSL_FOUND)
+   message (STATUS "Boost ASIO and OpenSSL found")
    include_directories(${Boost_INCLUDE_DIRS})
    include_directories(${CMAKE_SOURCE_DIR}/tpls/simpleweb)
+   include_directories(${OPENSSL_INCLUDE_DIR})
    
    # Collect all header filenames in this project 
    # and glob them in HEADERS
@@ -52,11 +54,12 @@ if (Boost_FOUND)
    file(GLOB test_files tests/*Test.cpp)
 
    # Add the tests
-   add_tests("${test_files}" "${CMAKE_CURRENT_SOURCE_DIR}" "${Boost_LIBRARIES};pthread")
+   add_tests("${test_files}" "${CMAKE_CURRENT_SOURCE_DIR}" "${Boost_LIBRARIES};pthread;${OPENSSL_LIBRARIES}")
 
    #Install the Fire header files
    install(FILES ${HEADERS} DESTINATION include)
-   
-else()
-  message (WARNING "Boost Asio support not found.")
+endif()
+
+if (NOT Boost_FOUND OR NOT OPENSSL_FOUND)
+  message(STATUS "Warning - Boost Asio or OpenSSL not found. Skipping AsioNetworkingTool build")
 endif()

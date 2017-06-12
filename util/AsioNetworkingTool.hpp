@@ -33,7 +33,7 @@
 #define ASIONETWORKINGTOOL_H_
 
 #include "INetworkingTool.hpp"
-#include "client_http.hpp"
+#include "client_https.hpp"
 #include <boost/algorithm/string.hpp>
 #include <thread>
 #include <chrono>
@@ -51,31 +51,36 @@ static const std::string base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
  * interface that uses the BOOST Asio library to post/get
  * http requests.
  */
+template<typename PROTOCOL>
 class AsioNetworkingTool: public INetworkingTool {
 
 	/**
 	 * Convenience name for SimpleWeb Client
 	 */
-	using HttpClient = SimpleWeb::Client<SimpleWeb::HTTP>;
+	using WebClient = SimpleWeb::Client<PROTOCOL>;
 
 protected:
 
 	/**
 	 * Reference to the asio client we will use
 	 */
-	std::shared_ptr<HttpClient> client;
+	std::shared_ptr<WebClient> client;
 
-	/**
-	 * The last status recorded.
-	 */
-	std::string status;
+	std::string responseMessage;
+	std::string status_code;
 
 public:
 	/**
 	 * The constructor
 	 */
-	AsioNetworkingTool(std::string host, int p) :
-			client(std::make_shared<HttpClient>(host + ":" + std::to_string(p))) {
+	AsioNetworkingTool(std::string host, int p) {
+		static_assert(std::is_same<PROTOCOL, SimpleWeb::HTTP>::value, "This constructor can only be used with HTTP clients");
+		client = std::make_shared<WebClient>(host + ":" + std::to_string(p));
+	}
+
+	AsioNetworkingTool(std::string host_and_port, bool verifyCert = true) {
+		static_assert(std::is_same<PROTOCOL, SimpleWeb::HTTPS>::value, "This constructor can only be used with HTTPS clients");
+		client = std::make_shared<WebClient>(host_and_port, verifyCert);
 	}
 
 	/**
@@ -91,7 +96,11 @@ public:
 	 * @return code The status code as a string
 	 */
 	virtual std::string getLastStatusCode() {
-		return status;
+		return status_code;
+	}
+
+	virtual std::string getLastRequestMessage() {
+		return responseMessage;
 	}
 
 	/**
@@ -123,9 +132,12 @@ public:
 			const std::string& message,
 			const std::map<std::string, std::string>& header = std::map<
 					std::string, std::string>()) {
-		auto request = client->request("POST", relativePath, message, header);
-		status = request->status_code;
-		return boost::contains(status, "200 OK");
+		auto response = client->request("POST", relativePath, message, header);
+		status_code = response->status_code;
+		auto buf = response->content.rdbuf();
+		responseMessage = std::string(std::istreambuf_iterator<char>(buf),
+	               std::istreambuf_iterator<char>());
+		return boost::contains(status_code, "200 OK");
 	}
 
 	/**

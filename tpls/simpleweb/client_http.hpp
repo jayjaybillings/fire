@@ -73,13 +73,13 @@ namespace SimpleWeb {
             std::istream content;
 
             std::unordered_multimap<std::string, std::string, case_insensitive_hash, case_insensitive_equals> header;
-            
+
         private:
             boost::asio::streambuf content_buffer;
-            
+
             Response(): content(&content_buffer) {}
         };
-        
+
         class Config {
             friend class ClientBase<socket_type>;
         private:
