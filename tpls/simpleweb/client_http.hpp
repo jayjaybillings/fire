@@ -114,8 +114,8 @@ namespace SimpleWeb {
             if(content.size()>0)
                 write_stream << "Content-Length: " << content.size() << "\r\n";
             write_stream << "\r\n";
-            
-            connect();
+           
+	    connect();
             
             auto timer=get_timeout_timer();
             boost::asio::async_write(*socket, write_buffer,

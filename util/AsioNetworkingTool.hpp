@@ -78,9 +78,12 @@ public:
 		client = std::make_shared<WebClient>(host + ":" + std::to_string(p));
 	}
 
-	AsioNetworkingTool(std::string host_and_port, bool verifyCert = true) {
+	AsioNetworkingTool(std::string host_and_port, bool verifyCert = true, 
+ 			const std::string& cert_file = std::string(),
+                        const std::string& private_key_file = std::string(),
+                        const std::string& verify_file = std::string()) {
 		static_assert(std::is_same<PROTOCOL, SimpleWeb::HTTPS>::value, "This constructor can only be used with HTTPS clients");
-		client = std::make_shared<WebClient>(host_and_port, verifyCert);
+		client = std::make_shared<WebClient>(host_and_port, verifyCert, cert_file, private_key_file, verify_file);
 	}
 
 	/**

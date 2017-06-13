@@ -66,6 +66,7 @@ public:
 			context.set_verify_mode(boost::asio::ssl::verify_none);
 
 		socket = std::unique_ptr<HTTPS>(new HTTPS(io_service, context));
+		SSL_set_tlsext_host_name(socket->native_handle(),host.c_str());
 	}
 
 protected:
@@ -74,11 +75,11 @@ protected:
 	void connect() {
 		if (!socket->lowest_layer().is_open()) {
 			std::unique_ptr<boost::asio::ip::tcp::resolver::query> query;
-			if (config.proxy_server.empty())
+			if (config.proxy_server.empty()) {
 				query = std::unique_ptr<boost::asio::ip::tcp::resolver::query>(
 						new boost::asio::ip::tcp::resolver::query(host,
 								std::to_string(port)));
-			else {
+			} else {
 				auto proxy_host_port = parse_host_port(config.proxy_server,
 						8080);
 				query = std::unique_ptr<boost::asio::ip::tcp::resolver::query>(
@@ -93,8 +94,7 @@ protected:
 						if(!ec) {
 							auto timer=get_timeout_timer(config.timeout_connect);
 							boost::asio::async_connect(socket->lowest_layer(), it, [this, resolver, timer] (const error_code &ec, boost::asio::ip::tcp::resolver::iterator /*it*/) {
-										if(timer)
-										timer->cancel();
+										if(timer) timer->cancel();
 										if(!ec) {
 											boost::asio::ip::tcp::no_delay option(true);
 											this->socket->lowest_layer().set_option(option);
