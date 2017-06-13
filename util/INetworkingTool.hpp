@@ -79,6 +79,8 @@ public:
 	 */
 	virtual std::string getLastStatusCode() = 0;
 
+	virtual std::string getLastRequestMessage() = 0;
+
 	/**
 	 * virtual destructor
 	 */
