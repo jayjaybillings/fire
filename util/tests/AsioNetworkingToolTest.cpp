@@ -78,9 +78,13 @@ BOOST_AUTO_TEST_CASE(checkSimplePost) {
 	AsioNetworkingTool<SimpleWeb::HTTP> asioTool("localhost", 8080);
     std::string json_string="{\"firstName\": \"John\",\"lastName\": \"Smith\",\"age\": 25}";
 
-    BOOST_VERIFY(asioTool.post("/json", json_string));
+    auto response = asioTool.post("/json", json_string);
+    BOOST_VERIFY(response.successful);
     BOOST_VERIFY(serverWasPinged);
-    BOOST_VERIFY(asioTool.getLastRequestMessage() == "John Smith");
+
+    std::stringstream ss;
+    ss << response.content.rdbuf();
+    BOOST_VERIFY(ss.str() == "John Smith");
 
     // FIXME figure this out
 //    BOOST_VERIFY(!asioTool.post("/badpath", json_string));
@@ -162,9 +166,15 @@ BOOST_AUTO_TEST_CASE(checkSimpleHTTPSPost) {
 	AsioNetworkingTool<SimpleWeb::HTTPS> asioTool("localhost:8080", false);
     std::string json_string="{\"firstName\": \"John\",\"lastName\": \"Smith\",\"age\": 25}";
 
-    BOOST_VERIFY(asioTool.post("/json", json_string));
+    auto response = asioTool.post("/json", json_string);
+    BOOST_VERIFY(response.successful);
+    BOOST_VERIFY(response.status_code == "200 OK");
     BOOST_VERIFY(serverWasPinged);
-    BOOST_VERIFY(asioTool.getLastRequestMessage() == "John Smith");
+
+    std::stringstream ss;
+    ss << response.content.rdbuf();
+
+    BOOST_VERIFY(ss.str() == "John Smith");
 
     // FIXME figure this out
 //    BOOST_VERIFY(!asioTool.post("/badpath", json_string));

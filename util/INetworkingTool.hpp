@@ -35,6 +35,19 @@
 namespace fire {
 namespace util {
 
+class PostResponse {
+public:
+
+	PostResponse(std::istream& str) :
+			successful(false), status_code("400 Error"), contentLength(0), contentType(
+					""), content(str) {
+	}
+	bool successful;
+	std::string status_code;
+	int contentLength;
+	std::string contentType;
+	std::istream& content;
+};
 /**
  * The INetworkingTool interface provides methods that enable
  * typical HTTP GET and POST behavior.
@@ -64,22 +77,13 @@ public:
 	 * @param relativePath The path relative to the hostname/port provided to this NetworkingTool
 	 * @param message The message to post
 	 * @param header The map of additional HTTP POST header information
-	 * @return success Boolean indicating if post was successful
+	 * @return postResponse Struct containing state of post response
 	 *
 	 */
-	virtual bool post(const std::string& relativePath,
+	virtual PostResponse post(const std::string& relativePath,
 			const std::string& message,
 			const std::map<std::string, std::string>& header = std::map<
 					std::string, std::string>()) = 0;
-
-	/**
-	 * Return the last received status code.
-	 *
-	 * @return code The status code as a string
-	 */
-	virtual std::string getLastStatusCode() = 0;
-
-	virtual std::string getLastRequestMessage() = 0;
 
 	/**
 	 * virtual destructor

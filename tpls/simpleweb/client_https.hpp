@@ -66,7 +66,7 @@ public:
 			context.set_verify_mode(boost::asio::ssl::verify_none);
 
 		socket = std::unique_ptr<HTTPS>(new HTTPS(io_service, context));
-		SSL_set_tlsext_host_name(socket->native_handle(),host.c_str());
+		SSL_set_tlsext_host_name(socket->native_handle(), host.c_str());
 	}
 
 protected:

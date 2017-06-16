@@ -58,6 +58,7 @@ class AsioNetworkingTool: public INetworkingTool {
 	 * Convenience name for SimpleWeb Client
 	 */
 	using WebClient = SimpleWeb::Client<PROTOCOL>;
+	using ResponseType = typename SimpleWeb::Client<PROTOCOL>::Response;
 
 protected:
 
@@ -66,8 +67,7 @@ protected:
 	 */
 	std::shared_ptr<WebClient> client;
 
-	std::string responseMessage;
-	std::string status_code;
+	std::shared_ptr<ResponseType> response;
 
 public:
 	/**
@@ -93,18 +93,25 @@ public:
 		client->close();
 	}
 
-	/**
-	 * Return the last received status code.
-	 *
-	 * @return code The status code as a string
-	 */
-	virtual std::string getLastStatusCode() {
-		return status_code;
-	}
-
-	virtual std::string getLastRequestMessage() {
-		return responseMessage;
-	}
+//	/**
+//	 * Return the last received status code.
+//	 *
+//	 * @return code The status code as a string
+//	 */
+//	virtual std::string getLastStatusCode() {
+//		return response->status_code;
+//	}
+//
+//	virtual std::string getLastRequestMessage() {
+//		std::stringstream ss;
+//		auto& stream = response->content;
+//		ss << stream.rdbuf();
+//		return ss.str();
+//	}
+//
+//	virtual std::istream& getLastResponseStream() {
+//		return response->content;
+//	}
 
 	/**
 	 * Issue an HTTP GET Command at the given relative path.
@@ -129,18 +136,20 @@ public:
 	 * @param message The message to post
 	 * @param header The map of additional HTTP POST header information
 	 * @return success Boolean indicating if post was successful
-	 *
 	 */
-	virtual bool post(const std::string& relativePath,
+	virtual PostResponse post(const std::string& relativePath,
 			const std::string& message,
 			const std::map<std::string, std::string>& header = std::map<
 					std::string, std::string>()) {
-		auto response = client->request("POST", relativePath, message, header);
-		status_code = response->status_code;
-		auto buf = response->content.rdbuf();
-		responseMessage = std::string(std::istreambuf_iterator<char>(buf),
-	               std::istreambuf_iterator<char>());
-		return boost::contains(status_code, "200 OK");
+		response = client->request("POST", relativePath, message, header);
+		PostResponse r(response->content);
+		r.successful = boost::contains(response->status_code, "200 OK");
+		if (r.successful) {
+			r.contentLength = response->contentLength;
+			r.contentType = response->contentType;
+			r.status_code = response->status_code;
+		}
+		return r;
 	}
 
 	/**
