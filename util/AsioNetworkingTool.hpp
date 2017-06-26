@@ -42,10 +42,6 @@ namespace fire {
 
 namespace util {
 
-static const std::string base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-		"abcdefghijklmnopqrstuvwxyz"
-		"0123456789+/";
-
 /**
  * The AsioNetworkignTool is a realization of the INetworkingTool
  * interface that uses the BOOST Asio library to post/get
@@ -121,10 +117,18 @@ public:
 	 * @param relativePath The path relative to the hostname/port provided to this NetworkingTool
 	 * @return The contents at the URL or an error message if one took place.
 	 */
-	virtual std::string get(const std::string& relativePath,
+	virtual HttpResponse get(const std::string& relativePath,
 			const std::map<std::string, std::string>& header = std::map<
 					std::string, std::string>()) {
-		return "";
+		response = client->request("GET", relativePath, "", header);
+		HttpResponse r(response->content);
+		r.successful = boost::contains(response->status_code, "200 OK");
+		if (r.successful) {
+			r.contentLength = response->contentLength;
+			r.contentType = response->contentType;
+			r.status_code = response->status_code;
+		}
+		return r;
 	}
 
 	/**
@@ -137,12 +141,12 @@ public:
 	 * @param header The map of additional HTTP POST header information
 	 * @return success Boolean indicating if post was successful
 	 */
-	virtual PostResponse post(const std::string& relativePath,
+	virtual HttpResponse post(const std::string& relativePath,
 			const std::string& message,
 			const std::map<std::string, std::string>& header = std::map<
 					std::string, std::string>()) {
 		response = client->request("POST", relativePath, message, header);
-		PostResponse r(response->content);
+		HttpResponse r(response->content);
 		r.successful = boost::contains(response->status_code, "200 OK");
 		if (r.successful) {
 			r.contentLength = response->contentLength;
@@ -151,57 +155,6 @@ public:
 		}
 		return r;
 	}
-
-	/**
-	 *
-	 * @param bytes_to_encode
-	 * @param in_len
-	 * @return
-	 */
-	std::string base64_encode(char const* bytes_to_encode, int in_len) {
-		std::string ret;
-		int i = 0;
-		int j = 0;
-		unsigned char char_array_3[3];
-		unsigned char char_array_4[4];
-
-		while (in_len--) {
-			char_array_3[i++] = *(bytes_to_encode++);
-			if (i == 3) {
-				char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
-				char_array_4[1] = ((char_array_3[0] & 0x03) << 4)
-						+ ((char_array_3[1] & 0xf0) >> 4);
-				char_array_4[2] = ((char_array_3[1] & 0x0f) << 2)
-						+ ((char_array_3[2] & 0xc0) >> 6);
-				char_array_4[3] = char_array_3[2] & 0x3f;
-
-				for (i = 0; (i < 4); i++)
-					ret += base64_chars[char_array_4[i]];
-				i = 0;
-			}
-		}
-
-		if (i) {
-			for (j = i; j < 3; j++)
-				char_array_3[j] = '\0';
-
-			char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
-			char_array_4[1] = ((char_array_3[0] & 0x03) << 4)
-					+ ((char_array_3[1] & 0xf0) >> 4);
-			char_array_4[2] = ((char_array_3[1] & 0x0f) << 2)
-					+ ((char_array_3[2] & 0xc0) >> 6);
-			char_array_4[3] = char_array_3[2] & 0x3f;
-
-			for (j = 0; (j < i + 1); j++)
-				ret += base64_chars[char_array_4[j]];
-
-			while ((i++ < 3))
-				ret += '=';
-		}
-
-		return ret;
-	}
-
 
 };
 
