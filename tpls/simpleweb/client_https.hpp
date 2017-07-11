@@ -101,13 +101,13 @@ protected:
 										}
 										else {
 											close();
-											throw system_error(ec);
+											throw boost::system::system_error(ec);
 										}
 									});
 						}
 						else {
 							close();
-							throw system_error(ec);
+							throw boost::system::system_error(ec);
 						}
 					});
 			io_service.reset();
@@ -126,7 +126,7 @@ protected:
 							timer->cancel();
 							if(ec) {
 								close();
-								throw system_error(ec);
+								throw boost::system::system_error(ec);
 							}
 						});
 				io_service.reset();
@@ -141,7 +141,7 @@ protected:
 							timer->cancel();
 							if(ec) {
 								close();
-								throw system_error(ec);
+								throw boost::system::system_error(ec);
 							}
 						});
 				io_service.reset();
@@ -161,7 +161,7 @@ protected:
 						timer->cancel();
 						if(ec) {
 							close();
-							throw system_error(ec);
+							throw boost::system::system_error(ec);
 						}
 					});
 			io_service.reset();

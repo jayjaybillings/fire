@@ -56,6 +56,8 @@ public:
 };
 #endif
 
+using namespace boost::system;
+
 namespace SimpleWeb {
 template<class socket_type>
 class Client;
