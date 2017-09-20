@@ -58,11 +58,10 @@ if(MAGMA_ROOT)
   add_tests_with_flags("tests/example_v2.c" "${MAGMA_INCLUDE_DIRS}" 
                        "${MAGMA_LIBRARIES}" "${MAGMA_CFLAGS}")
   # Add the libraries to the package library list
-  set(FIRE_SOLVERS_LIBRARIES ${FIRE_SOLVERS_LIBRARIES} ${MAGMA_LIBRARIES} 
-      PARENT_SCOPE)
+  set(FIRE_SOLVERS_LIBRARIES ${FIRE_SOLVERS_LIBRARIES} ${MAGMA_LIBRARIES})
   # Add the include directories
   set(FIRE_SOLVERS_INCLUDE_DIRS ${FIRE_SOLVERS_INCLUDE_DIRS} 
-      ${MAGMA_INCLUDE_DIRS} PARENT_SCOPE)
+      ${MAGMA_INCLUDE_DIRS})
 endif(MAGMA_ROOT)
 
 #Look for SUNDIALS if some hints are specified
@@ -84,12 +83,15 @@ if(SUNDIALS_ROOT OR SPACK_ROOT)
   add_tests("tests/cvAdvDiff_bnd.c" "${SUNDIALS_INCLUDE_DIRS}"
             "${SUNDIALS_LIBRARIES}")
   # Add the libraries to the package library list
-  set(FIRE_SOLVERS_LIBRARIES ${FIRE_SOLVERS_LIBRARIES} ${SUNDIALS_LIBRARIES}
-      PARENT_SCOPE)
+  set(FIRE_SOLVERS_LIBRARIES ${FIRE_SOLVERS_LIBRARIES} ${SUNDIALS_LIBRARIES})
   # Add the include directories
   set(FIRE_SOLVERS_INCLUDE_DIRS ${FIRE_SOLVERS_INCLUDE_DIRS} 
-      ${SUNDIALS_INCLUDE_DIRS} PARENT_SCOPE)
+      ${SUNDIALS_INCLUDE_DIRS})
 endif(SUNDIALS_ROOT OR SPACK_ROOT)
+
+# Add the variables to the global property list
+set_property(GLOBAL APPEND PROPERTY FIRE_SOLVERS_LIBRARIES "${FIRE_SOLVERS_LIBRARIES}")
+set_property(GLOBAL APPEND PROPERTY FIRE_SOLVERS_INCLUDE_DIRS "${FIRE_SOLVERS_INCLUDE_DIRS}")
 
 #Add the source code to the library
 #add_library(${LIBRARY_NAME} STATIC ${SRC})
@@ -97,7 +99,7 @@ endif(SUNDIALS_ROOT OR SPACK_ROOT)
 # Get the test files
 file(GLOB test_files tests/*Test.cpp)
 # Add the tests for Fire's classes
-add_tests("${test_files}" "${CMAKE_CURRENT_SOURCE_DIR}" "")  
+add_tests("${test_files}" "${CMAKE_CURRENT_SOURCE_DIR}" "${FIRE_SOLVERS_LIBRARIES}")  
 
 #Install the Fire header files
 install(FILES ${HEADERS} DESTINATION include)

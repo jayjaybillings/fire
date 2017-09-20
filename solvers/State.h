@@ -64,7 +64,7 @@ namespace fire {
  * This class is designed to be greedy and narcissistic. In lieu of allowing
  * users to create and store their own instances of T, it creates (add()) those
  * instances and forces users to interact with references retrieved using the
- * getters. Being so greedy makes it possible to this class to efficiently
+ * getters. Being so greedy makes it possible for this class to efficiently
  * manage memory with lower implementation overhead and no need to rely on
  * clients to correctly initialize data. The original design of this class
  * called for extensive use of smart pointers (using std::share), but there
@@ -136,7 +136,7 @@ protected:
 	/**
 	 * The system size of the state.
 	 */
-	int systemSize;
+	long systemSize;
 
 	/**
 	 * This is a utility array that can be used by clients a buffer for holding
@@ -154,7 +154,7 @@ protected:
 	/**
 	 * The list of monitors that should be notified when the state changes.
 	 */
-	std::vector<std::function<void(State<T>&)>> monitors;
+	std::vector<std::function<void(State<T,Args...>&)>> monitors;
 
 	/**
 	 * This function notifies the monitors.
@@ -170,13 +170,32 @@ public:
 
 	/**
 	 * Constructor with optional arguments for T.
-	 * @param Optional argument list for constructing T.
+	 * @param Optional argument list for constructing T. To use this, the
+	 * State must be declared with a list of argument types as in
+	 * @code
+	 * State<MyClass,int> state(4); // Forwards an integer value of 4 to MyClass' constructor.
+	 * State<MyClass,int,double> state(4,1.0); Forwards both an integer and a double.
+	 * @endcode
 	 */
 	State(Args&& ... args) {
 		state = std::unique_ptr<T>(new T(std::forward<Args>(args)...));
 		tVal = 0.0;
 		systemSize = 0;
 	}
+
+	/**
+	 * Alternative constructor that also sets the system size.
+	 * @param the number of unique data elements in the state
+	 * @param Optional argument list for constructing T. To use this, the
+	 * State must be declared with a list of argument types as in
+	 * @code
+	 * State<MyClass,int> state(4); // Forwards an integer value of 4 to MyClass' constructor.
+	 * State<MyClass,int,double> state(4,1.0); Forwards both an integer and a double.
+	 * @endcode
+	 */
+    State(const long & numElements, Args&& ... args) : State(std::forward<Args>(args)...) {
+    	systemSize = numElements;
+    }
 
 	/**
 	 * This operation registers a function with the state that will be called
@@ -329,7 +348,7 @@ public:
 	 * present in the state.
 	 * @param int the number of unique data elements in the state
 	 */
-	void size(const int & numElements) {
+	void size(const long & numElements) {
 		systemSize = numElements;
 		// Allocate the storage arrays for u and dudt
 		uArr = std::unique_ptr<double>(new double[systemSize]);

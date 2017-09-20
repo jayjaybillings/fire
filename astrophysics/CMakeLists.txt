@@ -54,7 +54,8 @@ if (FIRE_SOLVERS_LIBRARIES)
     
   # Get the test files
   file(GLOB test_files tests/*Test.cpp)
-  # Add the solver include libraries
+  
+  # Add the solver include directories
   set(FIRE_ASTRO_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR} ${FIRE_SOLVERS_INCLUDE_DIRS})
   # Add the tests
   add_tests("${test_files}" "${FIRE_ASTRO_INCLUDE_DIRS}" "${FIRE_SOLVERS_LIBRARIES}")   

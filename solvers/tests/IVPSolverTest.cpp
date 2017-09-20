@@ -1,4 +1,3 @@
-
 /**----------------------------------------------------------------------------
  Copyright (c) 2017-, UT-Battelle, LLC
  All rights reserved.
@@ -36,6 +35,9 @@
 #include <boost/test/included/unit_test.hpp>
 #include <State.h>
 #include <memory>
+#include <algorithm>
+#include <IVPSolver.h>
+#include <iostream>
 
 using namespace std;
 using namespace fire;
@@ -44,11 +46,12 @@ using namespace fire;
  * A simple test struct for the tests.
  */
 struct TestStruct {
-	vector<double> A;
-	vector<double> dAdt;
-	const int testK;
-	TestStruct() : A{5.0,2.0} , dAdt{2.0,5.0} , testK(0) {};
-	TestStruct(const int & k) : testK{k} {};
+	vector<double> y;
+	vector<double> dydt;
+	TestStruct(const int & size) :
+			y(size), dydt(size) {
+	}
+	;
 };
 
 /**
@@ -59,81 +62,75 @@ namespace fire {
 
 // Getter for test struct data from a State<TestStruct>
 template<>
-double * State<TestStruct>::u() const {return state->A.data();};
+double * State<TestStruct,const int &>::u() const {
+	return state->y.data();
+}
+;
 
 // Getter for test struct derivative data from a State<TestStruct>
 template<>
-double * State<TestStruct>::dudt(const double & t) const {return state->dAdt.data();};
+double * State<TestStruct,const int &>::dudt(const double & t) const {
+
+	// k constant for this problem
+	const double k = 0.85;
+
+	// Multiply the y vector by the constant
+	transform(state->y.begin(), state->y.end(), state->dydt.begin(),
+			bind1st(multiplies<double>(), k));
+
+	return state->dydt.data();
+}
+;
 
 } // end namespace fire
 
 
-
-/**
- * This operation checks all of the various simple accessors on State<T>.
- */
 BOOST_AUTO_TEST_CASE(checkAccessors) {
 
-	// Create the state
-	State<TestStruct> state;
+	IVPSolver<TestStruct> solver;
 
-	// Test the size setters
-	BOOST_REQUIRE_EQUAL(0,state.size());
-	state.size(2);
-	BOOST_REQUIRE_EQUAL(2,state.size());
+	double testTime = 5.9989;
 
-	// Test the t setters
-	BOOST_REQUIRE_CLOSE(0.0,state.t(),1.0e-8);
-	state.t(1.5998);
-	BOOST_REQUIRE_CLOSE(1.5998,state.t(),1.0e-8);
-
-	// Check defaulting the size.
-	State<TestStruct> secondState(99);
-	BOOST_REQUIRE_EQUAL(99,secondState.size());
+	// Make sure everything is zero to start
+	BOOST_REQUIRE_CLOSE(0.0,solver.t(),1.0e-8);
+	BOOST_REQUIRE_CLOSE(0.0,solver.tInit(),1.0e-8);
+	BOOST_REQUIRE_CLOSE(0.0,solver.tFinal(),1.0e-8);
+	solver.t(testTime);
+	BOOST_REQUIRE_CLOSE(testTime,solver.t(),1.0e-8);
+	solver.tInit(testTime);
+	BOOST_REQUIRE_CLOSE(testTime,solver.tInit(),1.0e-8);
+	solver.tFinal(testTime);
+	BOOST_REQUIRE_CLOSE(testTime,solver.tFinal(),1.0e-8);
 
 	return;
 }
 
 /**
- * This operation checks the accessors for state data on State<T>.
+ * This operation checks the IVPSolver to make sure that it can solve a simple
+ * ODE: y' = 0.85y. This is an example on Wikipedia with the solution
+ * y = 19e^(0.85t).
  */
-BOOST_AUTO_TEST_CASE(checkStateAccessors) {
+BOOST_AUTO_TEST_CASE(checkSingleVariableSolve) {
+	int size = 1;
+	// Create the state and forward the size of TestStruct. This is a good
+	// example because not only does it show forwarding, but it also
+	// illustrates that the proper types must be used during the forward. If
+	// proper types are not used (i.e. - int instead of const int &) then the
+	// compiler will fail.
+	State<TestStruct, const int &> state(size, size);
 
-	// Create the state
-	State<TestStruct> state;
-	int size = 2;
-	state.size(size);
-	TestStruct testStruct;
+	// Set the initial t value on the state
+	double tInit = 0.0, t = 0.0, tFinal = 1.0;
+	state.t(t);
+	// Configure the solver
+	IVPSolver<TestStruct, const int &> solver;
+	solver.t(t);
+	solver.tInit(tInit);
+	solver.tFinal(tFinal);
 
-	// Get the initial state
-	auto & retStruct = state.get();
+	solver.solve(state);
 
-	// Check the state
-	BOOST_REQUIRE_CLOSE(testStruct.A[0],retStruct.A[0],1.0e-8);
-	BOOST_REQUIRE_CLOSE(testStruct.A[1],retStruct.A[1],1.0e-8);
-	BOOST_REQUIRE_CLOSE(testStruct.dAdt[0],retStruct.dAdt[0],1.0e-8);
-	BOOST_REQUIRE_CLOSE(testStruct.dAdt[1],retStruct.dAdt[1],1.0e-8);
-
-	// Update the state with data from a second vector.
-	double * myU = new double[size];
-	myU[0] = 8.0;
-	myU[1] = 9.99;
-	state.u(myU);
-
-	// Check that the state updated.
-	BOOST_REQUIRE_CLOSE(8.0,retStruct.A[0],1.0e-8);
-	BOOST_REQUIRE_CLOSE(9.99,retStruct.A[1],1.0e-8);
-
-	// Note that u() the getter and dudt are not tested because they are
-	// explicitly instantiated above.
+	std::cout << "value = " << state.get().y[0] << std::endl;
 
 	return;
-}
-
-BOOST_AUTO_TEST_CASE(checkConstructorArgForwarding) {
-	// Create the state
-	int size = 2;
-	State<TestStruct,const int &> state(size,8);
-	BOOST_REQUIRE_EQUAL(size,state.size());
-	BOOST_REQUIRE_EQUAL(state.get().testK,8);
 }

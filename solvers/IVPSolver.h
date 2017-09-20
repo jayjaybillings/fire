@@ -51,8 +51,6 @@ namespace cvode {
 #define MY    5
 #define NEQ   MX*MY          /* number of equations       */
 #define ATOL  RCONST(1.0e-5) /* scalar absolute tolerance */
-#define T0    RCONST(0.0)    /* initial time              */
-#define T1    RCONST(0.1)    /* first output time         */
 #define DTOUT RCONST(0.1)    /* output time increment     */
 #define NOUT  10             /* number of output times    */
 
@@ -63,7 +61,7 @@ namespace cvode {
 #define FIVE RCONST(5.0)
 
 /* Private Helper Functions */
-static void PrintHeader(realtype reltol, realtype abstol, realtype umax);
+static void PrintHeader(realtype reltol, realtype abstol, realtype umax, double t);
 static void PrintOutput(realtype t, realtype umax, long int nst);
 static void PrintFinalStats(void *cvode_mem);
 
@@ -76,8 +74,8 @@ static int check_flag(void *flagvalue, char *funcname, int opt);
  *-------------------------------
  */
 // DOCS!-------------------------------------------------------
-template<typename T>
-void setICs(N_Vector u, const State<T> & state) {
+template<typename T,typename ... Args>
+void setICs(N_Vector u, const State<T,Args...> & state) {
 	  int i, j;
 	  realtype *udata;
 
@@ -97,11 +95,11 @@ void setICs(N_Vector u, const State<T> & state) {
 
 // DOCS!-------------------------------------------------------
 /* f routine. Compute f(t,u). */
-template<typename T>
+template<typename T,typename ... Args>
 int f(realtype t, N_Vector u,N_Vector udot, void *user_data) {
   realtype *udata, *dudata;
   int i, j;
-  State<T> * state = reinterpret_cast<State<T> *>(user_data);
+  State<T,Args...> * state = reinterpret_cast<State<T,Args...> *>(user_data);
 
   udata = NV_DATA_S(u);
   dudata = NV_DATA_S(udot);
@@ -127,7 +125,7 @@ int f(realtype t, N_Vector u,N_Vector udot, void *user_data) {
 
 // ---------------- Added to system or state, remove from here ----------- //
 /* Print first lines of output (problem description) */
-static void PrintHeader(realtype reltol, realtype abstol, realtype umax)
+static void PrintHeader(realtype reltol, realtype abstol, realtype umax, double t)
 {
   printf("\n2-D Advection-Diffusion Equation\n");
   printf("Mesh dimensions = %d X %d\n", MX, MY);
@@ -139,7 +137,7 @@ static void PrintHeader(realtype reltol, realtype abstol, realtype umax)
 #elif defined(SUNDIALS_DOUBLE_PRECISION)
   printf("Tolerance parameters: reltol = %g   abstol = %g\n\n",
          reltol, abstol);
-  printf("At t = %g      max.norm(u) =%14.6e \n", T0, umax);
+  printf("At t = %g      max.norm(u) =%14.6e \n", t, umax);
 #else
   printf("Tolerance parameters: reltol = %g   abstol = %g\n\n", reltol, abstol);
   printf("At t = %g      max.norm(u) =%14.6e \n", T0, umax);
@@ -241,13 +239,74 @@ static int check_flag(void *flagvalue, char *funcname, int opt)
 /**
  * !------------ ADD ODESolver Docs! ----------------------------!
  */
-template<typename T>
+
+// I don't like that I must carry Args along here without using it just to
+// appease the compiler.
+
+template<typename T, typename ... Args>
 class IVPSolver {
+
+protected:
+
+	/**
+	 * The initial t value from which the solve should start.
+	 */
+	double initialT = 0.0;
+
+	/**
+	 * The final t value at which the solve should stop.
+	 */
+	double finalT = 0.0;
+
+	/**
+	 * The current value of t in the integration.
+	 */
+	double currentT = 0.0;
+
 
 public:
 
+	/**
+	 * This operation sets the current value of t.
+	 * @param the current value of t in the solver
+	 */
+	void t(const double & tVal) { currentT = tVal;};
 
-	void solve(State<T> & state) {
+	/**
+	 * This operation sets the initial value of t
+	 * @param the initial value of t in the solver
+	 */
+	void tInit(const double & tVal) { initialT = tVal;};
+
+	/**
+	 * This operation sets the final value of t
+	 * @param the final value of t in the solver
+	 */
+	void tFinal(const double & tVal) { finalT = tVal;};
+
+	/**
+	 * This operation returns the current value of t in the system.
+	 * @param the current value of t in the solver
+	 */
+	double t() const {return currentT;};
+
+	/**
+	 * This operation returns the initial value of t configured for the solver.
+	 * @param the initial value of t in the solver
+	 */
+	double tInit() const {return initialT;};
+
+	/**
+	 * This operation returns the final value of t configured for the solver.
+	 * @param the final value of t in the solver
+	 */
+	double tFinal() const {return finalT;};
+
+	/**
+	 * This operation solves the system of equations specified in the State
+	 * @param the State describing the system to be solved.
+	 */
+	void solve(State<T,Args...> & state) {
 
 		// Begin CVODE code. Adapted from their examples.
 
@@ -271,7 +330,7 @@ public:
 		abstol = ATOL;
 
 		// Set the initial conditions in u from the states
-		fire::cvode::setICs<T>(u, state);
+		fire::cvode::setICs<T,Args...>(u, state);
 
 		/* Call CVodeCreate to create the solver memory and specify the
 		 * Backward Differentiation Formula and the use of a Newton iteration */
@@ -282,7 +341,7 @@ public:
 		/* Call CVodeInit to initialize the integrator memory and specify the
 		 * user's right hand side function in u'=f(t,u), the inital time T0, and
 		 * the initial dependent variable vector u. */
-		flag = CVodeInit(cvode_mem, fire::cvode::f<T>, T0, u);
+		flag = CVodeInit(cvode_mem, fire::cvode::f<T,Args...>, initialT, u);
 		if (fire::cvode::check_flag(&flag, "CVodeInit", 1))
 			return;
 
@@ -309,8 +368,8 @@ public:
 		/* In loop over output points: call CVode, print results, test for errors */
 
 		umax = N_VMaxNorm(u);
-		fire::cvode::PrintHeader(reltol, abstol, umax);
-		for (iout = 1, tout = T1; iout <= NOUT; iout++, tout += DTOUT) {
+		fire::cvode::PrintHeader(reltol, abstol, umax, initialT);
+		for (iout = 1, tout = finalT; iout <= NOUT; iout++, tout += DTOUT) {
 			flag = CVode(cvode_mem, tout, u, &t, CV_NORMAL);
 			if (fire::cvode::check_flag(&flag, "CVode", 1))
 				break;
