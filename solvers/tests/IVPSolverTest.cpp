@@ -50,8 +50,7 @@ struct TestStruct {
 	vector<double> dydt;
 	TestStruct(const int & size) :
 			y(size), dydt(size) {
-	}
-	;
+	};
 };
 
 /**
@@ -64,8 +63,7 @@ namespace fire {
 template<>
 double * State<TestStruct,const int &>::u() const {
 	return state->y.data();
-}
-;
+};
 
 // Getter for test struct derivative data from a State<TestStruct>
 template<>
@@ -79,8 +77,7 @@ double * State<TestStruct,const int &>::dudt(const double & t) const {
 			bind1st(multiplies<double>(), k));
 
 	return state->dydt.data();
-}
-;
+};
 
 } // end namespace fire
 

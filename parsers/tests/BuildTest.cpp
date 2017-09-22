@@ -44,8 +44,11 @@ using namespace fire;
  */
 struct TestStruct {
 	int A;
-	TestStruct() : A(5) {};
-	TestStruct(int value) : A(value) {};
+	double B;
+	int C;
+	TestStruct() : A(5), B(0.0), C(0) {};
+	TestStruct(int value) : A(value), B(0.0), C(0) {};
+	TestStruct(int value, double otherValue, int finalValue) : A(value), B(otherValue), C(finalValue) {};
 };
 
 
@@ -56,6 +59,8 @@ BOOST_AUTO_TEST_CASE(checkBuild) {
 
 	TestStruct myStruct = build<TestStruct>();
 	BOOST_REQUIRE_EQUAL(5,myStruct.A);
+	BOOST_REQUIRE_CLOSE(0.0,myStruct.B,1.0e-8);
+	BOOST_REQUIRE_EQUAL(0,myStruct.C);
 
 	return;
 }
@@ -67,6 +72,21 @@ BOOST_AUTO_TEST_CASE(checkBuildWith2Args) {
 
 	TestStruct myStruct = build<TestStruct,int>(2);
 	BOOST_REQUIRE_EQUAL(2,myStruct.A);
+	BOOST_REQUIRE_CLOSE(0.0,myStruct.B,1.0e-8);
+	BOOST_REQUIRE_EQUAL(0,myStruct.C);
+
+	return;
+}
+
+/**
+ * This operation checks build<TestStruct>(Args...).
+ */
+BOOST_AUTO_TEST_CASE(checkVariadicBuild) {
+
+	TestStruct myStruct = build<TestStruct,int,double,int>(2,5.0,10);
+	BOOST_REQUIRE_EQUAL(2,myStruct.A);
+	BOOST_REQUIRE_CLOSE(5.0,myStruct.B,1.0e-8);
+	BOOST_REQUIRE_EQUAL(10,myStruct.C);
 
 	return;
 }

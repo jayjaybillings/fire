@@ -65,9 +65,21 @@ T build() {
  * @param values of type K that should be passed to the appropriate constructor.
  * @return an instance of class T created from the alternative constructor.
  */
-template<typename T, typename K>
-T build(K values) {
-	T object(values);
+//template<typename T, typename K>
+//T build(K values) {
+//	T object(values);
+//	return object;
+//}
+
+/**
+ * An implementation of the build template for classes that do not use
+ * nullary/default constructors and have either more than one or a variadic
+ * number of arguments
+ * @param full list argument values for the constructor of T
+ */
+template<typename T, typename... Args>
+T build(Args&& ... args) {
+	T object(std::forward<Args>(args)...);
 	return object;
 }
 
