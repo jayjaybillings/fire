@@ -49,6 +49,8 @@ the build&lt;T&gt;() function for the Species class. In this case, the compiler
 automatically creates the specialized version of build&lt;T&gt;() based on type
 inference and the second version of build&lt;T&gt;() in build.h.
 
+BuildTest.cpp also provids relevant examples since it is the test case for build&lt;T&gt;(). It also includes a test for building containers.
+
 ## build&lt;T&gt;() vs parse&lt;T&gt;()
 
 In some cases the build&lt;T&gt;() can be grammatically cumbersome. Consider
@@ -81,6 +83,10 @@ probably does and should not.
 The second point is really important. Should your build&lt;T&gt;() parse as well as build? That's a design issue that we'll defer for now, but keep in mind that if your build&lt;T&gt;() routine parses, then your clients should
 not use parse&lt;T&gt;() because it calls build&lt;T&gt;() too, which means
 your data will be loaded twice into the same array! This is the reason that default build&lt;T&gt;() implementations for local parsers in Fire **never** call parser.parse().
+
+## Other special versions of build&lt;T&gt;()
+
+Instances of the State&lt;T&gt; class should be created using buildState&lt;T,Args...&gt;(). This special version of the builder exists because function templates in C++ cannot be partially specialized. If they could, the container version of build&lt;T&gt;() could be specialized to avoid the need for a separately named function. That said, buildState&lt;T,Args...&gt;() functions exactly like build&lt;T&gt;()
 
 ### Author note
 Note: Ideally the default version of build would work for variadic template and function arguments, but at the specific function must be implemented.

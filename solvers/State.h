@@ -37,6 +37,7 @@
 #include <utility>
 #include <functional>
 #include <vector>
+#include <build.h>
 
 namespace fire {
 
@@ -45,6 +46,14 @@ namespace fire {
  * passed to solvers. It is designed such that container operations are
  * handled by default by the template and clients override the u() and dudt()
  * operations to tailor the behavior for the templated type.
+ *
+ * Instances should be constructed using the build<>() templates as follows:
+ * @code
+ * State<T> myState = build<T>(); // If T() takes no arguments
+ * State<T> myState2 = build<T,int>(); // If T takes one argument
+ * State<T> myState3 = build<T,int, const double &>(); // If T takes 2 args
+ * //...etc.
+ * @endcode
  *
  * The variable t, when discussed below, is meant to represent a free parameter
  * on which u and du depend. It commonly represents time, but might might also
@@ -119,14 +128,14 @@ namespace fire {
  * - Should this be thread safe?
  * - Would be interesting to name monitors.
  */
-template<typename T, typename... Args>
+template<typename T>
 class State {
 protected:
 
 	/**
 	 * The managed instance of the State of type T.
 	 */
-	std::unique_ptr<T> state;
+	std::shared_ptr<T> state;
 
 	/**
 	 * The most recent value of t provided by State.t().
@@ -154,7 +163,7 @@ protected:
 	/**
 	 * The list of monitors that should be notified when the state changes.
 	 */
-	std::vector<std::function<void(State<T,Args...>&)>> monitors;
+	std::vector<std::function<void(State<T>&)>> monitors;
 
 	/**
 	 * This function notifies the monitors.
@@ -169,31 +178,42 @@ protected:
 public:
 
 	/**
-	 * Constructor with optional arguments for T.
-	 * @param Optional argument list for constructing T. To use this, the
-	 * State must be declared with a list of argument types as in
-	 * @code
-	 * State<MyClass,int> state(4); // Forwards an integer value of 4 to MyClass' constructor.
-	 * State<MyClass,int,double> state(4,1.0); Forwards both an integer and a double.
-	 * @endcode
+	 * Constructor
 	 */
-	State(Args&& ... args) {
-		state = std::unique_ptr<T>(new T(std::forward<Args>(args)...));
-		tVal = 0.0;
-		systemSize = 0;
+	State() : tVal(0.0), systemSize(0) {
+		state = std::make_shared<T>();
 	}
 
 	/**
 	 * Alternative constructor that also sets the system size.
 	 * @param the number of unique data elements in the state
-	 * @param Optional argument list for constructing T. To use this, the
-	 * State must be declared with a list of argument types as in
-	 * @code
-	 * State<MyClass,int> state(4); // Forwards an integer value of 4 to MyClass' constructor.
-	 * State<MyClass,int,double> state(4,1.0); Forwards both an integer and a double.
-	 * @endcode
 	 */
-    State(const long & numElements, Args&& ... args) : State(std::forward<Args>(args)...) {
+    State(const long & numElements) : State() {
+    	systemSize = numElements;
+    }
+
+    /**
+     * An alternative default constructor that will accept a pre-configured
+     * unique_ptr<T>. In general this constructor should not be called directly
+     * by clients. It is used by the build<>() builder for State<T> to safely
+     * and easily enable two-phase construction where the arguments can be
+     * passed to T's constructor without requiring State<T> to know about those
+     * arguments.
+     *
+     * This is important because requiring State<T> to know about the arguments
+     * of T's constructor would require declaring those arguments in all client
+     * classes of State<T> that used that version of T, which is an undue
+     * burden on the user compared to safely enabling two-phase construction.
+     */
+    State(std::shared_ptr<T> domainState) : tVal(0.0), systemSize(0) {
+    	state = domainState;
+    }
+
+    /**
+     * An alternative constructor that also sets the system size. Analog of
+     * State(const long &).
+     */
+    State(std::shared_ptr<T> domainState, const long & numElements) : State(domainState) {
     	systemSize = numElements;
     }
 
@@ -363,6 +383,30 @@ public:
 	 */
 	int size() const {return systemSize;}
 };
+
+/**
+ * This is a builder for building instances of the State class.
+ *
+ * This builder can be used to initalize a State<T> as follows:
+ * @code
+ * State<MyClass> state = build<T>();
+ * State<MyClass> state2 = build<T,int>(4); // Forwards integer value of 4 to
+ * // the constructor of T.
+ * State<MyClass> state2 = build<T,int>(4,5); // Forwards both an integer value of
+ * // 4 to the constructor of T and a size of 5 to constructor of State.
+ * @endcode
+ *
+ * @param Optional list of arguments that are forwarded to constructor of the
+ * domain class T.
+ * @param The default size of the State - the total number of elements in the
+ * instance of T. This is an optional para
+ * @return A State<T> class initialized with the arguments, if provided.
+ */
+template<typename T, typename... Args>
+State<T> buildState(Args&& ...args, const long & size = 0) {
+	State<T> stateT(std::shared_ptr<T>(new T(std::forward<Args>(args)...)),size);
+	return stateT;
+}
 
 } /* namespace fire */
 

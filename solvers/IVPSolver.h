@@ -74,8 +74,8 @@ static int check_flag(void *flagvalue, char *funcname, int opt);
  *-------------------------------
  */
 // DOCS!-------------------------------------------------------
-template<typename T,typename ... Args>
-void setICs(N_Vector u, const State<T,Args...> & state) {
+template<typename T>
+void setICs(N_Vector u, const State<T> & state) {
 	  int i, j;
 	  realtype *udata;
 
@@ -95,11 +95,11 @@ void setICs(N_Vector u, const State<T,Args...> & state) {
 
 // DOCS!-------------------------------------------------------
 /* f routine. Compute f(t,u). */
-template<typename T,typename ... Args>
+template<typename T>
 int f(realtype t, N_Vector u,N_Vector udot, void *user_data) {
   realtype *udata, *dudata;
   int i, j;
-  State<T,Args...> * state = reinterpret_cast<State<T,Args...> *>(user_data);
+  State<T> * state = reinterpret_cast<State<T> *>(user_data);
 
   udata = NV_DATA_S(u);
   dudata = NV_DATA_S(udot);
@@ -243,7 +243,7 @@ static int check_flag(void *flagvalue, char *funcname, int opt)
 // I don't like that I must carry Args along here without using it just to
 // appease the compiler.
 
-template<typename T, typename ... Args>
+template<typename T>
 class IVPSolver {
 
 protected:
@@ -306,7 +306,7 @@ public:
 	 * This operation solves the system of equations specified in the State
 	 * @param the State describing the system to be solved.
 	 */
-	void solve(State<T,Args...> & state) {
+	void solve(State<T> & state) {
 
 		// Begin CVODE code. Adapted from their examples.
 
@@ -330,7 +330,7 @@ public:
 		abstol = ATOL;
 
 		// Set the initial conditions in u from the states
-		fire::cvode::setICs<T,Args...>(u, state);
+		fire::cvode::setICs<T>(u, state);
 
 		/* Call CVodeCreate to create the solver memory and specify the
 		 * Backward Differentiation Formula and the use of a Newton iteration */
@@ -341,7 +341,7 @@ public:
 		/* Call CVodeInit to initialize the integrator memory and specify the
 		 * user's right hand side function in u'=f(t,u), the inital time T0, and
 		 * the initial dependent variable vector u. */
-		flag = CVodeInit(cvode_mem, fire::cvode::f<T,Args...>, initialT, u);
+		flag = CVodeInit(cvode_mem, fire::cvode::f<T>, initialT, u);
 		if (fire::cvode::check_flag(&flag, "CVodeInit", 1))
 			return;
 

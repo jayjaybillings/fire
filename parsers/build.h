@@ -34,6 +34,7 @@
 
 #include <iostream>
 #include <vector>
+#include <utility>
 
 namespace fire {
 
@@ -51,35 +52,34 @@ namespace fire {
  * optimizations provided by the compiler. It may perform slowly when used in
  * debug mode with gcc since these optimizations may be disabled.
  *
- * @return an instance of class T created from the default constructor.
- */
-template<typename T>
-T build() {
-	T object;
-	return object;
-}
-
-/**
- * An implementation of the build template for classes that do not use
- * nullary/default constructors.
- * @param values of type K that should be passed to the appropriate constructor.
- * @return an instance of class T created from the alternative constructor.
- */
-//template<typename T, typename K>
-//T build(K values) {
-//	T object(values);
-//	return object;
-//}
-
-/**
- * An implementation of the build template for classes that do not use
+ * @param optional list of arguments for classes that do not use
  * nullary/default constructors and have either more than one or a variadic
  * number of arguments
- * @param full list argument values for the constructor of T
+ * @return an instance of class T.
  */
 template<typename T, typename... Args>
 T build(Args&& ... args) {
 	T object(std::forward<Args>(args)...);
+	return object;
+}
+
+/**
+ * An implementation of the build template for containers. This builder will
+ * construct a container of type T<K> and optionally pass the arguments Args
+ * to the constructor of that container.
+ *
+ * Clients that need the same type of functionality for their own container,
+ * but with arguments passed to a single class that is wrapped by the container
+ * should explicitly specialize build<>() on their own. (See solvers/State.h
+ * for an example.)
+ *
+ * @param optional list of arguments that are passed to the container's
+ * constructor.
+ * @return an instance of the container class T<K>.
+ */
+template<template <class, typename...> class T, typename K, typename... Args>
+T<K> build(Args&& ... args) {
+	T<K> object(std::forward<Args>(args)...);
 	return object;
 }
 

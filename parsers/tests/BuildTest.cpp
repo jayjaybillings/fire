@@ -35,6 +35,7 @@
 
 #include <boost/test/included/unit_test.hpp>
 #include <build.h>
+#include <vector>
 
 using namespace std;
 using namespace fire;
@@ -87,6 +88,17 @@ BOOST_AUTO_TEST_CASE(checkVariadicBuild) {
 	BOOST_REQUIRE_EQUAL(2,myStruct.A);
 	BOOST_REQUIRE_CLOSE(5.0,myStruct.B,1.0e-8);
 	BOOST_REQUIRE_EQUAL(10,myStruct.C);
+
+	return;
+}
+
+/**
+ * This operation checks  the container verison of build<>().
+ */
+BOOST_AUTO_TEST_CASE(checkContainerBuild) {
+
+	vector<TestStruct> testContainer = build<vector,TestStruct>(8);
+	BOOST_REQUIRE_EQUAL(8,testContainer.size());
 
 	return;
 }

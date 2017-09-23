@@ -61,13 +61,13 @@ namespace fire {
 
 // Getter for test struct data from a State<TestStruct>
 template<>
-double * State<TestStruct,const int &>::u() const {
+double * State<TestStruct>::u() const {
 	return state->y.data();
 };
 
 // Getter for test struct derivative data from a State<TestStruct>
 template<>
-double * State<TestStruct,const int &>::dudt(const double & t) const {
+double * State<TestStruct>::dudt(const double & t) const {
 
 	// k constant for this problem
 	const double k = 0.85;
@@ -114,13 +114,13 @@ BOOST_AUTO_TEST_CASE(checkSingleVariableSolve) {
 	// illustrates that the proper types must be used during the forward. If
 	// proper types are not used (i.e. - int instead of const int &) then the
 	// compiler will fail.
-	State<TestStruct, const int &> state(size, size);
+	State<TestStruct> state = buildState<TestStruct,const int &>(size, size);
 
 	// Set the initial t value on the state
 	double tInit = 0.0, t = 0.0, tFinal = 1.0;
 	state.t(t);
 	// Configure the solver
-	IVPSolver<TestStruct, const int &> solver;
+	IVPSolver<TestStruct> solver;
 	solver.t(t);
 	solver.tInit(tInit);
 	solver.tFinal(tFinal);

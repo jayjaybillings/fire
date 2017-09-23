@@ -130,10 +130,14 @@ BOOST_AUTO_TEST_CASE(checkStateAccessors) {
 	return;
 }
 
-BOOST_AUTO_TEST_CASE(checkConstructorArgForwarding) {
+/**
+ * This test checks the buildState<>() template and the ability to forward
+ * arguments to the constructor of the contained class.
+ */
+BOOST_AUTO_TEST_CASE(checkBuildState) {
 	// Create the state
 	int size = 2;
-	State<TestStruct,const int &> state(size,8);
+	State<TestStruct> state = buildState<TestStruct,const int &>(8, size);
 	BOOST_REQUIRE_EQUAL(size,state.size());
 	BOOST_REQUIRE_EQUAL(state.get().testK,8);
 }
