@@ -10,12 +10,14 @@ Numpy version, same + pandas: 19.6s
 Pure pandas, otherwise same, no initial data: >800s
 Pure pandas, otherwise same, initialized to zero: 165.3s
 Pure pandas, same, 4 set_value instead of iloc (used profiler): 21.07s 
+Pure pandas, same but with BRep extrema optimization: 18.1s
+Same but with bounding box: 14.7s
 
 Note: vertices.set_value(i,['x','y','z','inShape'],[x,y,z,inShape]) does not perform well.
 
 Profile command: time python -m cProfile pythonoce-test.py | grep "0000 "
 
-Next to final version:
+Pandas with iloc:
 ===
     10000    0.010    0.000    0.067    0.000 BRepBuilderAPI.py:2875(__init__)
     10000    0.012    0.000    1.996    0.000 BRepExtrema.py:201(__init__)
@@ -50,7 +52,7 @@ Next to final version:
     10000    0.027    0.000    0.027    0.000 {built-in method OCC._gp.gp_Pnt_swiginit}
     10000    0.019    0.000    0.019    0.000 {built-in method OCC._gp.new_gp_Pnt}
 
-Final version
+Pandas with 4 sets
 ===
     10000    0.006    0.000    0.043    0.000 BRepBuilderAPI.py:2875(__init__)
     10000    0.010    0.000    1.782    0.000 BRepExtrema.py:201(__init__)
@@ -65,3 +67,17 @@ Final version
     30000    0.004    0.000    0.004    0.000 {method 'random' of '_random.Random' objects}
     40000    0.060    0.000    0.060    0.000 {method 'set_value' of 'pandas._libs.index.IndexEngine' objects}
 
+https://translate.google.com/translate?sl=auto&tl=en&js=y&prev=_t&hl=en&ie=UTF-8&u=http%3A%2F%2Ftrac.lecad.si%2Fvaje%2Fwiki%2FPythonOcc%2Fprimitives&edit-text=&act=url
+
+100k produces ~12456 in 10x10x10 box with 20x20x20 sample space
+10k produces ~1262 in 10x10x10 box with 20x20x20 sample space
+
+splot 'point.csv' using 1:2:3 '%lf,%lf,%lf,%lf'
+
+Confirmed that with a bounding box all points go into the box:
+-1e-07 10.0000001 -1e-07 10.0000001 -1e-07 10.0000001
+10.000000199999999 10.000000199999999 10.000000199999999
+1000
+1000
+
+If you need a BRepBuilder use builder = BRep_Builder() from the OCC.BRep package.
