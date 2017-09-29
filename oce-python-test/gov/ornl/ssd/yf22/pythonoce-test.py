@@ -30,60 +30,26 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from mpmath import rand
 
-if __name__ == '__main__':
-    
-    # Number of points
-    n = 10000
-    
-    # Set the side length
-    side_length = 10.0
-    # The side length of the box that contains the shapes that will be tested
-    xSideLength = ySideLength = zSideLength = 0.0
-    xMin = xMax = yMin = yMax = zMin = zMax = 0.0
-    
-    # Create a shape to sample
-    shape = BRepPrimAPI_MakeBox(side_length, side_length, side_length).Shape()
-    print("Box type = ",shape.ShapeType())
-    print(TopAbs_SOLID)
- 
-#     stlReader = StlAPI_Reader() 
-#     shape = TopoDS_Shape() 
-#     stlReader.Read(shape, "cantilever.stl")
+'''
+This function creates a Pandas data frame that is configured with the right
+information for holding the points.
+@param n the number of rows in the data frame, i.e. - the number of points
+@return the data frame with columns x, y, z, and inShape. 'inShape' should be 0
+if the particle is not in the shape, 1 if it is.
+'''
+def createPointsDataFrame(n):
+    frame = pd.DataFrame(0.0, index=range(0, n), columns=('x', 'y', 'z', 'inShape'))
+    return frame
 
-    shape = TopoDS_Shape()
-    builder = BRep_Builder()
-    breptools_Read(shape, "cylinder.brep", builder);
-    breptools_Clean(shape)
-
-    print(shape.ShapeType())
-    
-    shapes = []
-    explorer = TopExp_Explorer(shape,TopAbs_FACE)
-    secondExplorer = TopExp_Explorer(shape,TopAbs_SOLID)
-    cylSolid = secondExplorer.Current()
-    print("CylSolid type = ",cylSolid.ShapeType())
-    shape = explorer.Current()
-    shapes.append(shape)
-    print(shape.ShapeType())
-    shape = explorer.Next()
-    shape = explorer.Current()
-    shapes.append(shape)
-    print(shape.ShapeType())
-    shape = explorer.Next()
-    shape = explorer.Current()
-    shapes.append(shape)
-    print(shape.ShapeType())
-    
-    topoBuilder = TopoDS_Builder()
-    shell = TopoDS_Shell()
-    topoBuilder.MakeShell(shell)
-    for face in shapes:
-        topoBuilder.Add(shell,face)
-        
-    solid = TopoDS_Solid()
-    topoBuilder.MakeSolid(solid)
-    topoBuilder.Add(solid,shell)
-
+'''
+This function performs a simple Monte Carlo sampling of the solid
+passed in as input and returns a list of coordinates in the solid.
+@param n the maximum number of samples to throw
+@param solid the solid that should be sampled
+@return a Pandas data fraame listing of points discovered in the 
+solid. Its length is less than n.
+'''
+def sampleSolid(n,solid,vertexList=None):
     # Create a bounding box for the shape
     boundingBox = Bnd_Box()
     brepbndlib_Add(solid, boundingBox)
@@ -91,21 +57,15 @@ if __name__ == '__main__':
     xSideLength = xMax - xMin
     ySideLength = yMax - yMin
     zSideLength = zMax - zMin
-    print(xMin, xMax, yMin, yMax, zMin, zMax)
-    print(xSideLength, ySideLength, zSideLength)
 
     # Create extrema sampler to measure if the point is in the shape. For now, 
     # just initialize it with the same shape. We'll load the vertex later.
-    brepDistShapeShape = BRepExtrema_DistShapeShape(solid, shape)
-    
-    print("Shell type = ",shell.ShapeType())
-    print("Solid type = ",solid.ShapeType())
+    brepDistShapeShape = BRepExtrema_DistShapeShape(solid, solid)
 
     # Create a random number of vertices and check to see which ones are
     # in the shape.    
-    vertices = pd.DataFrame(0.0, index=range(0, n), columns=('x', 'y', 'z', 'inShape'))
+    vertices = createPointsDataFrame(n)
     vertices.inShape = vertices.inShape.astype('int')
-    vertexList = []
     # Loop over the vertices
     for i in range(0, n):
         # Pick a random point
@@ -116,7 +76,6 @@ if __name__ == '__main__':
         gpPoint = gp_Pnt(x, y, z)
         vertexBuilder = BRepBuilderAPI_MakeVertex(gpPoint)
         vertex = vertexBuilder.Vertex()
-        vertexList.append(vertex)
         # Load the vertex into the extrema calculator
         brepDistShapeShape.LoadS2(vertex)
         brepDistShapeShape.Perform()
@@ -127,26 +86,75 @@ if __name__ == '__main__':
         vertices.set_value(i, 'y', y)
         vertices.set_value(i, 'z', z)
         vertices.set_value(i, 'inShape', inShape)
+        if inShape != 0:
+            vertexList.append(vertex)
 
     # Slice the data frame so that only the x,y,z variables for points in the box are saved.
     innerVertices = vertices[vertices.inShape == 1]
     innerCoords = innerVertices[['x', 'y', 'z']]
-    # Write the coordinates that are saved to disk.
-    innerCoords.to_csv('point.csv', index=False)
     
-    # Just dump some diagnostics
-    print(len(innerVertices))
-    print(len(vertices))
+    return innerCoords
+
+'''
+This is the main method that lauches the sampling job.
+'''
+if __name__ == '__main__':
     
-    # Create a matplot lib figure and display the particles in 3D
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    ax.scatter(innerCoords.x, innerCoords.y, innerCoords.z)
-    plt.show()
+    # Number of points
+    n = 100000
+    
+    # List for storing TopoDS_Shape instances of vertices if required.
+    vertexList = []
+    
+    # Set the side length
+    side_length = 10.0
+    # The side length of the box that contains the shapes that will be tested
+    xSideLength = ySideLength = zSideLength = 0.0
+    xMin = xMax = yMin = yMax = zMin = zMax = 0.0
+    
+    # Read the file to get the shape to be sampled.
+    shape = TopoDS_Shape()
+    builder = BRep_Builder()
+    breptools_Read(shape, "cantilever.brep", builder);
+    
+    # Loop over the shape pulled from the input and look for solids.
+    solids = [] # A list for storing solids from the file
+    i = 0 # A counter for writing vertices/points
+    allPointsDataFrame = pd.DataFrame([]) # A dataframe for ALL points
+    # OpenCASCADE can only successfully execute point inclusion queries if the 
+    # shape in question is a full solid, which is defined in their topology as 
+    # TopAbs_SOLID. Each solid in the file can sampled individually by pulling
+    # it from the compound.
+    if shape.ShapeType() != TopAbs_SOLID:
+        # Create a topology explorer and pull all the solids from the shape
+        explorer = TopExp_Explorer(shape,TopAbs_SOLID)
+        # Loop over all the solids
+        while explorer.More():
+            solid = explorer.Current()
+            #pointsInSolid = sampleSolid(n,solid)
+            pointsInSolid = sampleSolid(n,solid,vertexList)
+            # Write the coordinates that are saved to disk.
+            i = i + 1
+            fileName = 'solid_' + str(i) + '.csv'
+            pointsInSolid.to_csv(fileName, index=False)     
+            # Store the points for later
+            allPointsDataFrame = allPointsDataFrame.append(pointsInSolid.copy(), ignore_index=False)
+            # Store the solid for later reference (i.e. - visualization)
+            solids.append(solid)
+            # Go to the next solid if one exists
+            explorer.Next()
+    else:
+        # Otherwise, just quit
+        exit("No solids found in input. Aborting.")
+        
+     # Create a matplot lib figure and display the particles in 3D
+#     fig = plt.figure()
+#     ax = fig.add_subplot(111, projection='3d')
+#     ax.scatter(allPointsDataFrame.x, allPointsDataFrame.y, allPointsDataFrame.z)
+#     plt.show()
      
     # Show the actual shape in 3D
     display, start_display, add_menu, add_function_to_menu = init_display()
     display.DisplayShape(vertexList, update=True)
-    display.DisplayShape(shell, update=True)
     start_display()
     
