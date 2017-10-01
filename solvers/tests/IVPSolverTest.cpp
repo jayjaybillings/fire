@@ -38,6 +38,7 @@
 #include <algorithm>
 #include <IVPSolver.h>
 #include <iostream>
+#include <math.h>
 
 using namespace std;
 using namespace fire;
@@ -92,20 +93,23 @@ BOOST_AUTO_TEST_CASE(checkAccessors) {
 	BOOST_REQUIRE_CLOSE(0.0,solver.t(),1.0e-8);
 	BOOST_REQUIRE_CLOSE(0.0,solver.tInit(),1.0e-8);
 	BOOST_REQUIRE_CLOSE(0.0,solver.tFinal(),1.0e-8);
+	BOOST_REQUIRE_EQUAL(10,solver.maxOutputSteps());
 	solver.t(testTime);
 	BOOST_REQUIRE_CLOSE(testTime,solver.t(),1.0e-8);
 	solver.tInit(testTime);
 	BOOST_REQUIRE_CLOSE(testTime,solver.tInit(),1.0e-8);
 	solver.tFinal(testTime);
 	BOOST_REQUIRE_CLOSE(testTime,solver.tFinal(),1.0e-8);
+	solver.maxOutputSteps(15);
+	BOOST_REQUIRE_EQUAL(15,solver.maxOutputSteps());
 
 	return;
 }
 
 /**
  * This operation checks the IVPSolver to make sure that it can solve a simple
- * ODE: y' = 0.85y. This is an example on Wikipedia with the solution
- * y = 19e^(0.85t).
+ * ODE: y' = 0.85y. This is an example from Wikipedia with the solution
+ * y = Ce^(0.85t) for y(0) = C. For y(0) = 1, the solution is e^(0.85t).
  */
 BOOST_AUTO_TEST_CASE(checkSingleVariableSolve) {
 	int size = 1;
@@ -117,17 +121,25 @@ BOOST_AUTO_TEST_CASE(checkSingleVariableSolve) {
 	State<TestStruct> state = buildState<TestStruct,const int &>(size, size);
 
 	// Set the initial t value on the state
-	double tInit = 0.0, t = 0.0, tFinal = 1.0;
+	double tInit = 0.0, t = 0.0, tFinal = 1.0, y0 = 1.0, tol = 1.0e-3;
 	state.t(t);
+	// Set the initial conditions
+	auto & myStruct = state.get();
+	myStruct.y[0] = 1.0;
 	// Configure the solver
 	IVPSolver<TestStruct> solver;
 	solver.t(t);
 	solver.tInit(tInit);
 	solver.tFinal(tFinal);
 
+	// Execute the solver using the fully-configured state.
 	solver.solve(state);
-
-	std::cout << "value = " << state.get().y[0] << std::endl;
+    // Make sure that the final time has been updated on the state and that the
+	// result is close enough for y(0) = 1.0, t = 1.0, y = e^(0.85).
+    BOOST_REQUIRE_CLOSE(tFinal,state.t(),1.0e-8);
+    double expected = exp(0.85);
+    bool closeEnough = ((expected - state.get().y[0])/expected) < tol;
+    BOOST_REQUIRE(closeEnough);
 
 	return;
 }

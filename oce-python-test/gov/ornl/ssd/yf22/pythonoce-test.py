@@ -115,7 +115,7 @@ if __name__ == '__main__':
     # Read the file to get the shape to be sampled.
     shape = TopoDS_Shape()
     builder = BRep_Builder()
-    breptools_Read(shape, "cantilever.brep", builder);
+    breptools_Read(shape, "cantilever-unrepaired-refined.brep", builder);
     
     # Loop over the shape pulled from the input and look for solids.
     solids = [] # A list for storing solids from the file
@@ -154,7 +154,7 @@ if __name__ == '__main__':
 #     plt.show()
      
     # Show the actual shape in 3D
-    display, start_display, add_menu, add_function_to_menu = init_display()
-    display.DisplayShape(vertexList, update=True)
-    start_display()
-    
+#     display, start_display, add_menu, add_function_to_menu = init_display()
+#     display.DisplayShape(vertexList, update=True)
+#     start_display()
+     

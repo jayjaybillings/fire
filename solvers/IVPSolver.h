@@ -52,7 +52,6 @@ namespace cvode {
 #define NEQ   MX*MY          /* number of equations       */
 #define ATOL  RCONST(1.0e-5) /* scalar absolute tolerance */
 #define DTOUT RCONST(0.1)    /* output time increment     */
-#define NOUT  10             /* number of output times    */
 
 #define ZERO RCONST(0.0)
 #define HALF RCONST(0.5)
@@ -62,7 +61,7 @@ namespace cvode {
 
 /* Private Helper Functions */
 static void PrintHeader(realtype reltol, realtype abstol, realtype umax, double t);
-static void PrintOutput(realtype t, realtype umax, long int nst);
+static void PrintOutput(const realtype & t, const realtype & umax, const long int & nst);
 static void PrintFinalStats(void *cvode_mem);
 
 /* Private function to check function return values */
@@ -73,7 +72,13 @@ static int check_flag(void *flagvalue, char *funcname, int opt);
  * Functions called by the solver
  *-------------------------------
  */
-// DOCS!-------------------------------------------------------
+
+/**
+ * This operation pulls the initial conditions from the state and provides them
+ * to the solver.
+ * @param the vector u that should be filled with initial conditions for the solver.
+ * @param the user-provided state that will be queried for initial conditions.
+ */
 template<typename T>
 void setICs(N_Vector u, const State<T> & state) {
 	  int i, j;
@@ -93,8 +98,15 @@ void setICs(N_Vector u, const State<T> & state) {
 	  return;
 }
 
-// DOCS!-------------------------------------------------------
-/* f routine. Compute f(t,u). */
+/**
+ * This is the basic function f(t,u) in du/dt = f(t,u). It provides values
+ * for the derivatives as required by CVODE.
+ * @param the time
+ * @param the vector u of current state values in the system
+ * @param the vector udot also known as du/dt. This array is updated in place
+ * with the values of f(t,u).
+ * @param the user data, which is reinterpreted as State<T>.
+ */
 template<typename T>
 int f(realtype t, N_Vector u,N_Vector udot, void *user_data) {
   realtype *udata, *dudata;
@@ -104,7 +116,7 @@ int f(realtype t, N_Vector u,N_Vector udot, void *user_data) {
   udata = NV_DATA_S(u);
   dudata = NV_DATA_S(udot);
 
-  // Update the state
+  // Update the state with the test values of u.
   state->u(udata);
 
   // Compute the time derivatives
@@ -127,28 +139,26 @@ int f(realtype t, N_Vector u,N_Vector udot, void *user_data) {
 /* Print first lines of output (problem description) */
 static void PrintHeader(realtype reltol, realtype abstol, realtype umax, double t)
 {
-  printf("\n2-D Advection-Diffusion Equation\n");
-  printf("Mesh dimensions = %d X %d\n", MX, MY);
-  printf("Total system size = %d\n", NEQ);
+	// Would be nice for the header to be configurable by users.
+	printf("\nInitial Value Problem Solver Initializing\n");
 #if defined(SUNDIALS_EXTENDED_PRECISION)
-  printf("Tolerance parameters: reltol = %Lg   abstol = %Lg\n\n",
-         reltol, abstol);
-  printf("At t = %Lg      max.norm(u) =%14.6Le \n", T0, umax);
+	printf("Tolerance parameters: reltol = %Lg   abstol = %Lg\n\n",
+			reltol, abstol);
+	printf("At t = %Lg      max.norm(u) =%14.6Le \n", T0, umax);
 #elif defined(SUNDIALS_DOUBLE_PRECISION)
-  printf("Tolerance parameters: reltol = %g   abstol = %g\n\n",
-         reltol, abstol);
-  printf("At t = %g      max.norm(u) =%14.6e \n", t, umax);
+	printf("Tolerance parameters: reltol = %g   abstol = %g\n\n", reltol,
+			abstol);
+	printf("At t = %g      max.norm(u) =%14.6e \n", t, umax);
 #else
-  printf("Tolerance parameters: reltol = %g   abstol = %g\n\n", reltol, abstol);
-  printf("At t = %g      max.norm(u) =%14.6e \n", T0, umax);
+	printf("Tolerance parameters: reltol = %g   abstol = %g\n\n", reltol, abstol);
 #endif
 
-  return;
+	return;
 }
 
 // -------------- FIXME! Replace with observer --------------- //
 /* Print current value */
-static void PrintOutput(realtype t, realtype umax, long int nst)
+static void PrintOutput(const realtype & t, const realtype & umax, const long int & nst)
 {
 #if defined(SUNDIALS_EXTENDED_PRECISION)
   printf("At t = %4.2Lf   max.norm(u) =%14.6Le   nst = %4ld\n", t, umax, nst);
@@ -237,12 +247,16 @@ static int check_flag(void *flagvalue, char *funcname, int opt)
 } /* namespace cvode */
 
 /**
- * !------------ ADD ODESolver Docs! ----------------------------!
+ * This class numerically integrates a set of ordinary differential equations
+ * \f[
+ * \frac{d\vec{u}u}{dt} = \vec{f}(t,\vec{u})
+ * \f]
+ * give
+ * \f[
+ * u(t=t_{initial}), t_{initial} \le t \ge t_{final}
+ * \f]
+ *
  */
-
-// I don't like that I must carry Args along here without using it just to
-// appease the compiler.
-
 template<typename T>
 class IVPSolver {
 
@@ -263,6 +277,16 @@ protected:
 	 */
 	double currentT = 0.0;
 
+	/**
+	 * The maximum number of "output" steps the solver should take. An
+	 * output step is a step where output is produced by the solver at
+	 * a regular user-specified interval. The solver may take more
+	 * computational steps than output steps but will always report
+	 * for a number of output steps required to meet the final time or
+	 * the maximum number of output steps, whichever is less. The default
+	 * value is 10.
+	 */
+	int maxNumOutputSteps = 10;
 
 public:
 
@@ -285,6 +309,12 @@ public:
 	void tFinal(const double & tVal) { finalT = tVal;};
 
 	/**
+	 * This operation sets the maximum number of output steps in the solver.
+	 * @param the number of maximum output steps the solver should produce.
+	 */
+	void maxOutputSteps(const int & steps) { maxNumOutputSteps = steps;};
+
+	/**
 	 * This operation returns the current value of t in the system.
 	 * @param the current value of t in the solver
 	 */
@@ -303,14 +333,20 @@ public:
 	double tFinal() const {return finalT;};
 
 	/**
+	 * This operation returns the maximum number of output steps that the
+	 * solver will produce.
+	 * @param the number of maximum output steps the solver will produce.
+	 */
+	int maxOutputSteps() { return maxNumOutputSteps;};
+
+	/**
 	 * This operation solves the system of equations specified in the State
 	 * @param the State describing the system to be solved.
 	 */
 	void solve(State<T> & state) {
 
 		// Begin CVODE code. Adapted from their examples.
-
-		realtype dx, dy, reltol, abstol, t, tout, umax;
+		realtype dx, dy, reltol, abstol, tout, umax;
 		N_Vector u;
 		void *cvode_mem;
 		int iout, flag;
@@ -366,18 +402,21 @@ public:
 //        if(fire::cvode::check_flag(&flag, "CVDlsSetBandJacFn", 1)) return;
 
 		/* In loop over output points: call CVode, print results, test for errors */
-
 		umax = N_VMaxNorm(u);
 		fire::cvode::PrintHeader(reltol, abstol, umax, initialT);
-		for (iout = 1, tout = finalT; iout <= NOUT; iout++, tout += DTOUT) {
-			flag = CVode(cvode_mem, tout, u, &t, CV_NORMAL);
+		for (iout = 1, tout = DTOUT; iout <= maxNumOutputSteps && currentT < finalT; iout++, tout += DTOUT) {
+			flag = CVode(cvode_mem, tout, u, &currentT, CV_NORMAL);
 			if (fire::cvode::check_flag(&flag, "CVode", 1))
 				break;
 			umax = N_VMaxNorm(u);
 			flag = CVodeGetNumSteps(cvode_mem, &nst);
 			fire::cvode::check_flag(&flag, "CVodeGetNumSteps", 1);
+			// Update the state
+			realtype * udata = NV_DATA_S(u);
+			state.t(currentT);
+			state.u(udata);
 			// Replace! - Notify observers that the state has changed
-			fire::cvode::PrintOutput(t, umax, nst);
+			fire::cvode::PrintOutput(currentT, umax, nst);
 		}
 
 		fire::cvode::PrintFinalStats(cvode_mem); /* Print some final statistics   */

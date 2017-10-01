@@ -16,6 +16,8 @@ Same but with bounding box: 14.7s
 Note: vertices.set_value(i,['x','y','z','inShape'],[x,y,z,inShape]) does not perform well.
 
 Profile command: time python -m cProfile pythonoce-test.py | grep "0000 "
+time python -m cProfile -s cumtime pythonoce-test.py
+time python -m cProfile -s tottime pythonoce-test.py
 
 Pandas with iloc:
 ===
@@ -81,3 +83,32 @@ Confirmed that with a bounding box all points go into the box:
 1000
 
 If you need a BRepBuilder use builder = BRep_Builder() from the OCC.BRep package.
+
+Don't repair the STL mesh if it already passes a solid test in the mesh workbench FreeCAD. Also don't mess with the normals or other information. If you do, then you may not be able to create a solid from the repaired STL mesh or refine that solid.
+
+Refinement - don't
+===
+10k particles
+[bkj@naledi yf22]$ time python pythonoce-test.py # RU
+
+real	0m33.432s
+user	0m33.278s
+sys	0m0.072s
+
+[bkj@naledi yf22]$ time python pythonoce-test.py # RR
+
+real	1m8.547s
+user	1m8.294s
+sys	0m0.080s
+
+[bkj@naledi yf22]$ time python pythonoce-test.py # UR
+
+real	0m51.323s
+user	0m51.138s
+sys	0m0.075s
+[bkj@naledi yf22]$ time python pythonoce-test.py # UU
+
+real	0m35.467s
+user	0m35.292s
+sys	0m0.083s
+[bkj@naledi yf22]$ 
