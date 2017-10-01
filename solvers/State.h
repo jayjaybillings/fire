@@ -169,7 +169,7 @@ protected:
 	 * This function notifies the monitors.
 	 */
     void notifyMonitors() {
-    	// Nothing special - just fall them.
+    	// Nothing special - just call them.
     	for(auto const &monitor : monitors) {
            monitor(*this);
     	}

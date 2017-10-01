@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['energyrelease',['energyRelease',['../a00033.html#a07f4db35c5d9bca2d5c5fc8529ec3801',1,'fire::astrophysics::Reaction']]]
+  ['energyrelease',['energyRelease',['../a00734.html#a07f4db35c5d9bca2d5c5fc8529ec3801',1,'fire::astrophysics::Reaction']]]
 ];

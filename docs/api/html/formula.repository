@@ -5,3 +5,7 @@
 \form#4:$10^9$
 \form#5:\[R = R_k\]
 \form#6:\[ p_s = s\rho^{(n_R -1)}. \]
+\form#7:\[ \frac{d\vec{u}u}{dt} = \vec{f}(t,\vec{u}) \]
+\form#8:\[ u(t=t_{initial}), t_{initial} \le t \ge t_{final} \]
+\form#9:\[ \frac{d\vec{u}}{dt} = \vec{f}(t,\vec{u}) \]
+\form#10:\[ u(t=t_{0}), t_{0} \ge t \le t_{f} \]

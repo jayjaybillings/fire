@@ -1,13 +1,12 @@
 var searchData=
 [
-  ['name',['name',['../a01624.html#abb359091e992ad4cb4cde0faacf6021b',1,'fire::astrophysics::Reaction::name()'],['../a01969.html#a4aea10c6b155eaeeb52dedcef2dcf849',1,'fire::astrophysics::Species::name()']]],
-  ['nelements',['nElements',['../a02182.html#aacd43176775cdff868dd47f1577b5255',1,'fire::TensorShape']]],
-  ['networkfilename',['networkFileName',['../a01625.html#abcc4209749ecd64d0ab9621210536ade',1,'fire::astrophysics::ReactionNetwork']]],
-  ['neutronnumber',['neutronNumber',['../a01969.html#acd295953eb640a1354df0be96e63f1cd',1,'fire::astrophysics::Species']]],
-  ['nopreferredstorageorderbit',['NoPreferredStorageOrderBit',['../a03163.html#ga3c186ad80ddcf5e2ed3d7ee31cca1860',1,'Eigen']]],
-  ['numproducts',['numProducts',['../a01624.html#aa59b550e5dbdd34c9c563e7dfc2cbc1e',1,'fire::astrophysics::Reaction']]],
-  ['numreactants',['numReactants',['../a01624.html#a86154569e16ef396c93cdf97c5eaf5b7',1,'fire::astrophysics::Reaction']]],
-  ['numreactiongroups',['numReactionGroups',['../a01625.html#a91f7685b58b70eca227a098717dfe2c5',1,'fire::astrophysics::ReactionNetwork']]],
-  ['numreactions',['numReactions',['../a01625.html#ade8f4d9aa1524cbc45809e7943725d59',1,'fire::astrophysics::ReactionNetwork']]],
-  ['numspecies',['numSpecies',['../a01625.html#a17ffe8399181590d59d3d339ce867709',1,'fire::astrophysics::ReactionNetwork']]]
+  ['shape',['shape',['../a00838.html#ab35d7a07696ced19cb5f0cebb6406ce4',1,'fire::Tensor::shape()'],['../a00850.html#a7c75547b5c68e7ba1d1da6f7bba0b258',1,'fire::TensorShape::shape()']]],
+  ['sourcefile',['sourceFile',['../a00778.html#acf921ee916266efe70be5b24bec37fce',1,'fire::LocalParser']]],
+  ['species',['species',['../a00738.html#ac3811889f4866a29a49ce3a8d0e80cad',1,'fire::astrophysics::ReactionNetwork']]],
+  ['state',['state',['../a00754.html#ac59dffce1577673d04cd222c0f769c11',1,'fire::System::state()'],['../a00818.html#a9a75139f1d613abc9fb82600757087f6',1,'fire::State::state()']]],
+  ['statisticalfactor',['statisticalFactor',['../a00734.html#a439daff55fecd97cafc96f204570376a',1,'fire::astrophysics::Reaction']]],
+  ['stepid',['stepID',['../a00750.html#ac3a3c58d7ff087d09ea71f5f33264853',1,'fire::ProfileStepper']]],
+  ['steps',['steps',['../a00750.html#a4b388e68798f39795386758f85525cf3',1,'fire::ProfileStepper']]],
+  ['stepsizes',['stepSizes',['../a00750.html#a3ab053b93662a362fa16147e88a03c22',1,'fire::ProfileStepper']]],
+  ['systemsize',['systemSize',['../a00818.html#a08f8f4ea745ae855ef730896efabf1ae',1,'fire::State']]]
 ];

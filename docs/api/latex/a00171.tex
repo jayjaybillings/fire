@@ -1,0 +1,377 @@
+\hypertarget{a00171}{}\section{fire Namespace Reference}
+\label{a00171}\index{fire@{fire}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{a00854}{array\+\_\+size}
+\item 
+struct \hyperlink{a00858}{array\+\_\+size$<$ std\+::array$<$ T, N $>$ $>$}
+\item 
+class \hyperlink{a00758}{Delimited\+Text\+Parser}
+\item 
+class \hyperlink{a00834}{Eigen\+Provider}
+\item 
+class \hyperlink{a00830}{Eigen\+Tensor\+Provider}
+\item 
+class \hyperlink{a00762}{I\+Local\+Parser}
+\item 
+class \hyperlink{a00766}{I\+N\+I\+Property\+Parser}
+\item 
+struct \hyperlink{a00862}{Initializer}
+\item 
+struct \hyperlink{a00870}{Initializer$<$ Fire\+Tensor, Scalar, 0 $>$}
+\item 
+struct \hyperlink{a00866}{Initializer$<$ Fire\+Tensor, Scalar, 1 $>$}
+\item 
+class \hyperlink{a00770}{I\+Parser}
+\item 
+class \hyperlink{a00774}{I\+Property\+Parser}
+\item 
+class \hyperlink{a00746}{I\+Stepper}
+\item 
+class \hyperlink{a00814}{I\+V\+P\+Solver}
+\item 
+class \hyperlink{a00778}{Local\+Parser}
+\item 
+class \hyperlink{a00750}{Profile\+Stepper}
+\item 
+struct \hyperlink{a00846}{Provider\+Builder}
+\item 
+class \hyperlink{a00818}{State}
+\item 
+struct \hyperlink{a00782}{String\+Caster}
+\item 
+struct \hyperlink{a00798}{String\+Caster$<$ bool $>$}
+\item 
+struct \hyperlink{a00786}{String\+Caster$<$ double $>$}
+\item 
+struct \hyperlink{a00790}{String\+Caster$<$ float $>$}
+\item 
+struct \hyperlink{a00794}{String\+Caster$<$ int $>$}
+\item 
+class \hyperlink{a00754}{System}
+\item 
+class \hyperlink{a00838}{Tensor}
+\item 
+class \hyperlink{a00842}{Tensor\+Provider}
+\item 
+class \hyperlink{a00850}{Tensor\+Shape}
+\item 
+class \hyperlink{a00826}{Vector}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Scalar $>$ }\\using \hyperlink{a00171_a1bf491fd1c876e2808648b2fd291e3dd}{Tensor\+Reference} = std\+::pair$<$ std\+::vector$<$ Scalar $>$, \hyperlink{a00850}{Tensor\+Shape} $>$
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$$>$ }\\\hyperlink{a00734}{astrophysics\+::\+Reaction} \hyperlink{a00171_abca66b4f2a1543308b663714bd8b4855}{build} (const vector$<$ string $>$ \&lines)
+\item 
+{\footnotesize template$<$$>$ }\\\hyperlink{a00778}{Local\+Parser}$<$ vector$<$ \hyperlink{a00734}{Reaction} $>$ $>$ \hyperlink{a00171_aaf82cc265522a41ebc36e8405e0c7559}{build} (const string \&source)
+\item 
+{\footnotesize template$<$$>$ }\\\hyperlink{a00778}{Local\+Parser}$<$ vector$<$ \hyperlink{a00742}{Species} $>$ $>$ \hyperlink{a00171_a138f22945f7a7ec642432fd24a94b414}{build} (const string \&source)
+\item 
+{\footnotesize template$<$typename T , typename... Args$>$ }\\T \hyperlink{a00171_ac7deda7dc809d0d45b8bfed78c8232f9}{build} (Args \&\&... args)
+\item 
+{\footnotesize template$<$template$<$ class, typename... $>$ class T, typename K , typename... Args$>$ }\\T$<$ K $>$ \hyperlink{a00171_a6b760990569b5c37dc8db51881ae9646}{build} (Args \&\&... args)
+\item 
+std\+::vector$<$ std\+::string $>$ \hyperlink{a00171_ac3f0360fae13ec5b8b93251c695e1821}{split\+String} (const std\+::string \&line, const std\+::string \&delimiter)
+\item 
+std\+::vector$<$ std\+::string $>$ \hyperlink{a00171_afe6f0aa2af9238d6a4e0c47c6ad4caa5}{split\+String} (const std\+::string \&line)
+\item 
+{\footnotesize template$<$$>$ }\\\hyperlink{a00766}{I\+N\+I\+Property\+Parser} \hyperlink{a00171_a624f274bd6de1d7b829c9883ac3397cd}{build} (const std\+::string \&source)
+\item 
+{\footnotesize template$<$typename T $>$ }\\shared\+\_\+ptr$<$ vector$<$ T $>$ $>$ \hyperlink{a00171_a2b47cfd8a5d8711cdc55e1397487b90b}{parse} (const string \&source)
+\item 
+{\footnotesize template$<$typename T , typename... Args$>$ }\\\hyperlink{a00818}{State}$<$ T $>$ \hyperlink{a00171_afad7faa08ea9d4ad30b439b1d1719dd9}{build\+State} (Args \&\&...args, const long \&size=0)
+\item 
+{\footnotesize template$<$typename Scalar $>$ }\\auto \hyperlink{a00171_aaab26473f8b0cb78cff67ae06ff7ce80}{make\+\_\+tensor\+\_\+reference} (Scalar $\ast$data, \hyperlink{a00850}{Tensor\+Shape} \&shape) -\/$>$ \hyperlink{a00171_a1bf491fd1c876e2808648b2fd291e3dd}{Tensor\+Reference}$<$ Scalar $>$
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+ Copyright (c) 2016-\/, U\+T-\/\+Battelle, L\+LC All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met\+:
+
+Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+Neither the name of fern nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+T\+H\+IS S\+O\+F\+T\+W\+A\+RE IS P\+R\+O\+V\+I\+D\+ED BY T\+HE C\+O\+P\+Y\+R\+I\+G\+HT H\+O\+L\+D\+E\+RS A\+ND C\+O\+N\+T\+R\+I\+B\+U\+T\+O\+RS \char`\"{}\+A\+S I\+S\char`\"{} A\+ND A\+NY E\+X\+P\+R\+E\+SS OR I\+M\+P\+L\+I\+ED W\+A\+R\+R\+A\+N\+T\+I\+ES, I\+N\+C\+L\+U\+D\+I\+NG, B\+UT N\+OT L\+I\+M\+I\+T\+ED TO, T\+HE I\+M\+P\+L\+I\+ED W\+A\+R\+R\+A\+N\+T\+I\+ES OF M\+E\+R\+C\+H\+A\+N\+T\+A\+B\+I\+L\+I\+TY A\+ND F\+I\+T\+N\+E\+SS F\+OR A P\+A\+R\+T\+I\+C\+U\+L\+AR P\+U\+R\+P\+O\+SE A\+RE D\+I\+S\+C\+L\+A\+I\+M\+ED. IN NO E\+V\+E\+NT S\+H\+A\+LL T\+HE C\+O\+P\+Y\+R\+I\+G\+HT H\+O\+L\+D\+ER OR C\+O\+N\+T\+R\+I\+B\+U\+T\+O\+RS BE L\+I\+A\+B\+LE F\+OR A\+NY D\+I\+R\+E\+CT, I\+N\+D\+I\+R\+E\+CT, I\+N\+C\+I\+D\+E\+N\+T\+AL, S\+P\+E\+C\+I\+AL, E\+X\+E\+M\+P\+L\+A\+RY, OR C\+O\+N\+S\+E\+Q\+U\+E\+N\+T\+I\+AL D\+A\+M\+A\+G\+ES (I\+N\+C\+L\+U\+D\+I\+NG, B\+UT N\+OT L\+I\+M\+I\+T\+ED TO, P\+R\+O\+C\+U\+R\+E\+M\+E\+NT OF S\+U\+B\+S\+T\+I\+T\+U\+TE G\+O\+O\+DS OR S\+E\+R\+V\+I\+C\+ES; L\+O\+SS OF U\+SE, D\+A\+TA, OR P\+R\+O\+F\+I\+TS; OR B\+U\+S\+I\+N\+E\+SS I\+N\+T\+E\+R\+R\+U\+P\+T\+I\+ON) H\+O\+W\+E\+V\+ER C\+A\+U\+S\+ED A\+ND ON A\+NY T\+H\+E\+O\+RY OF L\+I\+A\+B\+I\+L\+I\+TY, W\+H\+E\+T\+H\+ER IN C\+O\+N\+T\+R\+A\+CT, S\+T\+R\+I\+CT L\+I\+A\+B\+I\+L\+I\+TY, OR T\+O\+RT (I\+N\+C\+L\+U\+D\+I\+NG N\+E\+G\+L\+I\+G\+E\+N\+CE OR O\+T\+H\+E\+R\+W\+I\+SE) A\+R\+I\+S\+I\+NG IN A\+NY W\+AY O\+UT OF T\+HE U\+SE OF T\+H\+IS S\+O\+F\+T\+W\+A\+RE, E\+V\+EN IF A\+D\+V\+I\+S\+ED OF T\+HE P\+O\+S\+S\+I\+B\+I\+L\+I\+TY OF S\+U\+CH D\+A\+M\+A\+GE.
+
+\subsubsection*{Author(s)\+: Jay Jay Billings (jayjaybillings  gmail  com) }
+
+
+
+ Copyright (c) 2015-\/, U\+T-\/\+Battelle, L\+LC All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met\+:
+
+Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+Neither the name of fern nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+T\+H\+IS S\+O\+F\+T\+W\+A\+RE IS P\+R\+O\+V\+I\+D\+ED BY T\+HE C\+O\+P\+Y\+R\+I\+G\+HT H\+O\+L\+D\+E\+RS A\+ND C\+O\+N\+T\+R\+I\+B\+U\+T\+O\+RS \char`\"{}\+A\+S I\+S\char`\"{} A\+ND A\+NY E\+X\+P\+R\+E\+SS OR I\+M\+P\+L\+I\+ED W\+A\+R\+R\+A\+N\+T\+I\+ES, I\+N\+C\+L\+U\+D\+I\+NG, B\+UT N\+OT L\+I\+M\+I\+T\+ED TO, T\+HE I\+M\+P\+L\+I\+ED W\+A\+R\+R\+A\+N\+T\+I\+ES OF M\+E\+R\+C\+H\+A\+N\+T\+A\+B\+I\+L\+I\+TY A\+ND F\+I\+T\+N\+E\+SS F\+OR A P\+A\+R\+T\+I\+C\+U\+L\+AR P\+U\+R\+P\+O\+SE A\+RE D\+I\+S\+C\+L\+A\+I\+M\+ED. IN NO E\+V\+E\+NT S\+H\+A\+LL T\+HE C\+O\+P\+Y\+R\+I\+G\+HT H\+O\+L\+D\+ER OR C\+O\+N\+T\+R\+I\+B\+U\+T\+O\+RS BE L\+I\+A\+B\+LE F\+OR A\+NY D\+I\+R\+E\+CT, I\+N\+D\+I\+R\+E\+CT, I\+N\+C\+I\+D\+E\+N\+T\+AL, S\+P\+E\+C\+I\+AL, E\+X\+E\+M\+P\+L\+A\+RY, OR C\+O\+N\+S\+E\+Q\+U\+E\+N\+T\+I\+AL D\+A\+M\+A\+G\+ES (I\+N\+C\+L\+U\+D\+I\+NG, B\+UT N\+OT L\+I\+M\+I\+T\+ED TO, P\+R\+O\+C\+U\+R\+E\+M\+E\+NT OF S\+U\+B\+S\+T\+I\+T\+U\+TE G\+O\+O\+DS OR S\+E\+R\+V\+I\+C\+ES; L\+O\+SS OF U\+SE, D\+A\+TA, OR P\+R\+O\+F\+I\+TS; OR B\+U\+S\+I\+N\+E\+SS I\+N\+T\+E\+R\+R\+U\+P\+T\+I\+ON) H\+O\+W\+E\+V\+ER C\+A\+U\+S\+ED A\+ND ON A\+NY T\+H\+E\+O\+RY OF L\+I\+A\+B\+I\+L\+I\+TY, W\+H\+E\+T\+H\+ER IN C\+O\+N\+T\+R\+A\+CT, S\+T\+R\+I\+CT L\+I\+A\+B\+I\+L\+I\+TY, OR T\+O\+RT (I\+N\+C\+L\+U\+D\+I\+NG N\+E\+G\+L\+I\+G\+E\+N\+CE OR O\+T\+H\+E\+R\+W\+I\+SE) A\+R\+I\+S\+I\+NG IN A\+NY W\+AY O\+UT OF T\+HE U\+SE OF T\+H\+IS S\+O\+F\+T\+W\+A\+RE, E\+V\+EN IF A\+D\+V\+I\+S\+ED OF T\+HE P\+O\+S\+S\+I\+B\+I\+L\+I\+TY OF S\+U\+CH D\+A\+M\+A\+GE.
+
+\subsubsection*{Author(s)\+: Jay Jay Billings (jayjaybillings  gmail  com) }
+
+
+
+ Copyright (c) 2017-\/, U\+T-\/\+Battelle, L\+LC All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met\+:
+
+Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+Neither the name of fern nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+T\+H\+IS S\+O\+F\+T\+W\+A\+RE IS P\+R\+O\+V\+I\+D\+ED BY T\+HE C\+O\+P\+Y\+R\+I\+G\+HT H\+O\+L\+D\+E\+RS A\+ND C\+O\+N\+T\+R\+I\+B\+U\+T\+O\+RS \char`\"{}\+A\+S I\+S\char`\"{} A\+ND A\+NY E\+X\+P\+R\+E\+SS OR I\+M\+P\+L\+I\+ED W\+A\+R\+R\+A\+N\+T\+I\+ES, I\+N\+C\+L\+U\+D\+I\+NG, B\+UT N\+OT L\+I\+M\+I\+T\+ED TO, T\+HE I\+M\+P\+L\+I\+ED W\+A\+R\+R\+A\+N\+T\+I\+ES OF M\+E\+R\+C\+H\+A\+N\+T\+A\+B\+I\+L\+I\+TY A\+ND F\+I\+T\+N\+E\+SS F\+OR A P\+A\+R\+T\+I\+C\+U\+L\+AR P\+U\+R\+P\+O\+SE A\+RE D\+I\+S\+C\+L\+A\+I\+M\+ED. IN NO E\+V\+E\+NT S\+H\+A\+LL T\+HE C\+O\+P\+Y\+R\+I\+G\+HT H\+O\+L\+D\+ER OR C\+O\+N\+T\+R\+I\+B\+U\+T\+O\+RS BE L\+I\+A\+B\+LE F\+OR A\+NY D\+I\+R\+E\+CT, I\+N\+D\+I\+R\+E\+CT, I\+N\+C\+I\+D\+E\+N\+T\+AL, S\+P\+E\+C\+I\+AL, E\+X\+E\+M\+P\+L\+A\+RY, OR C\+O\+N\+S\+E\+Q\+U\+E\+N\+T\+I\+AL D\+A\+M\+A\+G\+ES (I\+N\+C\+L\+U\+D\+I\+NG, B\+UT N\+OT L\+I\+M\+I\+T\+ED TO, P\+R\+O\+C\+U\+R\+E\+M\+E\+NT OF S\+U\+B\+S\+T\+I\+T\+U\+TE G\+O\+O\+DS OR S\+E\+R\+V\+I\+C\+ES; L\+O\+SS OF U\+SE, D\+A\+TA, OR P\+R\+O\+F\+I\+TS; OR B\+U\+S\+I\+N\+E\+SS I\+N\+T\+E\+R\+R\+U\+P\+T\+I\+ON) H\+O\+W\+E\+V\+ER C\+A\+U\+S\+ED A\+ND ON A\+NY T\+H\+E\+O\+RY OF L\+I\+A\+B\+I\+L\+I\+TY, W\+H\+E\+T\+H\+ER IN C\+O\+N\+T\+R\+A\+CT, S\+T\+R\+I\+CT L\+I\+A\+B\+I\+L\+I\+TY, OR T\+O\+RT (I\+N\+C\+L\+U\+D\+I\+NG N\+E\+G\+L\+I\+G\+E\+N\+CE OR O\+T\+H\+E\+R\+W\+I\+SE) A\+R\+I\+S\+I\+NG IN A\+NY W\+AY O\+UT OF T\+HE U\+SE OF T\+H\+IS S\+O\+F\+T\+W\+A\+RE, E\+V\+EN IF A\+D\+V\+I\+S\+ED OF T\+HE P\+O\+S\+S\+I\+B\+I\+L\+I\+TY OF S\+U\+CH D\+A\+M\+A\+GE.
+
+\subsubsection*{Author(s)\+: Jay Jay Billings (jayjaybillings  gmail  com) }
+
+Explicit member function instantiations for the test structure to return the unknowns and derivatives.
+
+
+
+ Copyright (c) 2016-\/, U\+T-\/\+Battelle L\+LC All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met\+:
+
+Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+Neither the name of fern nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+T\+H\+IS S\+O\+F\+T\+W\+A\+RE IS P\+R\+O\+V\+I\+D\+ED BY T\+HE C\+O\+P\+Y\+R\+I\+G\+HT H\+O\+L\+D\+E\+RS A\+ND C\+O\+N\+T\+R\+I\+B\+U\+T\+O\+RS \char`\"{}\+A\+S I\+S\char`\"{} A\+ND A\+NY E\+X\+P\+R\+E\+SS OR I\+M\+P\+L\+I\+ED W\+A\+R\+R\+A\+N\+T\+I\+ES, I\+N\+C\+L\+U\+D\+I\+NG, B\+UT N\+OT L\+I\+M\+I\+T\+ED TO, T\+HE I\+M\+P\+L\+I\+ED W\+A\+R\+R\+A\+N\+T\+I\+ES OF M\+E\+R\+C\+H\+A\+N\+T\+A\+B\+I\+L\+I\+TY A\+ND F\+I\+T\+N\+E\+SS F\+OR A P\+A\+R\+T\+I\+C\+U\+L\+AR P\+U\+R\+P\+O\+SE A\+RE D\+I\+S\+C\+L\+A\+I\+M\+ED. IN NO E\+V\+E\+NT S\+H\+A\+LL T\+HE C\+O\+P\+Y\+R\+I\+G\+HT H\+O\+L\+D\+ER OR C\+O\+N\+T\+R\+I\+B\+U\+T\+O\+RS BE L\+I\+A\+B\+LE F\+OR A\+NY D\+I\+R\+E\+CT, I\+N\+D\+I\+R\+E\+CT, I\+N\+C\+I\+D\+E\+N\+T\+AL, S\+P\+E\+C\+I\+AL, E\+X\+E\+M\+P\+L\+A\+RY, OR C\+O\+N\+S\+E\+Q\+U\+E\+N\+T\+I\+AL D\+A\+M\+A\+G\+ES (I\+N\+C\+L\+U\+D\+I\+NG, B\+UT N\+OT L\+I\+M\+I\+T\+ED TO, P\+R\+O\+C\+U\+R\+E\+M\+E\+NT OF S\+U\+B\+S\+T\+I\+T\+U\+TE G\+O\+O\+DS OR S\+E\+R\+V\+I\+C\+ES; L\+O\+SS OF U\+SE, D\+A\+TA, OR P\+R\+O\+F\+I\+TS; OR B\+U\+S\+I\+N\+E\+SS I\+N\+T\+E\+R\+R\+U\+P\+T\+I\+ON) H\+O\+W\+E\+V\+ER C\+A\+U\+S\+ED A\+ND ON A\+NY T\+H\+E\+O\+RY OF L\+I\+A\+B\+I\+L\+I\+TY, W\+H\+E\+T\+H\+ER IN C\+O\+N\+T\+R\+A\+CT, S\+T\+R\+I\+CT L\+I\+A\+B\+I\+L\+I\+TY, OR T\+O\+RT (I\+N\+C\+L\+U\+D\+I\+NG N\+E\+G\+L\+I\+G\+E\+N\+CE OR O\+T\+H\+E\+R\+W\+I\+SE) A\+R\+I\+S\+I\+NG IN A\+NY W\+AY O\+UT OF T\+HE U\+SE OF T\+H\+IS S\+O\+F\+T\+W\+A\+RE, E\+V\+EN IF A\+D\+V\+I\+S\+ED OF T\+HE P\+O\+S\+S\+I\+B\+I\+L\+I\+TY OF S\+U\+CH D\+A\+M\+A\+GE.
+
+\subsubsection*{Author(s)\+: Alex Mc\+Caskey (\href{mailto:mccaskeyaj@ornl.gov}{\tt mccaskeyaj@ornl.\+gov}) }
+
+
+
+ Copyright (c) 2016-\/, U\+T-\/\+Battelle L\+LC All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met\+:
+
+Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+Neither the name of fern nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+T\+H\+IS S\+O\+F\+T\+W\+A\+RE IS P\+R\+O\+V\+I\+D\+ED BY T\+HE C\+O\+P\+Y\+R\+I\+G\+HT H\+O\+L\+D\+E\+RS A\+ND C\+O\+N\+T\+R\+I\+B\+U\+T\+O\+RS \char`\"{}\+A\+S I\+S\char`\"{} A\+ND A\+NY E\+X\+P\+R\+E\+SS OR I\+M\+P\+L\+I\+ED W\+A\+R\+R\+A\+N\+T\+I\+ES, I\+N\+C\+L\+U\+D\+I\+NG, B\+UT N\+OT L\+I\+M\+I\+T\+ED TO, T\+HE I\+M\+P\+L\+I\+ED W\+A\+R\+R\+A\+N\+T\+I\+ES OF M\+E\+R\+C\+H\+A\+N\+T\+A\+B\+I\+L\+I\+TY A\+ND F\+I\+T\+N\+E\+SS F\+OR A P\+A\+R\+T\+I\+C\+U\+L\+AR P\+U\+R\+P\+O\+SE A\+RE D\+I\+S\+C\+L\+A\+I\+M\+ED. IN NO E\+V\+E\+NT S\+H\+A\+LL T\+HE C\+O\+P\+Y\+R\+I\+G\+HT H\+O\+L\+D\+ER OR C\+O\+N\+T\+R\+I\+B\+U\+T\+O\+RS BE L\+I\+A\+B\+LE F\+OR A\+NY D\+I\+R\+E\+CT, I\+N\+D\+I\+R\+E\+CT, I\+N\+C\+I\+D\+E\+N\+T\+AL, S\+P\+E\+C\+I\+AL, E\+X\+E\+M\+P\+L\+A\+RY, OR C\+O\+N\+S\+E\+Q\+U\+E\+N\+T\+I\+AL D\+A\+M\+A\+G\+ES (I\+N\+C\+L\+U\+D\+I\+NG, B\+UT N\+OT L\+I\+M\+I\+T\+ED TO, P\+R\+O\+C\+U\+R\+E\+M\+E\+NT OF S\+U\+B\+S\+T\+I\+T\+U\+TE G\+O\+O\+DS OR S\+E\+R\+V\+I\+C\+ES; L\+O\+SS OF U\+SE, D\+A\+TA, OR P\+R\+O\+F\+I\+TS; OR B\+U\+S\+I\+N\+E\+SS I\+N\+T\+E\+R\+R\+U\+P\+T\+I\+ON) H\+O\+W\+E\+V\+ER C\+A\+U\+S\+ED A\+ND ON A\+NY T\+H\+E\+O\+RY OF L\+I\+A\+B\+I\+L\+I\+TY, W\+H\+E\+T\+H\+ER IN C\+O\+N\+T\+R\+A\+CT, S\+T\+R\+I\+CT L\+I\+A\+B\+I\+L\+I\+TY, OR T\+O\+RT (I\+N\+C\+L\+U\+D\+I\+NG N\+E\+G\+L\+I\+G\+E\+N\+CE OR O\+T\+H\+E\+R\+W\+I\+SE) A\+R\+I\+S\+I\+NG IN A\+NY W\+AY O\+UT OF T\+HE U\+SE OF T\+H\+IS S\+O\+F\+T\+W\+A\+RE, E\+V\+EN IF A\+D\+V\+I\+S\+ED OF T\+HE P\+O\+S\+S\+I\+B\+I\+L\+I\+TY OF S\+U\+CH D\+A\+M\+A\+GE.
+
+\subsubsection*{Author(s)\+: Alex Mc\+Caskey (mccaskeyaj  ornl  gov) }
+
+\subsection{Typedef Documentation}
+\mbox{\Hypertarget{a00171_a1bf491fd1c876e2808648b2fd291e3dd}\label{a00171_a1bf491fd1c876e2808648b2fd291e3dd}} 
+\index{fire@{fire}!Tensor\+Reference@{Tensor\+Reference}}
+\index{Tensor\+Reference@{Tensor\+Reference}!fire@{fire}}
+\subsubsection{\texorpdfstring{Tensor\+Reference}{TensorReference}}
+{\footnotesize\ttfamily template$<$typename Scalar $>$ \\
+using \hyperlink{a00171_a1bf491fd1c876e2808648b2fd291e3dd}{fire\+::\+Tensor\+Reference} = typedef std\+::pair$<$std\+::vector$<$Scalar$>$, \hyperlink{a00850}{Tensor\+Shape}$>$}
+
+A Tensor\+Reference is just a pair of the Tensors data array and its \hyperlink{a00850}{Tensor\+Shape} 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{a00171_ac7deda7dc809d0d45b8bfed78c8232f9}\label{a00171_ac7deda7dc809d0d45b8bfed78c8232f9}} 
+\index{fire@{fire}!build@{build}}
+\index{build@{build}!fire@{fire}}
+\subsubsection{\texorpdfstring{build()}{build()}\hspace{0.1cm}{\footnotesize\ttfamily [1/6]}}
+{\footnotesize\ttfamily template$<$typename T , typename... Args$>$ \\
+T fire\+::build (\begin{DoxyParamCaption}\item[{Args \&\&...}]{args }\end{DoxyParamCaption})}
+
+The \hyperlink{a00171_abca66b4f2a1543308b663714bd8b4855}{build$<$$>$()} template function defines the basic construction mechanism for objects in Fire. It is an implementation of a dynamic builder pattern that does not require a singleton for construction or registration with a singleton to provide such a construction service.
+
+Build function specializations should always be provided for domain classes used in Fire to insure clean construction.
+
+Those concerned about the performance of calling \hyperlink{a00171_abca66b4f2a1543308b663714bd8b4855}{build$<$$>$()} should know that it performs very well because of C++11\textquotesingle{}s move semantics and return value optimizations provided by the compiler. It may perform slowly when used in debug mode with gcc since these optimizations may be disabled.
+
+
+\begin{DoxyParams}{Parameters}
+{\em optional} & list of arguments for classes that do not use nullary/default constructors and have either more than one or a variadic number of arguments \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+an instance of class T. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{a00171_a6b760990569b5c37dc8db51881ae9646}\label{a00171_a6b760990569b5c37dc8db51881ae9646}} 
+\index{fire@{fire}!build@{build}}
+\index{build@{build}!fire@{fire}}
+\subsubsection{\texorpdfstring{build()}{build()}\hspace{0.1cm}{\footnotesize\ttfamily [2/6]}}
+{\footnotesize\ttfamily template$<$template$<$ class, typename... $>$ class T, typename K , typename... Args$>$ \\
+T$<$K$>$ fire\+::build (\begin{DoxyParamCaption}\item[{Args \&\&...}]{args }\end{DoxyParamCaption})}
+
+An implementation of the build template for containers. This builder will construct a container of type T$<$\+K$>$ and optionally pass the arguments Args to the constructor of that container.
+
+Clients that need the same type of functionality for their own container, but with arguments passed to a single class that is wrapped by the container should explicitly specialize \hyperlink{a00171_abca66b4f2a1543308b663714bd8b4855}{build$<$$>$()} on their own. (See \hyperlink{a00095_source}{solvers/\+State.\+h} for an example.)
+
+
+\begin{DoxyParams}{Parameters}
+{\em optional} & list of arguments that are passed to the container\textquotesingle{}s constructor. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+an instance of the container class T$<$\+K$>$. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{a00171_a138f22945f7a7ec642432fd24a94b414}\label{a00171_a138f22945f7a7ec642432fd24a94b414}} 
+\index{fire@{fire}!build@{build}}
+\index{build@{build}!fire@{fire}}
+\subsubsection{\texorpdfstring{build()}{build()}\hspace{0.1cm}{\footnotesize\ttfamily [3/6]}}
+{\footnotesize\ttfamily template$<$$>$ \\
+\hyperlink{a00778}{Local\+Parser}$<$vector$<$\hyperlink{a00742}{Species}$>$ $>$ fire\+::build (\begin{DoxyParamCaption}\item[{const string \&}]{source }\end{DoxyParamCaption})}
+
+This function builds a local parser for a vector of species for astrophysical reaction network problems. Note\+: It does not automatically parse the source! Clients must explicitly call \hyperlink{a00171_a2b47cfd8a5d8711cdc55e1397487b90b}{parse()}. See \hyperlink{a00074_source}{parse.\+h} for a function template that automatically parses -\/ \hyperlink{a00171_a2b47cfd8a5d8711cdc55e1397487b90b}{parse$<$\+T$>$()}. 
+\begin{DoxyParams}{Parameters}
+{\em source} & the name of the file to parse \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00171_aaf82cc265522a41ebc36e8405e0c7559}\label{a00171_aaf82cc265522a41ebc36e8405e0c7559}} 
+\index{fire@{fire}!build@{build}}
+\index{build@{build}!fire@{fire}}
+\subsubsection{\texorpdfstring{build()}{build()}\hspace{0.1cm}{\footnotesize\ttfamily [4/6]}}
+{\footnotesize\ttfamily template$<$$>$ \\
+\hyperlink{a00778}{Local\+Parser}$<$vector$<$\hyperlink{a00734}{Reaction}$>$ $>$ fire\+::build (\begin{DoxyParamCaption}\item[{const string \&}]{source }\end{DoxyParamCaption})}
+
+This function builds a local parser for a vector of thermonuclear reactions for astrophysical problems. Note\+: It does not automatically parse the source! Clients must explicitly call \hyperlink{a00171_a2b47cfd8a5d8711cdc55e1397487b90b}{parse()}. See \hyperlink{a00074_source}{parse.\+h} for a function template that automatically parses -\/ \hyperlink{a00171_a2b47cfd8a5d8711cdc55e1397487b90b}{parse$<$\+T$>$()}. 
+\begin{DoxyParams}{Parameters}
+{\em source} & the name of the file to parse \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00171_a624f274bd6de1d7b829c9883ac3397cd}\label{a00171_a624f274bd6de1d7b829c9883ac3397cd}} 
+\index{fire@{fire}!build@{build}}
+\index{build@{build}!fire@{fire}}
+\subsubsection{\texorpdfstring{build()}{build()}\hspace{0.1cm}{\footnotesize\ttfamily [5/6]}}
+{\footnotesize\ttfamily template$<$$>$ \\
+\hyperlink{a00766}{I\+N\+I\+Property\+Parser} fire\+::build (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{source }\end{DoxyParamCaption})}
+
+This is a builder for constructing I\+N\+I\+Property\+Parsers from a string. It constructs, initializes, and parses the properties. Property files are expected to be relatively small, so any copying on return is acceptable. 
+\begin{DoxyParams}{Parameters}
+{\em The} & filename that should be parsed for the properties. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the fully initialized property parser. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{a00171_abca66b4f2a1543308b663714bd8b4855}\label{a00171_abca66b4f2a1543308b663714bd8b4855}} 
+\index{fire@{fire}!build@{build}}
+\index{build@{build}!fire@{fire}}
+\subsubsection{\texorpdfstring{build()}{build()}\hspace{0.1cm}{\footnotesize\ttfamily [6/6]}}
+{\footnotesize\ttfamily template$<$$>$ \\
+\hyperlink{a00734}{astrophysics\+::\+Reaction} fire\+::build (\begin{DoxyParamCaption}\item[{const vector$<$ string $>$ \&}]{lines }\end{DoxyParamCaption})}
+
+This is a builder for constructing reactions from a vector of strings. This is meant to work with data parsed from the legacy A\+S\+C\+II format. 
+\begin{DoxyParams}{Parameters}
+{\em lines} & The input vector with size 8. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the fully initialized Reaction. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{a00171_afad7faa08ea9d4ad30b439b1d1719dd9}\label{a00171_afad7faa08ea9d4ad30b439b1d1719dd9}} 
+\index{fire@{fire}!build\+State@{build\+State}}
+\index{build\+State@{build\+State}!fire@{fire}}
+\subsubsection{\texorpdfstring{build\+State()}{buildState()}}
+{\footnotesize\ttfamily template$<$typename T , typename... Args$>$ \\
+\hyperlink{a00818}{State}$<$T$>$ fire\+::build\+State (\begin{DoxyParamCaption}\item[{Args \&\&...}]{args,  }\item[{const long \&}]{size = {\ttfamily 0} }\end{DoxyParamCaption})}
+
+This is a builder for building instances of the \hyperlink{a00818}{State} class.
+
+This builder can be used to initalize a State$<$\+T$>$ as follows\+: 
+\begin{DoxyCode}
+State<MyClass> state = build<T>();
+State<MyClass> state2 = build<T,int>(4); \textcolor{comment}{// Forwards integer value of 4 to}
+\textcolor{comment}{// the constructor of T.}
+State<MyClass> state2 = build<T,int>(4,5); \textcolor{comment}{// Forwards both an integer value of}
+\textcolor{comment}{// 4 to the constructor of T and a size of 5 to constructor of State.}
+\end{DoxyCode}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em Optional} & list of arguments that are forwarded to constructor of the domain class T. \\
+\hline
+{\em The} & default size of the \hyperlink{a00818}{State} -\/ the total number of elements in the instance of T. This is an optional para \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A State$<$\+T$>$ class initialized with the arguments, if provided. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{a00171_aaab26473f8b0cb78cff67ae06ff7ce80}\label{a00171_aaab26473f8b0cb78cff67ae06ff7ce80}} 
+\index{fire@{fire}!make\+\_\+tensor\+\_\+reference@{make\+\_\+tensor\+\_\+reference}}
+\index{make\+\_\+tensor\+\_\+reference@{make\+\_\+tensor\+\_\+reference}!fire@{fire}}
+\subsubsection{\texorpdfstring{make\+\_\+tensor\+\_\+reference()}{make\_tensor\_reference()}}
+{\footnotesize\ttfamily template$<$typename Scalar $>$ \\
+auto fire\+::make\+\_\+tensor\+\_\+reference (\begin{DoxyParamCaption}\item[{Scalar $\ast$}]{data,  }\item[{\hyperlink{a00850}{Tensor\+Shape} \&}]{shape }\end{DoxyParamCaption}) -\/$>$ \hyperlink{a00171_a1bf491fd1c876e2808648b2fd291e3dd}{Tensor\+Reference}$<$Scalar$>$ }
+
+Utility method for creating Tensor\+References.
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & \\
+\hline
+{\em shape} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{a00171_a2b47cfd8a5d8711cdc55e1397487b90b}\label{a00171_a2b47cfd8a5d8711cdc55e1397487b90b}} 
+\index{fire@{fire}!parse@{parse}}
+\index{parse@{parse}!fire@{fire}}
+\subsubsection{\texorpdfstring{parse()}{parse()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+shared\+\_\+ptr$<$vector$<$T$>$ $>$ fire\+::parse (\begin{DoxyParamCaption}\item[{const string \&}]{source }\end{DoxyParamCaption})}
+
+The \hyperlink{a00171_a2b47cfd8a5d8711cdc55e1397487b90b}{parse$<$$>$()} template function defines a basic mechanism for parsing data objects in Fire. This function was added to clean up parsing with Local\+Parsers in Fire since the code below is common to almost all local parser types. Instead of copying the four line implementation below all over the code base, client code now looks like the following 
+\begin{DoxyCode}
+\textcolor{keyword}{auto} data = parse<T>(filename);
+\end{DoxyCode}
+
+
+Those concerned about the performance of calling \hyperlink{a00171_a2b47cfd8a5d8711cdc55e1397487b90b}{parse$<$$>$()} should know that it performs very well because of C++11\textquotesingle{}s move semantics and return value optimizations provided by the compiler. It may perform slowly when used in debug mode with gcc since these optimizations may be disabled.
+
+\begin{DoxyReturn}{Returns}
+an instance of class T created from the default constructor. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{a00171_ac3f0360fae13ec5b8b93251c695e1821}\label{a00171_ac3f0360fae13ec5b8b93251c695e1821}} 
+\index{fire@{fire}!split\+String@{split\+String}}
+\index{split\+String@{split\+String}!fire@{fire}}
+\subsubsection{\texorpdfstring{split\+String()}{splitString()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::string$>$ fire\+::split\+String (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{line,  }\item[{const std\+::string \&}]{delimiter }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+This is a utility function used for splitting strings. 
+\begin{DoxyParams}{Parameters}
+{\em the} & strings to be split \\
+\hline
+{\em a} & delimiter that marks where tokens should be split. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a vector with a string for each entry in the original. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{a00171_afe6f0aa2af9238d6a4e0c47c6ad4caa5}\label{a00171_afe6f0aa2af9238d6a4e0c47c6ad4caa5}} 
+\index{fire@{fire}!split\+String@{split\+String}}
+\index{split\+String@{split\+String}!fire@{fire}}
+\subsubsection{\texorpdfstring{split\+String()}{splitString()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::string$>$ fire\+::split\+String (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{line }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+This is a utility function used for splitting strings. It is a convenience function for calling split\+Line(line,delimiter) with delimiter equal to a single whitespace character. 
+\begin{DoxyParams}{Parameters}
+{\em the} & strings to be split \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a vector with a string for each entry in the original. 
+\end{DoxyReturn}

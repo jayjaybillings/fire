@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['profilestepper',['ProfileStepper',['../a00031.html',1,'fire']]],
-  ['providerbuilder',['ProviderBuilder',['../a00032.html',1,'fire']]]
+  ['outputwriter',['OutputWriter',['../a00890.html',1,'CSimpleIniTempl']]]
 ];

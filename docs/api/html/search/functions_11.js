@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['quaternion',['Quaternion',['../a01608.html#a7f8e93e2615e56344fd0d89c2916f9be',1,'Eigen::Quaternion::Quaternion()'],['../a01608.html#a90c179492cd3ca296c85815e20773d60',1,'Eigen::Quaternion::Quaternion(const Scalar &amp;w, const Scalar &amp;x, const Scalar &amp;y, const Scalar &amp;z)'],['../a01608.html#abb9e33e5d10806b5bc8b0683e94e8f72',1,'Eigen::Quaternion::Quaternion(const Scalar *data)'],['../a01608.html#a272ce2dc4e30e6e0d68f455c7b1cc407',1,'Eigen::Quaternion::Quaternion(const QuaternionBase&lt; Derived &gt; &amp;other)'],['../a01608.html#a7ce40a727b6532e52d7d58d399328ce7',1,'Eigen::Quaternion::Quaternion(const AngleAxisType &amp;aa)'],['../a01608.html#a3a7ed649b5c8c80ec7e78baf1ed0ba4c',1,'Eigen::Quaternion::Quaternion(const MatrixBase&lt; Derived &gt; &amp;other)'],['../a01608.html#af6430466427b40d7ed79bfb6818cccc2',1,'Eigen::Quaternion::Quaternion(const Quaternion&lt; OtherScalar, OtherOptions &gt; &amp;other)']]]
+  ['u',['u',['../a00818.html#a54507a9e31127580a2c485ce9829934e',1,'fire::State::u() const'],['../a00818.html#a1b6b91c51fe4d53f268a33c77fecff11',1,'fire::State::u(double *data)'],['../a00818.html#a9cc60054f9342b4a84b29937dc45a6d8',1,'fire::State::u() const']]],
+  ['updatestep',['updateStep',['../a00746.html#a44dfccb90ee5ef6e080b54113c215458',1,'fire::IStepper::updateStep()'],['../a00750.html#a2c13fd4da5550f1e58df2b54bbfe4c2c',1,'fire::ProfileStepper::updateStep()']]],
+  ['usingspaces',['UsingSpaces',['../a00874.html#a92203e0c21f8d71e5d1621a18ee0be50',1,'CSimpleIniTempl']]]
 ];
