@@ -42,8 +42,14 @@ argument with the path to the MAGMA installation. Your configuration
 statement should look like the following:
 
 ```bash
-cmake ../fire -DCMAKE_BUILD_TYPE=Debug -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_VERSION=4.5 MAGMA_ROOT=/usr/local/lib
+cmake ../fire -DCMAKE_BUILD_TYPE=Debug -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_VERSION=4.5 -DMAGMA_ROOT=/usr/local/lib
 ```
+Fire also supports CVODE, which can be used by either passing -DSUNDIALS_ROOT or pointing to Spack:
+
+```bash
+cmake ../fire -DCMAKE_BUILD_TYPE=Debug -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_VERSION=4.5 -DMAGMA_ROOT=/usr/local/lib -DSPACK_ROOT=$HOME/spack
+```
+
 
 The above will get the code running, but it will not run the tests or generate the 
 documentation. Issue the following commands to do that:

@@ -55,7 +55,7 @@ if(MAGMA_ROOT)
   # it correctly.
   message(STATUS "Adding a MAGMA example to the tests to test integration.")
   # Add the tests
-  add_tests_with_flags("tests/example_v2.c" "${MAGMA_INCLUDE_DIRS}" 
+  add_tests_with_flags("tests/magma/example_v2.c" "${MAGMA_INCLUDE_DIRS}" 
                        "${MAGMA_LIBRARIES}" "${MAGMA_CFLAGS}")
   # Add the libraries to the package library list
   set(FIRE_SOLVERS_LIBRARIES ${FIRE_SOLVERS_LIBRARIES} ${MAGMA_LIBRARIES})
@@ -80,13 +80,17 @@ if(SUNDIALS_ROOT OR SPACK_ROOT)
   # Add a SUNDIALS example to the unit tests to make sure Fire can build 
   # against it correctly.
   message(STATUS "Adding a SUNDIALS example to the tests to test integration.")
-  add_tests("tests/cvAdvDiff_bnd.c" "${SUNDIALS_INCLUDE_DIRS}"
+  add_tests("tests/sundials/cvAdvDiff_bnd.c" "${SUNDIALS_INCLUDE_DIRS}"
             "${SUNDIALS_LIBRARIES}")
   # Add the libraries to the package library list
   set(FIRE_SOLVERS_LIBRARIES ${FIRE_SOLVERS_LIBRARIES} ${SUNDIALS_LIBRARIES})
   # Add the include directories
   set(FIRE_SOLVERS_INCLUDE_DIRS ${FIRE_SOLVERS_INCLUDE_DIRS} 
       ${SUNDIALS_INCLUDE_DIRS})
+  # Get the test files for sundials-specific classes
+  file(GLOB test_files tests/sundials/*Test.cpp)
+  # Add the tests for Fire's classes
+  add_tests("${test_files}" "${CMAKE_CURRENT_SOURCE_DIR}" "${FIRE_SOLVERS_LIBRARIES}")  
 endif(SUNDIALS_ROOT OR SPACK_ROOT)
 
 # Add the variables to the global property list
@@ -96,7 +100,7 @@ set_property(GLOBAL APPEND PROPERTY FIRE_SOLVERS_INCLUDE_DIRS "${FIRE_SOLVERS_IN
 #Add the source code to the library
 #add_library(${LIBRARY_NAME} STATIC ${SRC})
 
-# Get the test files
+# Get all remaining test files that don't require special libraries.
 file(GLOB test_files tests/*Test.cpp)
 # Add the tests for Fire's classes
 add_tests("${test_files}" "${CMAKE_CURRENT_SOURCE_DIR}" "${FIRE_SOLVERS_LIBRARIES}")  
