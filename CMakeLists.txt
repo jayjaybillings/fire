@@ -69,7 +69,12 @@ if(DOXYGEN_FOUND)
     VERBATIM)
 endif(DOXYGEN_FOUND)
 
-# Include directories for the main program. Note that include 
+# Report if Spack is found and can be used for managing packages
+if(SPACK_ROOT)
+  message(status "Spack found at ${SPACK_ROOT}.")
+endif(SPACK_ROOT)
+
+# Include directories for the main modules. Note that include 
 # directories must come before add subdirectory!
 include_directories("${CMAKE_SOURCE_DIR}/parsers")
 include_directories("${CMAKE_SOURCE_DIR}/solvers")
@@ -80,7 +85,6 @@ include_directories("${CMAKE_SOURCE_DIR}/tpls/simpleini-4.17")
 add_subdirectory(parsers)
 add_subdirectory(integrators)
 add_subdirectory(solvers)
-add_subdirectory(tensors)
 add_subdirectory(util)
 # Add the domain source directories
 add_subdirectory(astrophysics)

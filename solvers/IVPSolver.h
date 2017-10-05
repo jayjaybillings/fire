@@ -247,14 +247,35 @@ static int check_flag(void *flagvalue, char *funcname, int opt)
 } /* namespace cvode */
 
 /**
- * This class numerically integrates a set of ordinary differential equations
+ * This class numerically integrates a set of Ordinary Differential Equations
  * \f[
- * \frac{d\vec{u}u}{dt} = \vec{f}(t,\vec{u})
+ * \frac{d\vec{u}}{dt} = \vec{f}(t,\vec{u})
  * \f]
- * give
+ * given
  * \f[
- * u(t=t_{initial}), t_{initial} \le t \ge t_{final}
+ * u(t=t_{0}), t_{0} \ge t \le t_{f}
  * \f]
+ *
+ * User state (read: values of u), including initial conditions, are provided
+ * to the solver via the State class. The solver can be configured roughly as
+ * follows (which is adapted from IVPSolverTest's checkSingleVariableSolve()):
+ * @code
+ *  // Configure the solver - it is templated on the same type as the State
+ *  IVPSolver<T> solver;
+ *  // Set current, initial and final times
+ *  solver.t(t);
+ *  solver.tInit(tInit);
+ *  solver.tFinal(tFinal);
+ *  // Execute the solver using the fully-configured State.
+ *	solver.solve(state);
+ * @endcode
+ *
+ * The maximum number of output steps that will be displayed at the end of the
+ * solve can be configured by calling maxOutputSteps() with the desired number
+ * of steps.
+ *
+ * The original and present implementation is based on CVODE's example_v2.c
+ * with user-defined Jacobians disabled and other adaptations for fitness.
  *
  */
 template<typename T>
