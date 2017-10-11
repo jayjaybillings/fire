@@ -1,8 +1,8 @@
 #------------------------------------------------------------------------------
-# Copyright (c) 2016-, UT-Battelle, LLC
+# Copyright (c) 2015-, UT-Battelle, LLC
 # All rights reserved.
 #
-# Author Contact: Alex McCaskey, mccaskeyaj <at> ornl <dot> gov
+# Author Contact: Jay Jay Billings, jayjaybillings <at> gmail <dot> com
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -29,40 +29,33 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Author(s): Alex McCaskey
+# Author(s): Jay Jay Billings
 #----------------------------------------------------------------------------*/
 
 #Set the package name
-SET(PACKAGE_NAME "FireUtils")
+SET(PACKAGE_NAME "FireFEM")
 #Set the description
-SET(PACKAGE_DESCRIPTION "Fire Utility Data Structures")
+SET(PACKAGE_DESCRIPTION "Fire FEM Library")
+#Set the library name
+SET(LIBRARY_NAME "FireFEM")
 
 #Log that this project will be built
 MESSAGE(STATUS "----- Detected and building ${PACKAGE_NAME} -----")
 
-find_package(Boost COMPONENTS system regex)
-find_package(OpenSSL)
+#Collect all header filenames in this project 
+#and glob them in HEADERS
+file(GLOB HEADERS *.h)
 
-if (Boost_FOUND AND OPENSSL_FOUND)
-   message (STATUS "Boost ASIO and OpenSSL found")
-   include_directories(${Boost_INCLUDE_DIRS})
-   include_directories(${CMAKE_SOURCE_DIR}/tpls/simpleweb)
-   include_directories(${OPENSSL_INCLUDE_DIR})
-   
-   # Collect all header filenames in this project 
-   # and glob them in HEADERS
-   file(GLOB HEADERS *.hpp)
+#Grab all of the source files
+file(GLOB SRC *.cpp)
 
-   # Get the test files
-   file(GLOB test_files tests/*Test.cpp)
+#Add the source code to the library
+#add_library(${LIBRARY_NAME} STATIC ${SRC})
+    
+# Get the test files
+file(GLOB test_files tests/*Test.cpp)
+# Add the tests
+add_tests("${test_files}" "${CMAKE_CURRENT_SOURCE_DIR}" "")   
 
-   # Add the tests
-   add_tests("${test_files}" "${CMAKE_CURRENT_SOURCE_DIR}" "${Boost_LIBRARIES};pthread;${OPENSSL_LIBRARIES}")
-
-   #Install the Fire header files
-   install(FILES ${HEADERS} DESTINATION include)
-endif()
-
-if (NOT Boost_FOUND OR NOT OPENSSL_FOUND)
-  message(STATUS "Warning - Boost Asio or OpenSSL not found. Skipping AsioNetworkingTool build")
-endif()
+#Install the Fire header files
+install(FILES ${HEADERS} DESTINATION include)

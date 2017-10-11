@@ -39,6 +39,9 @@ SET(PACKAGE_DESCRIPTION "Fire Integrator Library")
 #Set the library name
 SET(LIBRARY_NAME "FireIntegrators")
 
+#Log that this project will be built
+MESSAGE(STATUS "----- Detected and building ${PACKAGE_NAME} -----")
+
 #Collect all header filenames in this project 
 #and glob them in HEADERS
 file(GLOB HEADERS *.h)

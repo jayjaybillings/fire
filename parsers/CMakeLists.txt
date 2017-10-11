@@ -39,6 +39,9 @@ SET(PACKAGE_DESCRIPTION "Fire Parser Library")
 #Set the library name
 SET(LIBRARY_NAME "FireParsers")
 
+#Log that this project will be built
+MESSAGE(STATUS "----- Detected and building ${PACKAGE_NAME} -----")
+
 #Collect all header filenames in this project 
 #and glob them in HEADERS
 file(GLOB HEADERS *.h)

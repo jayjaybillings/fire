@@ -34,6 +34,10 @@
 
 # Set a name for this project.
 PROJECT ( FIRE C CXX )
+
+#Log that this project will be built
+MESSAGE(STATUS "----- Configuring Main Fire Build -----")
+
 # Set the minimum required version of cmake for this project.
 cmake_minimum_required(VERSION 2.8)
 # Configure some default options
@@ -71,20 +75,21 @@ endif(DOXYGEN_FOUND)
 
 # Report if Spack is found and can be used for managing packages
 if(SPACK_ROOT)
-  message(status "Spack found at ${SPACK_ROOT}.")
+  message(STATUS "Spack found at ${SPACK_ROOT}.")
 endif(SPACK_ROOT)
 
 # Include directories for the main modules. Note that include 
 # directories must come before add subdirectory!
 include_directories("${CMAKE_SOURCE_DIR}/parsers")
 include_directories("${CMAKE_SOURCE_DIR}/solvers")
-include_directories("${CMAKE_SOURCE_DIR}/tensors")
+include_directories("${CMAKE_SOURCE_DIR}/fem")
 include_directories("${CMAKE_SOURCE_DIR}/tpls/simpleini-4.17")
 
 # Add the main source directories
 add_subdirectory(parsers)
 add_subdirectory(integrators)
 add_subdirectory(solvers)
+add_subdirectory(fem)
 add_subdirectory(util)
 # Add the domain source directories
 add_subdirectory(astrophysics)
