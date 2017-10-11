@@ -47,8 +47,8 @@ struct TestStruct {
 	vector<double> A;
 	vector<double> dAdt;
 	const int testK;
-	TestStruct() : A{5.0,2.0} , dAdt{2.0,5.0} , testK(0) {};
-	TestStruct(const int & k) : testK{k} {};
+	TestStruct() : A{5.0,2.0} , dAdt{2.0,5.0} , testK(0) {std::cout << "ctor"  << std::endl;};
+	TestStruct(const int & k) : testK{k} {std::cout << "ctor2"  << std::endl;};
 };
 
 /**
@@ -59,11 +59,11 @@ namespace fire {
 
 // Getter for test struct data from a State<TestStruct>
 template<>
-double * State<TestStruct>::u() const {return state->A.data();};
+double * State<TestStruct>::u() {return state.A.data();};
 
 // Getter for test struct derivative data from a State<TestStruct>
 template<>
-double * State<TestStruct>::dudt(const double & t) const {return state->dAdt.data();};
+double * State<TestStruct>::dudt(const double & t) {return state.dAdt.data();};
 
 } // end namespace fire
 

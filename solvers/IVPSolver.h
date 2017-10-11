@@ -80,7 +80,7 @@ static int check_flag(void *flagvalue, char *funcname, int opt);
  * @param the user-provided state that will be queried for initial conditions.
  */
 template<typename T>
-void setICs(N_Vector u, const State<T> & state) {
+void setICs(N_Vector u, State<T> & state) {
 	  int i, j;
 	  realtype *udata;
 
@@ -88,7 +88,7 @@ void setICs(N_Vector u, const State<T> & state) {
 	  udata = NV_DATA_S(u);
 
 	  // Get the user's state data.
-	  double * stateU = state.u();
+	  auto * stateU = state.u();
 	  int size = state.size();
 	  // Copy the initial state from the state structure to the u vector.
 	  for (int i = 0; i < size; i++) {
@@ -120,7 +120,7 @@ int f(realtype t, N_Vector u,N_Vector udot, void *user_data) {
   state->u(udata);
 
   // Compute the time derivatives
-  double * rhs = state->dudt(t);
+  auto * rhs = state->dudt(t);
   int size = state->size(); // FIXME!
   for (j=0; j < size; j++) {
       dudata[j] = rhs[j];

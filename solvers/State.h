@@ -135,7 +135,7 @@ protected:
 	/**
 	 * The managed instance of the State of type T.
 	 */
-	std::shared_ptr<T> state;
+	T state;
 
 	/**
 	 * The most recent value of t provided by State.t().
@@ -146,19 +146,6 @@ protected:
 	 * The system size of the state.
 	 */
 	long systemSize;
-
-	/**
-	 * This is a utility array that can be used by clients a buffer for holding
-	 * state values if they cannot be directly mapped to a member on T.
-	 */
-	std::unique_ptr<double> uArr;
-
-	/**
-	 * This is a utility array that can be used by clients a buffer for holding
-	 * state derivative values if they cannot be directly mapped to a member on
-	 * T.
-	 */
-	std::unique_ptr<double> dudtArr;
 
 	/**
 	 * The list of monitors that should be notified when the state changes.
@@ -180,16 +167,14 @@ public:
 	/**
 	 * Constructor
 	 */
-	State() : tVal(0.0), systemSize(0) {
-		state = std::make_shared<T>();
-	}
+	State() : tVal(0.0), systemSize(0), state() {}
 
 	/**
 	 * Alternative constructor that also sets the system size.
 	 * @param the number of unique data elements in the state
 	 */
     State(const long & numElements) : State() {
-    	systemSize = numElements;
+    	size(numElements);
     }
 
     /**
@@ -205,15 +190,13 @@ public:
      * classes of State<T> that used that version of T, which is an undue
      * burden on the user compared to safely enabling two-phase construction.
      */
-    State(std::shared_ptr<T> domainState) : tVal(0.0), systemSize(0) {
-    	state = domainState;
-    }
+    State(T domainState) : tVal(0.0), systemSize(0), state(std::move(domainState)) {}
 
     /**
      * An alternative constructor that also sets the system size. Analog of
      * State(const long &).
      */
-    State(std::shared_ptr<T> domainState, const long & numElements) : State(domainState) {
+    State(T domainState, const long & numElements) : State(domainState) {
     	systemSize = numElements;
     }
 
@@ -246,8 +229,8 @@ public:
 	 * @endcode
 	 * @return state a reference to the state.
 	 */
-	T & get() const {
-		return *state;
+	T & get() {
+		return state;
 	}
 
 	/**
@@ -284,7 +267,7 @@ public:
 	 *
 	 * @return uValues the state
 	 */
-	double * u() const {
+	double * u() {
 		throw "Operation not implemented for this type.";
 	}
 
@@ -358,7 +341,7 @@ public:
 	 * derivatives of state should be retrieved
 	 * @return dudtValues the derivatives at the given value of t
 	 */
-	double * dudt(const double & t) const {
+	double * dudt(const double & t) {
 		throw "Operation not implemented for this type.";
 	}
 
@@ -370,9 +353,6 @@ public:
 	 */
 	void size(const long & numElements) {
 		systemSize = numElements;
-		// Allocate the storage arrays for u and dudt
-		uArr = std::unique_ptr<double>(new double[systemSize]);
-		dudtArr = std::unique_ptr<double>(new double[systemSize]);
 	};
 
 	/**
@@ -404,7 +384,7 @@ public:
  */
 template<typename T, typename... Args>
 State<T> buildState(Args&& ...args, const long & size = 0) {
-	State<T> stateT(std::shared_ptr<T>(new T(std::forward<Args>(args)...)),size);
+	State<T> stateT(T(std::forward<Args>(args)...),size);
 	return stateT;
 }
 
