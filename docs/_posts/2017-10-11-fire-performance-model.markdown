@@ -1,17 +1,21 @@
 ---
 layout: post
-title: Memory Model
-permalink: /design/memory_model
+title: Performance Model
+permalink: /design/performance_model
 category: design
 ---
 
-The memory model in Fire is meant to be simple and efficient. The idea is that sometimes striving for the best performance _and_ the highest architectural purity is stupid and, furthermore, YAGNI.
+The performance model in Fire is meant to be simple and efficient, for both compute and memory. The idea is that sometimes striving for the best performance _and_ the highest architectural purity is stupid and, furthermore, YAGNI.
 
-Fire takes advantage of the latest updates to C++ and relies heavily on C++11 memory management enhancements to get the best performance.
+Fire takes advantage of the latest updates to C++ and relies heavily on C++11 memory management enhancements and other optimizations to achieve the best performance.
 
-# Return by Value
+# Compute Performance
 
-There is no need to return by reference (pointer) for most functions in Fire because it uses C++11. Thus the following code is performs very well:
+## Pass by Reference, Return by Value
+
+Values, especially const-declared input values, should alway pass by reference unless the expectation is that the memory will be moved with either move semantics or explicitly via std::move().
+
+In many cases there is no need to return by reference (either real reference or pointer) for most functions in Fire because it uses C++11. Thus the following code performs very well:
 
 ```cpp
 
@@ -27,14 +31,47 @@ int main(int argc, char** argv) {
 }
 ```
 
-This code would have performed very slowly in earlier versions of C++ because they did not provide so called "move semantics" like C++11. The problem in older versions of C++ comes from the fact that there would be at least two copies the above code. First, myVec is copied into the return value of getVec() when it returns. Second, the return value of getVec() is copied into mainVec. 
+This code would have performed very slowly in earlier versions of C++ because of a lack of "move semantics." The problem in older versions of C++ comes from the fact that there would be at least two copies in the above code. First, myVec is copied into the return value of getVec() when it returns. Second, the return value of getVec() is copied into mainVec. 
 
 C++11 eliminates the second copy with move semantics. The first copy is eliminated by a process called *return value optimization,* which is implemented directly by the compiler.
 
 The important implication for this is that functions in Fire can be much simpler and easier to understand while simultaneously performing very well, or, as we like to say with purely technical language, "running like a scalded dog." ;-) This performance is especially important for the build<>()
 template, which encapsulates the construction of objects. Without move semantics and return value optimization, it would perform very poorly unless it returned a pointer.
 
-# Public Data
+## Const Correctness
+
+To the extent possible, const correctness - the practice of declaring variables, functions, pointers, references and other objects as constant when they are - should be obeyed. This allows the compiler to know what it can expect. See for reference [the article by Alex Allain][2].
+
+## Use Functions or Functors for Mathematical Functions
+
+It is perfectly acceptable to use either functions or functors to represent mathematical functions in Fire. If the mathematical function in question is simple and does not require access to either its own state or some shared state, a regular function is just fine. On the other hand, if access to or storage of state is required, a functor should be used. The best choice of functor will be lambdas in many cases and the _well organized_ use of lambdas is encouraged. Consider for example the functions
+
+$$ f(x,y) = x^{2} + y^{2}\\
+g(x,y) = 2.0\alpha f(x,y) $$
+
+in which x and y are input quantities and $$\alpha$$ is a quantity computed elsewhere that can be used by reference. The following example is an exceptable, well-performing implementation that will compute these quantities.
+
+```cpp
+#include<cstdlib>
+
+double f(const double & x, const double & y) {
+    return x*x + y*y;
+}
+
+int main(int argc, char** argv) {
+    auto fVal = f(1.0,1.0);
+    double alpha = 9.99;
+    auto gLambda = [&alpha](const double & x, const double & y) { return alpha*f(x,y); }
+    double gVal = gLambda(1.0,1.0);
+    return EXIT_SUCCESS;
+}
+```
+
+This strategy of dealing with mathematical functions makes it possible to optimize computations of constants (such as $$\alpha$$) and other factors that are used repeatedly without any unnecessary overheads such as constructor calls or copies. In the example above, the gLambda functor is created automatically and anonymously by the compiler and it uses alpha by reference in an optimized way. By using alpha by reference from the calling function, it prevents the need for alpha to be computed by an associated class or to be explicitly set by an accessor.
+
+# Memory Performance
+
+## Public Data
 
 The proper implementation of a pure, public data structure in Fire is to use a *struct* instead of a class. It would would look like:
 
@@ -149,3 +186,4 @@ Valgrind. (N.B. - We can not do anything about memory leaks in third party
 dependencies.)
 
 [1]: http://channel9.msdn.com/Events/GoingNative/GoingNative-2012/C-11-VC-11-and-Beyond
+[2]: https://www.cprogramming.com/tutorial/const_correctness.html

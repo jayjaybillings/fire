@@ -1,12 +1,17 @@
 # Fire Framework
 
-Fire is a framework for scientific computing. It includes various reusable tools 
-and utilities. This includes
+Fire is a framework for modeling and simulation. It includes various reusable tools 
+and utilities for solving computational physics problems. This includes
 * parsers
 * steppers
+* solvers
+* a finite element library
 
-It also includes domain-specific classes for nuclear reaction network
-simulations in nuclear astrophysics.
+It also includes domain-specific classes and tools for
+* kinetic rate theory calculations in nuclear astrophysics
+* heat conduction and diffusion
+* sintering
+* welding
 
 ## Documentation
 
