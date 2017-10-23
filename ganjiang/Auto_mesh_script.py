@@ -1,4 +1,5 @@
-'''----------------------------------------------------------------------------
+'''
+-------------------------------------------------------------------------------
  Copyright (c) 2015-, UT-Battelle, LLC
  All rights reserved.
  Redistribution and use in source and binary forms, with or without
@@ -24,42 +25,63 @@
  Author(s): Guoqiang Deng (dgquvn <at> gmail <dot> com)
  -----------------------------------------------------------------------------
  '''
- 
-import netgen.gui
-from ngsolve.solve import Draw, Redraw # just for visualization
+
 import netgen.NgOCC
 import netgen.libngpy._NgOCC as nlOCC
 import netgen.libngpy._meshing as nlmesh
 import ngsolve.comp as ngcomp
+import configparser
 
-# import step file
-geo = nlOCC.LoadOCCGeometry("cube.step")
+# program option for reading configuration file
+def ArgParse():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--config", help="configuration file location and name")
+    args = parser.parse_args()
+    return args.config
 
-# show the geometry
-Redraw()
+# read the configuration file for analysis
+def ReadConfigFile(filename):
+    config = configparser.ConfigParser()
+    config.sections()
+    config.read(filename)
+    # check if there is geometry file
+    if not config.has_option('Geometry', 'filename'):
+        raise Exception('Geometry filename missing')
+    # check if there is boundary condition
+    if not config.has_section('BoundaryCondition'):
+        raise Exception('BoundaryCondition missing')
+    # check if material properties exist
+    if not config.has_option('Material', 'filename'):
+        raise Exception('Material file missing')
+    return config
 
-# mesh the file
-ngs_mesh = ngcomp.Mesh(geo.GenerateMesh())
+if __name__=="__main__":
+    # check program option for configuration file
+    ConfigFile = ArgParse()
+    # check if configuration file is in the right format
+    config = ReadConfigFile(ConfigFile)
+    # get geometry file name
+    Geom_file = config['Geometry']['filename']
+    
+    # import step/iges file
+    geo = nlOCC.LoadOCCGeometry(Geom_file)
 
-# Refine mesh
-#ngs_mesh.Refine()
-#ngs_mesh.Refine()
+    # mesh the file
+    ngs_mesh = ngcomp.Mesh(geo.GenerateMesh())
+    
+    # refine mesh
+    refine_para = config['Parameter'].getint('RefineMesh')
+    for i in range(refine_para):
+        ngs_mesh.Refine()
+    
+    # convert ngsolve mesh to netgen mesh
+    nt_mesh = ngs_mesh.ngmesh
+    
+    # save the file
+    nt_mesh.Export('ouput', 'Neutral Format')
 
-# Draw mesh
-Draw(ngs_mesh)
+    # output user defined format
+    #import netgen.exportNeutral as exp
+    #exp.Export(nt_mesh, "cube.neu")
 
-# convert ngsolve mesh to netgen mesh
-nt_mesh = ngs_mesh.ngmesh
-
-# refinie netgen mesh
-#nt_mesh.Refine()
-
-# save the file
-nt_mesh.Export('cube2', 'Neutral Format')
-
-# output user defined format
-#import netgen.exportNeutral as exp
-#exp.Export(nt_mesh, "cube.neu")
-
-# Redraw the mesh
-#Redraw() 
