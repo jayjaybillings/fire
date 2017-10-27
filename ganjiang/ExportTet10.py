@@ -25,10 +25,8 @@
  Author(s): Guoqiang Deng (dgquvn <at> gmail <dot> com)
  --------------------------------------------------------------------------------
  '''
- 
 import sys
 
-# Export mesh function
 def Export (mesh, filename):
     """ export Netgen mesh to Warp3D input format """
     
@@ -64,6 +62,12 @@ def Export (mesh, filename):
         nds_t = el.points
         # transform node order
         nds_t[1], nds_t[2] = nds_t[2], nds_t[1]
+        nds_t[4], nds_t[5], nds_t[6], nds_t[7] = \
+        nds_t[5], nds_t[7], nds_t[4], nds_t[6]
+        nds_t[8], nds_t[9] = nds_t[9], nds_t[8]
         for p in nds_t:
             print (p.nr, end="\t", file=f)
     print("\n*echo on", file=f)
+
+
+

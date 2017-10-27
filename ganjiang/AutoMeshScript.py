@@ -25,7 +25,6 @@
  Author(s): Guoqiang Deng (dgquvn <at> gmail <dot> com)
  -----------------------------------------------------------------------------
  '''
-
 import netgen.NgOCC
 import netgen.libngpy._NgOCC as nlOCC
 import netgen.libngpy._meshing as nlmesh
@@ -33,7 +32,7 @@ import ngsolve.comp as ngcomp
 import configparser
 
 # program option for reading configuration file
-def parseArg():
+def parseArgs():
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config", help="configuration file location and name")
@@ -75,22 +74,50 @@ def generateMesh(config):
     # convert ngsolve mesh to netgen mesh
     nt_mesh = ngs_mesh.ngmesh
     
+    # check if it is second order mesh
+    if config.has_option('Parameter', 'SecondOrder') and \
+    config['Parameter']['SecondOrder'] == 'on':
+        nt_mesh.SecondOrder()
+    
     return nt_mesh
     
+# Export the Warp3D mesh
+def exportMesh(config, nt_mesh):
+    # add current directory
+    import sys
+    sys.path.append('.')
+    # export Warp3D mesh
+    if config.has_option('Parameter', 'SecondOrder') and \
+    config['Parameter']['SecondOrder'] == 'on':
+        import ExportTet4 as exp
+    else:
+        import ExportTet10 as exp
+    
+    # set default output file name
+    outputFile = 'output.inp'
+    # set user specified output file name
+    if config.has_option('Output', 'FileName'):
+        outputFile = config['Output']['FileName']
+    
+    # export the mesh, where the default is Warp3D format
+    # check output file format
+    if config.has_option('Output', 'Format') and \
+    config['Output']['Format'].lower() != 'warp3d format':
+        nt_mesh.Export(outputFile, config['Output']['Format'])
+    else:    
+        exp.Export(nt_mesh, outputFile)
+
 
 if __name__=="__main__":
     # check program option for configuration file
-    ConfigFile = ArgParse()
+    ConfigFile = parseArgs()
     # check if configuration file is in the right format
-    config = ReadConfigFile(ConfigFile)
+    config = readConfigFile(ConfigFile)
     
     # generate mesh
     nt_mesh = generateMesh(config)
     
     # export mesh
-    nt_mesh.Export('output', 'Neutral Format')
-
-    # output user defined format
-    #import netgen.exportNeutral as exp
-    #exp.Export(nt_mesh, "cube.neu")
+    exportMesh(config, nt_mesh)
+    
 
