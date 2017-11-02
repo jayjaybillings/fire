@@ -13,12 +13,12 @@ parameters "USE_OCC" and "USE_MPI" are set to on.
 An ini configuration file is needed for running the script, which you find the instructions and examples 
 under the directory of examples.  The bash command to run the Python script is 
 
-'''bash
+```bash
 python3 AutoMeshScript.py -c examples/ex1.ini
-'''
+```
 
 where "examples/ex1.ini" is the configuration file name and path, or
 
-'''bash
+```bash
 python3 AutoMeshScript.py --config examples/ex1.ini
-'''
+```
