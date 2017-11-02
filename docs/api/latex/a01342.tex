@@ -1,0 +1,43 @@
+pythonoce-\/test.\+py timing results. 100000 points in a 10x10x10 box in a 20x20x20 universe.
+
+Initial version, full display\+: 26.\+9s Initial version, no display\+: 24.\+6s Initial version, no display or stdout\+: 19.\+24s Numpy version, no display\+: 21.\+8s Numpy version, no display or stdout\+: 19.\+543s Numpy version, same + direct containment insert\+: 19.\+747s Numpy version, same + pandas\+: 19.\+6s Pure pandas, otherwise same, no initial data\+: $>$800s Pure pandas, otherwise same, initialized to zero\+: 165.\+3s Pure pandas, same, 4 set\+\_\+value instead of iloc (used profiler)\+: 21.\+07s Pure pandas, same but with B\+Rep extrema optimization\+: 18.\+1s Same but with bounding box\+: 14.\+7s
+
+Note\+: vertices.\+set\+\_\+value(i,\mbox{[}\textquotesingle{}x\textquotesingle{},\textquotesingle{}y\textquotesingle{},\textquotesingle{}z\textquotesingle{},\textquotesingle{}in\+Shape\textquotesingle{}\mbox{]},\mbox{[}x,y,z,in\+Shape\mbox{]}) does not perform well.
+
+Profile command\+: time python -\/m c\+Profile pythonoce-\/test.\+py $\vert$ grep \char`\"{}0000 \char`\"{} time python -\/m c\+Profile -\/s cumtime pythonoce-\/test.\+py time python -\/m c\+Profile -\/s tottime pythonoce-\/test.\+py
+
+\section*{Pandas with iloc\+: }
+
+10000 0.\+010 0.\+000 0.\+067 0.\+000 B\+Rep\+Builder\+A\+P\+I.\+py\+:2875({\bfseries init}) 10000 0.\+012 0.\+000 1.\+996 0.\+000 B\+Rep\+Extrema.\+py\+:201({\bfseries init}) 10000 0.\+025 0.\+000 0.\+034 0.\+000 base.\+py\+:1351(\+\_\+convert\+\_\+slice\+\_\+indexer) 10000 0.\+008 0.\+000 0.\+024 0.\+000 base.\+py\+:1584({\bfseries iter}) 10000 0.\+025 0.\+000 0.\+120 0.\+000 base.\+py\+:404(\+\_\+shallow\+\_\+copy) 10000 0.\+024 0.\+000 0.\+033 0.\+000 base.\+py\+:701(\+\_\+get\+\_\+attributes\+\_\+dict) 10000 0.\+007 0.\+000 0.\+010 0.\+000 base.\+py\+:703($<$listcomp$>$) 10000 0.\+010 0.\+000 0.\+041 0.\+000 common.\+py\+:182(is\+\_\+bool\+\_\+indexer) 10000 0.\+008 0.\+000 0.\+013 0.\+000 generic.\+py\+:1607(\+\_\+indexer) 10000 0.\+009 0.\+000 0.\+051 0.\+000 generic.\+py\+:3171(\+\_\+is\+\_\+mixed\+\_\+type) 10000 0.\+007 0.\+000 0.\+028 0.\+000 generic.\+py\+:3173($<$lambda$>$) 10000 0.\+011 0.\+000 0.\+057 0.\+000 gp.\+py\+:11046({\bfseries init}) 10000 0.\+026 0.\+000 0.\+382 0.\+000 indexing.\+py\+:144(\+\_\+get\+\_\+setitem\+\_\+indexer) 10000 0.\+017 0.\+000 0.\+124 0.\+000 indexing.\+py\+:1583(\+\_\+has\+\_\+valid\+\_\+type) 10000 0.\+006 0.\+000 0.\+096 0.\+000 indexing.\+py\+:1602(\+\_\+has\+\_\+valid\+\_\+setitem\+\_\+indexer) 10000 0.\+013 0.\+000 0.\+063 0.\+000 indexing.\+py\+:1632(\+\_\+is\+\_\+valid\+\_\+integer) 10000 0.\+063 0.\+000 13.\+492 0.\+001 indexing.\+py\+:173({\bfseries setitem}) 10000 0.\+015 0.\+000 0.\+052 0.\+000 indexing.\+py\+:1863(length\+\_\+of\+\_\+indexer) 10000 0.\+056 0.\+000 0.\+314 0.\+000 indexing.\+py\+:210(\+\_\+convert\+\_\+tuple) 10000 0.\+019 0.\+000 0.\+078 0.\+000 indexing.\+py\+:238(\+\_\+convert\+\_\+slice\+\_\+indexer) 10000 0.\+040 0.\+000 0.\+090 0.\+000 indexing.\+py\+:246(\+\_\+has\+\_\+valid\+\_\+positional\+\_\+setitem\+\_\+indexer) 10000 0.\+319 0.\+000 13.\+011 0.\+001 indexing.\+py\+:273(\+\_\+setitem\+\_\+with\+\_\+indexer) 10000 0.\+004 0.\+000 0.\+015 0.\+000 indexing.\+py\+:519(can\+\_\+do\+\_\+equal\+\_\+len) 10000 0.\+010 0.\+000 0.\+025 0.\+000 internals.\+py\+:1806(\+\_\+can\+\_\+hold\+\_\+element) 10000 0.\+007 0.\+000 0.\+009 0.\+000 internals.\+py\+:1818(should\+\_\+store) 10000 0.\+009 0.\+000 0.\+021 0.\+000 internals.\+py\+:3309(is\+\_\+mixed\+\_\+type) 10000 0.\+017 0.\+000 0.\+017 0.\+000 \{built-\/in method O\+C\+C.\+\_\+\+B\+Rep\+Builder\+A\+P\+I.\+B\+Rep\+Builder\+A\+P\+I\+\_\+\+Make\+Vertex\+\_\+swiginit\} 10000 0.\+040 0.\+000 0.\+040 0.\+000 \{built-\/in method O\+C\+C.\+\_\+\+B\+Rep\+Builder\+A\+P\+I.\+new\+\_\+\+B\+Rep\+Builder\+A\+P\+I\+\_\+\+Make\+Vertex\} 10000 0.\+039 0.\+000 0.\+039 0.\+000 \{built-\/in method O\+C\+C.\+\_\+\+B\+Rep\+Extrema.\+B\+Rep\+Extrema\+\_\+\+Dist\+Shape\+Shape\+\_\+swiginit\} 10000 1.\+945 0.\+000 1.\+945 0.\+000 \{built-\/in method O\+C\+C.\+\_\+\+B\+Rep\+Extrema.\+new\+\_\+\+B\+Rep\+Extrema\+\_\+\+Dist\+Shape\+Shape\} 10000 0.\+027 0.\+000 0.\+027 0.\+000 \{built-\/in method O\+C\+C.\+\_\+gp.\+gp\+\_\+\+Pnt\+\_\+swiginit\} 10000 0.\+019 0.\+000 0.\+019 0.\+000 \{built-\/in method O\+C\+C.\+\_\+gp.\+new\+\_\+gp\+\_\+\+Pnt\}
+
+\section*{Pandas with 4 sets }
+
+10000 0.\+006 0.\+000 0.\+043 0.\+000 B\+Rep\+Builder\+A\+P\+I.\+py\+:2875({\bfseries init}) 10000 0.\+010 0.\+000 1.\+782 0.\+000 B\+Rep\+Extrema.\+py\+:201({\bfseries init}) 40000 0.\+061 0.\+000 0.\+201 0.\+000 frame.\+py\+:1832(set\+\_\+value) 10000 0.\+008 0.\+000 0.\+034 0.\+000 gp.\+py\+:11046({\bfseries init}) 10000 0.\+012 0.\+000 0.\+012 0.\+000 \{built-\/in method O\+C\+C.\+\_\+\+B\+Rep\+Builder\+A\+P\+I.\+B\+Rep\+Builder\+A\+P\+I\+\_\+\+Make\+Vertex\+\_\+swiginit\} 10000 0.\+024 0.\+000 0.\+024 0.\+000 \{built-\/in method O\+C\+C.\+\_\+\+B\+Rep\+Builder\+A\+P\+I.\+new\+\_\+\+B\+Rep\+Builder\+A\+P\+I\+\_\+\+Make\+Vertex\} 10000 0.\+034 0.\+000 0.\+034 0.\+000 \{built-\/in method O\+C\+C.\+\_\+\+B\+Rep\+Extrema.\+B\+Rep\+Extrema\+\_\+\+Dist\+Shape\+Shape\+\_\+swiginit\} 10000 1.\+739 0.\+000 1.\+739 0.\+000 \{built-\/in method O\+C\+C.\+\_\+\+B\+Rep\+Extrema.\+new\+\_\+\+B\+Rep\+Extrema\+\_\+\+Dist\+Shape\+Shape\} 10000 0.\+016 0.\+000 0.\+016 0.\+000 \{built-\/in method O\+C\+C.\+\_\+gp.\+gp\+\_\+\+Pnt\+\_\+swiginit\} 10000 0.\+009 0.\+000 0.\+009 0.\+000 \{built-\/in method O\+C\+C.\+\_\+gp.\+new\+\_\+gp\+\_\+\+Pnt\} 30000 0.\+004 0.\+000 0.\+004 0.\+000 \{method \textquotesingle{}random\textquotesingle{} of \textquotesingle{}\+\_\+random.\+Random\textquotesingle{} objects\} 40000 0.\+060 0.\+000 0.\+060 0.\+000 \{method \textquotesingle{}set\+\_\+value\textquotesingle{} of \textquotesingle{}pandas.\+\_\+libs.\+index.\+Index\+Engine\textquotesingle{} objects\}
+
+\href{https://translate.google.com/translate?sl=auto&tl=en&js=y&prev=_t&hl=en&ie=UTF-8&u=http%3A%2F%2Ftrac.lecad.si%2Fvaje%2Fwiki%2FPythonOcc%2Fprimitives&edit-text=&act=url}{\tt https\+://translate.\+google.\+com/translate?sl=auto\&tl=en\&js=y\&prev=\+\_\+t\&hl=en\&ie=\+U\+T\+F-\/8\&u=http\%3\+A\%2\+F\%2\+Ftrac.\+lecad.\+si\%2\+Fvaje\%2\+Fwiki\%2\+F\+Python\+Occ\%2\+Fprimitives\&edit-\/text=\&act=url}
+
+100k produces $\sim$12456 in 10x10x10 box with 20x20x20 sample space 10k produces $\sim$1262 in 10x10x10 box with 20x20x20 sample space
+
+splot \textquotesingle{}point.\+csv\textquotesingle{} using 1\+:2\+:3 \textquotesingle{}lf,lf,lf,lf\textquotesingle{}
+
+Confirmed that with a bounding box all points go into the box\+: -\/1e-\/07 10.\+0000001 -\/1e-\/07 10.\+0000001 -\/1e-\/07 10.\+0000001 10.\+000000199999999 10.\+000000199999999 10.\+000000199999999 1000 1000
+
+If you need a B\+Rep\+Builder use builder = B\+Rep\+\_\+\+Builder() from the O\+C\+C.\+B\+Rep package.
+
+Don\textquotesingle{}t repair the S\+TL mesh if it already passes a solid test in the mesh workbench Free\+C\+AD. Also don\textquotesingle{}t mess with the normals or other information. If you do, then you may not be able to create a solid from the repaired S\+TL mesh or refine that solid.
+
+\section*{Refinement -\/ don\textquotesingle{}t }
+
+10k particles \mbox{[}bkj yf22\mbox{]}\$ time python pythonoce-\/test.\+py \# RU
+
+real 0m33.\+432s user 0m33.\+278s sys 0m0.\+072s
+
+\mbox{[}bkj yf22\mbox{]}\$ time python pythonoce-\/test.\+py \# RR
+
+real 1m8.\+547s user 1m8.\+294s sys 0m0.\+080s
+
+\mbox{[}bkj yf22\mbox{]}\$ time python pythonoce-\/test.\+py \# UR
+
+real 0m51.\+323s user 0m51.\+138s sys 0m0.\+075s \mbox{[}bkj yf22\mbox{]}\$ time python pythonoce-\/test.\+py \# UU
+
+real 0m35.\+467s user 0m35.\+292s sys 0m0.\+083s \mbox{[}bkj yf22\mbox{]}\$ 

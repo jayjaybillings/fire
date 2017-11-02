@@ -39,7 +39,6 @@
 #include <fstream>
 #include <ILocalParser.h>
 #include <memory>
-#include <build.h>
 
 namespace fire {
 

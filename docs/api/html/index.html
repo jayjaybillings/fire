@@ -73,11 +73,18 @@ $(function() {
 <div class="title">Fire Framework </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>Fire is a framework for scientific computing. It includes various reusable tools and utilities. This includes</p><ul>
+<div class="textblock"><p>Fire is a framework for modeling and simulation. It includes various reusable tools and utilities for solving computational physics problems. This includes</p><ul>
 <li>parsers</li>
 <li>steppers</li>
+<li>solvers</li>
+<li>a finite element library</li>
 </ul>
-<p>It also includes domain-specific classes for nuclear reaction network simulations in nuclear astrophysics.</p>
+<p>It also includes domain-specific classes and tools for</p><ul>
+<li>kinetic rate theory calculations in nuclear astrophysics</li>
+<li>heat conduction and diffusion</li>
+<li>sintering</li>
+<li>welding</li>
+</ul>
 <h2>Documentation</h2>
 <p>Documentation in Fire is generated via Doxygen by running "make doc" during the build. The documentation is viewable <a href="http://www.jayjaybillings.com/fire">online</a>. The full API documentation is available at <a href="http://www.jayjaybillings.com/fire/api/html/">the API reference page</a>.</p>
 <p>You can run "make doc" from build directory to generate the API documentation. Doxygen handles most of the required documentation without developer intervention. This means that in some cases there may be classes that seem to have minimal documentation in the source, like classes that implement interfaces and provide no additional functionality, but are in fact quite well documented by Doxygen. Most IDEs will also auto-generate descriptions for developers too, so the author(s) see no need to cover every piece of code with comments.</p>
@@ -86,7 +93,8 @@ $(function() {
 <h2>Checkout and build</h2>
 <p>From a shell, execute the following commands to compile the code:</p>
 <div class="fragment"><div class="line">git clone https://github.com/jayjaybillings/fire</div><div class="line">mkdir fire-build</div><div class="line">cd fire-build</div><div class="line">cmake ../fire -DCMAKE_BUILD_TYPE=Debug -G&quot;Eclipse CDT4 - Unix Makefiles&quot; -DCMAKE_ECLIPSE_VERSION=4.5</div><div class="line">make</div></div><!-- fragment --><p>If you would like to use MAGMA for solvers, you need to modify the cmake argument with the path to the MAGMA installation. Your configuration statement should look like the following:</p>
-<div class="fragment"><div class="line">cmake ../fire -DCMAKE_BUILD_TYPE=Debug -G&quot;Eclipse CDT4 - Unix Makefiles&quot; -DCMAKE_ECLIPSE_VERSION=4.5 MAGMA_ROOT=/usr/local/lib</div></div><!-- fragment --><p>The above will get the code running, but it will not run the tests or generate the documentation. Issue the following commands to do that: </p><div class="fragment"><div class="line">make test</div><div class="line">make doc</div></div><!-- fragment --><p>Build flags, such as -Wall, can be set by prepending the CXX_FLAGS variable to the cmake command as such</p>
+<div class="fragment"><div class="line">cmake ../fire -DCMAKE_BUILD_TYPE=Debug -G&quot;Eclipse CDT4 - Unix Makefiles&quot; -DCMAKE_ECLIPSE_VERSION=4.5 -DMAGMA_ROOT=/usr/local/lib</div></div><!-- fragment --><p> Fire also supports CVODE, which can be used by either passing -DSUNDIALS_ROOT or pointing to Spack:</p>
+<div class="fragment"><div class="line">cmake ../fire -DCMAKE_BUILD_TYPE=Debug -G&quot;Eclipse CDT4 - Unix Makefiles&quot; -DCMAKE_ECLIPSE_VERSION=4.5 -DMAGMA_ROOT=/usr/local/lib -DSPACK_ROOT=$HOME/spack</div></div><!-- fragment --><p>The above will get the code running, but it will not run the tests or generate the documentation. Issue the following commands to do that: </p><div class="fragment"><div class="line">make test</div><div class="line">make doc</div></div><!-- fragment --><p>Build flags, such as -Wall, can be set by prepending the CXX_FLAGS variable to the cmake command as such</p>
 <div class="fragment"><div class="line">CXX_FLAGS=&#39;-Wall&#39; cmake ../fire -DCMAKE_BUILD_TYPE=Debug -G&quot;Eclipse CDT4 - Unix Makefiles&quot; -DCMAKE_ECLIPSE_VERSION=4.5</div></div><!-- fragment --><p>Optimization flags should be handled by setting -DCMAKE_BUILD_TYPE=Release instead of Debug. Likewise, an optimized build with debug information can be acheived by setting -DCMAKE_BUILD_TYPE=RelWithDebugInfo.</p>
 <h2>License</h2>
 <p>See the LICENSE file licensing and copyright information. In short, 3-clause BSD.</p>

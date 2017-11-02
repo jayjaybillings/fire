@@ -69,6 +69,22 @@ int main(int argc, char** argv) {
 
 This strategy of dealing with mathematical functions makes it possible to optimize computations of constants (such as $$\alpha$$) and other factors that are used repeatedly without any unnecessary overheads such as constructor calls or copies. In the example above, the gLambda functor is created automatically and anonymously by the compiler and it uses alpha by reference in an optimized way. By using alpha by reference from the calling function, it prevents the need for alpha to be computed by an associated class or to be explicitly set by an accessor.
 
+# Two-Phase Initialization/Construction
+
+Some parts of Fire use Two-Phase Initialization, also known as Two-Phase Construction, which resembles the following:
+
+```cpp
+T buildT() {
+    T myT;
+    myT.setup(); // Maybe, start, configure, etc.
+    return myT;
+}
+```
+
+Such a configuration is especially useful in scenarios where full initialization in the constructor of a base class would prevent more sophisticated configuration by clients. For example, if the setup() operation is inside the constructor and a client needs to do something, such as register services or configure data, before setup() is called, then single-phase construction would prevent that whereas two-phase construction would enable it.
+
+Two phase construction may also be useful for parallelization during setup phases on shared-memory systems since the construction of proper types can be separated from otherwise generic calls to setup() executed from two or more cores.
+
 # Memory Performance
 
 ## Public Data
@@ -116,7 +132,7 @@ state, and provide access via *accessors.*
 
 ### When to use accessors
 
-Fire uses structs over classes for small data structures of pure data because, in some cases, *accessor functions* may be evil. Accessors - or functions that start with "get" or "set" - are used as a means of managing access to or hiding the state of "private" data in a class. (Hiding internal state is called *encapsulation.*) In a class like the following it is clear that the accessors are just fluff since the getA() and setA() functions do no other work than provide access to A, B, and C.
+Fire uses structs over classes for small data structures of pure data because, in some cases, *accessor functions* may be evil. Accessors - or functions that start with "get" or "set" to get or set data - are used as a means of managing access to or hiding the state of "private" data in a class. (Hiding internal state is called *encapsulation.*) In a class like the following it is clear that the accessors are just fluff since the getA() and setA() functions do no other work than provide access to A, B, and C.
 
 ```cpp
 class MyData {
@@ -131,12 +147,11 @@ public:
 };
 ```
 
-If the getA() and setA() functions did some extra work or required other information about internal state, then they would be just fine and well warranted. If they do not do any extra work, then encapsulation is completely violated and can no longer be used as an excuse. That is, the internal state is not actually hidden, so it is better to just make them public. Both C and C++ provide the *struct* construct for defining a data structure with all public members, and it is a better fit here. 
+If the getA() and setA() functions did some extra work or required other information about internal state, then they would be just fine and well warranted. If they do not do any extra work, then encapsulation is completely violated and can no longer be used as an excuse for the added indirection. That is, the internal state is not actually hidden, so it is better to just make them public. Both C and C++ provide the *struct* construct for defining a data structure with all public members (by default), and it is a better fit here. 
 
-There is another important reason for skipping accessors for pure data structures: Accessors are a common source of bugs! While these types of bugs will be easily caught by a good unit test, they can be avoided all together by not using accessors where that makes sense.
+There is another important reason for skipping accessors for pure data structures: Accessors are a common source of bugs! While these types of bugs will be easily caught by a good unit test, they can be avoided all together by not using accessors when it makes sense.
 
-In the last section, one valid case for accessors was discussed: what if a data class with many const-qualified members is needed? Accessors are ideal for providing this information because they keep the
-code succinct:
+In the last section, one valid case for accessors was discussed: what if a data class with many const-qualified members is needed? Accessors are ideal for providing this information because they keep the code succinct:
 
 ```cpp
 class MyData {
@@ -152,7 +167,7 @@ public:
     /**
      * Return the property A, which requires knowing the secret index in the secret vector.
      */
-    int getA() {return vector[8675309];};
+    int getA() {return myConstValues[8675309];};
     ... // More get/set functions for B, C and others  like A.
 };
 ```

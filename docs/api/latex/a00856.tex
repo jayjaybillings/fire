@@ -1,0 +1,208 @@
+\hypertarget{a00856}{}\section{fire\+:\+:I\+V\+P\+Solver$<$ T $>$ Class Template Reference}
+\label{a00856}\index{fire\+::\+I\+V\+P\+Solver$<$ T $>$@{fire\+::\+I\+V\+P\+Solver$<$ T $>$}}
+
+
+{\ttfamily \#include $<$I\+V\+P\+Solver.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{a00856_a5f0a0cf694234d415fd9619ec622946e}{t} (const double \&t\+Val)
+\item 
+void \hyperlink{a00856_a913052793549f22a9f6b423411d53e2e}{t\+Init} (const double \&t\+Val)
+\item 
+void \hyperlink{a00856_a1e0883512378c87c25f4ff51b9940c8e}{t\+Final} (const double \&t\+Val)
+\item 
+void \hyperlink{a00856_af30046ea4cba20b26e703fba0bf089b7}{max\+Output\+Steps} (const int \&steps)
+\item 
+double \hyperlink{a00856_a232570442566aa3a9b8d8f5cd59303e2}{t} () const
+\item 
+double \hyperlink{a00856_a5176984cabaae8977b8d558734efc9a5}{t\+Init} () const
+\item 
+double \hyperlink{a00856_a10d89cafd5f2873b136be293c030d2cc}{t\+Final} () const
+\item 
+int \hyperlink{a00856_a2d0c044d81eadf2610bc350344a81683}{max\+Output\+Steps} ()
+\item 
+void \hyperlink{a00856_aa97e3d1c5f6b9ebc74b4d1abfc49d882}{solve} (\hyperlink{a00860}{State}$<$ T $>$ \&state)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{a00856_a805d32b227b3deccd955b50a4729e74d}{initialT} = 0.\+0
+\item 
+double \hyperlink{a00856_aa996dbcf419f87ae089ff350d3bd8a9f}{finalT} = 0.\+0
+\item 
+double \hyperlink{a00856_abe5d9cbdc55a0dc8c51928ad89cf5983}{currentT} = 0.\+0
+\item 
+int \hyperlink{a00856_a36d73c1ec2bbd205dddc6e3069baf383}{max\+Num\+Output\+Steps} = 10
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class fire\+::\+I\+V\+P\+Solver$<$ T $>$}
+
+This class numerically integrates a set of Ordinary Differential Equations \[ \frac{d\vec{u}}{dt} = \vec{f}(t,\vec{u}) \] given \[ u(t=t_{0}), t_{0} \ge t \le t_{f} \]
+
+User state (read\+: values of u), including initial conditions, are provided to the solver via the \hyperlink{a00860}{State} class. The solver can be configured roughly as follows (which is adapted from I\+V\+P\+Solver\+Test\textquotesingle{}s check\+Single\+Variable\+Solve())\+: 
+\begin{DoxyCode}
+\textcolor{comment}{// Configure the solver - it is templated on the same type as the State}
+IVPSolver<T> solver;
+\textcolor{comment}{// Set current, initial and final times}
+solver.t(\hyperlink{a00856_a232570442566aa3a9b8d8f5cd59303e2}{t});
+solver.tInit(\hyperlink{a00856_a5176984cabaae8977b8d558734efc9a5}{tInit});
+solver.tFinal(\hyperlink{a00856_a10d89cafd5f2873b136be293c030d2cc}{tFinal});
+\textcolor{comment}{// Execute the solver using the fully-configured State.}
+solver.solve(state);
+\end{DoxyCode}
+
+
+The maximum number of output steps that will be displayed at the end of the solve can be configured by calling \hyperlink{a00856_a2d0c044d81eadf2610bc350344a81683}{max\+Output\+Steps()} with the desired number of steps.
+
+The original and present implementation is based on C\+V\+O\+DE\textquotesingle{}s example\+\_\+v2.\+c with user-\/defined Jacobians disabled and other adaptations for fitness. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{a00856_af30046ea4cba20b26e703fba0bf089b7}\label{a00856_af30046ea4cba20b26e703fba0bf089b7}} 
+\index{fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}!max\+Output\+Steps@{max\+Output\+Steps}}
+\index{max\+Output\+Steps@{max\+Output\+Steps}!fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}}
+\subsubsection{\texorpdfstring{max\+Output\+Steps()}{maxOutputSteps()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \hyperlink{a00856}{fire\+::\+I\+V\+P\+Solver}$<$ T $>$\+::max\+Output\+Steps (\begin{DoxyParamCaption}\item[{const int \&}]{steps }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+This operation sets the maximum number of output steps in the solver. 
+\begin{DoxyParams}{Parameters}
+{\em the} & number of maximum output steps the solver should produce. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00856_a2d0c044d81eadf2610bc350344a81683}\label{a00856_a2d0c044d81eadf2610bc350344a81683}} 
+\index{fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}!max\+Output\+Steps@{max\+Output\+Steps}}
+\index{max\+Output\+Steps@{max\+Output\+Steps}!fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}}
+\subsubsection{\texorpdfstring{max\+Output\+Steps()}{maxOutputSteps()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \hyperlink{a00856}{fire\+::\+I\+V\+P\+Solver}$<$ T $>$\+::max\+Output\+Steps (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+This operation returns the maximum number of output steps that the solver will produce. 
+\begin{DoxyParams}{Parameters}
+{\em the} & number of maximum output steps the solver will produce. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00856_aa97e3d1c5f6b9ebc74b4d1abfc49d882}\label{a00856_aa97e3d1c5f6b9ebc74b4d1abfc49d882}} 
+\index{fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}!solve@{solve}}
+\index{solve@{solve}!fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}}
+\subsubsection{\texorpdfstring{solve()}{solve()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \hyperlink{a00856}{fire\+::\+I\+V\+P\+Solver}$<$ T $>$\+::solve (\begin{DoxyParamCaption}\item[{\hyperlink{a00860}{State}$<$ T $>$ \&}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+This operation solves the system of equations specified in the \hyperlink{a00860}{State} 
+\begin{DoxyParams}{Parameters}
+{\em the} & \hyperlink{a00860}{State} describing the system to be solved. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00856_a5f0a0cf694234d415fd9619ec622946e}\label{a00856_a5f0a0cf694234d415fd9619ec622946e}} 
+\index{fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}!t@{t}}
+\index{t@{t}!fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}}
+\subsubsection{\texorpdfstring{t()}{t()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \hyperlink{a00856}{fire\+::\+I\+V\+P\+Solver}$<$ T $>$\+::t (\begin{DoxyParamCaption}\item[{const double \&}]{t\+Val }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+This operation sets the current value of t. 
+\begin{DoxyParams}{Parameters}
+{\em the} & current value of t in the solver \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00856_a232570442566aa3a9b8d8f5cd59303e2}\label{a00856_a232570442566aa3a9b8d8f5cd59303e2}} 
+\index{fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}!t@{t}}
+\index{t@{t}!fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}}
+\subsubsection{\texorpdfstring{t()}{t()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+double \hyperlink{a00856}{fire\+::\+I\+V\+P\+Solver}$<$ T $>$\+::t (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+This operation returns the current value of t in the system. 
+\begin{DoxyParams}{Parameters}
+{\em the} & current value of t in the solver \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00856_a1e0883512378c87c25f4ff51b9940c8e}\label{a00856_a1e0883512378c87c25f4ff51b9940c8e}} 
+\index{fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}!t\+Final@{t\+Final}}
+\index{t\+Final@{t\+Final}!fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}}
+\subsubsection{\texorpdfstring{t\+Final()}{tFinal()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \hyperlink{a00856}{fire\+::\+I\+V\+P\+Solver}$<$ T $>$\+::t\+Final (\begin{DoxyParamCaption}\item[{const double \&}]{t\+Val }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+This operation sets the final value of t 
+\begin{DoxyParams}{Parameters}
+{\em the} & final value of t in the solver \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00856_a10d89cafd5f2873b136be293c030d2cc}\label{a00856_a10d89cafd5f2873b136be293c030d2cc}} 
+\index{fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}!t\+Final@{t\+Final}}
+\index{t\+Final@{t\+Final}!fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}}
+\subsubsection{\texorpdfstring{t\+Final()}{tFinal()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+double \hyperlink{a00856}{fire\+::\+I\+V\+P\+Solver}$<$ T $>$\+::t\+Final (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+This operation returns the final value of t configured for the solver. 
+\begin{DoxyParams}{Parameters}
+{\em the} & final value of t in the solver \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00856_a913052793549f22a9f6b423411d53e2e}\label{a00856_a913052793549f22a9f6b423411d53e2e}} 
+\index{fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}!t\+Init@{t\+Init}}
+\index{t\+Init@{t\+Init}!fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}}
+\subsubsection{\texorpdfstring{t\+Init()}{tInit()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \hyperlink{a00856}{fire\+::\+I\+V\+P\+Solver}$<$ T $>$\+::t\+Init (\begin{DoxyParamCaption}\item[{const double \&}]{t\+Val }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+This operation sets the initial value of t 
+\begin{DoxyParams}{Parameters}
+{\em the} & initial value of t in the solver \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00856_a5176984cabaae8977b8d558734efc9a5}\label{a00856_a5176984cabaae8977b8d558734efc9a5}} 
+\index{fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}!t\+Init@{t\+Init}}
+\index{t\+Init@{t\+Init}!fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}}
+\subsubsection{\texorpdfstring{t\+Init()}{tInit()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+double \hyperlink{a00856}{fire\+::\+I\+V\+P\+Solver}$<$ T $>$\+::t\+Init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+This operation returns the initial value of t configured for the solver. 
+\begin{DoxyParams}{Parameters}
+{\em the} & initial value of t in the solver \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{a00856_abe5d9cbdc55a0dc8c51928ad89cf5983}\label{a00856_abe5d9cbdc55a0dc8c51928ad89cf5983}} 
+\index{fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}!currentT@{currentT}}
+\index{currentT@{currentT}!fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}}
+\subsubsection{\texorpdfstring{currentT}{currentT}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+double \hyperlink{a00856}{fire\+::\+I\+V\+P\+Solver}$<$ T $>$\+::currentT = 0.\+0\hspace{0.3cm}{\ttfamily [protected]}}
+
+The current value of t in the integration. \mbox{\Hypertarget{a00856_aa996dbcf419f87ae089ff350d3bd8a9f}\label{a00856_aa996dbcf419f87ae089ff350d3bd8a9f}} 
+\index{fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}!finalT@{finalT}}
+\index{finalT@{finalT}!fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}}
+\subsubsection{\texorpdfstring{finalT}{finalT}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+double \hyperlink{a00856}{fire\+::\+I\+V\+P\+Solver}$<$ T $>$\+::finalT = 0.\+0\hspace{0.3cm}{\ttfamily [protected]}}
+
+The final t value at which the solve should stop. \mbox{\Hypertarget{a00856_a805d32b227b3deccd955b50a4729e74d}\label{a00856_a805d32b227b3deccd955b50a4729e74d}} 
+\index{fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}!initialT@{initialT}}
+\index{initialT@{initialT}!fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}}
+\subsubsection{\texorpdfstring{initialT}{initialT}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+double \hyperlink{a00856}{fire\+::\+I\+V\+P\+Solver}$<$ T $>$\+::initialT = 0.\+0\hspace{0.3cm}{\ttfamily [protected]}}
+
+The initial t value from which the solve should start. \mbox{\Hypertarget{a00856_a36d73c1ec2bbd205dddc6e3069baf383}\label{a00856_a36d73c1ec2bbd205dddc6e3069baf383}} 
+\index{fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}!max\+Num\+Output\+Steps@{max\+Num\+Output\+Steps}}
+\index{max\+Num\+Output\+Steps@{max\+Num\+Output\+Steps}!fire\+::\+I\+V\+P\+Solver@{fire\+::\+I\+V\+P\+Solver}}
+\subsubsection{\texorpdfstring{max\+Num\+Output\+Steps}{maxNumOutputSteps}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+int \hyperlink{a00856}{fire\+::\+I\+V\+P\+Solver}$<$ T $>$\+::max\+Num\+Output\+Steps = 10\hspace{0.3cm}{\ttfamily [protected]}}
+
+The maximum number of \char`\"{}output\char`\"{} steps the solver should take. An output step is a step where output is produced by the solver at a regular user-\/specified interval. The solver may take more computational steps than output steps but will always report for a number of output steps required to meet the final time or the maximum number of output steps, whichever is less. The default value is 10. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+I\+V\+P\+Solver.\+h\end{DoxyCompactItemize}

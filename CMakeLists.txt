@@ -82,17 +82,22 @@ endif(SPACK_ROOT)
 # directories must come before add subdirectory!
 include_directories("${CMAKE_SOURCE_DIR}/parsers")
 include_directories("${CMAKE_SOURCE_DIR}/solvers")
+include_directories("${CMAKE_SOURCE_DIR}/quadrature")
 include_directories("${CMAKE_SOURCE_DIR}/fem")
+include_directories("${CMAKE_SOURCE_DIR}/util")
+include_directories("${CMAKE_SOURCE_DIR}/astrophysics")
 include_directories("${CMAKE_SOURCE_DIR}/tpls/simpleini-4.17")
 
 # Add the main source directories
 add_subdirectory(parsers)
 add_subdirectory(integrators)
 add_subdirectory(solvers)
-add_subdirectory(fem)
-add_subdirectory(util)
+add_subdirectory(quadrature)
 # Add the domain source directories
 add_subdirectory(astrophysics)
+add_subdirectory(fem)
+add_subdirectory(util)
+
 # Add the third party libraries
 ADD_SUBDIRECTORY(tpls)
     

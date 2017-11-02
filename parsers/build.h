@@ -33,8 +33,11 @@
 #define PARSERS_BUILD_H_
 
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include <utility>
+#include <LocalParser.h>
+#include <string>
 
 namespace fire {
 
@@ -81,6 +84,13 @@ template<template <class, typename...> class T, typename K, typename... Args>
 T<K> build(Args&& ... args) {
 	T<K> object(std::forward<Args>(args)...);
 	return object;
+}
+
+template<template <class, typename ...> class T, typename K>
+LocalParser<T<K>> buildParser(const std::string & source) {
+	LocalParser<T<K>> parser;
+	parser.setSource(source);
+	return parser;
 }
 
 /**

@@ -148,6 +148,19 @@ protected:
 	long systemSize;
 
 	/**
+	 * This is a utility array that can be used by clients a buffer for holding
+	 * state values if they cannot be directly mapped to a member on T.
+	 */
+	std::unique_ptr<double> uArr;
+
+	/**
+	 * This is a utility array that can be used by clients a buffer for holding
+	 * state derivative values if they cannot be directly mapped to a member on
+	 * T.
+	 */
+	std::unique_ptr<double> dudtArr;
+
+	/**
 	 * The list of monitors that should be notified when the state changes.
 	 */
 	std::vector<std::function<void(State<T>&)>> monitors;
@@ -353,6 +366,9 @@ public:
 	 */
 	void size(const long & numElements) {
 		systemSize = numElements;
+		// Allocate the storage arrays for u and dudt
+		uArr = std::unique_ptr<double>(new double[systemSize]);
+		dudtArr = std::unique_ptr<double>(new double[systemSize]);
 	};
 
 	/**

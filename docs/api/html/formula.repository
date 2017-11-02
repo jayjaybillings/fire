@@ -9,3 +9,8 @@
 \form#8:\[ u(t=t_{initial}), t_{initial} \le t \ge t_{final} \]
 \form#9:\[ \frac{d\vec{u}}{dt} = \vec{f}(t,\vec{u}) \]
 \form#10:\[ u(t=t_{0}), t_{0} \ge t \le t_{f} \]
+\form#11:\[ ADD Poisson's equation! \]
+\form#12:\[ \iint_{A} f(L_{1},L_{2},L_{3}) dA \approx \sum_{i=0}^{i=4} \omega_{i}f(L_{1},L_{2},L_{3}) \]
+\form#13:\[ *_{A} f(L_{1},L_{2},L_{3}) dA \approx \sum_{i=0}^{i=4} \omega_{i}f(L_{1},L_{2},L_{3}) \]
+\form#14:\[ \int_{A} f(L_{1},L_{2},L_{3}) dA \approx \sum_{i=0}^{i=4} \omega_{i}f(L_{1},L_{2},L_{3}) \]
+\form#15:\[ \int_{A} f(L_{1},L_{2},L_{3}) dA \approx \sum_{i=0}^{i=4} \omega_{i}f(L_{1,i},L_{2,i},L_{3,i}) \]

@@ -53,8 +53,8 @@ static std::string networkFileName = "rateLibrary_alpha.data";
 BOOST_AUTO_TEST_CASE(checkParsing) {
 
 	// Create the parser
-	LocalParser<vector<Reaction>> parser = build
-			< LocalParser<vector<Reaction>>,const string &>(networkFileName);
+	auto parser = buildParser
+			<vector,Reaction>(networkFileName);
 	parser.parse();
 	auto reactionListPtr = parser.getData();
 	vector<Reaction> reactionList = *reactionListPtr;

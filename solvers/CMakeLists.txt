@@ -49,6 +49,12 @@ file(GLOB HEADERS *.h)
 #Grab all of the source files
 file(GLOB SRC *.cpp)
 
+#Add the library to the list of all the libraries
+set(FIRE_SOLVERS_LIBRARIES ${LIBRARY_NAME})
+
+#Add the source code to the library
+add_library(${LIBRARY_NAME} STATIC ${SRC})
+
 #Look for MAGMA if the user set MAGMA_ROOT
 if(MAGMA_ROOT)
   message(STATUS 
@@ -97,11 +103,8 @@ if(SUNDIALS_ROOT OR SPACK_ROOT)
 endif(SUNDIALS_ROOT OR SPACK_ROOT)
 
 # Add the variables to the global property list
-set_property(GLOBAL APPEND PROPERTY FIRE_SOLVERS_LIBRARIES "${FIRE_SOLVERS_LIBRARIES}")
-set_property(GLOBAL APPEND PROPERTY FIRE_SOLVERS_INCLUDE_DIRS "${FIRE_SOLVERS_INCLUDE_DIRS}")
-
-#Add the source code to the library
-#add_library(${LIBRARY_NAME} STATIC ${SRC})
+set(FIRE_SOLVERS_LIBRARIES "${FIRE_SOLVERS_LIBRARIES}" CACHE INTERNAL "FIRE_SOLVERS_LIBRARIES")
+set(FIRE_SOLVERS_INCLUDE_DIRS "${FIRE_SOLVERS_INCLUDE_DIRS}" CACHE INTERNAL "FIRE_SOLVERS_INCLUDE_DIRS")
 
 # Get all remaining test files that don't require special libraries.
 file(GLOB test_files tests/*Test.cpp)

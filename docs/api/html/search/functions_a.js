@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['make_5ftensor_5freference',['make_tensor_reference',['../a00171.html#aaab26473f8b0cb78cff67ae06ff7ce80',1,'fire']]],
-  ['maxoutputsteps',['maxOutputSteps',['../a00814.html#af30046ea4cba20b26e703fba0bf089b7',1,'fire::IVPSolver::maxOutputSteps(const int &amp;steps)'],['../a00814.html#a2d0c044d81eadf2610bc350344a81683',1,'fire::IVPSolver::maxOutputSteps()']]],
-  ['multiplybyscalar',['multiplyByScalar',['../a00842.html#a589c2d2b02b0783682173930a81f7901',1,'fire::TensorProvider']]]
+  ['recomputeconstants',['recomputeConstants',['../a00764.html#a40cf9432221b62db76e8b154e3e81e3d',1,'fire::ConstantStrainTriangleElement']]],
+  ['reset',['Reset',['../a00868.html#a89b34d38be4518e9ed91c634a41b8055',1,'CSimpleIniTempl']]],
+  ['rowmajorindex',['rowMajorIndex',['../a00189.html#a9a38ed1e6b331e71a8afc914607c42f4',1,'fire::rowMajorIndex(int i, int j, int rowLength)'],['../a00189.html#a2cef2f47a996b8fa87a343bcc78c5b4c',1,'fire::rowMajorIndex(MatrixElement&lt; T &gt; e, int rowLength)']]]
 ];
