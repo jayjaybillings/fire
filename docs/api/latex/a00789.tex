@@ -1,0 +1,122 @@
+\hypertarget{a00789}{}\section{fire\+:\+:Two\+D\+Robin\+Boundary\+Condition Struct Reference}
+\label{a00789}\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+
+
+{\ttfamily \#include $<$F\+E\+M\+Types.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{a00789_a94772dc1ff3c599f3f526e72675dac38}{Two\+D\+Robin\+Boundary\+Condition} ()
+\item 
+\hyperlink{a00789_a691668fb77499b26336866f608cf42b2}{Two\+D\+Robin\+Boundary\+Condition} (const \hyperlink{a00198_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&first, const \hyperlink{a00198_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&second, const std\+::function$<$ double(const double \&)$>$ \&\+\_\+sigma, const std\+::function$<$ double(const double \&)$>$ \&\+\_\+h)
+\item 
+bool \hyperlink{a00789_a3568bb75ca2ecea61b1dbc4c1b8b5b60}{operator==} (const \hyperlink{a00789}{Two\+D\+Robin\+Boundary\+Condition} \&other\+Cond) const
+\item 
+bool \hyperlink{a00789_adaa602ac0734d5ed6294f015ab4e2c79}{operator!=} (const \hyperlink{a00789}{Two\+D\+Robin\+Boundary\+Condition} \&other\+Cond) const
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{a00198_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \hyperlink{a00789_ad4db2466fecae72b4dc5068a4d04ec4a}{first\+Node}
+\item 
+\hyperlink{a00198_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \hyperlink{a00789_a5cfaf9f512560ea73616ba18471234bf}{second\+Node}
+\item 
+std\+::function$<$ double(const double \&)$>$ \hyperlink{a00789_ab32818260358435239f283ee40651fe8}{sigma}
+\item 
+std\+::function$<$ double(const double \&)$>$ \hyperlink{a00789_a41dadd7aa9c2d03978d7f0b7b673d684}{h}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This struct represents a two dimensional Robin Boundary condition in which the condition is defined across an edge between two nodes. The Robin condition is defined as \[ k(s)\frac{\partial u}{\partial n} + \sigma(s) u = h(s) \mbox{ on } C_{2} \] All members of this struct must be initialized on construction. The idea is that the references should not need to change during execution because the boundaries do not change. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{a00789_a94772dc1ff3c599f3f526e72675dac38}\label{a00789_a94772dc1ff3c599f3f526e72675dac38}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!Two\+D\+Robin\+Boundary\+Condition@{Two\+D\+Robin\+Boundary\+Condition}}
+\index{Two\+D\+Robin\+Boundary\+Condition@{Two\+D\+Robin\+Boundary\+Condition}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{Two\+D\+Robin\+Boundary\+Condition()}{TwoDRobinBoundaryCondition()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::\+Two\+D\+Robin\+Boundary\+Condition (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+The default constructor \mbox{\Hypertarget{a00789_a691668fb77499b26336866f608cf42b2}\label{a00789_a691668fb77499b26336866f608cf42b2}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!Two\+D\+Robin\+Boundary\+Condition@{Two\+D\+Robin\+Boundary\+Condition}}
+\index{Two\+D\+Robin\+Boundary\+Condition@{Two\+D\+Robin\+Boundary\+Condition}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{Two\+D\+Robin\+Boundary\+Condition()}{TwoDRobinBoundaryCondition()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::\+Two\+D\+Robin\+Boundary\+Condition (\begin{DoxyParamCaption}\item[{const \hyperlink{a00198_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&}]{first,  }\item[{const \hyperlink{a00198_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&}]{second,  }\item[{const std\+::function$<$ double(const double \&)$>$ \&}]{\+\_\+sigma,  }\item[{const std\+::function$<$ double(const double \&)$>$ \&}]{\+\_\+h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Constructor 
+\begin{DoxyParams}{Parameters}
+{\em first} & the node that should be used as the first node on the path \\
+\hline
+{\em second} & the node that should be used as the second or terminal node on the path \\
+\hline
+{\em \+\_\+sigma} & the sigma function \\
+\hline
+{\em \+\_\+h} & the h function on the right-\/hand side of the condition \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{a00789_adaa602ac0734d5ed6294f015ab4e2c79}\label{a00789_adaa602ac0734d5ed6294f015ab4e2c79}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily bool fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::operator!= (\begin{DoxyParamCaption}\item[{const \hyperlink{a00789}{Two\+D\+Robin\+Boundary\+Condition} \&}]{other\+Cond }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+The inequality operator override to invert ==. \mbox{\Hypertarget{a00789_a3568bb75ca2ecea61b1dbc4c1b8b5b60}\label{a00789_a3568bb75ca2ecea61b1dbc4c1b8b5b60}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!operator==@{operator==}}
+\index{operator==@{operator==}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily bool fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::operator== (\begin{DoxyParamCaption}\item[{const \hyperlink{a00789}{Two\+D\+Robin\+Boundary\+Condition} \&}]{other\+Cond }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+This is an operator override to compare two dimensional Robin conditions. Note that this operation implements equality checks for the functions by generating pointer targets for the functions and checking target types. This may or may not be the best way to check for equality of these functions, depending on your application. 
+\begin{DoxyParams}{Parameters}
+{\em other\+Cond} & the other condition \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the conditions are equal, false otherwise. 
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{a00789_ad4db2466fecae72b4dc5068a4d04ec4a}\label{a00789_ad4db2466fecae72b4dc5068a4d04ec4a}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!first\+Node@{first\+Node}}
+\index{first\+Node@{first\+Node}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{first\+Node}{firstNode}}
+{\footnotesize\ttfamily \hyperlink{a00198_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::first\+Node}
+
+The first node where the edge starts \mbox{\Hypertarget{a00789_a41dadd7aa9c2d03978d7f0b7b673d684}\label{a00789_a41dadd7aa9c2d03978d7f0b7b673d684}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!h@{h}}
+\index{h@{h}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{h}{h}}
+{\footnotesize\ttfamily std\+::function$<$double(const double \&)$>$ fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::h}
+
+As defined in the definition of the condition. 
+\begin{DoxyParams}{Parameters}
+{\em s} & The distance along the side length \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00789_a5cfaf9f512560ea73616ba18471234bf}\label{a00789_a5cfaf9f512560ea73616ba18471234bf}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!second\+Node@{second\+Node}}
+\index{second\+Node@{second\+Node}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{second\+Node}{secondNode}}
+{\footnotesize\ttfamily \hyperlink{a00198_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::second\+Node}
+
+The second node where the edge terminates \mbox{\Hypertarget{a00789_ab32818260358435239f283ee40651fe8}\label{a00789_ab32818260358435239f283ee40651fe8}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!sigma@{sigma}}
+\index{sigma@{sigma}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{sigma}{sigma}}
+{\footnotesize\ttfamily std\+::function$<$double(const double \&)$>$ fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::sigma}
+
+As defined in the definition of the condition. 
+\begin{DoxyParams}{Parameters}
+{\em s} & The distance along the side length \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+F\+E\+M\+Types.\+h\end{DoxyCompactItemize}

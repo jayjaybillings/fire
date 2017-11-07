@@ -1,25 +1,62 @@
-\hypertarget{a00822}{}\section{User\+Data Struct Reference}
-\label{a00822}\index{User\+Data@{User\+Data}}
-\subsection*{Public Attributes}
+\hypertarget{a00822}{}\section{fire\+:\+:I\+Property\+Parser Class Reference}
+\label{a00822}\index{fire\+::\+I\+Property\+Parser@{fire\+::\+I\+Property\+Parser}}
+
+
+{\ttfamily \#include $<$I\+Property\+Parser.\+h$>$}
+
+Inheritance diagram for fire\+:\+:I\+Property\+Parser\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=5.000000cm]{a00822}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{a00822_ae573b2e5b81520838c275f765c07cc4d}\label{a00822_ae573b2e5b81520838c275f765c07cc4d}} 
-realtype {\bfseries dx}
+virtual const std\+::vector$<$ std\+::string $>$ \& \hyperlink{a00822_a34602687f9d1affac7bd842102d4a6aa}{get\+Property\+Block\+Names} ()=0
 \item 
-\mbox{\Hypertarget{a00822_aceed000d695efa23f441c395357b7612}\label{a00822_aceed000d695efa23f441c395357b7612}} 
-realtype {\bfseries dy}
-\item 
-\mbox{\Hypertarget{a00822_a7ceffb547c833a42fa1b70838f103db0}\label{a00822_a7ceffb547c833a42fa1b70838f103db0}} 
-realtype {\bfseries hdcoef}
-\item 
-\mbox{\Hypertarget{a00822_a96d933b1d8f2784aacd29717a52d9f63}\label{a00822_a96d933b1d8f2784aacd29717a52d9f63}} 
-realtype {\bfseries hacoef}
-\item 
-\mbox{\Hypertarget{a00822_a18683db86f748f197da6593eae61cdb0}\label{a00822_a18683db86f748f197da6593eae61cdb0}} 
-realtype {\bfseries vdcoef}
+virtual const std\+::map$<$ std\+::string, std\+::string $>$ \& \hyperlink{a00822_a34201371cb36dd09e96a66242ececb86}{get\+Property\+Block} (const std\+::string \&name)=0
 \end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
 
 
-The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\subsection{Detailed Description}
+This is an extension of the parser interface that focuses on parsing a set of properties. Properties are returned in blocks represented by maps.. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{a00822_a34201371cb36dd09e96a66242ececb86}\label{a00822_a34201371cb36dd09e96a66242ececb86}} 
+\index{fire\+::\+I\+Property\+Parser@{fire\+::\+I\+Property\+Parser}!get\+Property\+Block@{get\+Property\+Block}}
+\index{get\+Property\+Block@{get\+Property\+Block}!fire\+::\+I\+Property\+Parser@{fire\+::\+I\+Property\+Parser}}
+\subsubsection{\texorpdfstring{get\+Property\+Block()}{getPropertyBlock()}}
+{\footnotesize\ttfamily virtual const std\+::map$<$std\+::string, std\+::string$>$\& fire\+::\+I\+Property\+Parser\+::get\+Property\+Block (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+This operation returns the property block with the given name. 
+\begin{DoxyParams}{Parameters}
+{\em name} & the block name \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the property block with the given name 
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{a00814_a3591312590a66659ebd377cdde9ab9ad}{fire\+::\+I\+N\+I\+Property\+Parser}.
+
+\mbox{\Hypertarget{a00822_a34602687f9d1affac7bd842102d4a6aa}\label{a00822_a34602687f9d1affac7bd842102d4a6aa}} 
+\index{fire\+::\+I\+Property\+Parser@{fire\+::\+I\+Property\+Parser}!get\+Property\+Block\+Names@{get\+Property\+Block\+Names}}
+\index{get\+Property\+Block\+Names@{get\+Property\+Block\+Names}!fire\+::\+I\+Property\+Parser@{fire\+::\+I\+Property\+Parser}}
+\subsubsection{\texorpdfstring{get\+Property\+Block\+Names()}{getPropertyBlockNames()}}
+{\footnotesize\ttfamily virtual const std\+::vector$<$std\+::string$>$\& fire\+::\+I\+Property\+Parser\+::get\+Property\+Block\+Names (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+This operation returns the names of the property blocks parsed from the source. \begin{DoxyReturn}{Returns}
+the block names 
+\end{DoxyReturn}
+
+
+Implemented in \hyperlink{a00814_aed0f1f47111794659564dcddb4d25bc6}{fire\+::\+I\+N\+I\+Property\+Parser}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-cv\+Adv\+Diff\+\_\+bnd.\+c\end{DoxyCompactItemize}
+I\+Property\+Parser.\+h\end{DoxyCompactItemize}

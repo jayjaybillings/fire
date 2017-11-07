@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen 1.8.13"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <title>Fire: Member List</title>
+        <title>Fire: fire::System&lt; T &gt; Class Template Reference</title>
         <!--<link href="tabs.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="dynsections.js"></script>
         <link href="search/search.css" rel="stylesheet" type="text/css"/>
@@ -69,26 +69,200 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00189.html">fire</a></li><li class="navelem"><a class="el" href="a00808.html">IParser</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00198.html">fire</a></li><li class="navelem"><a class="el" href="a00805.html">System</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="a00802.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">fire::IParser Member List</div>  </div>
+<div class="title">fire::System&lt; T &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This is the complete list of members for <a class="el" href="a00808.html">fire::IParser</a>, including all inherited members.</p>
-<table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="a00808.html#ab55d2644dfa6d950d1f874e1e02df095">getSource</a>()=0</td><td class="entry"><a class="el" href="a00808.html">fire::IParser</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00808.html#ac94c7a288bf669322b93ba171c43f90e">getSourceStream</a>()=0</td><td class="entry"><a class="el" href="a00808.html">fire::IParser</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00808.html#a616c42c85d781c916e97f0ad8f1e9010">isFile</a>()=0</td><td class="entry"><a class="el" href="a00808.html">fire::IParser</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00808.html#a97b9e58493b3cadbc63e670b0b0e759f">isLocal</a>()=0</td><td class="entry"><a class="el" href="a00808.html">fire::IParser</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00808.html#a83d2882a466d694fb0aea3d846bcbed4">isParallel</a>()=0</td><td class="entry"><a class="el" href="a00808.html">fire::IParser</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00808.html#af36ac6eedd8c27d2f418869193d7d03c">parse</a>()=0</td><td class="entry"><a class="el" href="a00808.html">fire::IParser</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a00808.html#a0dbeff2b9bd8dbfb2aad7a424eef87d1">setSource</a>(const std::string &amp;source)=0</td><td class="entry"><a class="el" href="a00808.html">fire::IParser</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a00808.html#a7748a633910e9bfc27411d6bd840496b">setSource</a>(const std::istream &amp;source)=0</td><td class="entry"><a class="el" href="a00808.html">fire::IParser</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-</table></div><!-- contents -->
+<p><code>#include &lt;<a class="el" href="a00062_source.html">System.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a2c252b0ec85877bcfcbae60dff04dfaa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#a2c252b0ec85877bcfcbae60dff04dfaa">setSize</a> (const long &amp;n, const short &amp;d)</td></tr>
+<tr class="separator:a2c252b0ec85877bcfcbae60dff04dfaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9e25fbc00a50d54fb90ac1fdcd911e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#aa9e25fbc00a50d54fb90ac1fdcd911e4">setState</a> (T *systemState)</td></tr>
+<tr class="separator:aa9e25fbc00a50d54fb90ac1fdcd911e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a89101170e69beff93e11c795aa6bb481"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#a89101170e69beff93e11c795aa6bb481">numEqs</a></td></tr>
+<tr class="separator:a89101170e69beff93e11c795aa6bb481"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a041623ed0162d4cad4309c9be3e7df9d"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#a041623ed0162d4cad4309c9be3e7df9d">nDim</a></td></tr>
+<tr class="separator:a041623ed0162d4cad4309c9be3e7df9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac59dffce1577673d04cd222c0f769c11"><td class="memItemLeft" align="right" valign="top">T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#ac59dffce1577673d04cd222c0f769c11">state</a></td></tr>
+<tr class="separator:ac59dffce1577673d04cd222c0f769c11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;class T&gt;<br />
+class fire::System&lt; T &gt;</h3>
+
+<p>This class represents a system of equations in Fire, where a system of equations is a collection of equations with the same unknowns.</p>
+<p>The system of equations is represented by a collection of operators that operate on a problem state provided by the user. The state defines all of the system's unknown quantities. However, since the type of the state is generic, the system does not explicitly known the identity of those unknowns. The user-defined state class is expected to provide the unknowns contiguously when queried.</p>
+<p>The system of equations can be integrated by calling the integrate() operation. The system will be solved using a default integrator if a user- defined integrator is not provided. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2c252b0ec85877bcfcbae60dff04dfaa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c252b0ec85877bcfcbae60dff04dfaa">&#9670;&nbsp;</a></span>setSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="a00805.html">fire::System</a>&lt; T &gt;::setSize </td>
+          <td>(</td>
+          <td class="paramtype">const long &amp;&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const short &amp;&#160;</td>
+          <td class="paramname"><em>d</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This operation sets the size of the system of equations by defining the total number of equations and the number of dimensions. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">n</td><td>The total number of equations in the system. </td></tr>
+    <tr><td class="paramname">d</td><td>The total number of physical dimensions of the system, not including time. 1 for 1D, 2 for 2D, 3 for 3D. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa9e25fbc00a50d54fb90ac1fdcd911e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9e25fbc00a50d54fb90ac1fdcd911e4">&#9670;&nbsp;</a></span>setState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="a00805.html">fire::System</a>&lt; T &gt;::setState </td>
+          <td>(</td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>systemState</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This operation specifies the state of the system of equations.</p>
+<p>The state is provided using a raw pointer because the system of equations does not participate in the state's memory lifecycle. This class explicitly guarantees that it will never deallocate the state data! Classes utilized by this class, such as integrators, may overwrite or manipulate the state data in ways described in their API docs, including attempting to deallocate it (frowned upon). Clients should generally expect that the state variables provided by the state type T will be modified and that in some instances those modifications may be done in place. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a041623ed0162d4cad4309c9be3e7df9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a041623ed0162d4cad4309c9be3e7df9d">&#9670;&nbsp;</a></span>nDim</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">short <a class="el" href="a00805.html">fire::System</a>&lt; T &gt;::nDim</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The total number of physical dimensions of the system, not including time. </p>
+
+</div>
+</div>
+<a id="a89101170e69beff93e11c795aa6bb481"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89101170e69beff93e11c795aa6bb481">&#9670;&nbsp;</a></span>numEqs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">long <a class="el" href="a00805.html">fire::System</a>&lt; T &gt;::numEqs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The total number of equations in the system. </p>
+
+</div>
+</div>
+<a id="ac59dffce1577673d04cd222c0f769c11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac59dffce1577673d04cd222c0f769c11">&#9670;&nbsp;</a></span>state</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T* <a class="el" href="a00805.html">fire::System</a>&lt; T &gt;::state</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The state of the system, including unknowns, materials information, etc. </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li><a class="el" href="a00062_source.html">System.h</a></li>
+</ul>
+</div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->
 <!-- start footer part -->
 </div>

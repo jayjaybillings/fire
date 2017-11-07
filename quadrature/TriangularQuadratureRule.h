@@ -39,7 +39,8 @@ namespace fire {
 
 /**
  * This class performs an integration over the area of a triangle using 2D
- * Gaussian Quadrature. It integrates a function with the following signature:
+ * Gaussian Quadrature. It integrates a function defined across the triangle
+ * with the following signature:
  * @code
  * double f(const std::array<double,3> & coords, const int & i, const int & j);
  * @endcode
@@ -58,7 +59,7 @@ namespace fire {
  *	result = rule.integrate(areaFunction, index);
  * @endcode
  * where the array of doubles contains the area coordinates (L_1, L_2, L_3) of the
- * quadrature point and the following integers are optional identifiers of
+ * quadrature point and the following integer is the optional identifier of
  * the integration. Including integer identifiers makes it possible to, for
  * example, facilitate the integration of matrix elements, derivatives, and
  * otherwise indexed functions. For example, a function might differ
@@ -72,7 +73,7 @@ namespace fire {
  * that exactly integrates all polynomials of degree 7 or less. It requires
  * four evaluations of the function f. Specifically,
  * \f[
- * \int_{A} f(L_{1},L_{2},L_{3}) dA \approx \sum_{i=0}^{i=4}
+ * \iint_{A} f(L_{1},L_{2},L_{3}) dA \approx \sum_{i=0}^{i=4}
  * \omega_{i}f(L_{1,i},L_{2,i},L_{3,i})
  * \f]
  *

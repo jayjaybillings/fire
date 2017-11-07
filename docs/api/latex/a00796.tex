@@ -1,109 +1,87 @@
-\hypertarget{a00796}{}\section{fire\+:\+:Delimited\+Text\+Parser$<$ T, K $>$ Class Template Reference}
-\label{a00796}\index{fire\+::\+Delimited\+Text\+Parser$<$ T, K $>$@{fire\+::\+Delimited\+Text\+Parser$<$ T, K $>$}}
+\hypertarget{a00796}{}\section{fire\+:\+:System$<$ T $>$ Class Template Reference}
+\label{a00796}\index{fire\+::\+System$<$ T $>$@{fire\+::\+System$<$ T $>$}}
 
 
-{\ttfamily \#include $<$Delimited\+Text\+Parser.\+h$>$}
+{\ttfamily \#include $<$System.\+h$>$}
 
-Inheritance diagram for fire\+:\+:Delimited\+Text\+Parser$<$ T, K $>$\+:\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[height=4.000000cm]{a00796}
-\end{center}
-\end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{a00796_aa1f041ebbf0bf72145e8bd20bf95f3f4}\label{a00796_aa1f041ebbf0bf72145e8bd20bf95f3f4}} 
-{\bfseries Delimited\+Text\+Parser} (string delim, string comment)
+void \hyperlink{a00796_a2c252b0ec85877bcfcbae60dff04dfaa}{set\+Size} (const long \&n, const short \&d)
 \item 
-virtual void \hyperlink{a00796_a686df5548771cae833d5e721442a821a}{parse} ()
-\item 
-{\footnotesize template$<$$>$ }\\void \hyperlink{a00796_a773fa7ed28cb9d8c384ad94bd81fc93f}{parse} ()
+void \hyperlink{a00796_aa9e25fbc00a50d54fb90ac1fdcd911e4}{set\+State} (T $\ast$system\+State)
 \end{DoxyCompactItemize}
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
-string \hyperlink{a00796_ac817fc333b53611a41f446977461bdbf}{delimiter}
+long \hyperlink{a00796_a89101170e69beff93e11c795aa6bb481}{num\+Eqs}
 \item 
-string \hyperlink{a00796_acdd7b27b8109ed41e7d9bc5e6de72e93}{comment\+Char}
+short \hyperlink{a00796_a041623ed0162d4cad4309c9be3e7df9d}{n\+Dim}
+\item 
+T $\ast$ \hyperlink{a00796_ac59dffce1577673d04cd222c0f769c11}{state}
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-\subsubsection*{template$<$typename T, typename K$>$\newline
-class fire\+::\+Delimited\+Text\+Parser$<$ T, K $>$}
+\subsubsection*{template$<$class T$>$\newline
+class fire\+::\+System$<$ T $>$}
 
-This class implements \hyperlink{a00800}{I\+Local\+Parser} to provide a local, file-\/based, serially executed delimited text parser.
+This class represents a system of equations in Fire, where a system of equations is a collection of equations with the same unknowns.
 
-\hyperlink{a00800_a091d5cf56bf8f407854ef87f460b2958}{is\+File()} will return true if set\+Source(string) is used is\+Stream() will return true if set\+Source(istream) is used \hyperlink{a00800_a770acae6e216de3a9c7140a12de25d58}{is\+Local()} always returns true. \hyperlink{a00800_ad46898c516adcce38acbb4800dc9777b}{is\+Parallel()} always returns false.
+The system of equations is represented by a collection of operators that operate on a problem state provided by the user. The state defines all of the system\textquotesingle{}s unknown quantities. However, since the type of the state is generic, the system does not explicitly known the identity of those unknowns. The user-\/defined state class is expected to provide the unknowns contiguously when queried.
 
-Because delimited text is most often primitives, this class requires two template arguments. The first argument T is how the data should be returned and the second argument K is the root type of the delimited text, most likely a primitive. This would look something like
-
-
-\begin{DoxyCode}
-DelimitedTextParser<vector<vector<double>>,\textcolor{keywordtype}{double}>
-\end{DoxyCode}
-
-
-for a dense body of text like in a standard C\+SV file or D\+AT file where each column is composed of dense primitives.
-
-The source may either be a file on the local filesystem or an input stream.
-
-This is an extension of the parser interface that focuses on parsing delimited text. Delimited text is text with entries that are separated by a common pattern, such as a common or space.
-
-The Comma-\/\+Separated Variables format is a delimited text format of the form
-
-v1, v2, v3, v4
-
-where each comma is the delimiter between the text values v1 through v4. A line of text with only spaces is also a delimited text format\+:
-
-v1 v2 v3 v4
-
-Delimited text parsers may assume that lines such as those above are terminated by ~\newline
-. Like most other text formats, delimited text files may contain comments, which may be skipped by I\+Delimited\+Text\+Parsers. The characters that denote comments -\/ very commonly a \char`\"{}\#\char`\"{} or \char`\"{}//\char`\"{} -\/ may be passed to the constructor. 
+The system of equations can be integrated by calling the integrate() operation. The system will be solved using a default integrator if a user-\/ defined integrator is not provided. 
 
 \subsection{Member Function Documentation}
-\mbox{\Hypertarget{a00796_a686df5548771cae833d5e721442a821a}\label{a00796_a686df5548771cae833d5e721442a821a}} 
-\index{fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}!parse@{parse}}
-\index{parse@{parse}!fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}}
-\subsubsection{\texorpdfstring{parse()}{parse()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily template$<$typename T , typename K $>$ \\
-virtual void \hyperlink{a00796}{fire\+::\+Delimited\+Text\+Parser}$<$ T, K $>$\+::parse (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{a00796_a2c252b0ec85877bcfcbae60dff04dfaa}\label{a00796_a2c252b0ec85877bcfcbae60dff04dfaa}} 
+\index{fire\+::\+System@{fire\+::\+System}!set\+Size@{set\+Size}}
+\index{set\+Size@{set\+Size}!fire\+::\+System@{fire\+::\+System}}
+\subsubsection{\texorpdfstring{set\+Size()}{setSize()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \hyperlink{a00796}{fire\+::\+System}$<$ T $>$\+::set\+Size (\begin{DoxyParamCaption}\item[{const long \&}]{n,  }\item[{const short \&}]{d }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-This operation directs the parser to parse its source. 
+This operation sets the size of the system of equations by defining the total number of equations and the number of dimensions. 
+\begin{DoxyParams}{Parameters}
+{\em n} & The total number of equations in the system. \\
+\hline
+{\em d} & The total number of physical dimensions of the system, not including time. 1 for 1D, 2 for 2D, 3 for 3D. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00796_aa9e25fbc00a50d54fb90ac1fdcd911e4}\label{a00796_aa9e25fbc00a50d54fb90ac1fdcd911e4}} 
+\index{fire\+::\+System@{fire\+::\+System}!set\+State@{set\+State}}
+\index{set\+State@{set\+State}!fire\+::\+System@{fire\+::\+System}}
+\subsubsection{\texorpdfstring{set\+State()}{setState()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \hyperlink{a00796}{fire\+::\+System}$<$ T $>$\+::set\+State (\begin{DoxyParamCaption}\item[{T $\ast$}]{system\+State }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-Reimplemented from \hyperlink{a00816_abd8929aea06c2dda40256d2e58236650}{fire\+::\+Local\+Parser$<$ T $>$}.
+This operation specifies the state of the system of equations.
 
-\mbox{\Hypertarget{a00796_a773fa7ed28cb9d8c384ad94bd81fc93f}\label{a00796_a773fa7ed28cb9d8c384ad94bd81fc93f}} 
-\index{fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}!parse@{parse}}
-\index{parse@{parse}!fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}}
-\subsubsection{\texorpdfstring{parse()}{parse()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$$>$ \\
-void \hyperlink{a00796}{fire\+::\+Delimited\+Text\+Parser}$<$ vector$<$ vector$<$ double $>$ $>$, double $>$\+::parse (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
-
-This specialization is for dense data of primitive type double. 
-
-Reimplemented from \hyperlink{a00816_abd8929aea06c2dda40256d2e58236650}{fire\+::\+Local\+Parser$<$ T $>$}.
-
-
+The state is provided using a raw pointer because the system of equations does not participate in the state\textquotesingle{}s memory lifecycle. This class explicitly guarantees that it will never deallocate the state data! Classes utilized by this class, such as integrators, may overwrite or manipulate the state data in ways described in their A\+PI docs, including attempting to deallocate it (frowned upon). Clients should generally expect that the state variables provided by the state type T will be modified and that in some instances those modifications may be done in place. 
 
 \subsection{Member Data Documentation}
-\mbox{\Hypertarget{a00796_acdd7b27b8109ed41e7d9bc5e6de72e93}\label{a00796_acdd7b27b8109ed41e7d9bc5e6de72e93}} 
-\index{fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}!comment\+Char@{comment\+Char}}
-\index{comment\+Char@{comment\+Char}!fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}}
-\subsubsection{\texorpdfstring{comment\+Char}{commentChar}}
-{\footnotesize\ttfamily template$<$typename T , typename K $>$ \\
-string \hyperlink{a00796}{fire\+::\+Delimited\+Text\+Parser}$<$ T, K $>$\+::comment\+Char\hspace{0.3cm}{\ttfamily [protected]}}
+\mbox{\Hypertarget{a00796_a041623ed0162d4cad4309c9be3e7df9d}\label{a00796_a041623ed0162d4cad4309c9be3e7df9d}} 
+\index{fire\+::\+System@{fire\+::\+System}!n\+Dim@{n\+Dim}}
+\index{n\+Dim@{n\+Dim}!fire\+::\+System@{fire\+::\+System}}
+\subsubsection{\texorpdfstring{n\+Dim}{nDim}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+short \hyperlink{a00796}{fire\+::\+System}$<$ T $>$\+::n\+Dim\hspace{0.3cm}{\ttfamily [protected]}}
 
-The character that represents a comment and should be skipped. \mbox{\Hypertarget{a00796_ac817fc333b53611a41f446977461bdbf}\label{a00796_ac817fc333b53611a41f446977461bdbf}} 
-\index{fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}!delimiter@{delimiter}}
-\index{delimiter@{delimiter}!fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}}
-\subsubsection{\texorpdfstring{delimiter}{delimiter}}
-{\footnotesize\ttfamily template$<$typename T , typename K $>$ \\
-string \hyperlink{a00796}{fire\+::\+Delimited\+Text\+Parser}$<$ T, K $>$\+::delimiter\hspace{0.3cm}{\ttfamily [protected]}}
+The total number of physical dimensions of the system, not including time. \mbox{\Hypertarget{a00796_a89101170e69beff93e11c795aa6bb481}\label{a00796_a89101170e69beff93e11c795aa6bb481}} 
+\index{fire\+::\+System@{fire\+::\+System}!num\+Eqs@{num\+Eqs}}
+\index{num\+Eqs@{num\+Eqs}!fire\+::\+System@{fire\+::\+System}}
+\subsubsection{\texorpdfstring{num\+Eqs}{numEqs}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+long \hyperlink{a00796}{fire\+::\+System}$<$ T $>$\+::num\+Eqs\hspace{0.3cm}{\ttfamily [protected]}}
 
-The delimiter used when parsing the file. 
+The total number of equations in the system. \mbox{\Hypertarget{a00796_ac59dffce1577673d04cd222c0f769c11}\label{a00796_ac59dffce1577673d04cd222c0f769c11}} 
+\index{fire\+::\+System@{fire\+::\+System}!state@{state}}
+\index{state@{state}!fire\+::\+System@{fire\+::\+System}}
+\subsubsection{\texorpdfstring{state}{state}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+T$\ast$ \hyperlink{a00796}{fire\+::\+System}$<$ T $>$\+::state\hspace{0.3cm}{\ttfamily [protected]}}
+
+The state of the system, including unknowns, materials information, etc. 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-Delimited\+Text\+Parser.\+h\end{DoxyCompactItemize}
+System.\+h\end{DoxyCompactItemize}

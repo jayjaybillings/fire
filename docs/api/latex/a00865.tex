@@ -1,0 +1,90 @@
+\hypertarget{a00865}{}\section{fire\+:\+:Line\+Quadrature\+Rule Class Reference}
+\label{a00865}\index{fire\+::\+Line\+Quadrature\+Rule@{fire\+::\+Line\+Quadrature\+Rule}}
+
+
+{\ttfamily \#include $<$Line\+Quadrature\+Rule.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{a00865_ab811321337291e043129e0ec7d90f876}{Line\+Quadrature\+Rule} ()
+\item 
+double \hyperlink{a00865_a4832e935f3b7c48d14a70bc50e889c6f}{integrate} (const std\+::function$<$ double(const double \&, const int \&, const int \&)$>$ \&f, int i=0, int j=0) const
+\item 
+double \hyperlink{a00865_a917cbaf3a4d1aaaa250f2a8189508889}{integrate} (const std\+::function$<$ double(const double \&, const int \&)$>$ \&f, int i=0) const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class performs an line integral using Gaussian Quadrature. It integrates a function along the line with the following signature\+: 
+\begin{DoxyCode}
+\textcolor{keywordtype}{double} f(\textcolor{keyword}{const} \textcolor{keywordtype}{double} & x, \textcolor{keyword}{const} \textcolor{keywordtype}{int} & i, \textcolor{keyword}{const} \textcolor{keywordtype}{int} & j);
+\end{DoxyCode}
+ or, in the case where only one optional index is required 
+\begin{DoxyCode}
+\textcolor{keywordtype}{double} f(\textcolor{keyword}{const} \textcolor{keywordtype}{double} & x, \textcolor{keyword}{const} \textcolor{keywordtype}{int} & i);
+\end{DoxyCode}
+ For the latter case, the following code sample illustrates using the class\+: 
+\begin{DoxyCode}
+\hyperlink{a00865_ab811321337291e043129e0ec7d90f876}{LineQuadratureRule} rule;
+std::function<double(\textcolor{keyword}{const} \textcolor{keywordtype}{double} &,
+   \textcolor{keyword}{const} \textcolor{keywordtype}{int} &)> lineFunction = [](\textcolor{keyword}{const} \textcolor{keywordtype}{double} & point,
+   \textcolor{keyword}{const} \textcolor{keywordtype}{int} & i) \{
+   \textcolor{keywordflow}{return} 1.0;
+\};
+result = rule.integrate(lineFunction, index);
+\end{DoxyCode}
+ where the point is the quadrature point along the line at which the function will be evaluated and the following integer is the optional identifier of the integration. Including integer identifiers makes it possible to, for example, facilitate the integration of matrix elements, derivatives, and otherwise indexed functions. For example, a function might differ depending on whether it is the matrix element (i,j) or (j+1,i).
+
+This class provides an alternative version of the integrate function that will forward a single index instead of two, which is useful for dealing with vector indices.
+
+This class uses a four point Gaussian Quadrature rule in regular coordinates that exactly integrates all polynomials of degree 7 or less, although in practice this is limited to about seven decimal places for most polynomials since the weights are not provided to that high of a precision. It requires four evaluations of the function f. Specifically, \[ \int_{-1}^{1} f(x) dx \approx \sum_{i=0}^{i=4} \omega_{i}f(x_{i}) \]
+
+The bounds of the integration are from \mbox{[}-\/1,1\mbox{]} and functions not defined over this region will need to be converted. This is usually done by u-\/substitution. For example, to go from x = \mbox{[}-\/1,1\mbox{]} to t = \mbox{[}0,1\mbox{]}, let \begin{eqnarray*} t &=& \frac{x-1}{2}\\ \frac{dt}{dx} &=& \frac{1}{2}\\ dt &=& \frac{1}{2} dx\\ dx &=& 2 dt\\ \end{eqnarray*} such that \[ \int_{-1}^{1} f(x) dx = \int_{0}^{1} 2f(t) dt \]
+
+Note that the weights and area coordinates are defined statically because they are used unmodified across all instances of this class. Failing to declare them as such could lead to an explosion in memory use if a new instance of the quadrature rule is used in many places. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{a00865_ab811321337291e043129e0ec7d90f876}\label{a00865_ab811321337291e043129e0ec7d90f876}} 
+\index{fire\+::\+Line\+Quadrature\+Rule@{fire\+::\+Line\+Quadrature\+Rule}!Line\+Quadrature\+Rule@{Line\+Quadrature\+Rule}}
+\index{Line\+Quadrature\+Rule@{Line\+Quadrature\+Rule}!fire\+::\+Line\+Quadrature\+Rule@{fire\+::\+Line\+Quadrature\+Rule}}
+\subsubsection{\texorpdfstring{Line\+Quadrature\+Rule()}{LineQuadratureRule()}}
+{\footnotesize\ttfamily fire\+::\+Line\+Quadrature\+Rule\+::\+Line\+Quadrature\+Rule (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructor 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{a00865_a4832e935f3b7c48d14a70bc50e889c6f}\label{a00865_a4832e935f3b7c48d14a70bc50e889c6f}} 
+\index{fire\+::\+Line\+Quadrature\+Rule@{fire\+::\+Line\+Quadrature\+Rule}!integrate@{integrate}}
+\index{integrate@{integrate}!fire\+::\+Line\+Quadrature\+Rule@{fire\+::\+Line\+Quadrature\+Rule}}
+\subsubsection{\texorpdfstring{integrate()}{integrate()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double fire\+::\+Line\+Quadrature\+Rule\+::integrate (\begin{DoxyParamCaption}\item[{const std\+::function$<$ double(const double \&, const int \&, const int \&)$>$ \&}]{f,  }\item[{int}]{i = {\ttfamily 0},  }\item[{int}]{j = {\ttfamily 0} }\end{DoxyParamCaption}) const}
+
+This operation integrates the function along the line. 
+\begin{DoxyParams}{Parameters}
+{\em the} & function to integrate with the signature as described above \\
+\hline
+{\em optional} & first identifier \\
+\hline
+{\em optional} & second identifier \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00865_a917cbaf3a4d1aaaa250f2a8189508889}\label{a00865_a917cbaf3a4d1aaaa250f2a8189508889}} 
+\index{fire\+::\+Line\+Quadrature\+Rule@{fire\+::\+Line\+Quadrature\+Rule}!integrate@{integrate}}
+\index{integrate@{integrate}!fire\+::\+Line\+Quadrature\+Rule@{fire\+::\+Line\+Quadrature\+Rule}}
+\subsubsection{\texorpdfstring{integrate()}{integrate()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double fire\+::\+Line\+Quadrature\+Rule\+::integrate (\begin{DoxyParamCaption}\item[{const std\+::function$<$ double(const double \&, const int \&)$>$ \&}]{f,  }\item[{int}]{i = {\ttfamily 0} }\end{DoxyParamCaption}) const}
+
+This operation integrates the function along the line, but only forwards one index to the integrand. 
+\begin{DoxyParams}{Parameters}
+{\em the} & function to integrate with the signature as described above \\
+\hline
+{\em optional} & identifier \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Line\+Quadrature\+Rule.\+h\item 
+Line\+Quadrature\+Rule.\+cpp\end{DoxyCompactItemize}

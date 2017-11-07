@@ -1,54 +1,87 @@
-\hypertarget{a00802}{}\section{Test\+Struct Struct Reference}
-\label{a00802}\index{Test\+Struct@{Test\+Struct}}
+\hypertarget{a00802}{}\section{fire\+:\+:System$<$ T $>$ Class Template Reference}
+\label{a00802}\index{fire\+::\+System$<$ T $>$@{fire\+::\+System$<$ T $>$}}
+
+
+{\ttfamily \#include $<$System.\+h$>$}
+
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{a00802_ad1b28d11092e7dcf1818901f7a276120}\label{a00802_ad1b28d11092e7dcf1818901f7a276120}} 
-{\bfseries Test\+Struct} (int value)
+void \hyperlink{a00802_a2c252b0ec85877bcfcbae60dff04dfaa}{set\+Size} (const long \&n, const short \&d)
 \item 
-\mbox{\Hypertarget{a00802_a61a16418491afb7b2b6632bfad50bf19}\label{a00802_a61a16418491afb7b2b6632bfad50bf19}} 
-{\bfseries Test\+Struct} (int value, double other\+Value, int final\+Value)
-\item 
-\mbox{\Hypertarget{a00802_a8412477af743046299fd5601f7f8f2eb}\label{a00802_a8412477af743046299fd5601f7f8f2eb}} 
-{\bfseries Test\+Struct} (const int \&size)
-\item 
-\mbox{\Hypertarget{a00802_a7029a4d7bbcdaa0e61584c1d7254f180}\label{a00802_a7029a4d7bbcdaa0e61584c1d7254f180}} 
-{\bfseries Test\+Struct} (const int \&k)
+void \hyperlink{a00802_aa9e25fbc00a50d54fb90ac1fdcd911e4}{set\+State} (T $\ast$system\+State)
 \end{DoxyCompactItemize}
-\subsection*{Public Attributes}
+\subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{a00802_a948fae89410671cffc8087f752a45552}\label{a00802_a948fae89410671cffc8087f752a45552}} 
-int {\bfseries A}
+long \hyperlink{a00802_a89101170e69beff93e11c795aa6bb481}{num\+Eqs}
 \item 
-\mbox{\Hypertarget{a00802_a66fcfc799008c9b706ec74e38a0be986}\label{a00802_a66fcfc799008c9b706ec74e38a0be986}} 
-double {\bfseries B}
+short \hyperlink{a00802_a041623ed0162d4cad4309c9be3e7df9d}{n\+Dim}
 \item 
-\mbox{\Hypertarget{a00802_acb102a7a7fa5b375d57174a94009cce0}\label{a00802_acb102a7a7fa5b375d57174a94009cce0}} 
-int {\bfseries C}
-\item 
-\mbox{\Hypertarget{a00802_aae56de0497ced1edb830e740a40b2231}\label{a00802_aae56de0497ced1edb830e740a40b2231}} 
-vector$<$ double $>$ {\bfseries y}
-\item 
-\mbox{\Hypertarget{a00802_a5b11f70cd90a4f65c27d9e281687fbe7}\label{a00802_a5b11f70cd90a4f65c27d9e281687fbe7}} 
-vector$<$ double $>$ {\bfseries dydt}
-\item 
-\mbox{\Hypertarget{a00802_a3ed022292ebcbe2129a129ebf5ce6967}\label{a00802_a3ed022292ebcbe2129a129ebf5ce6967}} 
-vector$<$ double $>$ {\bfseries A}
-\item 
-\mbox{\Hypertarget{a00802_a8966125f7bccdd7050b609df475ed21c}\label{a00802_a8966125f7bccdd7050b609df475ed21c}} 
-vector$<$ double $>$ {\bfseries d\+Adt}
-\item 
-\mbox{\Hypertarget{a00802_a4d85a6094ad40393113b2eede98af02c}\label{a00802_a4d85a6094ad40393113b2eede98af02c}} 
-const int {\bfseries testK}
+T $\ast$ \hyperlink{a00802_ac59dffce1577673d04cd222c0f769c11}{state}
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-A simple test struct for the tests. 
+\subsubsection*{template$<$class T$>$\newline
+class fire\+::\+System$<$ T $>$}
 
-The documentation for this struct was generated from the following files\+:\begin{DoxyCompactItemize}
+This class represents a system of equations in Fire, where a system of equations is a collection of equations with the same unknowns.
+
+The system of equations is represented by a collection of operators that operate on a problem state provided by the user. The state defines all of the system\textquotesingle{}s unknown quantities. However, since the type of the state is generic, the system does not explicitly known the identity of those unknowns. The user-\/defined state class is expected to provide the unknowns contiguously when queried.
+
+The system of equations can be integrated by calling the integrate() operation. The system will be solved using a default integrator if a user-\/ defined integrator is not provided. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{a00802_a2c252b0ec85877bcfcbae60dff04dfaa}\label{a00802_a2c252b0ec85877bcfcbae60dff04dfaa}} 
+\index{fire\+::\+System@{fire\+::\+System}!set\+Size@{set\+Size}}
+\index{set\+Size@{set\+Size}!fire\+::\+System@{fire\+::\+System}}
+\subsubsection{\texorpdfstring{set\+Size()}{setSize()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \hyperlink{a00802}{fire\+::\+System}$<$ T $>$\+::set\+Size (\begin{DoxyParamCaption}\item[{const long \&}]{n,  }\item[{const short \&}]{d }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+This operation sets the size of the system of equations by defining the total number of equations and the number of dimensions. 
+\begin{DoxyParams}{Parameters}
+{\em n} & The total number of equations in the system. \\
+\hline
+{\em d} & The total number of physical dimensions of the system, not including time. 1 for 1D, 2 for 2D, 3 for 3D. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00802_aa9e25fbc00a50d54fb90ac1fdcd911e4}\label{a00802_aa9e25fbc00a50d54fb90ac1fdcd911e4}} 
+\index{fire\+::\+System@{fire\+::\+System}!set\+State@{set\+State}}
+\index{set\+State@{set\+State}!fire\+::\+System@{fire\+::\+System}}
+\subsubsection{\texorpdfstring{set\+State()}{setState()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \hyperlink{a00802}{fire\+::\+System}$<$ T $>$\+::set\+State (\begin{DoxyParamCaption}\item[{T $\ast$}]{system\+State }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+This operation specifies the state of the system of equations.
+
+The state is provided using a raw pointer because the system of equations does not participate in the state\textquotesingle{}s memory lifecycle. This class explicitly guarantees that it will never deallocate the state data! Classes utilized by this class, such as integrators, may overwrite or manipulate the state data in ways described in their A\+PI docs, including attempting to deallocate it (frowned upon). Clients should generally expect that the state variables provided by the state type T will be modified and that in some instances those modifications may be done in place. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{a00802_a041623ed0162d4cad4309c9be3e7df9d}\label{a00802_a041623ed0162d4cad4309c9be3e7df9d}} 
+\index{fire\+::\+System@{fire\+::\+System}!n\+Dim@{n\+Dim}}
+\index{n\+Dim@{n\+Dim}!fire\+::\+System@{fire\+::\+System}}
+\subsubsection{\texorpdfstring{n\+Dim}{nDim}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+short \hyperlink{a00802}{fire\+::\+System}$<$ T $>$\+::n\+Dim\hspace{0.3cm}{\ttfamily [protected]}}
+
+The total number of physical dimensions of the system, not including time. \mbox{\Hypertarget{a00802_a89101170e69beff93e11c795aa6bb481}\label{a00802_a89101170e69beff93e11c795aa6bb481}} 
+\index{fire\+::\+System@{fire\+::\+System}!num\+Eqs@{num\+Eqs}}
+\index{num\+Eqs@{num\+Eqs}!fire\+::\+System@{fire\+::\+System}}
+\subsubsection{\texorpdfstring{num\+Eqs}{numEqs}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+long \hyperlink{a00802}{fire\+::\+System}$<$ T $>$\+::num\+Eqs\hspace{0.3cm}{\ttfamily [protected]}}
+
+The total number of equations in the system. \mbox{\Hypertarget{a00802_ac59dffce1577673d04cd222c0f769c11}\label{a00802_ac59dffce1577673d04cd222c0f769c11}} 
+\index{fire\+::\+System@{fire\+::\+System}!state@{state}}
+\index{state@{state}!fire\+::\+System@{fire\+::\+System}}
+\subsubsection{\texorpdfstring{state}{state}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+T$\ast$ \hyperlink{a00802}{fire\+::\+System}$<$ T $>$\+::state\hspace{0.3cm}{\ttfamily [protected]}}
+
+The state of the system, including unknowns, materials information, etc. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-Build\+Test.\+cpp\item 
-I\+V\+P\+Solver\+Test.\+cpp\item 
-State\+Test.\+cpp\end{DoxyCompactItemize}
+System.\+h\end{DoxyCompactItemize}

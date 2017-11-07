@@ -1,112 +1,114 @@
-\hypertarget{a00804}{}\section{fire\+:\+:I\+N\+I\+Property\+Parser Class Reference}
-\label{a00804}\index{fire\+::\+I\+N\+I\+Property\+Parser@{fire\+::\+I\+N\+I\+Property\+Parser}}
+\hypertarget{a00804}{}\section{fire\+:\+:I\+Local\+Parser$<$ T $>$ Class Template Reference}
+\label{a00804}\index{fire\+::\+I\+Local\+Parser$<$ T $>$@{fire\+::\+I\+Local\+Parser$<$ T $>$}}
 
 
-{\ttfamily \#include $<$I\+N\+I\+Property\+Parser.\+h$>$}
+{\ttfamily \#include $<$I\+Local\+Parser.\+h$>$}
 
-Inheritance diagram for fire\+:\+:I\+N\+I\+Property\+Parser\+:\begin{figure}[H]
+Inheritance diagram for fire\+:\+:I\+Local\+Parser$<$ T $>$\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[height=5.000000cm]{a00804}
+\includegraphics[height=4.000000cm]{a00804}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-virtual void \hyperlink{a00804_a06793909bc707a69d0c5772b14bc946d}{set\+Source} (const std\+::string \&source)
+virtual bool \hyperlink{a00804_a091d5cf56bf8f407854ef87f460b2958}{is\+File} ()
 \item 
-virtual const std\+::string \& \hyperlink{a00804_ad02c9a530f20a706d7bb2554813e8d3a}{get\+Source} ()
+virtual bool \hyperlink{a00804_a770acae6e216de3a9c7140a12de25d58}{is\+Local} ()
 \item 
-virtual void \hyperlink{a00804_a31b6bad01e65ed4bb5f1ba297616c641}{parse} ()
+virtual bool \hyperlink{a00804_ad46898c516adcce38acbb4800dc9777b}{is\+Parallel} ()
 \item 
-virtual const std\+::vector$<$ std\+::string $>$ \& \hyperlink{a00804_aed0f1f47111794659564dcddb4d25bc6}{get\+Property\+Block\+Names} ()
-\item 
-virtual const std\+::map$<$ std\+::string, std\+::string $>$ \& \hyperlink{a00804_a3591312590a66659ebd377cdde9ab9ad}{get\+Property\+Block} (const std\+::string \&name)
+virtual std\+::shared\+\_\+ptr$<$ T $>$ \hyperlink{a00804_a0fc1446d106f0ab8daf8744a4bd29a65}{get\+Data} ()=0
 \end{DoxyCompactItemize}
-\subsection*{Additional Inherited Members}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{a00804_a39adf288ae0bc79cf39fd6e4638858cf}{is\+A\+File} = true
+\end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-This class implements \hyperlink{a00812}{I\+Property\+Parser} to provide a local, file-\/based, serially executed I\+NI parser.
+\subsubsection*{template$<$typename T$>$\newline
+class fire\+::\+I\+Local\+Parser$<$ T $>$}
 
-\hyperlink{a00800_a091d5cf56bf8f407854ef87f460b2958}{is\+File()} always returns true. \hyperlink{a00800_a770acae6e216de3a9c7140a12de25d58}{is\+Local()} always returns true. \hyperlink{a00800_ad46898c516adcce38acbb4800dc9777b}{is\+Parallel()} always returns false.
+This is a sub-\/interface of \hyperlink{a00812}{I\+Parser} that represents a parser for a local, serially executed parser.
 
-This implementation is backed by Simple\+I\+NI, one of Fire\textquotesingle{}s dependencies, so it supports whatever Simple\+I\+NI supports.
+\hyperlink{a00804_a770acae6e216de3a9c7140a12de25d58}{is\+Local()} always returns true. \hyperlink{a00804_ad46898c516adcce38acbb4800dc9777b}{is\+Parallel()} always returns false.
 
-The source must be a file on the local filesystem. 
+Implementations should set is\+File in their set\+Source(std\+::string) if their source is a file. Subclasses must always be sure that they implement \hyperlink{a00812_af36ac6eedd8c27d2f418869193d7d03c}{parse()} and \hyperlink{a00812_a0dbeff2b9bd8dbfb2aad7a424eef87d1}{set\+Source()} because default implementations are not provided.
+
+The \hyperlink{a00804_a0fc1446d106f0ab8daf8744a4bd29a65}{get\+Data()} operation always returns a shared\+\_\+ptr instead of a raw type (copy) or raw pointer to efficiently share the dynamically allocated data. 
 
 \subsection{Member Function Documentation}
-\mbox{\Hypertarget{a00804_a3591312590a66659ebd377cdde9ab9ad}\label{a00804_a3591312590a66659ebd377cdde9ab9ad}} 
-\index{fire\+::\+I\+N\+I\+Property\+Parser@{fire\+::\+I\+N\+I\+Property\+Parser}!get\+Property\+Block@{get\+Property\+Block}}
-\index{get\+Property\+Block@{get\+Property\+Block}!fire\+::\+I\+N\+I\+Property\+Parser@{fire\+::\+I\+N\+I\+Property\+Parser}}
-\subsubsection{\texorpdfstring{get\+Property\+Block()}{getPropertyBlock()}}
-{\footnotesize\ttfamily virtual const std\+::map$<$std\+::string, std\+::string$>$\& fire\+::\+I\+N\+I\+Property\+Parser\+::get\+Property\+Block (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{a00804_a0fc1446d106f0ab8daf8744a4bd29a65}\label{a00804_a0fc1446d106f0ab8daf8744a4bd29a65}} 
+\index{fire\+::\+I\+Local\+Parser@{fire\+::\+I\+Local\+Parser}!get\+Data@{get\+Data}}
+\index{get\+Data@{get\+Data}!fire\+::\+I\+Local\+Parser@{fire\+::\+I\+Local\+Parser}}
+\subsubsection{\texorpdfstring{get\+Data()}{getData()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+virtual std\+::shared\+\_\+ptr$<$T$>$ \hyperlink{a00804}{fire\+::\+I\+Local\+Parser}$<$ T $>$\+::get\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
-This operation returns the property block with the given name. 
-\begin{DoxyParams}{Parameters}
-{\em name} & the block name \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-the property block with the given name 
+This operation returns a shared pointer to an instance of type T. \begin{DoxyReturn}{Returns}
+a shared pointer holding an instance of type T that was parsed from the file. 
 \end{DoxyReturn}
 
 
-Implements \hyperlink{a00812_a34201371cb36dd09e96a66242ececb86}{fire\+::\+I\+Property\+Parser}.
+Implemented in \hyperlink{a00820_ab9016cca8e5dca516bb57c6a8e76607a}{fire\+::\+Local\+Parser$<$ T $>$}, and \hyperlink{a00820_ab9016cca8e5dca516bb57c6a8e76607a}{fire\+::\+Local\+Parser$<$ std\+::string $>$}.
 
-\mbox{\Hypertarget{a00804_aed0f1f47111794659564dcddb4d25bc6}\label{a00804_aed0f1f47111794659564dcddb4d25bc6}} 
-\index{fire\+::\+I\+N\+I\+Property\+Parser@{fire\+::\+I\+N\+I\+Property\+Parser}!get\+Property\+Block\+Names@{get\+Property\+Block\+Names}}
-\index{get\+Property\+Block\+Names@{get\+Property\+Block\+Names}!fire\+::\+I\+N\+I\+Property\+Parser@{fire\+::\+I\+N\+I\+Property\+Parser}}
-\subsubsection{\texorpdfstring{get\+Property\+Block\+Names()}{getPropertyBlockNames()}}
-{\footnotesize\ttfamily virtual const std\+::vector$<$std\+::string$>$\& fire\+::\+I\+N\+I\+Property\+Parser\+::get\+Property\+Block\+Names (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{a00804_a091d5cf56bf8f407854ef87f460b2958}\label{a00804_a091d5cf56bf8f407854ef87f460b2958}} 
+\index{fire\+::\+I\+Local\+Parser@{fire\+::\+I\+Local\+Parser}!is\+File@{is\+File}}
+\index{is\+File@{is\+File}!fire\+::\+I\+Local\+Parser@{fire\+::\+I\+Local\+Parser}}
+\subsubsection{\texorpdfstring{is\+File()}{isFile()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+virtual bool \hyperlink{a00804}{fire\+::\+I\+Local\+Parser}$<$ T $>$\+::is\+File (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
-This operation returns the names of the property blocks parsed from the source. \begin{DoxyReturn}{Returns}
-the block names 
+This operation indicates whether or not the parser\textquotesingle{}s source is a file. \begin{DoxyReturn}{Returns}
+true if this parser is working with a file, false otherwise. 
 \end{DoxyReturn}
 
 
-Implements \hyperlink{a00812_a34602687f9d1affac7bd842102d4a6aa}{fire\+::\+I\+Property\+Parser}.
+Implements \hyperlink{a00812_a616c42c85d781c916e97f0ad8f1e9010}{fire\+::\+I\+Parser}.
 
-\mbox{\Hypertarget{a00804_ad02c9a530f20a706d7bb2554813e8d3a}\label{a00804_ad02c9a530f20a706d7bb2554813e8d3a}} 
-\index{fire\+::\+I\+N\+I\+Property\+Parser@{fire\+::\+I\+N\+I\+Property\+Parser}!get\+Source@{get\+Source}}
-\index{get\+Source@{get\+Source}!fire\+::\+I\+N\+I\+Property\+Parser@{fire\+::\+I\+N\+I\+Property\+Parser}}
-\subsubsection{\texorpdfstring{get\+Source()}{getSource()}}
-{\footnotesize\ttfamily virtual const std\+::string\& fire\+::\+I\+N\+I\+Property\+Parser\+::get\+Source (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{a00804_a770acae6e216de3a9c7140a12de25d58}\label{a00804_a770acae6e216de3a9c7140a12de25d58}} 
+\index{fire\+::\+I\+Local\+Parser@{fire\+::\+I\+Local\+Parser}!is\+Local@{is\+Local}}
+\index{is\+Local@{is\+Local}!fire\+::\+I\+Local\+Parser@{fire\+::\+I\+Local\+Parser}}
+\subsubsection{\texorpdfstring{is\+Local()}{isLocal()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+virtual bool \hyperlink{a00804}{fire\+::\+I\+Local\+Parser}$<$ T $>$\+::is\+Local (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
-This operation gets the data source for the parser. \begin{DoxyReturn}{Returns}
-the name of the source 
+This operation indicates whether or not the parser is using a local source. \begin{DoxyReturn}{Returns}
+true if this parser is working with a local source, false otherwise. 
 \end{DoxyReturn}
 
 
-Reimplemented from \hyperlink{a00816_aedb7fe10911182525a719963b9b56726}{fire\+::\+Local\+Parser$<$ std\+::string $>$}.
+Implements \hyperlink{a00812_a97b9e58493b3cadbc63e670b0b0e759f}{fire\+::\+I\+Parser}.
 
-\mbox{\Hypertarget{a00804_a31b6bad01e65ed4bb5f1ba297616c641}\label{a00804_a31b6bad01e65ed4bb5f1ba297616c641}} 
-\index{fire\+::\+I\+N\+I\+Property\+Parser@{fire\+::\+I\+N\+I\+Property\+Parser}!parse@{parse}}
-\index{parse@{parse}!fire\+::\+I\+N\+I\+Property\+Parser@{fire\+::\+I\+N\+I\+Property\+Parser}}
-\subsubsection{\texorpdfstring{parse()}{parse()}}
-{\footnotesize\ttfamily virtual void fire\+::\+I\+N\+I\+Property\+Parser\+::parse (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{a00804_ad46898c516adcce38acbb4800dc9777b}\label{a00804_ad46898c516adcce38acbb4800dc9777b}} 
+\index{fire\+::\+I\+Local\+Parser@{fire\+::\+I\+Local\+Parser}!is\+Parallel@{is\+Parallel}}
+\index{is\+Parallel@{is\+Parallel}!fire\+::\+I\+Local\+Parser@{fire\+::\+I\+Local\+Parser}}
+\subsubsection{\texorpdfstring{is\+Parallel()}{isParallel()}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+virtual bool \hyperlink{a00804}{fire\+::\+I\+Local\+Parser}$<$ T $>$\+::is\+Parallel (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
 
-This operation directs the parser to parse its source. 
-
-Reimplemented from \hyperlink{a00816_abd8929aea06c2dda40256d2e58236650}{fire\+::\+Local\+Parser$<$ std\+::string $>$}.
-
-\mbox{\Hypertarget{a00804_a06793909bc707a69d0c5772b14bc946d}\label{a00804_a06793909bc707a69d0c5772b14bc946d}} 
-\index{fire\+::\+I\+N\+I\+Property\+Parser@{fire\+::\+I\+N\+I\+Property\+Parser}!set\+Source@{set\+Source}}
-\index{set\+Source@{set\+Source}!fire\+::\+I\+N\+I\+Property\+Parser@{fire\+::\+I\+N\+I\+Property\+Parser}}
-\subsubsection{\texorpdfstring{set\+Source()}{setSource()}}
-{\footnotesize\ttfamily virtual void fire\+::\+I\+N\+I\+Property\+Parser\+::set\+Source (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{source }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
-
-This operation sets the data source for the parser. 
-\begin{DoxyParams}{Parameters}
-{\em source} & the name of the source that the parser should parse. \\
-\hline
-\end{DoxyParams}
+This operation indicates whether or not the parser reads in parallel. \begin{DoxyReturn}{Returns}
+true if this parser reads in parallel, false otherwise. 
+\end{DoxyReturn}
 
 
-Reimplemented from \hyperlink{a00816_afcaec6429fdd6e5d53642a32c001ff73}{fire\+::\+Local\+Parser$<$ std\+::string $>$}.
+Implements \hyperlink{a00812_a83d2882a466d694fb0aea3d846bcbed4}{fire\+::\+I\+Parser}.
 
 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{a00804_a39adf288ae0bc79cf39fd6e4638858cf}\label{a00804_a39adf288ae0bc79cf39fd6e4638858cf}} 
+\index{fire\+::\+I\+Local\+Parser@{fire\+::\+I\+Local\+Parser}!is\+A\+File@{is\+A\+File}}
+\index{is\+A\+File@{is\+A\+File}!fire\+::\+I\+Local\+Parser@{fire\+::\+I\+Local\+Parser}}
+\subsubsection{\texorpdfstring{is\+A\+File}{isAFile}}
+{\footnotesize\ttfamily template$<$typename T$>$ \\
+bool \hyperlink{a00804}{fire\+::\+I\+Local\+Parser}$<$ T $>$\+::is\+A\+File = true\hspace{0.3cm}{\ttfamily [protected]}}
+
+This value is true if the source is a file and false if it is a stream. This value should be set in the set\+Source(std\+::string) and set\+Source(std\+::istream) to true and false respectively. It is set to true by default. 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-I\+N\+I\+Property\+Parser.\+h\end{DoxyCompactItemize}
+I\+Local\+Parser.\+h\end{DoxyCompactItemize}

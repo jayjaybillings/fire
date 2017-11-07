@@ -63,10 +63,26 @@ struct BasicPair {
 
 	/**
 	 * Initialization by value-copy constructor
-	 * @param the value of the first element
-	 * @param the value of the second element
+	 * @param _first the value of the first element
+	 * @param _second the value of the second element
 	 */
 	BasicPair(const T & _first, const K & _second) : first(_first), second(_second) {};
+
+    /**
+     * This is an operator override to compare basic pairs.
+     * @param otherPair a reference to the other pair to compare to this one
+     * @return true if equal, false otherwise
+     */
+    bool operator == (const BasicPair & otherPair) const {
+    	return (first == otherPair.first) && (second == otherPair.second);
+    }
+
+    /**
+     * The inequality operator override to invert ==.
+     */
+    bool operator != (const BasicPair & otherPair) const {
+    	return !operator==(otherPair);
+    }
 
 };
 
@@ -107,12 +123,28 @@ struct IdentifiablePair : public BasicPair<T,K> {
 
 	/**
 	 * Initialization by value-copy constructor
-	 * @param the value of the first element
-	 * @param the value of the second element
-	 * @param the value of the "value" attribute
+	 * @param _first the value of the first element
+	 * @param _second the value of the second element
+	 * @param _value the value of the "value" attribute
 	 */
 	IdentifiablePair(const T & _first, const K & _second, const V & _value) :
 		BasicPair<T,K>::BasicPair(_first,_second), value(_value) {};
+
+    /**
+     * This is an operator override to compare identifiable pairs.
+     * @param otherPair a reference to the other pair to compare to this one
+     * @return true if equal, false otherwise
+     */
+    bool operator == (const IdentifiablePair & otherPair) const {
+    	return (BasicPair<T,K>::operator==(otherPair)) && (value == otherPair.value);
+    }
+
+    /**
+     * The inequality operator override to invert ==.
+     */
+    bool operator != (const IdentifiablePair & otherPair) const {
+    	return !operator==(otherPair);
+    }
 
 };
 
@@ -135,14 +167,29 @@ struct IdentifiableTriplet : public IdentifiablePair<T,K,Z> {
 
     /**
      * Initialization by value-copy constructor
-	 * @param the value of the first element
-	 * @param the value of the second element
-	 * @param the value of the third element
-	 * @param the value of the "value" attribute
+	 * @param _first the value of the first element
+	 * @param _second the value of the second element
+	 * @param _third the value of the third element
+	 * @param _value the value of the "value" attribute
      */
     IdentifiableTriplet(const T & _first, const K & _second, const V & _third,
     		const Z _value) : IdentifiablePair<T,K,Z>::IdentifiablePair(_first,_second, _value),
     				third(_third) {};
+    /**
+     * This is an operator override to compare identifiable triplets..
+     * @param otherPair a reference to the other pair to compare to this one
+     * @return true if equal, false otherwise
+     */
+    bool operator == (const IdentifiableTriplet & otherTriplet) const {
+    	return (IdentifiablePair<T,K,Z>::operator==(otherTriplet)) && (third == third);
+    }
+
+    /**
+     * The inequality operator override to invert ==.
+     */
+    bool operator != (const IdentifiableTriplet & otherTriplet) const {
+    	return !operator==(otherTriplet);
+    }
 
 };
 
@@ -216,9 +263,9 @@ using MatrixElement = IdentifiablePair<int,int,T>;
  * indices. This is useful for computing which index in a 1D array would
  * represent this matrix element if the array was ordered in a row-major
  * fashion. It assumes i is the row index.
- * @param the i index of the matrix element
- * @param the j index of the matrix element
- * @param the number of elements in a row of the matrix
+ * @param i the i index of the matrix element
+ * @param j the j index of the matrix element
+ * @param rowLength the number of elements in a row of the matrix
  * @return the index in the row-major ordered matrix
  */
 inline int rowMajorIndex(int i, int j, int rowLength) {
@@ -230,9 +277,9 @@ inline int rowMajorIndex(int i, int j, int rowLength) {
  * its indices. This is useful for computing which index in a 1D array would
  * represent this matrix element if the array was ordered in a column-major
  * fashion. It assumes the starting index is 0.
- * @param the i index of the matrix element
- * @param the j index of the matrix element
- * @param the number of elements in a column of the matrix
+ * @param i the i index of the matrix element
+ * @param j the j index of the matrix element
+ * @param colLength the number of elements in a column of the matrix
  * @return the index in the column-major ordered matrix
  */
 inline int colMajorIndex(int i, int j, int colLength) {
@@ -244,8 +291,8 @@ inline int colMajorIndex(int i, int j, int colLength) {
  * indices. This is useful for computing which index in a 1D array would
  * represent this matrix element if the array was ordered in a row-major
  * fashion. It assumes the starting index is 0.
- * @param the matrix element
- * @param the number of elements in a row of the matrix
+ * @param e the matrix element
+ * @param rowLength the number of elements in a row of the matrix
  * @return the index in the row-major ordered matrix
  */
 template<typename T>
@@ -258,14 +305,96 @@ inline int rowMajorIndex(MatrixElement<T> e, int rowLength) {
  * its indices. This is useful for computing which index in a 1D array would
  * represent this matrix element if the array was ordered in a column-major
  * fashion. It assumes the starting index is 0.
- * @param the matrix element
- * @param the number of elements in a column of the matrix
+ * @param e the matrix element
+ * @param colLength the number of elements in a column of the matrix
  * @return the index in the column-major ordered matrix
  */
 template<typename T>
 inline int colMajorIndex(MatrixElement<T> e, int colLength) {
     return colMajorIndex(e.first,e.second,colLength);
 }
+
+/**
+ * This struct represents a two dimensional Robin Boundary condition in which
+ * the condition is defined across an edge between two nodes. The Robin
+ * condition is defined as
+ * \f[
+ * k(s)\frac{\partial u}{\partial n} + \sigma(s) u = h(s) \mbox{ on } C_{2}
+ * \f]
+ * All members of this struct must be initialized on construction. The idea is
+ * that the references should not need to change during execution because the
+ * boundaries do not change.
+ */
+struct TwoDRobinBoundaryCondition {
+
+	/**
+	 * The first node where the edge starts
+	 */
+	TwoDNode firstNode;
+
+	/**
+	 * The second node where the edge terminates
+	 */
+	TwoDNode secondNode;
+
+	/**
+	 * As defined in the definition of the condition.
+	 * @param s The distance along the side length
+	 */
+    std::function<double(const double &)> sigma;
+
+	/**
+	 * As defined in the definition of the condition.
+	 * @param s The distance along the side length
+	 */
+    std::function<double(const double &)> h;
+
+    /**
+     * The default constructor
+     */
+    TwoDRobinBoundaryCondition() {};
+
+    /**
+     * Constructor
+     * @param first the node that should be used as the first node on the path
+     * @param second the node that should be used as the second or terminal
+     * node on the path
+     * @param _sigma the sigma function
+     * @param _h the h function on the right-hand side of the condition
+     */
+    TwoDRobinBoundaryCondition(const TwoDNode & first, const TwoDNode & second,
+    		const std::function<double(const double &)> & _sigma,
+			const std::function<double(const double &)> & _h) : firstNode(first),
+					secondNode(second), sigma(_sigma), h(_h) {};
+
+    /**
+     * This is an operator override to compare two dimensional Robin conditions.
+     * Note that this operation implements equality checks for the functions by
+     * generating pointer targets for the functions and checking target types.
+     * This may or may not be the best way to check for equality of these
+     * functions, depending on your application.
+     * @param otherCond the other condition
+     * @return true if the conditions are equal, false otherwise.
+     */
+    bool operator == (const TwoDRobinBoundaryCondition & otherCond) const {
+    	return (firstNode == otherCond.firstNode)
+    			&& (secondNode == otherCond.secondNode)
+    			&& (sigma.target_type() == otherCond.sigma.target_type())
+    			&& (sigma.target<double(const double &)>()
+    					== otherCond.sigma.target<double(const double &)>())
+				&& (h.target_type() == otherCond.h.target_type())
+				&& (h.target<double(const double &)>()
+						== otherCond.h.target<double(const double &)>());
+    }
+
+    /**
+     * The inequality operator override to invert ==.
+     */
+    bool operator != (const TwoDRobinBoundaryCondition & otherCond) const {
+    	return !operator==(otherCond);
+    }
+
+};
 
 } /* end namespace fire */
 

@@ -90,7 +90,7 @@ Inheritance diagram for fire::ConstantStrainTriangleElement:</div>
  <div class="center">
   <img src="a00764.png" usemap="#fire::ConstantStrainTriangleElement_map" alt=""/>
   <map id="fire::ConstantStrainTriangleElement_map" name="fire::ConstantStrainTriangleElement_map">
-<area href="a00780.html" alt="fire::PoissonCST" shape="rect" coords="0,56,209,80"/>
+<area href="a00784.html" alt="fire::PoissonCST" shape="rect" coords="0,56,209,80"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -108,6 +108,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:acd197716c6bffaa3c7b472661f0e5ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a772e106e996b0d757332ca59b9c7f159"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00189.html#a124b14f4255dab47a3f7235a02cc65ee">CSTLocalPoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00764.html#a772e106e996b0d757332ca59b9c7f159">computeLocalPoint</a> (const double &amp;x, const double &amp;y) const</td></tr>
 <tr class="separator:a772e106e996b0d757332ca59b9c7f159"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87952ca08b448d38c7e932f27da499d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00764.html#a87952ca08b448d38c7e932f27da499d3">addBoundary</a> (const int &amp;firstNodeId, const int &amp;secondNodeId)</td></tr>
+<tr class="separator:a87952ca08b448d38c7e932f27da499d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -134,14 +136,19 @@ Protected Attributes</h2></td></tr>
 <tr class="separator:ae2480b5335fe78245cb1006e3eeb034d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48dbf56bce64a1e97332b03309720154"><td class="memItemLeft" align="right" valign="top">std::function&lt; double(const std::array&lt; double, 3 &gt; &amp;, const int &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00764.html#a48dbf56bce64a1e97332b03309720154">bodyForceKernel</a></td></tr>
 <tr class="separator:a48dbf56bce64a1e97332b03309720154"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a344419454bc8f003713ef5b009c73a65"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00852.html">TriangularQuadratureRule</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00764.html#a344419454bc8f003713ef5b009c73a65">quadratureRule</a></td></tr>
-<tr class="separator:a344419454bc8f003713ef5b009c73a65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e50303ae2cfb783f44de143be8a9aac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00856.html">TriangularQuadratureRule</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00764.html#a5e50303ae2cfb783f44de143be8a9aac">triQuadRule</a></td></tr>
+<tr class="separator:a5e50303ae2cfb783f44de143be8a9aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70ceb410983c87c36546a2a95306dac6"><td class="memItemLeft" align="right" valign="top">short int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00764.html#a70ceb410983c87c36546a2a95306dac6">numBoundaries</a> = 0</td></tr>
+<tr class="separator:a70ceb410983c87c36546a2a95306dac6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afabe9f08624f60c70b8a7023d919da4e"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="a00768.html">BasicPair</a>&lt; short int, short int &gt;, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00764.html#afabe9f08624f60c70b8a7023d919da4e">boundaries</a></td></tr>
+<tr class="separator:afabe9f08624f60c70b8a7023d919da4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This class represents a triangular element where the strain or similar quantities across the element is constant, a "Constant Strain Triangle" (CST). Full mathematical documentation of this class is available in the Fire Documentation article "Finite Elements" and can be found in the source tree under docs/_posts/2017-10-05-finite-elements.markdown.</p>
 <p>Instead of storing the a_i, b_i_, and c_i constants with the nodes, this class computes the constants once on construction and passes the values using lambdas. This greatly decreases the book keeping required and increases the compute performance.</p>
 <p>The API for this class is incredibly specific with all bounds specified exactly because dynamic memory is not required since the element has such a well-defined mathematical description.</p>
-<p>Clients are expected to use this class by subclassing and configuring their kernel and force functions in the subclass' constructor. Stiffness kernels have the following signature: </p><div class="fragment"><div class="line"><span class="keywordtype">double</span> f(<span class="keyword">const</span> std::array&lt;double,3&gt; &amp; coords, <span class="keyword">const</span> <span class="keywordtype">int</span> &amp; i,</div><div class="line"><span class="keyword">const</span> <span class="keywordtype">int</span> &amp; j);</div></div><!-- fragment --><p> where the array of doubles is the area coordinates (L_1, L_2, L_3) of the quadrature point and the following integers are used to identify the matrix indices i and j for the current element. The body force kernels have the following signature: </p><div class="fragment"><div class="line"><span class="keywordtype">double</span> f(<span class="keyword">const</span> std::array&lt;double,3&gt; &amp; coords, <span class="keyword">const</span> <span class="keywordtype">int</span> &amp; i);</div></div><!-- fragment --><p> In this case, only one identifier is required to specify the vector element index i of the kernel. <a class="el" href="a00780.html">PoissonCST</a> provides a good example of an appropriately configured subclass. The default implementations of stiffnessKernel and bodyForceKernel evaluate to -1.0 for all values of (x,y) input and will throw an exception if called. </p>
+<p>Clients are expected to use this class by subclassing and configuring their kernel and force functions in the subclass' constructor. Stiffness kernels have the following signature: </p><div class="fragment"><div class="line"><span class="keywordtype">double</span> f(<span class="keyword">const</span> std::array&lt;double,3&gt; &amp; coords, <span class="keyword">const</span> <span class="keywordtype">int</span> &amp; i,</div><div class="line"><span class="keyword">const</span> <span class="keywordtype">int</span> &amp; j);</div></div><!-- fragment --><p> where the array of doubles is the area coordinates (L_1, L_2, L_3) of the quadrature point and the following integers are used to identify the matrix indices i and j for the current element. The body force kernels have the following signature: </p><div class="fragment"><div class="line"><span class="keywordtype">double</span> f(<span class="keyword">const</span> std::array&lt;double,3&gt; &amp; coords, <span class="keyword">const</span> <span class="keywordtype">int</span> &amp; i);</div></div><!-- fragment --><p> In this case, only one identifier is required to specify the vector element index i of the kernel. <a class="el" href="a00784.html">PoissonCST</a> provides a good example of an appropriately configured subclass. The default implementations of stiffnessKernel and bodyForceKernel evaluate to -1.0 for all values of (x,y) input and will throw an exception if called.</p>
+<p>Node ordering is not determined by the element. Instead, it assumes that the nodes are passed to it in the correct order and locally identifies the first node in the constructor as node 1, the second as node 2, and third as node 3. Boundaries can then be set on the element by calling <a class="el" href="a00764.html#a87952ca08b448d38c7e932f27da499d3">addBoundary()</a> with local side ids. A triangle cannot have more than three boundaries. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa54c09f1dd7cacaf1f4f0b1428859c00"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa54c09f1dd7cacaf1f4f0b1428859c00">&#9670;&nbsp;</a></span>ConstantStrainTriangleElement()</h2>
@@ -179,6 +186,41 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a87952ca08b448d38c7e932f27da499d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87952ca08b448d38c7e932f27da499d3">&#9670;&nbsp;</a></span>addBoundary()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void fire::ConstantStrainTriangleElement::addBoundary </td>
+          <td>(</td>
+          <td class="paramtype">const int &amp;&#160;</td>
+          <td class="paramname"><em>firstNodeId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int &amp;&#160;</td>
+          <td class="paramname"><em>secondNodeId</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This operation will designate the edge between two nodes with the given local ids as a boundary for which boundary value contributions to the stiffness and force matrices should be computed. A triangle cannot have more than three boundaries and this function will throw an exception if it is called to set a fourth boundary. Likewise, this function will also throw an exception if the two boundary node ids are the same (no self- boundary loops). </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">the</td><td>local node id (1, 2, or 3) of the first node on the edge </td></tr>
+    <tr><td class="paramname">the</td><td>local node id (1, 2, or 3, but not the same as firstNodeId), of the second node on the edge. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="acd197716c6bffaa3c7b472661f0e5ca4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acd197716c6bffaa3c7b472661f0e5ca4">&#9670;&nbsp;</a></span>area()</h2>
 
@@ -380,6 +422,29 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="afabe9f08624f60c70b8a7023d919da4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afabe9f08624f60c70b8a7023d919da4e">&#9670;&nbsp;</a></span>boundaries</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt;<a class="el" href="a00768.html">BasicPair</a>&lt;short int, short int&gt;, 3&gt; fire::ConstantStrainTriangleElement::boundaries</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This array stores the active boundaries on the triangle. </p>
+
+</div>
+</div>
 <a id="a2a9d18beac7fccf750846723ddf73d1d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2a9d18beac7fccf750846723ddf73d1d">&#9670;&nbsp;</a></span>c</h2>
 
@@ -488,8 +553,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a344419454bc8f003713ef5b009c73a65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a344419454bc8f003713ef5b009c73a65">&#9670;&nbsp;</a></span>quadratureRule</h2>
+<a id="a70ceb410983c87c36546a2a95306dac6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70ceb410983c87c36546a2a95306dac6">&#9670;&nbsp;</a></span>numBoundaries</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -498,7 +563,7 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00852.html">TriangularQuadratureRule</a> fire::ConstantStrainTriangleElement::quadratureRule</td>
+          <td class="memname">short int fire::ConstantStrainTriangleElement::numBoundaries = 0</td>
         </tr>
       </table>
   </td>
@@ -507,7 +572,7 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This is a four point Gaussian Quadrature rule over triangular coordinates that is used to integrate the kernels. It will be more efficient to drop to a one point rule since this element has a constant value across it. This is a good thing to test later. </p>
+<p>This is the number of active boundaries on the triangle. </p>
 
 </div>
 </div>
@@ -531,6 +596,29 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>A function handle to the kernel that will be evaluated in the computation of the stiffness matrix for this element. </p>
+
+</div>
+</div>
+<a id="a5e50303ae2cfb783f44de143be8a9aac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e50303ae2cfb783f44de143be8a9aac">&#9670;&nbsp;</a></span>triQuadRule</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00856.html">TriangularQuadratureRule</a> fire::ConstantStrainTriangleElement::triQuadRule</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is a four point Gaussian Quadrature rule over triangular coordinates that is used to integrate the kernels. It should be more efficient to drop to a one point rule since this element has a constant value across it, but we can test that later. </p>
 
 </div>
 </div>

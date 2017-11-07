@@ -1,26 +1,41 @@
-\hypertarget{a00910}{}\section{S\+I\+\_\+\+Generic\+No\+Case$<$ S\+I\+\_\+\+C\+H\+AR $>$ Struct Template Reference}
-\label{a00910}\index{S\+I\+\_\+\+Generic\+No\+Case$<$ S\+I\+\_\+\+C\+H\+A\+R $>$@{S\+I\+\_\+\+Generic\+No\+Case$<$ S\+I\+\_\+\+C\+H\+A\+R $>$}}
+\hypertarget{a00910}{}\section{C\+Simple\+Ini\+Templ$<$ S\+I\+\_\+\+C\+H\+AR, S\+I\+\_\+\+S\+T\+R\+L\+E\+SS, S\+I\+\_\+\+C\+O\+N\+V\+E\+R\+T\+ER $>$\+:\+:Converter Class Reference}
+\label{a00910}\index{C\+Simple\+Ini\+Templ$<$ S\+I\+\_\+\+C\+H\+A\+R, S\+I\+\_\+\+S\+T\+R\+L\+E\+S\+S, S\+I\+\_\+\+C\+O\+N\+V\+E\+R\+T\+E\+R $>$\+::\+Converter@{C\+Simple\+Ini\+Templ$<$ S\+I\+\_\+\+C\+H\+A\+R, S\+I\+\_\+\+S\+T\+R\+L\+E\+S\+S, S\+I\+\_\+\+C\+O\+N\+V\+E\+R\+T\+E\+R $>$\+::\+Converter}}
 
 
 {\ttfamily \#include $<$Simple\+Ini.\+h$>$}
 
+Inheritance diagram for C\+Simple\+Ini\+Templ$<$ S\+I\+\_\+\+C\+H\+AR, S\+I\+\_\+\+S\+T\+R\+L\+E\+SS, S\+I\+\_\+\+C\+O\+N\+V\+E\+R\+T\+ER $>$\+:\+:Converter\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{a00910}
+\end{center}
+\end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{a00910_a5fcbd09e6309590ca9ae6b9981bbac19}\label{a00910_a5fcbd09e6309590ca9ae6b9981bbac19}} 
-S\+I\+\_\+\+C\+H\+AR {\bfseries locase} (S\+I\+\_\+\+C\+H\+AR ch) const
+\mbox{\Hypertarget{a00910_ab8e740b211e4ece127d4d25773ba7e42}\label{a00910_ab8e740b211e4ece127d4d25773ba7e42}} 
+{\bfseries Converter} (bool a\+\_\+b\+Store\+Is\+Utf8)
 \item 
-\mbox{\Hypertarget{a00910_aed14252d999472455a769b104afe6c3a}\label{a00910_aed14252d999472455a769b104afe6c3a}} 
-bool {\bfseries operator()} (const S\+I\+\_\+\+C\+H\+AR $\ast$p\+Left, const S\+I\+\_\+\+C\+H\+AR $\ast$p\+Right) const
+\mbox{\Hypertarget{a00910_a2f6e993014ed5d60c6e890e55beb0805}\label{a00910_a2f6e993014ed5d60c6e890e55beb0805}} 
+{\bfseries Converter} (const \hyperlink{a00910}{Converter} \&rhs)
+\item 
+\mbox{\Hypertarget{a00910_af858c01c6a7e4ce9fafd18abc9e0ac1b}\label{a00910_af858c01c6a7e4ce9fafd18abc9e0ac1b}} 
+\hyperlink{a00910}{Converter} \& {\bfseries operator=} (const \hyperlink{a00910}{Converter} \&rhs)
+\item 
+\mbox{\Hypertarget{a00910_a4e4186867214b54326cf622e323c9f2f}\label{a00910_a4e4186867214b54326cf622e323c9f2f}} 
+bool {\bfseries Convert\+To\+Store} (const S\+I\+\_\+\+C\+H\+AR $\ast$a\+\_\+psz\+String)
+\item 
+\mbox{\Hypertarget{a00910_a918bbd4f861a2872e148bc9481ac80bb}\label{a00910_a918bbd4f861a2872e148bc9481ac80bb}} 
+const char $\ast$ {\bfseries Data} ()
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-\subsubsection*{template$<$class S\+I\+\_\+\+C\+H\+AR$>$\newline
-struct S\+I\+\_\+\+Generic\+No\+Case$<$ S\+I\+\_\+\+C\+H\+A\+R $>$}
+\subsubsection*{template$<$class S\+I\+\_\+\+C\+H\+AR, class S\+I\+\_\+\+S\+T\+R\+L\+E\+SS, class S\+I\+\_\+\+C\+O\+N\+V\+E\+R\+T\+ER$>$\newline
+class C\+Simple\+Ini\+Templ$<$ S\+I\+\_\+\+C\+H\+A\+R, S\+I\+\_\+\+S\+T\+R\+L\+E\+S\+S, S\+I\+\_\+\+C\+O\+N\+V\+E\+R\+T\+E\+R $>$\+::\+Converter}
 
-Generic A\+S\+C\+II case-\/insensitive less than comparison. This class returns numerically ordered A\+S\+C\+II case-\/insensitive text for all possible sizes and types of S\+I\+\_\+\+C\+H\+AR. It is not safe for M\+B\+CS text comparison where A\+S\+C\+II A-\/Z characters are used in the encoding of multi-\/byte characters. 
+Characterset conversion utility class to convert strings to the same format as is used for the storage. 
 
-The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
 Simple\+Ini.\+h\end{DoxyCompactItemize}

@@ -1,42 +1,41 @@
-\hypertarget{a00974}{}\section{Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:\+:Request Class Reference}
-\label{a00974}\index{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$\+::\+Request@{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$\+::\+Request}}
+\hypertarget{a00974}{}\section{Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:\+:Response Class Reference}
+\label{a00974}\index{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$\+::\+Response@{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$\+::\+Response}}
+Inheritance diagram for Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:\+:Response\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=5.000000cm]{a00974}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{a00974_af666efb61621d70c16e3d6a6c419271d}\label{a00974_af666efb61621d70c16e3d6a6c419271d}} 
+size\+\_\+t {\bfseries size} ()
+\end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{a00974_a1fb7883b8e0e3a660117252f510f373c}\label{a00974_a1fb7883b8e0e3a660117252f510f373c}} 
-std\+::string {\bfseries method}
-\item 
-\mbox{\Hypertarget{a00974_aeb74bfe9b28c61dbf439f71ba752b0f7}\label{a00974_aeb74bfe9b28c61dbf439f71ba752b0f7}} 
-std\+::string {\bfseries path}
-\item 
-\mbox{\Hypertarget{a00974_a09d25275bf1442fb384bad9be714e6ba}\label{a00974_a09d25275bf1442fb384bad9be714e6ba}} 
-std\+::string {\bfseries http\+\_\+version}
-\item 
-\mbox{\Hypertarget{a00974_aa62ad9907bb75bb1da861167134f772e}\label{a00974_aa62ad9907bb75bb1da861167134f772e}} 
-\hyperlink{a00970}{Content} {\bfseries content}
-\item 
-\mbox{\Hypertarget{a00974_a6a7785d6de24ca7479c6a8c50752fcec}\label{a00974_a6a7785d6de24ca7479c6a8c50752fcec}} 
-std\+::unordered\+\_\+multimap$<$ std\+::string, std\+::string, \hyperlink{a00930}{case\+\_\+insensitive\+\_\+hash}, \hyperlink{a00926}{case\+\_\+insensitive\+\_\+equals} $>$ {\bfseries header}
-\item 
-\mbox{\Hypertarget{a00974_ae9dc5e6dc6eb24e1faeb2c65b7ee7ba6}\label{a00974_ae9dc5e6dc6eb24e1faeb2c65b7ee7ba6}} 
-R\+E\+G\+E\+X\+\_\+\+N\+S\+::smatch {\bfseries path\+\_\+match}
-\item 
-\mbox{\Hypertarget{a00974_a9689318cfa9b95862f6e1477071fb725}\label{a00974_a9689318cfa9b95862f6e1477071fb725}} 
-std\+::string {\bfseries remote\+\_\+endpoint\+\_\+address}
-\item 
-\mbox{\Hypertarget{a00974_ab44a4b842b5144fcb88df1d3a3aff92f}\label{a00974_ab44a4b842b5144fcb88df1d3a3aff92f}} 
-unsigned short {\bfseries remote\+\_\+endpoint\+\_\+port}
+bool \hyperlink{a00974_a2818b4f3c577ff1f4067bb1c62640c15}{close\+\_\+connection\+\_\+after\+\_\+response} = false
 \end{DoxyCompactItemize}
 \subsection*{Friends}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{a00974_a01d54a7e16ca437c98ec571deca98dfc}\label{a00974_a01d54a7e16ca437c98ec571deca98dfc}} 
 class {\bfseries Server\+Base$<$ socket\+\_\+type $>$}
-\item 
-\mbox{\Hypertarget{a00974_a3f155064c0074d68a408aa3193ca1666}\label{a00974_a3f155064c0074d68a408aa3193ca1666}} 
-class {\bfseries Server$<$ socket\+\_\+type $>$}
 \end{DoxyCompactItemize}
 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{a00974_a2818b4f3c577ff1f4067bb1c62640c15}\label{a00974_a2818b4f3c577ff1f4067bb1c62640c15}} 
+\index{Simple\+Web\+::\+Server\+Base\+::\+Response@{Simple\+Web\+::\+Server\+Base\+::\+Response}!close\+\_\+connection\+\_\+after\+\_\+response@{close\+\_\+connection\+\_\+after\+\_\+response}}
+\index{close\+\_\+connection\+\_\+after\+\_\+response@{close\+\_\+connection\+\_\+after\+\_\+response}!Simple\+Web\+::\+Server\+Base\+::\+Response@{Simple\+Web\+::\+Server\+Base\+::\+Response}}
+\subsubsection{\texorpdfstring{close\+\_\+connection\+\_\+after\+\_\+response}{close\_connection\_after\_response}}
+{\footnotesize\ttfamily template$<$class socket\+\_\+type$>$ \\
+bool \hyperlink{a00970}{Simple\+Web\+::\+Server\+Base}$<$ socket\+\_\+type $>$\+::Response\+::close\+\_\+connection\+\_\+after\+\_\+response = false}
+
+If true, force server to close the connection after the response have been sent.
+
+This is useful when implementing a H\+T\+T\+P/1.\+0-\/server sending content without specifying the content length. 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

@@ -86,6 +86,9 @@ namespace fire {
 class ConstantStrainTriangleElement {
 
 protected:
+
+	constexpr static const int numNodes = 3;
+
 	/**
 	 * The area of the element.
 	 */
@@ -94,17 +97,17 @@ protected:
 	/**
 	 * The array of constants a_1, a_2, a_3 for the area coordinates.
 	 */
-	std::array<double,3> a;
+	std::array<double,numNodes> a;
 
 	/**
 	 * The array of constants b_1, b_2, b_3 for the area coordinates.
 	 */
-	std::array<double,3> b;
+	std::array<double,numNodes> b;
 
 	/**
 	 * The array of constants c_1, c_2, c_3 for the area coordinates.
 	 */
-	std::array<double,3> c;
+	std::array<double,numNodes> c;
 
 	/**
 	 * The nodes in the element.
@@ -112,7 +115,7 @@ protected:
 	 * Note that this is initialized on construction because the array elements
 	 * are references.
 	 */
-	std::array<std::reference_wrapper<const TwoDNode>,3> nodes;
+	std::array<std::reference_wrapper<const TwoDNode>,numNodes> nodes;
 
 	/**
 	 * The matrix elements k_ij computed for this element.
@@ -154,7 +157,24 @@ protected:
 	/**
 	 * This array stores the active boundaries on the triangle.
 	 */
-	std::array<BasicPair<short int, short int>, 3> boundaries;
+	std::array<TwoDRobinBoundaryCondition, numNodes> boundaries;
+
+	/**
+	 * This array stores the id of the node that is not on the boundary at
+	 * the same index in the boundaries array. For example, if boundaries[0]
+	 * is the boundary between the third and first node, then
+	 * offBoundaryNodeIds[0] = 2. This is used in the computation of the
+	 * "distance" elements
+	 * \f[
+	 * (b_{i}^{2} + c_{i}^{2})^{1/2}
+	 * \f]
+	 * of the boundary conditions since i must not be equal to the boundary
+	 * node ids.
+	 *
+	 * Computing this id in advance is handy because it saves cycles and avoids
+	 * multiple branches during the computation of the matrix elements.
+	 */
+	std::array<int,numNodes> offBoundaryNodeIds;
 
 public:
 
@@ -210,18 +230,36 @@ public:
 	CSTLocalPoint computeLocalPoint(const double & x, const double & y) const;
 
 	/**
-	 * This operation will designate the edge between two nodes with the given
-	 * local ids as a boundary for which boundary value contributions to the
-	 * stiffness and force matrices should be computed. A triangle cannot have
-	 * more than three boundaries and this function will throw an exception if
-	 * it is called to set a fourth boundary. Likewise, this function will also
-	 * throw an exception if the two boundary node ids are the same (no self-
-	 * boundary loops).
-	 * @param the local node id (1, 2, or 3) of the first node on the edge
-	 * @param the local node id (1, 2, or 3, but not the same as firstNodeId),
-	 * of the second node on the edge.
+	 * This operation checks to see if the element contains the given node.
+	 * @param node the node to check for containment within the element
+	 * @return true if the node is in the element, false otherwise.
 	 */
-	void addBoundary(const int & firstNodeId, const int & secondNodeId);
+	bool hasNode(const TwoDNode & node) const;
+
+	/**
+	 * This operation returns the local id for the node in question if and
+	 * only if it is a member of the element.
+	 * @param node the node to check for inclusion
+	 * @return 0, 1, or 2 if the element contains the node, -1 otherwise.
+	 */
+	int getLocalNodeId(const TwoDNode & node) const;
+
+	/**
+	 * This operation returns the id of the node in this element that IS NOT on
+	 * the boundary or -1 if the boundary is not on this element.
+	 */
+	int getOffBoundaryNodeId(const TwoDRobinBoundaryCondition & boundary) const;
+
+	/**
+	 * This operation will assign the supplied TwoDRobinBoundaryCondition to
+	 * the element. A triangle cannot have more than three boundaries and this
+	 * function will throw an exception if it is called to set a fourth
+	 * boundary. Likewise, this function will also throw an exception if the
+	 * two boundary node ids are the same (no self-
+	 * boundary loops).
+	 * @param boundary the 2D Robin Boundary Condition
+	 */
+	void addRobinBoundary(const TwoDRobinBoundaryCondition & boundary);
 
 };
 

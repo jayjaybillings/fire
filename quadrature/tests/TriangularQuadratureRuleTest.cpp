@@ -36,6 +36,7 @@
 #include <TriangularQuadratureRule.h>
 #include <functional>
 #include <limits>
+#include <math.h>
 
 using namespace std;
 using namespace fire;
@@ -78,14 +79,14 @@ BOOST_AUTO_TEST_CASE(checkOneIndexQuadrature) {
 	// correct. Note that index is unused for this function, so the area
 	// should just be 1/2 because the function returns 1.0;
 	result = rule.integrate(areaFunction, index);
-	relErr = (result - area)/area;
+	relErr = abs((result - area)/area);
 	BOOST_REQUIRE(relErr < epsilon);
 
 	// Compute the integral, which should be equal to index*area, for
 	// 1<=index<=100.
 	for (index = 1; index < 101; index++) {
 		result = rule.integrate(areaFunction, index);
-		relErr = (result - ((double) index)*area)/(((double) index)*area);
+		relErr = abs((result - ((double) index)*area)/(((double) index)*area));
 		BOOST_TEST_MESSAGE("Result = " << result << ", index = "
 				<< index << ", relErr = " << relErr);
 		BOOST_REQUIRE(relErr < epsilon);
@@ -120,7 +121,7 @@ BOOST_AUTO_TEST_CASE(checkTwoIndexQuadrature) {
 
 	// Check the unit triangle.
 	result = rule.integrate(areaFunction, i, j);
-	relErr = (result - area)/area;
+	relErr = abs((result - area))/area;
 	BOOST_REQUIRE(relErr < epsilon);
 
 	// Compute the integral, which should be equal to index*area, for
@@ -129,7 +130,7 @@ BOOST_AUTO_TEST_CASE(checkTwoIndexQuadrature) {
 	for (i = 1; i < 11; i++) {
 		for (j = 1; j < 11; j++) {
 		    result = rule.integrate(areaFunction, i, j);
-		    relErr = (result - ((double) (i*j))*area)/(((double) (i*j))*area);
+		    relErr = abs((result - ((double) (i*j))*area))/(((double) (i*j))*area);
 		BOOST_TEST_MESSAGE("Result = " << result << ", i = " << i << ", j = "
 				<< j << ", relErr = " << relErr);
 		BOOST_REQUIRE(relErr < epsilon);

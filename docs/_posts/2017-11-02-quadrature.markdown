@@ -13,6 +13,45 @@ Gaussian Quadrature is special form of quadrature that is exact for polynomials.
 
 ## 1D Line Integrals
 
+The LineQuadratureRule class provides a 1D Gaussian Quadrature method for integration functions along a line. This class uses a four point Gaussian Quadrature rule over the bounds x=[-1,1] and is exact for all polynomials of degree 7 or less, although in practice this is limited to about seven decimal places for most polynomials since the weights are not provided to that high of a precision. It requires four evaluations of the function f. Specifically,
+
+$$
+\int_{-1}^{1} f(x) dx \approx \sum_{i=0}^{i=4} \omega_{i}f(x_{i})
+$$
+
+with the weights
+
+$$
+\omega = [\frac{18-\sqrt{30}}{36},
+			\frac{18+\sqrt{30}}{36},
+			\frac{18+\sqrt{30}}{36},
+			\frac{18-\sqrt{30}}{36}] 
+$$
+
+and quadrature points
+
+$$
+x = [-\sqrt{\frac{3}{7}+\frac{2}{7}\sqrt{\frac{6}{5}}},
+			-\sqrt{\frac{3}{7}-\frac{2}{7}\sqrt{\frac{6}{5}}},
+			\sqrt{\frac{3}{7}+\frac{2}{7}\sqrt{\frac{6}{5}}},
+			\sqrt{\frac{3}{7}-\frac{2}{7}\sqrt{\frac{6}{5}}}]
+$$
+
+The bounds of the integration are from [-1,1] and functions not defined over this region will need to be converted. This is usually done by u-substitution. For example, to go from x = [-1,1] to t = [0,1], let
+
+$$
+t = \frac{x-1}{2}\\
+\frac{dt}{dx} = \frac{1}{2}\\
+dt = \frac{1}{2} dx\\
+dx = 2 dt\\
+$$
+
+such that
+
+$$
+\int_{-1}^{1} f(x) dx = \int_{0}^{1} 2f(t) dt
+$$
+
 ## 2D Triangular Integrals
 
 The TriangularQuadratureRule class provides a 2D Gaussian Quadrature method for integrating functions defined on the surface of triangles. This class uses a four point Gaussian Quadrature rule in area coordinates that exactly integrates all polynomials of degree 7 or less. It requires four evaluations of the function f. Specifically,

@@ -24,6 +24,8 @@ void \hyperlink{a00764_a40cf9432221b62db76e8b154e3e81e3d}{recompute\+Constants} 
 double \hyperlink{a00764_acd197716c6bffaa3c7b472661f0e5ca4}{area} ()
 \item 
 \hyperlink{a00189_a124b14f4255dab47a3f7235a02cc65ee}{C\+S\+T\+Local\+Point} \hyperlink{a00764_a772e106e996b0d757332ca59b9c7f159}{compute\+Local\+Point} (const double \&x, const double \&y) const
+\item 
+void \hyperlink{a00764_a87952ca08b448d38c7e932f27da499d3}{add\+Boundary} (const int \&first\+Node\+Id, const int \&second\+Node\+Id)
 \end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
@@ -51,7 +53,11 @@ std\+::function$<$ double(const std\+::array$<$ double, 3 $>$ \&, const int \&, 
 \item 
 std\+::function$<$ double(const std\+::array$<$ double, 3 $>$ \&, const int \&)$>$ \hyperlink{a00764_a48dbf56bce64a1e97332b03309720154}{body\+Force\+Kernel}
 \item 
-\hyperlink{a00852}{Triangular\+Quadrature\+Rule} \hyperlink{a00764_a344419454bc8f003713ef5b009c73a65}{quadrature\+Rule}
+\hyperlink{a00856}{Triangular\+Quadrature\+Rule} \hyperlink{a00764_a5e50303ae2cfb783f44de143be8a9aac}{tri\+Quad\+Rule}
+\item 
+short int \hyperlink{a00764_a70ceb410983c87c36546a2a95306dac6}{num\+Boundaries} = 0
+\item 
+std\+::array$<$ \hyperlink{a00768}{Basic\+Pair}$<$ short int, short int $>$, 3 $>$ \hyperlink{a00764_afabe9f08624f60c70b8a7023d919da4e}{boundaries}
 \end{DoxyCompactItemize}
 
 
@@ -71,7 +77,9 @@ Clients are expected to use this class by subclassing and configuring their kern
 \begin{DoxyCode}
 \textcolor{keywordtype}{double} f(\textcolor{keyword}{const} std::array<double,3> & coords, \textcolor{keyword}{const} \textcolor{keywordtype}{int} & i);
 \end{DoxyCode}
- In this case, only one identifier is required to specify the vector element index i of the kernel. \hyperlink{a00780}{Poisson\+C\+ST} provides a good example of an appropriately configured subclass. The default implementations of stiffness\+Kernel and body\+Force\+Kernel evaluate to -\/1.\+0 for all values of (x,y) input and will throw an exception if called. 
+ In this case, only one identifier is required to specify the vector element index i of the kernel. \hyperlink{a00784}{Poisson\+C\+ST} provides a good example of an appropriately configured subclass. The default implementations of stiffness\+Kernel and body\+Force\+Kernel evaluate to -\/1.\+0 for all values of (x,y) input and will throw an exception if called.
+
+Node ordering is not determined by the element. Instead, it assumes that the nodes are passed to it in the correct order and locally identifies the first node in the constructor as node 1, the second as node 2, and third as node 3. Boundaries can then be set on the element by calling \hyperlink{a00764_a87952ca08b448d38c7e932f27da499d3}{add\+Boundary()} with local side ids. A triangle cannot have more than three boundaries. 
 
 \subsection{Constructor \& Destructor Documentation}
 \mbox{\Hypertarget{a00764_aa54c09f1dd7cacaf1f4f0b1428859c00}\label{a00764_aa54c09f1dd7cacaf1f4f0b1428859c00}} 
@@ -83,6 +91,19 @@ Clients are expected to use this class by subclassing and configuring their kern
 The constructor 
 
 \subsection{Member Function Documentation}
+\mbox{\Hypertarget{a00764_a87952ca08b448d38c7e932f27da499d3}\label{a00764_a87952ca08b448d38c7e932f27da499d3}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!add\+Boundary@{add\+Boundary}}
+\index{add\+Boundary@{add\+Boundary}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{add\+Boundary()}{addBoundary()}}
+{\footnotesize\ttfamily void fire\+::\+Constant\+Strain\+Triangle\+Element\+::add\+Boundary (\begin{DoxyParamCaption}\item[{const int \&}]{first\+Node\+Id,  }\item[{const int \&}]{second\+Node\+Id }\end{DoxyParamCaption})}
+
+This operation will designate the edge between two nodes with the given local ids as a boundary for which boundary value contributions to the stiffness and force matrices should be computed. A triangle cannot have more than three boundaries and this function will throw an exception if it is called to set a fourth boundary. Likewise, this function will also throw an exception if the two boundary node ids are the same (no self-\/ boundary loops). 
+\begin{DoxyParams}{Parameters}
+{\em the} & local node id (1, 2, or 3) of the first node on the edge \\
+\hline
+{\em the} & local node id (1, 2, or 3, but not the same as first\+Node\+Id), of the second node on the edge. \\
+\hline
+\end{DoxyParams}
 \mbox{\Hypertarget{a00764_acd197716c6bffaa3c7b472661f0e5ca4}\label{a00764_acd197716c6bffaa3c7b472661f0e5ca4}} 
 \index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!area@{area}}
 \index{area@{area}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
@@ -159,7 +180,13 @@ The body force vector elements f\+\_\+i computed for this element. \mbox{\Hypert
 \subsubsection{\texorpdfstring{body\+Force\+Kernel}{bodyForceKernel}}
 {\footnotesize\ttfamily std\+::function$<$double(const std\+::array$<$double,3$>$ \&, const int \&)$>$ fire\+::\+Constant\+Strain\+Triangle\+Element\+::body\+Force\+Kernel\hspace{0.3cm}{\ttfamily [protected]}}
 
-A function handle to the kernel that will be evaluated in the computation of the body forces for this element. \mbox{\Hypertarget{a00764_a2a9d18beac7fccf750846723ddf73d1d}\label{a00764_a2a9d18beac7fccf750846723ddf73d1d}} 
+A function handle to the kernel that will be evaluated in the computation of the body forces for this element. \mbox{\Hypertarget{a00764_afabe9f08624f60c70b8a7023d919da4e}\label{a00764_afabe9f08624f60c70b8a7023d919da4e}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!boundaries@{boundaries}}
+\index{boundaries@{boundaries}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{boundaries}{boundaries}}
+{\footnotesize\ttfamily std\+::array$<$\hyperlink{a00768}{Basic\+Pair}$<$short int, short int$>$, 3$>$ fire\+::\+Constant\+Strain\+Triangle\+Element\+::boundaries\hspace{0.3cm}{\ttfamily [protected]}}
+
+This array stores the active boundaries on the triangle. \mbox{\Hypertarget{a00764_a2a9d18beac7fccf750846723ddf73d1d}\label{a00764_a2a9d18beac7fccf750846723ddf73d1d}} 
 \index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!c@{c}}
 \index{c@{c}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
 \subsubsection{\texorpdfstring{c}{c}}
@@ -191,19 +218,25 @@ The matrix elements k\+\_\+ij computed for this element. \mbox{\Hypertarget{a007
 
 The nodes in the element.
 
-Note that this is initialized on construction because the array elements are references. \mbox{\Hypertarget{a00764_a344419454bc8f003713ef5b009c73a65}\label{a00764_a344419454bc8f003713ef5b009c73a65}} 
-\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!quadrature\+Rule@{quadrature\+Rule}}
-\index{quadrature\+Rule@{quadrature\+Rule}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
-\subsubsection{\texorpdfstring{quadrature\+Rule}{quadratureRule}}
-{\footnotesize\ttfamily \hyperlink{a00852}{Triangular\+Quadrature\+Rule} fire\+::\+Constant\+Strain\+Triangle\+Element\+::quadrature\+Rule\hspace{0.3cm}{\ttfamily [protected]}}
+Note that this is initialized on construction because the array elements are references. \mbox{\Hypertarget{a00764_a70ceb410983c87c36546a2a95306dac6}\label{a00764_a70ceb410983c87c36546a2a95306dac6}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!num\+Boundaries@{num\+Boundaries}}
+\index{num\+Boundaries@{num\+Boundaries}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{num\+Boundaries}{numBoundaries}}
+{\footnotesize\ttfamily short int fire\+::\+Constant\+Strain\+Triangle\+Element\+::num\+Boundaries = 0\hspace{0.3cm}{\ttfamily [protected]}}
 
-This is a four point Gaussian Quadrature rule over triangular coordinates that is used to integrate the kernels. It will be more efficient to drop to a one point rule since this element has a constant value across it. This is a good thing to test later. \mbox{\Hypertarget{a00764_ae2480b5335fe78245cb1006e3eeb034d}\label{a00764_ae2480b5335fe78245cb1006e3eeb034d}} 
+This is the number of active boundaries on the triangle. \mbox{\Hypertarget{a00764_ae2480b5335fe78245cb1006e3eeb034d}\label{a00764_ae2480b5335fe78245cb1006e3eeb034d}} 
 \index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!stiffness\+Kernel@{stiffness\+Kernel}}
 \index{stiffness\+Kernel@{stiffness\+Kernel}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
 \subsubsection{\texorpdfstring{stiffness\+Kernel}{stiffnessKernel}}
 {\footnotesize\ttfamily std\+::function$<$double(const std\+::array$<$double,3$>$ \&, const int \&, const int \&)$>$ fire\+::\+Constant\+Strain\+Triangle\+Element\+::stiffness\+Kernel\hspace{0.3cm}{\ttfamily [protected]}}
 
-A function handle to the kernel that will be evaluated in the computation of the stiffness matrix for this element. 
+A function handle to the kernel that will be evaluated in the computation of the stiffness matrix for this element. \mbox{\Hypertarget{a00764_a5e50303ae2cfb783f44de143be8a9aac}\label{a00764_a5e50303ae2cfb783f44de143be8a9aac}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!tri\+Quad\+Rule@{tri\+Quad\+Rule}}
+\index{tri\+Quad\+Rule@{tri\+Quad\+Rule}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{tri\+Quad\+Rule}{triQuadRule}}
+{\footnotesize\ttfamily \hyperlink{a00856}{Triangular\+Quadrature\+Rule} fire\+::\+Constant\+Strain\+Triangle\+Element\+::tri\+Quad\+Rule\hspace{0.3cm}{\ttfamily [protected]}}
+
+This is a four point Gaussian Quadrature rule over triangular coordinates that is used to integrate the kernels. It should be more efficient to drop to a one point rule since this element has a constant value across it, but we can test that later. 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 

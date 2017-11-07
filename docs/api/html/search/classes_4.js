@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['entry',['Entry',['../a00872.html',1,'CSimpleIniTempl']]]
+  ['entry',['Entry',['../a00889.html',1,'CSimpleIniTempl']]]
 ];

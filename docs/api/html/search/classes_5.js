@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['filegenerator',['FileGenerator',['../a00844.html',1,'']]],
-  ['filewriter',['FileWriter',['../a00888.html',1,'CSimpleIniTempl']]]
+  ['filegenerator',['FileGenerator',['../a00857.html',1,'']]],
+  ['filewriter',['FileWriter',['../a00905.html',1,'CSimpleIniTempl']]]
 ];

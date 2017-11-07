@@ -57,6 +57,43 @@ BOOST_AUTO_TEST_CASE(checkCSTArea) {
 }
 
 /**
+ * This operation checks the computation of local node ids and the ids
+ * of nodes not on the boundary.
+ */
+BOOST_AUTO_TEST_CASE(checkLocalNodeIdsAndOffIds) {
+	TwoDNode node1(0.0,0.0,1), node2(1.0,0.0,2), node3(1.0,1.0,3),
+			node4(9.0,9.0,9.0);
+	ConstantStrainTriangleElement element(node1,node2,node3);
+	std::function<double(const double &)> f = [](const double & foo) {
+		return 1.0;
+	};
+	std::function<double(const double &)> g = [](const double & foo) {
+		return 2.0;
+	};
+	std::function<double(const double &)> h = [](const double & foo) {
+		return 3.0;
+	};
+	TwoDRobinBoundaryCondition cond1(node3,node1,f,g),
+			cond2(node1,node2,g,h), cond3(node2,node3,h,f),
+			cond4(node2,node2,h,f);
+
+	// Check local node ids. Should be 0, 1 and 2 accordingly.
+	BOOST_REQUIRE_EQUAL(0,element.getLocalNodeId(node1));
+	BOOST_REQUIRE_EQUAL(1,element.getLocalNodeId(node2));
+	BOOST_REQUIRE_EQUAL(2,element.getLocalNodeId(node3));
+	// Node 4 is not on the element, so it should return -1.
+	BOOST_REQUIRE_EQUAL(-1,element.getLocalNodeId(node4));
+
+	// Check off boundary ids
+	BOOST_REQUIRE_EQUAL(1,element.getOffBoundaryNodeId(cond1));
+	BOOST_REQUIRE_EQUAL(2,element.getOffBoundaryNodeId(cond2));
+	BOOST_REQUIRE_EQUAL(0,element.getOffBoundaryNodeId(cond3));
+	BOOST_REQUIRE_EQUAL(-1,element.getOffBoundaryNodeId(cond4));
+
+	return;
+}
+
+/**
  * This operation insures that CST element correct throws exceptions if the
  * default kernel and body force functions are used since these should always
  * be overridden by users.
@@ -148,28 +185,44 @@ BOOST_AUTO_TEST_CASE(checkCSTLocalPoints) {
  */
 BOOST_AUTO_TEST_CASE(checkBoundaries) {
 
-	TwoDNode node1(0.0,0.0,1), node2(1.0,0.0,2), node3(1.0,1.0,3);
+	TwoDNode node1(0.0,0.0,1), node2(1.0,0.0,2), node3(1.0,1.0,3),
+			node4(9.0,9.0,9.0);
 	ConstantStrainTriangleElement element(node1,node2,node3);
+	std::function<double(const double &)> f = [](const double & foo) {
+		return 1.0;
+	};
+	std::function<double(const double &)> g = [](const double & foo) {
+		return 2.0;
+	};
+	std::function<double(const double &)> h = [](const double & foo) {
+		return 3.0;
+	};
+	TwoDRobinBoundaryCondition cond1(node3,node1,f,g),
+			cond2(node1,node2,g,h), cond3(node2,node2,h,f),
+			cond4(node2,node3,h,f), cond5(node4,node1,f,g);
+
+	// NEED to create TwoDRobinBoundaryCondition
 
 	// Add a couple of boundaries
-	element.addBoundary(3,1);
-	element.addBoundary(1,2);
+	element.addRobinBoundary(cond1);
+	element.addRobinBoundary(cond2);
 	// Try to add a boundary with the same node ids
 	try {
-		element.addBoundary(2,2);
+		element.addRobinBoundary(cond3);
 		BOOST_FAIL("Adding boundary with same node ids not caught!");
 	} catch (...) { /** Do nothing, it passed **/ }
 	// Add a third boundary
-	element.addBoundary(2,3);
+	element.addRobinBoundary(cond4);
 	// Try to add a fourth, invalid boundary
 	try {
-		element.addBoundary(4,1);
+		element.addRobinBoundary(cond5);
 		BOOST_FAIL("Adding fourth boundary on triangle not caught!");
 	} catch (...) { /** Do nothing, it passed **/ }
 	// Try to add a boundary that is already configured
 	try {
-		element.addBoundary(3,1);
-		BOOST_FAIL("Adding fourth boundary on triangle not caught!");
+		element.addRobinBoundary(cond1);
+		BOOST_FAIL("Adding pre-existing boundary on triangle not caught!");
 	} catch (...) { /** Do nothing, it passed **/ }
 
+	return;
 }

@@ -39,6 +39,30 @@ using namespace std;
 using namespace fire;
 
 /**
+ * This operation checks the BasicPair structure, and its equality operator in
+ * particular.
+ */
+BOOST_AUTO_TEST_CASE(checkBasicPair) {
+	BasicPair<int,int> pair1, pair2(5,5);
+
+	// Check the first and second pairs
+	BOOST_REQUIRE_EQUAL(0,pair1.first);
+	BOOST_REQUIRE_EQUAL(0,pair1.second);
+	BOOST_REQUIRE_EQUAL(5,pair2.first);
+	BOOST_REQUIRE_EQUAL(5,pair2.second);
+	// Manually assign values to the first pair.
+	pair1.first = 5;
+	pair1.second = 6;
+	// They should not be equal!
+	BOOST_REQUIRE(pair1 != pair2);
+	// Make them equal
+	pair1.second = 5;
+	BOOST_REQUIRE(pair1 == pair2);
+
+	return;
+}
+
+/**
  * This operation checks the 2D Node struct.
  */
 BOOST_AUTO_TEST_CASE(checkTwoDNode) {
@@ -57,6 +81,14 @@ BOOST_AUTO_TEST_CASE(checkTwoDNode) {
 	node1.second = 5.0;
 	BOOST_REQUIRE_CLOSE(1.5,node1.first,1.0e-15);
 	BOOST_REQUIRE_CLOSE(5.0,node1.second,1.0e-15);
+
+	// Check equality to make sure that IdentifiablePair::operator== works.
+	BOOST_REQUIRE(node1 != node2);
+	// Set them equal
+	node1.first = node2.first;
+	node1.second = node2.second;
+	node1.value = node2.value;
+	BOOST_REQUIRE(node1 == node2);
 
 	return;
 }
@@ -88,6 +120,16 @@ BOOST_AUTO_TEST_CASE(checkCSTLocalPoint) {
 	BOOST_REQUIRE_CLOSE(2.9,p1.second,1.0e-15);
 	BOOST_REQUIRE_CLOSE(4.0,p1.third,1.0e-15);
 	BOOST_REQUIRE_EQUAL(5,p1.value);
+
+	// Check equality, which also insures IdentifiableTriplet::operator==
+	// works.
+	BOOST_REQUIRE(p1 != p2); // Not equal yet
+	// Make them equal
+	p1.first = p2.first;
+	p1.second = p2.second;
+	p1.third = p2.third;
+	p1.value = p2.value;
+	BOOST_REQUIRE(p1 == p2);
 
 	return;
 }
@@ -145,4 +187,23 @@ BOOST_AUTO_TEST_CASE(checkMatrixElementIndicesComputation) {
     BOOST_REQUIRE_EQUAL(colIndex,colMajorIndex(i, j, lCol));
     BOOST_REQUIRE_EQUAL(rowIndex,rowMajorIndex(e, lRow));
     BOOST_REQUIRE_EQUAL(colIndex,colMajorIndex(e, lCol));
+}
+
+BOOST_AUTO_TEST_CASE(checkTwoDRobinBoundaryCondition) {
+	std::function<double(const double &)> f = [](const double & foo) {
+		return -1.0;
+	};
+	std::function<double(const double &)> g = [](const double & foo) {
+		return -5.0;
+	};
+	TwoDNode node1, node2(2.0,3.0,1);
+	TwoDRobinBoundaryCondition cond1(node1,node2,f,f), cond2(node1,node2,g,g),
+			cond3(node1,node2,f,f);
+
+	// Make sure they are not equal
+	BOOST_REQUIRE(cond1 != cond2);
+	// Make sure they are equal
+	BOOST_REQUIRE(cond1 == cond3);
+
+	return;
 }

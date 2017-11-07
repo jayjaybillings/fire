@@ -1,0 +1,107 @@
+\hypertarget{a00777}{}\section{fire\+:\+:Basic\+Pair$<$ T, K $>$ Struct Template Reference}
+\label{a00777}\index{fire\+::\+Basic\+Pair$<$ T, K $>$@{fire\+::\+Basic\+Pair$<$ T, K $>$}}
+
+
+{\ttfamily \#include $<$F\+E\+M\+Types.\+h$>$}
+
+Inheritance diagram for fire\+:\+:Basic\+Pair$<$ T, K $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{a00777}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{a00777_a28eae46234d49126ac4727e7883174a4}{Basic\+Pair} ()
+\item 
+\hyperlink{a00777_ada8fa3f47bae245613d050598ac8488c}{Basic\+Pair} (const T \&\+\_\+first, const K \&\+\_\+second)
+\item 
+bool \hyperlink{a00777_acf9bd93b4bf7e16ca730a4dcc3ab859d}{operator==} (const \hyperlink{a00777}{Basic\+Pair} \&other\+Pair) const
+\item 
+bool \hyperlink{a00777_a8cff50c2cbaaa51cba83832d435455d7}{operator!=} (const \hyperlink{a00777}{Basic\+Pair} \&other\+Pair) const
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+T \hyperlink{a00777_a4e073a19bf2d3330d105d81a8febc4be}{first}
+\item 
+K \hyperlink{a00777_aecd2977e2fb903a5b106e4b5d7ab3bac}{second}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T, typename K$>$\newline
+struct fire\+::\+Basic\+Pair$<$ T, K $>$}
+
+This is a basic pair of two types. It is modeled after std\+::pair in that it uses \char`\"{}first\char`\"{} and \char`\"{}second\char`\"{} elements, but it does not provide as many utility functions. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{a00777_a28eae46234d49126ac4727e7883174a4}\label{a00777_a28eae46234d49126ac4727e7883174a4}} 
+\index{fire\+::\+Basic\+Pair@{fire\+::\+Basic\+Pair}!Basic\+Pair@{Basic\+Pair}}
+\index{Basic\+Pair@{Basic\+Pair}!fire\+::\+Basic\+Pair@{fire\+::\+Basic\+Pair}}
+\subsubsection{\texorpdfstring{Basic\+Pair()}{BasicPair()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T, typename K$>$ \\
+\hyperlink{a00777}{fire\+::\+Basic\+Pair}$<$ T, K $>$\+::\hyperlink{a00777}{Basic\+Pair} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Basic constructor \mbox{\Hypertarget{a00777_ada8fa3f47bae245613d050598ac8488c}\label{a00777_ada8fa3f47bae245613d050598ac8488c}} 
+\index{fire\+::\+Basic\+Pair@{fire\+::\+Basic\+Pair}!Basic\+Pair@{Basic\+Pair}}
+\index{Basic\+Pair@{Basic\+Pair}!fire\+::\+Basic\+Pair@{fire\+::\+Basic\+Pair}}
+\subsubsection{\texorpdfstring{Basic\+Pair()}{BasicPair()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T, typename K$>$ \\
+\hyperlink{a00777}{fire\+::\+Basic\+Pair}$<$ T, K $>$\+::\hyperlink{a00777}{Basic\+Pair} (\begin{DoxyParamCaption}\item[{const T \&}]{\+\_\+first,  }\item[{const K \&}]{\+\_\+second }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Initialization by value-\/copy constructor 
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+first} & the value of the first element \\
+\hline
+{\em \+\_\+second} & the value of the second element \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{a00777_a8cff50c2cbaaa51cba83832d435455d7}\label{a00777_a8cff50c2cbaaa51cba83832d435455d7}} 
+\index{fire\+::\+Basic\+Pair@{fire\+::\+Basic\+Pair}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!fire\+::\+Basic\+Pair@{fire\+::\+Basic\+Pair}}
+\subsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily template$<$typename T, typename K$>$ \\
+bool \hyperlink{a00777}{fire\+::\+Basic\+Pair}$<$ T, K $>$\+::operator!= (\begin{DoxyParamCaption}\item[{const \hyperlink{a00777}{Basic\+Pair}$<$ T, K $>$ \&}]{other\+Pair }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+The inequality operator override to invert ==. \mbox{\Hypertarget{a00777_acf9bd93b4bf7e16ca730a4dcc3ab859d}\label{a00777_acf9bd93b4bf7e16ca730a4dcc3ab859d}} 
+\index{fire\+::\+Basic\+Pair@{fire\+::\+Basic\+Pair}!operator==@{operator==}}
+\index{operator==@{operator==}!fire\+::\+Basic\+Pair@{fire\+::\+Basic\+Pair}}
+\subsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily template$<$typename T, typename K$>$ \\
+bool \hyperlink{a00777}{fire\+::\+Basic\+Pair}$<$ T, K $>$\+::operator== (\begin{DoxyParamCaption}\item[{const \hyperlink{a00777}{Basic\+Pair}$<$ T, K $>$ \&}]{other\+Pair }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+This is an operator override to compare basic pairs. 
+\begin{DoxyParams}{Parameters}
+{\em other\+Pair} & a reference to the other pair to compare to this one \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if equal, false otherwise 
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{a00777_a4e073a19bf2d3330d105d81a8febc4be}\label{a00777_a4e073a19bf2d3330d105d81a8febc4be}} 
+\index{fire\+::\+Basic\+Pair@{fire\+::\+Basic\+Pair}!first@{first}}
+\index{first@{first}!fire\+::\+Basic\+Pair@{fire\+::\+Basic\+Pair}}
+\subsubsection{\texorpdfstring{first}{first}}
+{\footnotesize\ttfamily template$<$typename T, typename K$>$ \\
+T \hyperlink{a00777}{fire\+::\+Basic\+Pair}$<$ T, K $>$\+::first}
+
+The first member of the pair, often considered the key or x-\/coordinate value. \mbox{\Hypertarget{a00777_aecd2977e2fb903a5b106e4b5d7ab3bac}\label{a00777_aecd2977e2fb903a5b106e4b5d7ab3bac}} 
+\index{fire\+::\+Basic\+Pair@{fire\+::\+Basic\+Pair}!second@{second}}
+\index{second@{second}!fire\+::\+Basic\+Pair@{fire\+::\+Basic\+Pair}}
+\subsubsection{\texorpdfstring{second}{second}}
+{\footnotesize\ttfamily template$<$typename T, typename K$>$ \\
+K \hyperlink{a00777}{fire\+::\+Basic\+Pair}$<$ T, K $>$\+::second}
+
+The second member of the pair, often considered the value or y-\/coordinate value. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+F\+E\+M\+Types.\+h\end{DoxyCompactItemize}

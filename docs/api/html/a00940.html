@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen 1.8.13"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <title>Fire: SimpleWeb::ClientBase&lt; socket_type &gt;::Config Class Reference</title>
+        <title>Fire: SimpleWeb::ClientBase&lt; socket_type &gt;::Response Class Reference</title>
         <!--<link href="tabs.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="dynsections.js"></script>
         <link href="search/search.css" rel="stylesheet" type="text/css"/>
@@ -69,7 +69,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00198.html">SimpleWeb</a></li><li class="navelem"><a class="el" href="a00932.html">ClientBase</a></li><li class="navelem"><a class="el" href="a00940.html">Config</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00198.html">SimpleWeb</a></li><li class="navelem"><a class="el" href="a00936.html">ClientBase</a></li><li class="navelem"><a class="el" href="a00940.html">Response</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -78,30 +78,39 @@ $(function() {
 <a href="#friends">Friends</a> &#124;
 <a href="a00937.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">SimpleWeb::ClientBase&lt; socket_type &gt;::Config Class Reference</div>  </div>
+<div class="title">SimpleWeb::ClientBase&lt; socket_type &gt;::Response Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ab0ec5665cc6666eb621e01e9403fdf28"><td class="memItemLeft" align="right" valign="top"><a id="ab0ec5665cc6666eb621e01e9403fdf28"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00940.html#ab0ec5665cc6666eb621e01e9403fdf28">timeout</a> = 0</td></tr>
-<tr class="memdesc:ab0ec5665cc6666eb621e01e9403fdf28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set timeout on requests in seconds. Default value: 0 (no timeout). <br /></td></tr>
-<tr class="separator:ab0ec5665cc6666eb621e01e9403fdf28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad810229c900c88c32ab42a8bfce2c4a1"><td class="memItemLeft" align="right" valign="top"><a id="ad810229c900c88c32ab42a8bfce2c4a1"></a>
-std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00940.html#ad810229c900c88c32ab42a8bfce2c4a1">timeout_connect</a> = 0</td></tr>
-<tr class="memdesc:ad810229c900c88c32ab42a8bfce2c4a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set connect timeout in seconds. Default value: 0 (<a class="el" href="a00940.html#ab0ec5665cc6666eb621e01e9403fdf28" title="Set timeout on requests in seconds. Default value: 0 (no timeout). ">Config::timeout</a> is then used instead). <br /></td></tr>
-<tr class="separator:ad810229c900c88c32ab42a8bfce2c4a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6eb0382dccf50e9e8bdc541d3f06f9d5"><td class="memItemLeft" align="right" valign="top"><a id="a6eb0382dccf50e9e8bdc541d3f06f9d5"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00940.html#a6eb0382dccf50e9e8bdc541d3f06f9d5">proxy_server</a></td></tr>
-<tr class="memdesc:a6eb0382dccf50e9e8bdc541d3f06f9d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set proxy server (server:port) <br /></td></tr>
-<tr class="separator:a6eb0382dccf50e9e8bdc541d3f06f9d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77d65a7cac84d8aaa55c0e9ca36e8a2d"><td class="memItemLeft" align="right" valign="top"><a id="a77d65a7cac84d8aaa55c0e9ca36e8a2d"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>http_version</b></td></tr>
+<tr class="separator:a77d65a7cac84d8aaa55c0e9ca36e8a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9680ebdb0bf18bc448d94dde80b85e0d"><td class="memItemLeft" align="right" valign="top"><a id="a9680ebdb0bf18bc448d94dde80b85e0d"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>status_code</b></td></tr>
+<tr class="separator:a9680ebdb0bf18bc448d94dde80b85e0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acac4ceea43b469687c3869211f5d58bb"><td class="memItemLeft" align="right" valign="top"><a id="acac4ceea43b469687c3869211f5d58bb"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>contentType</b></td></tr>
+<tr class="separator:acac4ceea43b469687c3869211f5d58bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3767341b925b88a56874439169876cd9"><td class="memItemLeft" align="right" valign="top"><a id="a3767341b925b88a56874439169876cd9"></a>
+std::istream&#160;</td><td class="memItemRight" valign="bottom"><b>content</b></td></tr>
+<tr class="separator:a3767341b925b88a56874439169876cd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaff1d7aeb8f3f75c36a6243af50a2616"><td class="memItemLeft" align="right" valign="top"><a id="aaff1d7aeb8f3f75c36a6243af50a2616"></a>
+std::unordered_multimap&lt; std::string, std::string, <a class="el" href="a00928.html">case_insensitive_hash</a>, <a class="el" href="a00924.html">case_insensitive_equals</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>header</b></td></tr>
+<tr class="separator:aaff1d7aeb8f3f75c36a6243af50a2616"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dd09f31041adcb9f3f75108f6287511"><td class="memItemLeft" align="right" valign="top"><a id="a4dd09f31041adcb9f3f75108f6287511"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>contentLength</b></td></tr>
+<tr class="separator:a4dd09f31041adcb9f3f75108f6287511"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
 <tr class="memitem:aee5298660229dd276c7169cf7ef3d387"><td class="memItemLeft" align="right" valign="top"><a id="aee5298660229dd276c7169cf7ef3d387"></a>
 class&#160;</td><td class="memItemRight" valign="bottom"><b>ClientBase&lt; socket_type &gt;</b></td></tr>
 <tr class="separator:aee5298660229dd276c7169cf7ef3d387"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb9f3938c0e5fcb2b232ca66a7089335"><td class="memItemLeft" align="right" valign="top"><a id="adb9f3938c0e5fcb2b232ca66a7089335"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>Client&lt; socket_type &gt;</b></td></tr>
+<tr class="separator:adb9f3938c0e5fcb2b232ca66a7089335"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="a00167_source.html">client_http.hpp</a></li>

@@ -1,31 +1,38 @@
-\hypertarget{a00998}{}\section{fire\+:\+:util\+:\+:Http\+Response Class Reference}
-\label{a00998}\index{fire\+::util\+::\+Http\+Response@{fire\+::util\+::\+Http\+Response}}
+\hypertarget{a00998}{}\section{Simple\+Web\+:\+:Server$<$ H\+T\+T\+PS $>$ Class Template Reference}
+\label{a00998}\index{Simple\+Web\+::\+Server$<$ H\+T\+T\+P\+S $>$@{Simple\+Web\+::\+Server$<$ H\+T\+T\+P\+S $>$}}
+Inheritance diagram for Simple\+Web\+:\+:Server$<$ H\+T\+T\+PS $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{a00998}
+\end{center}
+\end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{a00998_a1abb5be24e260dd4938036e189eb31d4}\label{a00998_a1abb5be24e260dd4938036e189eb31d4}} 
-{\bfseries Http\+Response} (std\+::istream \&str)
+\mbox{\Hypertarget{a00998_a1a5530e96cd973de3dc987034ca61b54}\label{a00998_a1a5530e96cd973de3dc987034ca61b54}} 
+D\+E\+P\+R\+E\+C\+A\+T\+ED {\bfseries Server} (unsigned short port, size\+\_\+t thread\+\_\+pool\+\_\+size, const std\+::string \&cert\+\_\+file, const std\+::string \&private\+\_\+key\+\_\+file, long timeout\+\_\+request=5, long timeout\+\_\+content=300, const std\+::string \&verify\+\_\+file=std\+::string())
+\item 
+\mbox{\Hypertarget{a00998_a15bb179287dfaa18da16b8877174e8d6}\label{a00998_a15bb179287dfaa18da16b8877174e8d6}} 
+{\bfseries Server} (const std\+::string \&cert\+\_\+file, const std\+::string \&private\+\_\+key\+\_\+file, const std\+::string \&verify\+\_\+file=std\+::string())
+\item 
+\mbox{\Hypertarget{a00998_a6a740b3fdbbbf178f540e27942cc93fc}\label{a00998_a6a740b3fdbbbf178f540e27942cc93fc}} 
+void {\bfseries start} ()
 \end{DoxyCompactItemize}
-\subsection*{Public Attributes}
+\subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{a00998_ac18d2ed4738720d26122b56db0498466}\label{a00998_ac18d2ed4738720d26122b56db0498466}} 
-bool {\bfseries successful}
-\item 
-\mbox{\Hypertarget{a00998_a151088153c40c945f06996f5171d82c4}\label{a00998_a151088153c40c945f06996f5171d82c4}} 
-std\+::string {\bfseries status\+\_\+code}
-\item 
-\mbox{\Hypertarget{a00998_a98544cd096db919a3e960716758787ad}\label{a00998_a98544cd096db919a3e960716758787ad}} 
-int {\bfseries content\+Length}
-\item 
-\mbox{\Hypertarget{a00998_a009a8ca3cae7dc1f7c6f2996ef3cd6bb}\label{a00998_a009a8ca3cae7dc1f7c6f2996ef3cd6bb}} 
-std\+::string {\bfseries content\+Type}
-\item 
-\mbox{\Hypertarget{a00998_a8ccf3854edb6c2efe12cf9d92d8dacbb}\label{a00998_a8ccf3854edb6c2efe12cf9d92d8dacbb}} 
-std\+::istream \& {\bfseries content}
+\mbox{\Hypertarget{a00998_af722d2884eafafada7073feb7793c422}\label{a00998_af722d2884eafafada7073feb7793c422}} 
+void {\bfseries accept} ()
 \end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{a00998_ade0b1e6f826fd76ba6c6253d352fd93c}\label{a00998_ade0b1e6f826fd76ba6c6253d352fd93c}} 
+boost\+::asio\+::ssl\+::context {\bfseries context}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-I\+Networking\+Tool.\+hpp\end{DoxyCompactItemize}
+server\+\_\+https.\+hpp\end{DoxyCompactItemize}

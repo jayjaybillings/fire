@@ -131,35 +131,15 @@ void ConstantStrainTriangleElement::recomputeConstants() {
 const std::array<MatrixElement<double>,9> & ConstantStrainTriangleElement::stiffnessMatrix() {
 
 	// For each node paired with all other nodes, compute k_ij.
+	int numElements = numNodes*numNodes;
 
-	// Node 1 with itself
-	kIJElements[0].value = triQuadRule.integrate(stiffnessKernel,
-			kIJElements[0].first, kIJElements[0].second);
-	// Node 1 with node 2
-	kIJElements[1].value = triQuadRule.integrate(stiffnessKernel,
-			kIJElements[1].first, kIJElements[1].second);
-	// Node 1 with node 3
-	kIJElements[2].value = triQuadRule.integrate(stiffnessKernel,
-			kIJElements[2].first, kIJElements[2].second);
-	// Node 2 with node 1 - may be symmetric with 1,2, but no way to know if the kernel is
-	// symmetric a priori.
-	kIJElements[3].value = triQuadRule.integrate(stiffnessKernel,
-			kIJElements[3].first, kIJElements[3].second);
-	// Node 2 with itself
-	kIJElements[4].value = triQuadRule.integrate(stiffnessKernel,
-			kIJElements[4].first, kIJElements[4].second);
-	// Node 2 with node3
-	kIJElements[5].value = triQuadRule.integrate(stiffnessKernel,
-			kIJElements[5].first, kIJElements[5].second);
-	// Node 3 with node 1 - may be the same as 1,3
-	kIJElements[6].value = triQuadRule.integrate(stiffnessKernel,
-			kIJElements[6].first, kIJElements[6].second);
-	// Node 3 with node 2 - may be the same as 2,3
-	kIJElements[7].value = triQuadRule.integrate(stiffnessKernel,
-			kIJElements[7].first, kIJElements[7].second);
-	// Node 3 with itself
-	kIJElements[8].value = triQuadRule.integrate(stiffnessKernel,
-			kIJElements[8].first, kIJElements[8].second);
+	// There are exactly numNodes*numNodes matrix elements, each one being
+	// compared to itself and its neighbors. In this case, it progresses
+	// through the list as {node1,node1},{node1,node2}, {node1,node3}, etc.
+	for (int i = 0; i < numElements; i++) {
+		kIJElements[i].value = triQuadRule.integrate(stiffnessKernel,
+				kIJElements[i].first, kIJElements[i].second);
+	}
 
 	// Boundary conditions? - FIXME!
 
@@ -168,17 +148,11 @@ const std::array<MatrixElement<double>,9> & ConstantStrainTriangleElement::stiff
 
 std::array<VectorElement<double>,3> & ConstantStrainTriangleElement::bodyForceVector() {
 
-	// FIXME! - Needs to use quadrature
-
-	std::array<double,3> qp = {0.0,0.0,0.0};
-
 	// For each node, compute body forces f_i.
-	bodyElements[0].second = triQuadRule.integrate(bodyForceKernel,
-			bodyElements[0].first);
-	bodyElements[1].second = triQuadRule.integrate(bodyForceKernel,
-			bodyElements[1].first);
-	bodyElements[2].second = triQuadRule.integrate(bodyForceKernel,
-			bodyElements[2].first);
+	for (int i = 0; i < numNodes; i++) {
+		bodyElements[i].second = triQuadRule.integrate(bodyForceKernel,
+				bodyElements[i].first);
+	}
 
 	// Boundary conditions? - FIXME!
 
@@ -203,33 +177,82 @@ CSTLocalPoint ConstantStrainTriangleElement::computeLocalPoint(const double & x,
 	return localPoint;
 }
 
+bool ConstantStrainTriangleElement::hasNode(const TwoDNode & node) const {
+	for(int i = 0; i < numNodes; i++) {
+		if(node == nodes[i]) return true;
+	}
+	return false;
+}
 
-void ConstantStrainTriangleElement::addBoundary(const int & firstNodeId, const int & secondNodeId) {
+int ConstantStrainTriangleElement::getLocalNodeId(const TwoDNode & node) const {
+	int id = -1;
+
+	// The node ids are ordered according to their arrangement in the array.
+	if (node == nodes[0]) {
+		id = 0;
+	} else if (node == nodes[1]) {
+		id = 1;
+	} else if (node == nodes[2]) {
+		id = 2;
+	}
+
+	return id;
+}
+
+int ConstantStrainTriangleElement::getOffBoundaryNodeId(
+		const TwoDRobinBoundaryCondition & boundary) const {
+	int id = -1, nodeId1, nodeId2 = 0;
+
+	// Get the local node ids
+	nodeId1 = getLocalNodeId(boundary.firstNode);
+	nodeId2 = getLocalNodeId(boundary.secondNode);
+    // Cycle through the id pairs by adding up their values, but only if the
+	// ids are not the same.
+	if (nodeId1 != nodeId2) {
+	    // This works by the fact that the sums of pairs of numbers 0, 1, and 2
+		// are 1, 2, and 3 if pairs cannot have members that are equal to each
+		// other. That is, (0,0), (1,1), and (2,2) are not allowed. A matrix of
+		// ids sums is as follows, where the diagonals must be 0 because they
+		// are not allowed:
+		// 0 1 2
+		// 1 0 3
+		// 2 3 0
+		int sum = nodeId1 + nodeId2;
+		if (sum == 1) {
+			// sum == 1 means nodes with local id 0 and 1 form the boundary,
+			// so node 2 is not on the boundary.
+			id = 2;
+		} else if (sum == 2) {
+			// sum == 2 means nodes 0 and 2 form the boundary, node 1 is off.
+			id = 1;
+		} else if (sum == 3) {
+			// sum == 3 means nodes 1 and 2 form the boundary, node 0 is off.
+			id = 0;
+		}
+	}
+
+	return id;
+}
+
+void ConstantStrainTriangleElement::addRobinBoundary(
+		const TwoDRobinBoundaryCondition & boundary) {
 
 	bool hasBoundary = false;
 
 	// The node ids must be different and only three boundaries can be added.
-	if (firstNodeId != secondNodeId && numBoundaries < 3) {
-		// Side 3,1
-		if ((firstNodeId > 0 && firstNodeId <= 3) &&
-				(secondNodeId > 0 && secondNodeId <= 3)) {
+	if (boundary.firstNode != boundary.secondNode && numBoundaries < 3) {
+		// Check to see if the element contains the nodes
+		if (hasNode(boundary.firstNode) && hasNode(boundary.secondNode)) {
 			// Check to see if the boundary is already configured
-			hasBoundary = (boundaries[0].first == firstNodeId
-					&& boundaries[0].second == secondNodeId)
-					|| (boundaries[0].first == secondNodeId
-					&& boundaries[0].second == firstNodeId) // End side 1 check
-					|| (boundaries[1].first == firstNodeId
-					&& boundaries[1].second == secondNodeId)
-					|| (boundaries[1].first == secondNodeId
-					&& boundaries[1].second == firstNodeId) // End side 2 check
-					|| (boundaries[2].first == firstNodeId
-					&& boundaries[2].second == secondNodeId)
-					|| (boundaries[2].first == secondNodeId
-					&& boundaries[2].second == firstNodeId); // End side 3 check
-			// If is genuinely new, then add it
+			hasBoundary = (boundaries[0] == boundary)
+					|| (boundaries[1] == boundary)
+					|| (boundaries[2] == boundary);
+			// If is genuinely new, then add it and set the off-boundary node
+			// id for the boundary conditions calculation.
 			if (!hasBoundary) {
-			   boundaries[numBoundaries].first = firstNodeId;
-			   boundaries[numBoundaries].second = secondNodeId;
+			   boundaries[numBoundaries] = boundary;
+			   offBoundaryNodeIds[numBoundaries] =
+					   getOffBoundaryNodeId(boundary);
 			   numBoundaries++;
 			} else {
 				// Otherwise complain
@@ -237,13 +260,12 @@ void ConstantStrainTriangleElement::addBoundary(const int & firstNodeId, const i
 			}
 		} else {
 			// Some other side that cannot exist.
-			throw runtime_error("Invalid boundary! Valid ids are {1,2,3}.");
+			throw runtime_error("Invalid boundary! One or both nodes not in element.");
 		}
 	} else {
 		// Either self-boundary reference or too many boundaries.
 		throw runtime_error("Invalid boundary configuration or two many boundaries.");
 	}
-
 
 	return;
 }

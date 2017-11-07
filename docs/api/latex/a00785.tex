@@ -1,0 +1,102 @@
+\hypertarget{a00785}{}\section{fire\+:\+:Identifiable\+Triplet$<$ T, K, V, Z $>$ Struct Template Reference}
+\label{a00785}\index{fire\+::\+Identifiable\+Triplet$<$ T, K, V, Z $>$@{fire\+::\+Identifiable\+Triplet$<$ T, K, V, Z $>$}}
+
+
+{\ttfamily \#include $<$F\+E\+M\+Types.\+h$>$}
+
+Inheritance diagram for fire\+:\+:Identifiable\+Triplet$<$ T, K, V, Z $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{a00785}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{a00785_aadcc9b484d16fc1f286e969bad059976}{Identifiable\+Triplet} ()
+\item 
+\hyperlink{a00785_a4c43fb95e33d2b67ffb934991a986b68}{Identifiable\+Triplet} (const T \&\+\_\+first, const K \&\+\_\+second, const V \&\+\_\+third, const Z \+\_\+value)
+\item 
+bool \hyperlink{a00785_a3b79a05585bf33cc7aef48697a804be1}{operator==} (const \hyperlink{a00785}{Identifiable\+Triplet} \&other\+Triplet) const
+\item 
+bool \hyperlink{a00785_a290e248f174f39b7df8b2017f77c179f}{operator!=} (const \hyperlink{a00785}{Identifiable\+Triplet} \&other\+Triplet) const
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+V \hyperlink{a00785_a0f60248b00531643f3c6bb8e68781f04}{third}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T, typename K, typename V, typename Z$>$\newline
+struct fire\+::\+Identifiable\+Triplet$<$ T, K, V, Z $>$}
+
+This class extends \hyperlink{a00781}{Identifiable\+Pair} to add a third dimension. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{a00785_aadcc9b484d16fc1f286e969bad059976}\label{a00785_aadcc9b484d16fc1f286e969bad059976}} 
+\index{fire\+::\+Identifiable\+Triplet@{fire\+::\+Identifiable\+Triplet}!Identifiable\+Triplet@{Identifiable\+Triplet}}
+\index{Identifiable\+Triplet@{Identifiable\+Triplet}!fire\+::\+Identifiable\+Triplet@{fire\+::\+Identifiable\+Triplet}}
+\subsubsection{\texorpdfstring{Identifiable\+Triplet()}{IdentifiableTriplet()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T , typename K , typename V , typename Z $>$ \\
+\hyperlink{a00785}{fire\+::\+Identifiable\+Triplet}$<$ T, K, V, Z $>$\+::\hyperlink{a00785}{Identifiable\+Triplet} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+The constructor \mbox{\Hypertarget{a00785_a4c43fb95e33d2b67ffb934991a986b68}\label{a00785_a4c43fb95e33d2b67ffb934991a986b68}} 
+\index{fire\+::\+Identifiable\+Triplet@{fire\+::\+Identifiable\+Triplet}!Identifiable\+Triplet@{Identifiable\+Triplet}}
+\index{Identifiable\+Triplet@{Identifiable\+Triplet}!fire\+::\+Identifiable\+Triplet@{fire\+::\+Identifiable\+Triplet}}
+\subsubsection{\texorpdfstring{Identifiable\+Triplet()}{IdentifiableTriplet()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T , typename K , typename V , typename Z $>$ \\
+\hyperlink{a00785}{fire\+::\+Identifiable\+Triplet}$<$ T, K, V, Z $>$\+::\hyperlink{a00785}{Identifiable\+Triplet} (\begin{DoxyParamCaption}\item[{const T \&}]{\+\_\+first,  }\item[{const K \&}]{\+\_\+second,  }\item[{const V \&}]{\+\_\+third,  }\item[{const Z}]{\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Initialization by value-\/copy constructor 
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+first} & the value of the first element \\
+\hline
+{\em \+\_\+second} & the value of the second element \\
+\hline
+{\em \+\_\+third} & the value of the third element \\
+\hline
+{\em \+\_\+value} & the value of the \char`\"{}value\char`\"{} attribute \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{a00785_a290e248f174f39b7df8b2017f77c179f}\label{a00785_a290e248f174f39b7df8b2017f77c179f}} 
+\index{fire\+::\+Identifiable\+Triplet@{fire\+::\+Identifiable\+Triplet}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!fire\+::\+Identifiable\+Triplet@{fire\+::\+Identifiable\+Triplet}}
+\subsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily template$<$typename T , typename K , typename V , typename Z $>$ \\
+bool \hyperlink{a00785}{fire\+::\+Identifiable\+Triplet}$<$ T, K, V, Z $>$\+::operator!= (\begin{DoxyParamCaption}\item[{const \hyperlink{a00785}{Identifiable\+Triplet}$<$ T, K, V, Z $>$ \&}]{other\+Triplet }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+The inequality operator override to invert ==. \mbox{\Hypertarget{a00785_a3b79a05585bf33cc7aef48697a804be1}\label{a00785_a3b79a05585bf33cc7aef48697a804be1}} 
+\index{fire\+::\+Identifiable\+Triplet@{fire\+::\+Identifiable\+Triplet}!operator==@{operator==}}
+\index{operator==@{operator==}!fire\+::\+Identifiable\+Triplet@{fire\+::\+Identifiable\+Triplet}}
+\subsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily template$<$typename T , typename K , typename V , typename Z $>$ \\
+bool \hyperlink{a00785}{fire\+::\+Identifiable\+Triplet}$<$ T, K, V, Z $>$\+::operator== (\begin{DoxyParamCaption}\item[{const \hyperlink{a00785}{Identifiable\+Triplet}$<$ T, K, V, Z $>$ \&}]{other\+Triplet }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+This is an operator override to compare identifiable triplets.. 
+\begin{DoxyParams}{Parameters}
+{\em other\+Pair} & a reference to the other pair to compare to this one \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if equal, false otherwise 
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{a00785_a0f60248b00531643f3c6bb8e68781f04}\label{a00785_a0f60248b00531643f3c6bb8e68781f04}} 
+\index{fire\+::\+Identifiable\+Triplet@{fire\+::\+Identifiable\+Triplet}!third@{third}}
+\index{third@{third}!fire\+::\+Identifiable\+Triplet@{fire\+::\+Identifiable\+Triplet}}
+\subsubsection{\texorpdfstring{third}{third}}
+{\footnotesize\ttfamily template$<$typename T , typename K , typename V , typename Z $>$ \\
+V \hyperlink{a00785}{fire\+::\+Identifiable\+Triplet}$<$ T, K, V, Z $>$\+::third}
+
+The third member of the pair, often considered the secondary value or z-\/coordinate value. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+F\+E\+M\+Types.\+h\end{DoxyCompactItemize}
