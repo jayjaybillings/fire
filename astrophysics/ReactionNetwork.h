@@ -503,14 +503,14 @@ public:
  */
 
 template<>
-double * State<ReactionNetwork>::u() const {
+double * State<ReactionNetwork>::u() {
 
 	// Get the pointer to the handy storage array
 	double * uPtr = uArr.get();
 
 	// Transfer the data
 	for (int i = 0; i < systemSize; i++) {
-		uPtr[i] = state->species->at(i).massFraction;
+		uPtr[i] = state.species->at(i).massFraction;
 	}
 
 	return uPtr;
@@ -521,7 +521,7 @@ void State<ReactionNetwork>::u(double * uData) {
 
 	// Update the mass fractions to match the solve at the last timestep.
 	for (int i = 0; i < systemSize; i++) {
-	    state->species->at(i).massFraction = uData[i];
+	    state.species->at(i).massFraction = uData[i];
 	}
 
 	// Notify the monitors
@@ -530,17 +530,17 @@ void State<ReactionNetwork>::u(double * uData) {
 }
 
 template<>
-double * State<ReactionNetwork>::dudt(const double & t) const {
+double * State<ReactionNetwork>::dudt(const double & t) {
 
 	// Get the pointer to the handy storage array.
 	double * dudtPtr = dudtArr.get();
 
 	// Compute the new flux values
-	state->computeFluxes();
+	state.computeFluxes();
 
 	// Update the RHS data vector (derivative in this case)
 	for (int i = 0; i < systemSize; i++) {
-		dudtPtr[i] = state->species->at(i).flux;
+		dudtPtr[i] = state.species->at(i).flux;
 	}
 
 	return dudtPtr;

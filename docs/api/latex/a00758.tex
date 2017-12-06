@@ -1,109 +1,256 @@
-\hypertarget{a00758}{}\section{fire\+:\+:Delimited\+Text\+Parser$<$ T, K $>$ Class Template Reference}
-\label{a00758}\index{fire\+::\+Delimited\+Text\+Parser$<$ T, K $>$@{fire\+::\+Delimited\+Text\+Parser$<$ T, K $>$}}
+\hypertarget{a00758}{}\section{fire\+:\+:astrophysics\+:\+:Reaction Struct Reference}
+\label{a00758}\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
 
 
-{\ttfamily \#include $<$Delimited\+Text\+Parser.\+h$>$}
+{\ttfamily \#include $<$Reaction.\+h$>$}
 
-Inheritance diagram for fire\+:\+:Delimited\+Text\+Parser$<$ T, K $>$\+:\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[height=4.000000cm]{a00758}
-\end{center}
-\end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{a00758_aa1f041ebbf0bf72145e8bd20bf95f3f4}\label{a00758_aa1f041ebbf0bf72145e8bd20bf95f3f4}} 
-{\bfseries Delimited\+Text\+Parser} (string delim, string comment)
+void \hyperlink{a00758_a98b03c550c3926cb5c20f8a27a2ee1ed}{set\+Prefactor} (const double \&rho)
 \item 
-virtual void \hyperlink{a00758_a686df5548771cae833d5e721442a821a}{parse} ()
+void \hyperlink{a00758_a671a0560e6843664cdae4d724b8645da}{set\+Rate} (array$<$ double, 6 $>$ temp\+Values)
 \item 
-{\footnotesize template$<$$>$ }\\void \hyperlink{a00758_a773fa7ed28cb9d8c384ad94bd81fc93f}{parse} ()
+void \hyperlink{a00758_a598fe411c64ab247e5d4f299b4a59b70}{set\+Rate} (const double \&temp)
 \end{DoxyCompactItemize}
-\subsection*{Protected Attributes}
+\subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-string \hyperlink{a00758_ac817fc333b53611a41f446977461bdbf}{delimiter}
+std\+::string \hyperlink{a00758_abb359091e992ad4cb4cde0faacf6021b}{name}
 \item 
-string \hyperlink{a00758_acdd7b27b8109ed41e7d9bc5e6de72e93}{comment\+Char}
+int \hyperlink{a00758_ab6d29b5c28ef33ea1d9219b70f02d98a}{reaction\+Group\+Class}
+\item 
+int \hyperlink{a00758_adb666fe2c511b5a5e86ebcd35ba7faa4}{reaction\+Group\+Member\+Index}
+\item 
+int \hyperlink{a00758_a581b5410f62a299f2262324d6c0199c7}{reaclib\+Class}
+\item 
+int \hyperlink{a00758_a86154569e16ef396c93cdf97c5eaf5b7}{num\+Reactants}
+\item 
+int \hyperlink{a00758_aa59b550e5dbdd34c9c563e7dfc2cbc1e}{num\+Products}
+\item 
+bool \hyperlink{a00758_a84165249a444a64bdfc41531fbe81cc0}{is\+Electron\+Capture}
+\item 
+bool \hyperlink{a00758_ae161628da753400b3d2256e2d10a02b9}{is\+Reverse}
+\item 
+double \hyperlink{a00758_a439daff55fecd97cafc96f204570376a}{statistical\+Factor}
+\item 
+double \hyperlink{a00758_a07f4db35c5d9bca2d5c5fc8529ec3801}{energy\+Release}
+\item 
+array$<$ double, 7 $>$ \hyperlink{a00758_aa6265e73f4d2c55441caf95e6eb6e656}{reaclib\+Rate\+Coeff}
+\item 
+array$<$ int, 4 $>$ \hyperlink{a00758_a74b96d4f5ff99d60adfb88b096a7e256}{reactantZ}
+\item 
+array$<$ int, 4 $>$ \hyperlink{a00758_a831dcae79d4ed842c9bbdf51ebdd137f}{reactantN}
+\item 
+array$<$ int, 4 $>$ \hyperlink{a00758_a0586d888e1f60d6371239af888f9158b}{productZ}
+\item 
+array$<$ int, 4 $>$ \hyperlink{a00758_a81251169f8dd972b6cdc285fbc42c331}{productN}
+\item 
+array$<$ int, 3 $>$ \hyperlink{a00758_ab13b0133b89c6531a1648b696324d804}{reactants}
+\item 
+array$<$ int, 3 $>$ \hyperlink{a00758_a5d0e77ebec059081aaafa5ba86df4c88}{products}
+\item 
+double \hyperlink{a00758_a5033228e6305beb4e8dd717d2f088d99}{prefactor}
+\item 
+double \hyperlink{a00758_a343553d449e3cca261f8ee166fa6b699}{rate}
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-\subsubsection*{template$<$typename T, typename K$>$\newline
-class fire\+::\+Delimited\+Text\+Parser$<$ T, K $>$}
+This class represents a reaction, and specifically a nuclear reaction in the astrophysical case. This includes both forward reactions and backward (decay) reactions with one to four reacting bodies.
 
-This class implements \hyperlink{a00762}{I\+Local\+Parser} to provide a local, file-\/based, serially executed delimited text parser.
-
-\hyperlink{a00762_a091d5cf56bf8f407854ef87f460b2958}{is\+File()} will return true if set\+Source(string) is used is\+Stream() will return true if set\+Source(istream) is used \hyperlink{a00762_a770acae6e216de3a9c7140a12de25d58}{is\+Local()} always returns true. \hyperlink{a00762_ad46898c516adcce38acbb4800dc9777b}{is\+Parallel()} always returns false.
-
-Because delimited text is most often primitives, this class requires two template arguments. The first argument T is how the data should be returned and the second argument K is the root type of the delimited text, most likely a primitive. This would look something like
-
-
-\begin{DoxyCode}
-DelimitedTextParser<vector<vector<double>>,\textcolor{keywordtype}{double}>
-\end{DoxyCode}
-
-
-for a dense body of text like in a standard C\+SV file or D\+AT file where each column is composed of dense primitives.
-
-The source may either be a file on the local filesystem or an input stream.
-
-This is an extension of the parser interface that focuses on parsing delimited text. Delimited text is text with entries that are separated by a common pattern, such as a common or space.
-
-The Comma-\/\+Separated Variables format is a delimited text format of the form
-
-v1, v2, v3, v4
-
-where each comma is the delimiter between the text values v1 through v4. A line of text with only spaces is also a delimited text format\+:
-
-v1 v2 v3 v4
-
-Delimited text parsers may assume that lines such as those above are terminated by ~\newline
-. Like most other text formats, delimited text files may contain comments, which may be skipped by I\+Delimited\+Text\+Parsers. The characters that denote comments -\/ very commonly a \char`\"{}\#\char`\"{} or \char`\"{}//\char`\"{} -\/ may be passed to the constructor. 
+At the moment, this struct has an extremely bad design. However, it is worth noting that this is significantly better than what is currently used. There are several useful optimizations that will be added in time, such as using the \hyperlink{a00766}{Species} class and creating a new reaction group class. 
 
 \subsection{Member Function Documentation}
-\mbox{\Hypertarget{a00758_a686df5548771cae833d5e721442a821a}\label{a00758_a686df5548771cae833d5e721442a821a}} 
-\index{fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}!parse@{parse}}
-\index{parse@{parse}!fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}}
-\subsubsection{\texorpdfstring{parse()}{parse()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily template$<$typename T , typename K $>$ \\
-virtual void \hyperlink{a00758}{fire\+::\+Delimited\+Text\+Parser}$<$ T, K $>$\+::parse (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+\mbox{\Hypertarget{a00758_a98b03c550c3926cb5c20f8a27a2ee1ed}\label{a00758_a98b03c550c3926cb5c20f8a27a2ee1ed}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!set\+Prefactor@{set\+Prefactor}}
+\index{set\+Prefactor@{set\+Prefactor}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{set\+Prefactor()}{setPrefactor()}}
+{\footnotesize\ttfamily void fire\+::astrophysics\+::\+Reaction\+::set\+Prefactor (\begin{DoxyParamCaption}\item[{const double \&}]{rho }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-This operation directs the parser to parse its source. 
+The statistical prefactor that act as constant multipliers on this reaction. \[ p_s = s\rho^{(n_R -1)}. \] 
+\begin{DoxyParams}{Parameters}
+{\em rho} & the current density \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00758_a671a0560e6843664cdae4d724b8645da}\label{a00758_a671a0560e6843664cdae4d724b8645da}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!set\+Rate@{set\+Rate}}
+\index{set\+Rate@{set\+Rate}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{set\+Rate()}{setRate()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void fire\+::astrophysics\+::\+Reaction\+::set\+Rate (\begin{DoxyParamCaption}\item[{array$<$ double, 6 $>$}]{temp\+Values }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-Reimplemented from \hyperlink{a00778_abd8929aea06c2dda40256d2e58236650}{fire\+::\+Local\+Parser$<$ T $>$}.
+This operation computes and sets the reaction rate. This version is optimized to use pre-\/computed temperature values so that the costly exponentiation does not need to be repeated for each reaction if the temperature doesn\textquotesingle{}t change.
 
-\mbox{\Hypertarget{a00758_a773fa7ed28cb9d8c384ad94bd81fc93f}\label{a00758_a773fa7ed28cb9d8c384ad94bd81fc93f}} 
-\index{fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}!parse@{parse}}
-\index{parse@{parse}!fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}}
-\subsubsection{\texorpdfstring{parse()}{parse()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$$>$ \\
-void \hyperlink{a00758}{fire\+::\+Delimited\+Text\+Parser}$<$ vector$<$ vector$<$ double $>$ $>$, double $>$\+::parse (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+The rate is computed by \[ R = p_s*\sum_k R_k \] where \[p_s\] is the prefactor (based on the statistical prefactor) and \[ R_k = \exp(p_1 + \frac{p_2}{T_9} + \frac{p_3}{T_9^{1/3}} + p_{4}T_9^{1/3} + p_{5}T_9 + p_{6}T_9^{5/3} + p_{7}\ln T_9). \]
 
-This specialization is for dense data of primitive type double. 
+$T_9$ is the the temperature in units of $10^9$ Kelvin. Note that p1 = reaclib\+Rate\+Coeff\mbox{[}0\mbox{]} since C++ is a zero-\/indexed language.
 
-Reimplemented from \hyperlink{a00778_abd8929aea06c2dda40256d2e58236650}{fire\+::\+Local\+Parser$<$ T $>$}.
+In general k may be greater than 1 in the summation for the rate, but in this work k = 1 and \[R = R_k\].
 
+See\+: \char`\"{}\+Stars and Stellar Processes\char`\"{}, Mike Guidry, to be published Cambridge University Press.
+
+
+\begin{DoxyParams}{Parameters}
+{\em temp\+Values} & An array of all six temperature values used to compute the rate. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00758_a598fe411c64ab247e5d4f299b4a59b70}\label{a00758_a598fe411c64ab247e5d4f299b4a59b70}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!set\+Rate@{set\+Rate}}
+\index{set\+Rate@{set\+Rate}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{set\+Rate()}{setRate()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void fire\+::astrophysics\+::\+Reaction\+::set\+Rate (\begin{DoxyParamCaption}\item[{const double \&}]{temp }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+This operation computes and sets the reaction rate. This version will use the provided temperature to compute all of the temperature coefficients. See the other version of this function for a more efficient version (which this function actually calls).
+
+The rate is computed by \[ R = p_s*\sum_k R_k \] where \[p_s\] is the prefactor (based on the statistical prefactor) and \[ R_k = \exp(p_1 + \frac{p_2}{T_9} + \frac{p_3}{T_9^{1/3}} + p_{4}T_9^{1/3} + p_{5}T_9 + p_{6}T_9^{5/3} + p_{7}\ln T_9). \]
+
+$T_9$ is the the temperature in units of $10^9$ Kelvin. Note that p1 = reaclib\+Rate\+Coeff\mbox{[}0\mbox{]} since C++ is a zero-\/indexed language.
+
+In general k may be greater than 1 in the summation for the rate, but in this work k = 1 and \[R = R_k\].
+
+See\+: \char`\"{}\+Stars and Stellar Processes\char`\"{}, Mike Guidry, to be published Cambridge University Press.
+
+
+\begin{DoxyParams}{Parameters}
+{\em temp} & the temperature \\
+\hline
+\end{DoxyParams}
 
 
 \subsection{Member Data Documentation}
-\mbox{\Hypertarget{a00758_acdd7b27b8109ed41e7d9bc5e6de72e93}\label{a00758_acdd7b27b8109ed41e7d9bc5e6de72e93}} 
-\index{fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}!comment\+Char@{comment\+Char}}
-\index{comment\+Char@{comment\+Char}!fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}}
-\subsubsection{\texorpdfstring{comment\+Char}{commentChar}}
-{\footnotesize\ttfamily template$<$typename T , typename K $>$ \\
-string \hyperlink{a00758}{fire\+::\+Delimited\+Text\+Parser}$<$ T, K $>$\+::comment\+Char\hspace{0.3cm}{\ttfamily [protected]}}
+\mbox{\Hypertarget{a00758_a07f4db35c5d9bca2d5c5fc8529ec3801}\label{a00758_a07f4db35c5d9bca2d5c5fc8529ec3801}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!energy\+Release@{energy\+Release}}
+\index{energy\+Release@{energy\+Release}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{energy\+Release}{energyRelease}}
+{\footnotesize\ttfamily double fire\+::astrophysics\+::\+Reaction\+::energy\+Release}
 
-The character that represents a comment and should be skipped. \mbox{\Hypertarget{a00758_ac817fc333b53611a41f446977461bdbf}\label{a00758_ac817fc333b53611a41f446977461bdbf}} 
-\index{fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}!delimiter@{delimiter}}
-\index{delimiter@{delimiter}!fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}}
-\subsubsection{\texorpdfstring{delimiter}{delimiter}}
-{\footnotesize\ttfamily template$<$typename T , typename K $>$ \\
-string \hyperlink{a00758}{fire\+::\+Delimited\+Text\+Parser}$<$ T, K $>$\+::delimiter\hspace{0.3cm}{\ttfamily [protected]}}
+The energy released by this reaction in electron volts. \mbox{\Hypertarget{a00758_a84165249a444a64bdfc41531fbe81cc0}\label{a00758_a84165249a444a64bdfc41531fbe81cc0}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!is\+Electron\+Capture@{is\+Electron\+Capture}}
+\index{is\+Electron\+Capture@{is\+Electron\+Capture}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{is\+Electron\+Capture}{isElectronCapture}}
+{\footnotesize\ttfamily bool fire\+::astrophysics\+::\+Reaction\+::is\+Electron\+Capture}
 
-The delimiter used when parsing the file. 
+This is flag that designates whether or not the reaction captures an electron. \mbox{\Hypertarget{a00758_ae161628da753400b3d2256e2d10a02b9}\label{a00758_ae161628da753400b3d2256e2d10a02b9}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!is\+Reverse@{is\+Reverse}}
+\index{is\+Reverse@{is\+Reverse}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{is\+Reverse}{isReverse}}
+{\footnotesize\ttfamily bool fire\+::astrophysics\+::\+Reaction\+::is\+Reverse}
 
-The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+True if this reaction is a reverse reaction.
+
+A\+SK M\+I\+K\+E! Why is this set to false by in F\+E\+RN\textquotesingle{}s load\+Reactions operation? \mbox{\Hypertarget{a00758_abb359091e992ad4cb4cde0faacf6021b}\label{a00758_abb359091e992ad4cb4cde0faacf6021b}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!name@{name}}
+\index{name@{name}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{name}{name}}
+{\footnotesize\ttfamily std\+::string fire\+::astrophysics\+::\+Reaction\+::name}
+
+The name, or label, for the reaction. This should be of the form\+: \char`\"{}he4+he4+he4-\/-\/$>$c12\char`\"{} \mbox{\Hypertarget{a00758_aa59b550e5dbdd34c9c563e7dfc2cbc1e}\label{a00758_aa59b550e5dbdd34c9c563e7dfc2cbc1e}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!num\+Products@{num\+Products}}
+\index{num\+Products@{num\+Products}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{num\+Products}{numProducts}}
+{\footnotesize\ttfamily int fire\+::astrophysics\+::\+Reaction\+::num\+Products}
+
+The number of products produced as a result of the reaction. \mbox{\Hypertarget{a00758_a86154569e16ef396c93cdf97c5eaf5b7}\label{a00758_a86154569e16ef396c93cdf97c5eaf5b7}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!num\+Reactants@{num\+Reactants}}
+\index{num\+Reactants@{num\+Reactants}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{num\+Reactants}{numReactants}}
+{\footnotesize\ttfamily int fire\+::astrophysics\+::\+Reaction\+::num\+Reactants}
+
+The number of species in this reaction. \mbox{\Hypertarget{a00758_a5033228e6305beb4e8dd717d2f088d99}\label{a00758_a5033228e6305beb4e8dd717d2f088d99}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!prefactor@{prefactor}}
+\index{prefactor@{prefactor}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{prefactor}{prefactor}}
+{\footnotesize\ttfamily double fire\+::astrophysics\+::\+Reaction\+::prefactor}
+
+The statistical prefactor that act as constant multipliers on this reaction. \[ p_s = s\rho^{(n_R -1)}. \] 
+\begin{DoxyParams}{Parameters}
+{\em the} & current density \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00758_a81251169f8dd972b6cdc285fbc42c331}\label{a00758_a81251169f8dd972b6cdc285fbc42c331}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!productN@{productN}}
+\index{productN@{productN}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{productN}{productN}}
+{\footnotesize\ttfamily array$<$int, 4$>$ fire\+::astrophysics\+::\+Reaction\+::productN}
+
+The array of neutron numbers for the products in this reaction. \mbox{\Hypertarget{a00758_a5d0e77ebec059081aaafa5ba86df4c88}\label{a00758_a5d0e77ebec059081aaafa5ba86df4c88}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!products@{products}}
+\index{products@{products}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{products}{products}}
+{\footnotesize\ttfamily array$<$int, 3$>$ fire\+::astrophysics\+::\+Reaction\+::products}
+
+The array of products to add to reac\+Vector.
+
+No idea. A\+SK M\+I\+K\+E! This is used by the partial equilibrium code and may be useless for now. \mbox{\Hypertarget{a00758_a0586d888e1f60d6371239af888f9158b}\label{a00758_a0586d888e1f60d6371239af888f9158b}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!productZ@{productZ}}
+\index{productZ@{productZ}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{productZ}{productZ}}
+{\footnotesize\ttfamily array$<$int, 4$>$ fire\+::astrophysics\+::\+Reaction\+::productZ}
+
+The array of atomic numbers for the products in this reaction. \mbox{\Hypertarget{a00758_a343553d449e3cca261f8ee166fa6b699}\label{a00758_a343553d449e3cca261f8ee166fa6b699}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!rate@{rate}}
+\index{rate@{rate}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{rate}{rate}}
+{\footnotesize\ttfamily double fire\+::astrophysics\+::\+Reaction\+::rate}
+
+The reaction rate as described in \hyperlink{a00758_a671a0560e6843664cdae4d724b8645da}{set\+Rate()}. \mbox{\Hypertarget{a00758_a581b5410f62a299f2262324d6c0199c7}\label{a00758_a581b5410f62a299f2262324d6c0199c7}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!reaclib\+Class@{reaclib\+Class}}
+\index{reaclib\+Class@{reaclib\+Class}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{reaclib\+Class}{reaclibClass}}
+{\footnotesize\ttfamily int fire\+::astrophysics\+::\+Reaction\+::reaclib\+Class}
+
+The class of this reaction in the R\+E\+A\+C\+L\+IB rate library. \mbox{\Hypertarget{a00758_aa6265e73f4d2c55441caf95e6eb6e656}\label{a00758_aa6265e73f4d2c55441caf95e6eb6e656}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!reaclib\+Rate\+Coeff@{reaclib\+Rate\+Coeff}}
+\index{reaclib\+Rate\+Coeff@{reaclib\+Rate\+Coeff}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{reaclib\+Rate\+Coeff}{reaclibRateCoeff}}
+{\footnotesize\ttfamily array$<$double,7$>$ fire\+::astrophysics\+::\+Reaction\+::reaclib\+Rate\+Coeff}
+
+The array of R\+E\+A\+C\+L\+IB p-\/coefficients used in the parameterized computation of the rate. The rate is computed by \[ R = p_s*\sum_k R_k \] where \[p_s\] is the prefactor (based on the statistical prefactor) and \[ R_k = \exp(p_1 + \frac{p_2}{T_9} + \frac{p_3}{T_9^{1/3}} + p_{4}T_9^{1/3} + p_{5}T_9 + p_{6}T_9^{5/3} + p_{7}\ln T_9). \]
+
+$T_9$ is the the temperature in units of $10^9$ Kelvin. Note that p1 = reaclib\+Rate\+Coeff\mbox{[}0\mbox{]} since C++ is a zero-\/indexed language.
+
+In general k may be greater than 1 in the summation for the rate, but in this work k = 1 and \[R = R_k\].
+
+See\+: \char`\"{}\+Stars and Stellar Processes\char`\"{}, Mike Guidry, to be published Cambridge University Press. \mbox{\Hypertarget{a00758_a831dcae79d4ed842c9bbdf51ebdd137f}\label{a00758_a831dcae79d4ed842c9bbdf51ebdd137f}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!reactantN@{reactantN}}
+\index{reactantN@{reactantN}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{reactantN}{reactantN}}
+{\footnotesize\ttfamily array$<$int, 4$>$ fire\+::astrophysics\+::\+Reaction\+::reactantN}
+
+The array of neutron numbers for the reactants in this reaction. \mbox{\Hypertarget{a00758_ab13b0133b89c6531a1648b696324d804}\label{a00758_ab13b0133b89c6531a1648b696324d804}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!reactants@{reactants}}
+\index{reactants@{reactants}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{reactants}{reactants}}
+{\footnotesize\ttfamily array$<$int, 3$>$ fire\+::astrophysics\+::\+Reaction\+::reactants}
+
+The array of reactants to subtract from reac\+Vector.
+
+No idea. A\+SK M\+I\+K\+E! This is used by the partial equilibrium code and may be useless for now. \mbox{\Hypertarget{a00758_a74b96d4f5ff99d60adfb88b096a7e256}\label{a00758_a74b96d4f5ff99d60adfb88b096a7e256}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!reactantZ@{reactantZ}}
+\index{reactantZ@{reactantZ}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{reactantZ}{reactantZ}}
+{\footnotesize\ttfamily array$<$int, 4$>$ fire\+::astrophysics\+::\+Reaction\+::reactantZ}
+
+The array of atomic numbers for the reactants in this reaction. \mbox{\Hypertarget{a00758_ab6d29b5c28ef33ea1d9219b70f02d98a}\label{a00758_ab6d29b5c28ef33ea1d9219b70f02d98a}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!reaction\+Group\+Class@{reaction\+Group\+Class}}
+\index{reaction\+Group\+Class@{reaction\+Group\+Class}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{reaction\+Group\+Class}{reactionGroupClass}}
+{\footnotesize\ttfamily int fire\+::astrophysics\+::\+Reaction\+::reaction\+Group\+Class}
+
+The class of this reaction within its reaction group. \mbox{\Hypertarget{a00758_adb666fe2c511b5a5e86ebcd35ba7faa4}\label{a00758_adb666fe2c511b5a5e86ebcd35ba7faa4}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!reaction\+Group\+Member\+Index@{reaction\+Group\+Member\+Index}}
+\index{reaction\+Group\+Member\+Index@{reaction\+Group\+Member\+Index}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{reaction\+Group\+Member\+Index}{reactionGroupMemberIndex}}
+{\footnotesize\ttfamily int fire\+::astrophysics\+::\+Reaction\+::reaction\+Group\+Member\+Index}
+
+The index of this reaction within the reaction group. \mbox{\Hypertarget{a00758_a439daff55fecd97cafc96f204570376a}\label{a00758_a439daff55fecd97cafc96f204570376a}} 
+\index{fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}!statistical\+Factor@{statistical\+Factor}}
+\index{statistical\+Factor@{statistical\+Factor}!fire\+::astrophysics\+::\+Reaction@{fire\+::astrophysics\+::\+Reaction}}
+\subsubsection{\texorpdfstring{statistical\+Factor}{statisticalFactor}}
+{\footnotesize\ttfamily double fire\+::astrophysics\+::\+Reaction\+::statistical\+Factor}
+
+A statistical factor associated with this reaction that avoids double counting. It also accounts for the sign needed to designate whether or not the population is depleting or increasing. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-Delimited\+Text\+Parser.\+h\end{DoxyCompactItemize}
+Reaction.\+h\end{DoxyCompactItemize}

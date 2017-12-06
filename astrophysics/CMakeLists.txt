@@ -42,6 +42,9 @@ SET(LIBRARY_NAME "FireAstro")
 # Only build if solvers are available
 if (FIRE_SOLVERS_LIBRARIES)
 
+  #Log that this project will be built 
+  MESSAGE(STATUS "----- Detected and building ${PACKAGE_NAME} -----")
+
   #Collect all header filenames in this project 
   #and glob them in HEADERS
   file(GLOB HEADERS *.h)

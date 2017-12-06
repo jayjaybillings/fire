@@ -69,24 +69,29 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00171.html">fire</a></li><li class="navelem"><b>util</b></li><li class="navelem"><a class="el" href="a01002.html">INetworkingTool</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00195.html">fire</a></li><li class="navelem"><b>util</b></li><li class="navelem"><a class="el" href="a01002.html">AsioNetworkingTool</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">fire::util::INetworkingTool Member List</div>  </div>
+<div class="title">fire::util::AsioNetworkingTool&lt; PROTOCOL &gt; Member List</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This is the complete list of members for <a class="el" href="a01002.html">fire::util::INetworkingTool</a>, including all inherited members.</p>
+<p>This is the complete list of members for <a class="el" href="a01002.html">fire::util::AsioNetworkingTool&lt; PROTOCOL &gt;</a>, including all inherited members.</p>
 <table class="directory">
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>base64_decode</b>(std::string const &amp;encoded_string) (defined in <a class="el" href="a01002.html">fire::util::INetworkingTool</a>)</td><td class="entry"><a class="el" href="a01002.html">fire::util::INetworkingTool</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a01002.html#ab93be61530f01e64cb3c688976a6887b">base64_encode</a>(char const *bytes_to_encode, int in_len)</td><td class="entry"><a class="el" href="a01002.html">fire::util::INetworkingTool</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a01002.html#a44b81ebf8421f0e32ed99b5e372ef007">get</a>(const std::string &amp;relativePath, const std::map&lt; std::string, std::string &gt; &amp;header=std::map&lt; std::string, std::string &gt;())=0</td><td class="entry"><a class="el" href="a01002.html">fire::util::INetworkingTool</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a01002.html#ab7380b440faa49daffb65ca030380cde">hostName</a></td><td class="entry"><a class="el" href="a01002.html">fire::util::INetworkingTool</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a01002.html#ae640954c85632932a88037375a95abf4">port</a></td><td class="entry"><a class="el" href="a01002.html">fire::util::INetworkingTool</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr><td class="entry"><a class="el" href="a01002.html#ad6ff0e352d78f17a6f6184d1b80e0c94">post</a>(const std::string &amp;relativePath, const std::string &amp;message, const std::map&lt; std::string, std::string &gt; &amp;header=std::map&lt; std::string, std::string &gt;())=0</td><td class="entry"><a class="el" href="a01002.html">fire::util::INetworkingTool</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="a01002.html#a2beca71d6ecb1688809f0e5e0548c17c">~INetworkingTool</a>()</td><td class="entry"><a class="el" href="a01002.html">fire::util::INetworkingTool</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a01002.html#a5edd72ce9937e052a82e7564500b3861">AsioNetworkingTool</a>(std::string host, int p)</td><td class="entry"><a class="el" href="a01002.html">fire::util::AsioNetworkingTool&lt; PROTOCOL &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>AsioNetworkingTool</b>(std::string host_and_port, bool verifyCert=true, const std::string &amp;cert_file=std::string(), const std::string &amp;private_key_file=std::string(), const std::string &amp;verify_file=std::string()) (defined in <a class="el" href="a01002.html">fire::util::AsioNetworkingTool&lt; PROTOCOL &gt;</a>)</td><td class="entry"><a class="el" href="a01002.html">fire::util::AsioNetworkingTool&lt; PROTOCOL &gt;</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>base64_decode</b>(std::string const &amp;encoded_string) (defined in <a class="el" href="a01010.html">fire::util::INetworkingTool</a>)</td><td class="entry"><a class="el" href="a01010.html">fire::util::INetworkingTool</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a01010.html#ab93be61530f01e64cb3c688976a6887b">base64_encode</a>(char const *bytes_to_encode, int in_len)</td><td class="entry"><a class="el" href="a01010.html">fire::util::INetworkingTool</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a01002.html#a57412dca950e86b857ee4795a9b6517e">client</a></td><td class="entry"><a class="el" href="a01002.html">fire::util::AsioNetworkingTool&lt; PROTOCOL &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a01002.html#a42609f768f245acf0867889e920c5d49">get</a>(const std::string &amp;relativePath, const std::map&lt; std::string, std::string &gt; &amp;header=std::map&lt; std::string, std::string &gt;())</td><td class="entry"><a class="el" href="a01002.html">fire::util::AsioNetworkingTool&lt; PROTOCOL &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a01010.html#ab7380b440faa49daffb65ca030380cde">hostName</a></td><td class="entry"><a class="el" href="a01010.html">fire::util::INetworkingTool</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a01010.html#ae640954c85632932a88037375a95abf4">port</a></td><td class="entry"><a class="el" href="a01010.html">fire::util::INetworkingTool</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a01002.html#a2ac524ceef89fceb928cf74420bf90a5">post</a>(const std::string &amp;relativePath, const std::string &amp;message, const std::map&lt; std::string, std::string &gt; &amp;header=std::map&lt; std::string, std::string &gt;())</td><td class="entry"><a class="el" href="a01002.html">fire::util::AsioNetworkingTool&lt; PROTOCOL &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>response</b> (defined in <a class="el" href="a01002.html">fire::util::AsioNetworkingTool&lt; PROTOCOL &gt;</a>)</td><td class="entry"><a class="el" href="a01002.html">fire::util::AsioNetworkingTool&lt; PROTOCOL &gt;</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="a01002.html#afc51c728e1bd136b6729ac892df490ab">~AsioNetworkingTool</a>()</td><td class="entry"><a class="el" href="a01002.html">fire::util::AsioNetworkingTool&lt; PROTOCOL &gt;</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="a01010.html#a2beca71d6ecb1688809f0e5e0548c17c">~INetworkingTool</a>()</td><td class="entry"><a class="el" href="a01010.html">fire::util::INetworkingTool</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->
 <!-- start footer part -->

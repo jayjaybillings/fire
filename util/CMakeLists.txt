@@ -37,6 +37,9 @@ SET(PACKAGE_NAME "FireUtils")
 #Set the description
 SET(PACKAGE_DESCRIPTION "Fire Utility Data Structures")
 
+#Log that this project will be built
+MESSAGE(STATUS "----- Detected and building ${PACKAGE_NAME} -----")
+
 find_package(Boost COMPONENTS system regex)
 find_package(OpenSSL)
 

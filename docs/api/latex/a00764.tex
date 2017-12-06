@@ -1,0 +1,244 @@
+\hypertarget{a00764}{}\section{fire\+:\+:Constant\+Strain\+Triangle\+Element Class Reference}
+\label{a00764}\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+
+
+{\ttfamily \#include $<$Constant\+Strain\+Triangle\+Element.\+h$>$}
+
+Inheritance diagram for fire\+:\+:Constant\+Strain\+Triangle\+Element\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{a00764}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{a00764_aa54c09f1dd7cacaf1f4f0b1428859c00}{Constant\+Strain\+Triangle\+Element} (const \hyperlink{a00189_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&node1, const \hyperlink{a00189_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&node2, const \hyperlink{a00189_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&node3)
+\item 
+const std\+::array$<$ \hyperlink{a00189_a1a12603621e7a1efa59ac5cb79f9d509}{Matrix\+Element}$<$ double $>$, 9 $>$ \& \hyperlink{a00764_a6da0892a84128d73e1186aeb69a37723}{stiffness\+Matrix} ()
+\item 
+std\+::array$<$ \hyperlink{a00189_a08f01d4bb892cf7b2386d0f3a8643d72}{Vector\+Element}$<$ double $>$, 3 $>$ \& \hyperlink{a00764_ae0795172aa1ee5ffc68ec0e2c4aab9cc}{body\+Force\+Vector} ()
+\item 
+void \hyperlink{a00764_a40cf9432221b62db76e8b154e3e81e3d}{recompute\+Constants} ()
+\item 
+double \hyperlink{a00764_acd197716c6bffaa3c7b472661f0e5ca4}{area} ()
+\item 
+\hyperlink{a00189_a124b14f4255dab47a3f7235a02cc65ee}{C\+S\+T\+Local\+Point} \hyperlink{a00764_a772e106e996b0d757332ca59b9c7f159}{compute\+Local\+Point} (const double \&x, const double \&y) const
+\item 
+void \hyperlink{a00764_a87952ca08b448d38c7e932f27da499d3}{add\+Boundary} (const int \&first\+Node\+Id, const int \&second\+Node\+Id)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+long \hyperlink{a00764_a5feb92c27270536c92fcb39c6fecc00d}{element\+ID} = -\/1
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{a00764_ab74cbf3ff783201003c53439f79307e4}{e\+Area} = 0.\+0
+\item 
+std\+::array$<$ double, 3 $>$ \hyperlink{a00764_af5cd851c5a4385f954bfc31b8eca81be}{a}
+\item 
+std\+::array$<$ double, 3 $>$ \hyperlink{a00764_a6581eba2e216eb5f3e93e047be680a82}{b}
+\item 
+std\+::array$<$ double, 3 $>$ \hyperlink{a00764_a2a9d18beac7fccf750846723ddf73d1d}{c}
+\item 
+std\+::array$<$ std\+::reference\+\_\+wrapper$<$ const \hyperlink{a00189_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} $>$, 3 $>$ \hyperlink{a00764_a6275d38ed2cfa924b1a36e0f98ce7c16}{nodes}
+\item 
+std\+::array$<$ \hyperlink{a00189_a1a12603621e7a1efa59ac5cb79f9d509}{Matrix\+Element}$<$ double $>$, 9 $>$ \hyperlink{a00764_a9126763a046ac0736d72b6b5d20ba80d}{k\+I\+J\+Elements}
+\item 
+std\+::array$<$ \hyperlink{a00189_a08f01d4bb892cf7b2386d0f3a8643d72}{Vector\+Element}$<$ double $>$, 3 $>$ \hyperlink{a00764_a8a85094c0060a67aa1b6abf4a5e660a6}{body\+Elements}
+\item 
+std\+::function$<$ double(const std\+::array$<$ double, 3 $>$ \&, const int \&, const int \&)$>$ \hyperlink{a00764_ae2480b5335fe78245cb1006e3eeb034d}{stiffness\+Kernel}
+\item 
+std\+::function$<$ double(const std\+::array$<$ double, 3 $>$ \&, const int \&)$>$ \hyperlink{a00764_a48dbf56bce64a1e97332b03309720154}{body\+Force\+Kernel}
+\item 
+\hyperlink{a00856}{Triangular\+Quadrature\+Rule} \hyperlink{a00764_a5e50303ae2cfb783f44de143be8a9aac}{tri\+Quad\+Rule}
+\item 
+short int \hyperlink{a00764_a70ceb410983c87c36546a2a95306dac6}{num\+Boundaries} = 0
+\item 
+std\+::array$<$ \hyperlink{a00768}{Basic\+Pair}$<$ short int, short int $>$, 3 $>$ \hyperlink{a00764_afabe9f08624f60c70b8a7023d919da4e}{boundaries}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class represents a triangular element where the strain or similar quantities across the element is constant, a \char`\"{}\+Constant Strain Triangle\char`\"{} (C\+ST). Full mathematical documentation of this class is available in the Fire Documentation article \char`\"{}\+Finite Elements\char`\"{} and can be found in the source tree under docs/\+\_\+posts/2017-\/10-\/05-\/finite-\/elements.\+markdown.
+
+Instead of storing the a\+\_\+i, b\+\_\+i\+\_\+, and c\+\_\+i constants with the nodes, this class computes the constants once on construction and passes the values using lambdas. This greatly decreases the book keeping required and increases the compute performance.
+
+The A\+PI for this class is incredibly specific with all bounds specified exactly because dynamic memory is not required since the element has such a well-\/defined mathematical description.
+
+Clients are expected to use this class by subclassing and configuring their kernel and force functions in the subclass\textquotesingle{} constructor. Stiffness kernels have the following signature\+: 
+\begin{DoxyCode}
+\textcolor{keywordtype}{double} f(\textcolor{keyword}{const} std::array<double,3> & coords, \textcolor{keyword}{const} \textcolor{keywordtype}{int} & i,
+\textcolor{keyword}{const} \textcolor{keywordtype}{int} & j);
+\end{DoxyCode}
+ where the array of doubles is the area coordinates (L\+\_\+1, L\+\_\+2, L\+\_\+3) of the quadrature point and the following integers are used to identify the matrix indices i and j for the current element. The body force kernels have the following signature\+: 
+\begin{DoxyCode}
+\textcolor{keywordtype}{double} f(\textcolor{keyword}{const} std::array<double,3> & coords, \textcolor{keyword}{const} \textcolor{keywordtype}{int} & i);
+\end{DoxyCode}
+ In this case, only one identifier is required to specify the vector element index i of the kernel. \hyperlink{a00784}{Poisson\+C\+ST} provides a good example of an appropriately configured subclass. The default implementations of stiffness\+Kernel and body\+Force\+Kernel evaluate to -\/1.\+0 for all values of (x,y) input and will throw an exception if called.
+
+Node ordering is not determined by the element. Instead, it assumes that the nodes are passed to it in the correct order and locally identifies the first node in the constructor as node 1, the second as node 2, and third as node 3. Boundaries can then be set on the element by calling \hyperlink{a00764_a87952ca08b448d38c7e932f27da499d3}{add\+Boundary()} with local side ids. A triangle cannot have more than three boundaries. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{a00764_aa54c09f1dd7cacaf1f4f0b1428859c00}\label{a00764_aa54c09f1dd7cacaf1f4f0b1428859c00}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!Constant\+Strain\+Triangle\+Element@{Constant\+Strain\+Triangle\+Element}}
+\index{Constant\+Strain\+Triangle\+Element@{Constant\+Strain\+Triangle\+Element}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{Constant\+Strain\+Triangle\+Element()}{ConstantStrainTriangleElement()}}
+{\footnotesize\ttfamily fire\+::\+Constant\+Strain\+Triangle\+Element\+::\+Constant\+Strain\+Triangle\+Element (\begin{DoxyParamCaption}\item[{const \hyperlink{a00189_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&}]{node1,  }\item[{const \hyperlink{a00189_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&}]{node2,  }\item[{const \hyperlink{a00189_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&}]{node3 }\end{DoxyParamCaption})}
+
+The constructor 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{a00764_a87952ca08b448d38c7e932f27da499d3}\label{a00764_a87952ca08b448d38c7e932f27da499d3}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!add\+Boundary@{add\+Boundary}}
+\index{add\+Boundary@{add\+Boundary}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{add\+Boundary()}{addBoundary()}}
+{\footnotesize\ttfamily void fire\+::\+Constant\+Strain\+Triangle\+Element\+::add\+Boundary (\begin{DoxyParamCaption}\item[{const int \&}]{first\+Node\+Id,  }\item[{const int \&}]{second\+Node\+Id }\end{DoxyParamCaption})}
+
+This operation will designate the edge between two nodes with the given local ids as a boundary for which boundary value contributions to the stiffness and force matrices should be computed. A triangle cannot have more than three boundaries and this function will throw an exception if it is called to set a fourth boundary. Likewise, this function will also throw an exception if the two boundary node ids are the same (no self-\/ boundary loops). 
+\begin{DoxyParams}{Parameters}
+{\em the} & local node id (1, 2, or 3) of the first node on the edge \\
+\hline
+{\em the} & local node id (1, 2, or 3, but not the same as first\+Node\+Id), of the second node on the edge. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00764_acd197716c6bffaa3c7b472661f0e5ca4}\label{a00764_acd197716c6bffaa3c7b472661f0e5ca4}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!area@{area}}
+\index{area@{area}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{area()}{area()}}
+{\footnotesize\ttfamily double fire\+::\+Constant\+Strain\+Triangle\+Element\+::area (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This operation returns the area of the element. \begin{DoxyReturn}{Returns}
+the area of the element as computed by \hyperlink{a00764_a40cf9432221b62db76e8b154e3e81e3d}{recompute\+Constants()}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{a00764_ae0795172aa1ee5ffc68ec0e2c4aab9cc}\label{a00764_ae0795172aa1ee5ffc68ec0e2c4aab9cc}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!body\+Force\+Vector@{body\+Force\+Vector}}
+\index{body\+Force\+Vector@{body\+Force\+Vector}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{body\+Force\+Vector()}{bodyForceVector()}}
+{\footnotesize\ttfamily std\+::array$<$ \hyperlink{a00189_a08f01d4bb892cf7b2386d0f3a8643d72}{Vector\+Element}$<$ double $>$, 3 $>$ \& fire\+::\+Constant\+Strain\+Triangle\+Element\+::body\+Force\+Vector (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This operation returns the contributions, f\+\_\+i, made by this element to the global body force vector. \begin{DoxyReturn}{Returns}
+An array of 3 vector elements, each containing a single contribution f\+\_\+i to the global body force vector.. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{a00764_a772e106e996b0d757332ca59b9c7f159}\label{a00764_a772e106e996b0d757332ca59b9c7f159}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!compute\+Local\+Point@{compute\+Local\+Point}}
+\index{compute\+Local\+Point@{compute\+Local\+Point}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{compute\+Local\+Point()}{computeLocalPoint()}}
+{\footnotesize\ttfamily \hyperlink{a00189_a124b14f4255dab47a3f7235a02cc65ee}{C\+S\+T\+Local\+Point} fire\+::\+Constant\+Strain\+Triangle\+Element\+::compute\+Local\+Point (\begin{DoxyParamCaption}\item[{const double \&}]{x,  }\item[{const double \&}]{y }\end{DoxyParamCaption}) const}
+
+This operation computes the local coordinates of a global point (x,y). Note that the point (x,y) should be in the element! 
+\begin{DoxyParams}{Parameters}
+{\em the} & global coordinate x that lands within the element. \\
+\hline
+{\em the} & global coordinate y that lands within the element. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the set of local (area) coordinates (L\+\_\+1,L\+\_\+2,L\+\_\+3). The value of the identifiable/tag element (\hyperlink{a00772_a4aa238990585cb35d1902140ebe6fb9f}{C\+S\+T\+Local\+Point.\+value}) is not used. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{a00764_a40cf9432221b62db76e8b154e3e81e3d}\label{a00764_a40cf9432221b62db76e8b154e3e81e3d}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!recompute\+Constants@{recompute\+Constants}}
+\index{recompute\+Constants@{recompute\+Constants}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{recompute\+Constants()}{recomputeConstants()}}
+{\footnotesize\ttfamily void fire\+::\+Constant\+Strain\+Triangle\+Element\+::recompute\+Constants (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This operation directs the element to recompute its constants. That is, it notifies the element that nodal information has changed and the a, b, c, and area constants should be recomputed. \mbox{\Hypertarget{a00764_a6da0892a84128d73e1186aeb69a37723}\label{a00764_a6da0892a84128d73e1186aeb69a37723}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!stiffness\+Matrix@{stiffness\+Matrix}}
+\index{stiffness\+Matrix@{stiffness\+Matrix}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{stiffness\+Matrix()}{stiffnessMatrix()}}
+{\footnotesize\ttfamily const std\+::array$<$ \hyperlink{a00189_a1a12603621e7a1efa59ac5cb79f9d509}{Matrix\+Element}$<$ double $>$, 9 $>$ \& fire\+::\+Constant\+Strain\+Triangle\+Element\+::stiffness\+Matrix (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This operation returns the contributions, k\+\_\+ij, made by this element to the global stiffness matrix. \begin{DoxyReturn}{Returns}
+An array of 9 matrix elements, each containing a single contribution k\+\_\+ij to the global stiffness matrix. 
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{a00764_af5cd851c5a4385f954bfc31b8eca81be}\label{a00764_af5cd851c5a4385f954bfc31b8eca81be}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!a@{a}}
+\index{a@{a}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{a}{a}}
+{\footnotesize\ttfamily std\+::array$<$double,3$>$ fire\+::\+Constant\+Strain\+Triangle\+Element\+::a\hspace{0.3cm}{\ttfamily [protected]}}
+
+The array of constants a\+\_\+1, a\+\_\+2, a\+\_\+3 for the area coordinates. \mbox{\Hypertarget{a00764_a6581eba2e216eb5f3e93e047be680a82}\label{a00764_a6581eba2e216eb5f3e93e047be680a82}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!b@{b}}
+\index{b@{b}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{b}{b}}
+{\footnotesize\ttfamily std\+::array$<$double,3$>$ fire\+::\+Constant\+Strain\+Triangle\+Element\+::b\hspace{0.3cm}{\ttfamily [protected]}}
+
+The array of constants b\+\_\+1, b\+\_\+2, b\+\_\+3 for the area coordinates. \mbox{\Hypertarget{a00764_a8a85094c0060a67aa1b6abf4a5e660a6}\label{a00764_a8a85094c0060a67aa1b6abf4a5e660a6}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!body\+Elements@{body\+Elements}}
+\index{body\+Elements@{body\+Elements}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{body\+Elements}{bodyElements}}
+{\footnotesize\ttfamily std\+::array$<$\hyperlink{a00189_a08f01d4bb892cf7b2386d0f3a8643d72}{Vector\+Element}$<$double$>$,3$>$ fire\+::\+Constant\+Strain\+Triangle\+Element\+::body\+Elements\hspace{0.3cm}{\ttfamily [protected]}}
+
+The body force vector elements f\+\_\+i computed for this element. \mbox{\Hypertarget{a00764_a48dbf56bce64a1e97332b03309720154}\label{a00764_a48dbf56bce64a1e97332b03309720154}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!body\+Force\+Kernel@{body\+Force\+Kernel}}
+\index{body\+Force\+Kernel@{body\+Force\+Kernel}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{body\+Force\+Kernel}{bodyForceKernel}}
+{\footnotesize\ttfamily std\+::function$<$double(const std\+::array$<$double,3$>$ \&, const int \&)$>$ fire\+::\+Constant\+Strain\+Triangle\+Element\+::body\+Force\+Kernel\hspace{0.3cm}{\ttfamily [protected]}}
+
+A function handle to the kernel that will be evaluated in the computation of the body forces for this element. \mbox{\Hypertarget{a00764_afabe9f08624f60c70b8a7023d919da4e}\label{a00764_afabe9f08624f60c70b8a7023d919da4e}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!boundaries@{boundaries}}
+\index{boundaries@{boundaries}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{boundaries}{boundaries}}
+{\footnotesize\ttfamily std\+::array$<$\hyperlink{a00768}{Basic\+Pair}$<$short int, short int$>$, 3$>$ fire\+::\+Constant\+Strain\+Triangle\+Element\+::boundaries\hspace{0.3cm}{\ttfamily [protected]}}
+
+This array stores the active boundaries on the triangle. \mbox{\Hypertarget{a00764_a2a9d18beac7fccf750846723ddf73d1d}\label{a00764_a2a9d18beac7fccf750846723ddf73d1d}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!c@{c}}
+\index{c@{c}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{c}{c}}
+{\footnotesize\ttfamily std\+::array$<$double,3$>$ fire\+::\+Constant\+Strain\+Triangle\+Element\+::c\hspace{0.3cm}{\ttfamily [protected]}}
+
+The array of constants c\+\_\+1, c\+\_\+2, c\+\_\+3 for the area coordinates. \mbox{\Hypertarget{a00764_ab74cbf3ff783201003c53439f79307e4}\label{a00764_ab74cbf3ff783201003c53439f79307e4}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!e\+Area@{e\+Area}}
+\index{e\+Area@{e\+Area}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{e\+Area}{eArea}}
+{\footnotesize\ttfamily double fire\+::\+Constant\+Strain\+Triangle\+Element\+::e\+Area = 0.\+0\hspace{0.3cm}{\ttfamily [protected]}}
+
+The area of the element. \mbox{\Hypertarget{a00764_a5feb92c27270536c92fcb39c6fecc00d}\label{a00764_a5feb92c27270536c92fcb39c6fecc00d}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!element\+ID@{element\+ID}}
+\index{element\+ID@{element\+ID}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{element\+ID}{elementID}}
+{\footnotesize\ttfamily long fire\+::\+Constant\+Strain\+Triangle\+Element\+::element\+ID = -\/1}
+
+The identification number of the element. Defaults to -\/1 since there should be no negatively numbered elements. \mbox{\Hypertarget{a00764_a9126763a046ac0736d72b6b5d20ba80d}\label{a00764_a9126763a046ac0736d72b6b5d20ba80d}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!k\+I\+J\+Elements@{k\+I\+J\+Elements}}
+\index{k\+I\+J\+Elements@{k\+I\+J\+Elements}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{k\+I\+J\+Elements}{kIJElements}}
+{\footnotesize\ttfamily std\+::array$<$\hyperlink{a00189_a1a12603621e7a1efa59ac5cb79f9d509}{Matrix\+Element}$<$double$>$,9$>$ fire\+::\+Constant\+Strain\+Triangle\+Element\+::k\+I\+J\+Elements\hspace{0.3cm}{\ttfamily [protected]}}
+
+The matrix elements k\+\_\+ij computed for this element. \mbox{\Hypertarget{a00764_a6275d38ed2cfa924b1a36e0f98ce7c16}\label{a00764_a6275d38ed2cfa924b1a36e0f98ce7c16}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!nodes@{nodes}}
+\index{nodes@{nodes}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{nodes}{nodes}}
+{\footnotesize\ttfamily std\+::array$<$std\+::reference\+\_\+wrapper$<$const \hyperlink{a00189_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node}$>$,3$>$ fire\+::\+Constant\+Strain\+Triangle\+Element\+::nodes\hspace{0.3cm}{\ttfamily [protected]}}
+
+The nodes in the element.
+
+Note that this is initialized on construction because the array elements are references. \mbox{\Hypertarget{a00764_a70ceb410983c87c36546a2a95306dac6}\label{a00764_a70ceb410983c87c36546a2a95306dac6}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!num\+Boundaries@{num\+Boundaries}}
+\index{num\+Boundaries@{num\+Boundaries}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{num\+Boundaries}{numBoundaries}}
+{\footnotesize\ttfamily short int fire\+::\+Constant\+Strain\+Triangle\+Element\+::num\+Boundaries = 0\hspace{0.3cm}{\ttfamily [protected]}}
+
+This is the number of active boundaries on the triangle. \mbox{\Hypertarget{a00764_ae2480b5335fe78245cb1006e3eeb034d}\label{a00764_ae2480b5335fe78245cb1006e3eeb034d}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!stiffness\+Kernel@{stiffness\+Kernel}}
+\index{stiffness\+Kernel@{stiffness\+Kernel}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{stiffness\+Kernel}{stiffnessKernel}}
+{\footnotesize\ttfamily std\+::function$<$double(const std\+::array$<$double,3$>$ \&, const int \&, const int \&)$>$ fire\+::\+Constant\+Strain\+Triangle\+Element\+::stiffness\+Kernel\hspace{0.3cm}{\ttfamily [protected]}}
+
+A function handle to the kernel that will be evaluated in the computation of the stiffness matrix for this element. \mbox{\Hypertarget{a00764_a5e50303ae2cfb783f44de143be8a9aac}\label{a00764_a5e50303ae2cfb783f44de143be8a9aac}} 
+\index{fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}!tri\+Quad\+Rule@{tri\+Quad\+Rule}}
+\index{tri\+Quad\+Rule@{tri\+Quad\+Rule}!fire\+::\+Constant\+Strain\+Triangle\+Element@{fire\+::\+Constant\+Strain\+Triangle\+Element}}
+\subsubsection{\texorpdfstring{tri\+Quad\+Rule}{triQuadRule}}
+{\footnotesize\ttfamily \hyperlink{a00856}{Triangular\+Quadrature\+Rule} fire\+::\+Constant\+Strain\+Triangle\+Element\+::tri\+Quad\+Rule\hspace{0.3cm}{\ttfamily [protected]}}
+
+This is a four point Gaussian Quadrature rule over triangular coordinates that is used to integrate the kernels. It should be more efficient to drop to a one point rule since this element has a constant value across it, but we can test that later. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Constant\+Strain\+Triangle\+Element.\+h\item 
+Constant\+Strain\+Triangle\+Element.\+cpp\end{DoxyCompactItemize}

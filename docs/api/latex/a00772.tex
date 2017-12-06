@@ -1,0 +1,89 @@
+\hypertarget{a00772}{}\section{fire\+:\+:Identifiable\+Pair$<$ T, K, V $>$ Struct Template Reference}
+\label{a00772}\index{fire\+::\+Identifiable\+Pair$<$ T, K, V $>$@{fire\+::\+Identifiable\+Pair$<$ T, K, V $>$}}
+
+
+{\ttfamily \#include $<$F\+E\+M\+Types.\+h$>$}
+
+Inheritance diagram for fire\+:\+:Identifiable\+Pair$<$ T, K, V $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{a00772}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{a00772_a00a1d2e1fc20b2edf8e27dc3158d8826}{Identifiable\+Pair} ()
+\item 
+\hyperlink{a00772_ade6ddca350a2128a5cab071118c26fee}{Identifiable\+Pair} (const T \&\+\_\+first, const K \&\+\_\+second, const V \&\+\_\+value)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+V \hyperlink{a00772_a4aa238990585cb35d1902140ebe6fb9f}{value}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T, typename K, typename V$>$\newline
+struct fire\+::\+Identifiable\+Pair$<$ T, K, V $>$}
+
+This class provides a generic template for working with key-\/value pairs that are identifiable by some means or associated with a third value. It can be used, for example, for numbered coordinate pairs, 
+\begin{DoxyCode}
+\textcolor{keywordtype}{int} \textcolor{keywordtype}{id} = 1;
+\textcolor{keywordtype}{double} x = 1.0, y = 2.0;
+IdentifiablePair<double,double,int> myPair(x,y,\textcolor{keywordtype}{id});
+\end{DoxyCode}
+ or for labeled data in machine learning, 
+\begin{DoxyCode}
+\textcolor{keywordtype}{string} label = \textcolor{stringliteral}{"ufo-sighting-alpha2"};
+\textcolor{keywordtype}{int} mon = 10, year = 2017;
+IdentifiablePair<int,double,double> myPair(mon,year,label);
+\end{DoxyCode}
+ It can also be used to store function values at grid points 
+\begin{DoxyCode}
+\textcolor{keywordtype}{int} i = 1, j = 1;
+\textcolor{keywordtype}{double} \hyperlink{a00772_a4aa238990585cb35d1902140ebe6fb9f}{value} = 5.0;
+IdentifiablePair<int,int,double> myPair(i,j,\hyperlink{a00772_a4aa238990585cb35d1902140ebe6fb9f}{value});
+\end{DoxyCode}
+ 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{a00772_a00a1d2e1fc20b2edf8e27dc3158d8826}\label{a00772_a00a1d2e1fc20b2edf8e27dc3158d8826}} 
+\index{fire\+::\+Identifiable\+Pair@{fire\+::\+Identifiable\+Pair}!Identifiable\+Pair@{Identifiable\+Pair}}
+\index{Identifiable\+Pair@{Identifiable\+Pair}!fire\+::\+Identifiable\+Pair@{fire\+::\+Identifiable\+Pair}}
+\subsubsection{\texorpdfstring{Identifiable\+Pair()}{IdentifiablePair()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T, typename K, typename V$>$ \\
+\hyperlink{a00772}{fire\+::\+Identifiable\+Pair}$<$ T, K, V $>$\+::\hyperlink{a00772}{Identifiable\+Pair} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+The constructor \mbox{\Hypertarget{a00772_ade6ddca350a2128a5cab071118c26fee}\label{a00772_ade6ddca350a2128a5cab071118c26fee}} 
+\index{fire\+::\+Identifiable\+Pair@{fire\+::\+Identifiable\+Pair}!Identifiable\+Pair@{Identifiable\+Pair}}
+\index{Identifiable\+Pair@{Identifiable\+Pair}!fire\+::\+Identifiable\+Pair@{fire\+::\+Identifiable\+Pair}}
+\subsubsection{\texorpdfstring{Identifiable\+Pair()}{IdentifiablePair()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T, typename K, typename V$>$ \\
+\hyperlink{a00772}{fire\+::\+Identifiable\+Pair}$<$ T, K, V $>$\+::\hyperlink{a00772}{Identifiable\+Pair} (\begin{DoxyParamCaption}\item[{const T \&}]{\+\_\+first,  }\item[{const K \&}]{\+\_\+second,  }\item[{const V \&}]{\+\_\+value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Initialization by value-\/copy constructor 
+\begin{DoxyParams}{Parameters}
+{\em the} & value of the first element \\
+\hline
+{\em the} & value of the second element \\
+\hline
+{\em the} & value of the \char`\"{}value\char`\"{} attribute \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{a00772_a4aa238990585cb35d1902140ebe6fb9f}\label{a00772_a4aa238990585cb35d1902140ebe6fb9f}} 
+\index{fire\+::\+Identifiable\+Pair@{fire\+::\+Identifiable\+Pair}!value@{value}}
+\index{value@{value}!fire\+::\+Identifiable\+Pair@{fire\+::\+Identifiable\+Pair}}
+\subsubsection{\texorpdfstring{value}{value}}
+{\footnotesize\ttfamily template$<$typename T, typename K, typename V$>$ \\
+V \hyperlink{a00772}{fire\+::\+Identifiable\+Pair}$<$ T, K, V $>$\+::value}
+
+The value associated with the pair 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+F\+E\+M\+Types.\+h\end{DoxyCompactItemize}

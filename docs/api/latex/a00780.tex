@@ -1,0 +1,62 @@
+\hypertarget{a00780}{}\section{fire\+:\+:Two\+D\+Robin\+Boundary\+Condition Struct Reference}
+\label{a00780}\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+
+
+{\ttfamily \#include $<$F\+E\+M\+Types.\+h$>$}
+
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{a00189_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \hyperlink{a00780_ad4db2466fecae72b4dc5068a4d04ec4a}{first\+Node}
+\item 
+\hyperlink{a00189_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \hyperlink{a00780_a5cfaf9f512560ea73616ba18471234bf}{second\+Node}
+\item 
+std\+::function$<$ double(const double \&)$>$ \hyperlink{a00780_ab32818260358435239f283ee40651fe8}{sigma}
+\item 
+std\+::function$<$ double(const double \&)$>$ \hyperlink{a00780_a41dadd7aa9c2d03978d7f0b7b673d684}{h}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This struct represents a two dimensional Robin Boundary condition in which the condition is defined across an edge between two nodes. The Robin condition is defined as \[ k(s)\frac{\partial u}{\partial n} + \sigma(s) u = h(s) \mbox{ on } C_{2} \] 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{a00780_ad4db2466fecae72b4dc5068a4d04ec4a}\label{a00780_ad4db2466fecae72b4dc5068a4d04ec4a}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!first\+Node@{first\+Node}}
+\index{first\+Node@{first\+Node}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{first\+Node}{firstNode}}
+{\footnotesize\ttfamily \hyperlink{a00189_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::first\+Node}
+
+The first node where the edge starts \mbox{\Hypertarget{a00780_a41dadd7aa9c2d03978d7f0b7b673d684}\label{a00780_a41dadd7aa9c2d03978d7f0b7b673d684}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!h@{h}}
+\index{h@{h}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{h}{h}}
+{\footnotesize\ttfamily std\+::function$<$double(const double \&)$>$ fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::h}
+
+As defined in the definition of the condition. 
+\begin{DoxyParams}{Parameters}
+{\em s} & The distance along the side length \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00780_a5cfaf9f512560ea73616ba18471234bf}\label{a00780_a5cfaf9f512560ea73616ba18471234bf}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!second\+Node@{second\+Node}}
+\index{second\+Node@{second\+Node}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{second\+Node}{secondNode}}
+{\footnotesize\ttfamily \hyperlink{a00189_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::second\+Node}
+
+The second node where the edge terminates \mbox{\Hypertarget{a00780_ab32818260358435239f283ee40651fe8}\label{a00780_ab32818260358435239f283ee40651fe8}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!sigma@{sigma}}
+\index{sigma@{sigma}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{sigma}{sigma}}
+{\footnotesize\ttfamily std\+::function$<$double(const double \&)$>$ fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::sigma}
+
+As defined in the definition of the condition. 
+\begin{DoxyParams}{Parameters}
+{\em s} & The distance along the side length \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+F\+E\+M\+Types.\+h\end{DoxyCompactItemize}

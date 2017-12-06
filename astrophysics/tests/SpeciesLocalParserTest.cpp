@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(checkParsing) {
 
 	// Create the parser
 	LocalParser<vector<Species>> parser =
-			build<LocalParser<vector < Species>>, const string &>(networkFileName);
+			buildParser<vector,Species>(networkFileName);
 	parser.parse();
 	auto speciesListPtr = parser.getData();
 	auto speciesList = *speciesListPtr;

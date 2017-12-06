@@ -39,14 +39,43 @@ SET(PACKAGE_DESCRIPTION "Fire Solver Library")
 #Set the library name
 SET(LIBRARY_NAME "FireSolvers")
 
-#Collect all header filenames in this project 
-#and glob them in HEADERS
+# Log that this project will be built
+MESSAGE(STATUS "----- Detected and building ${PACKAGE_NAME} -----")
+
+# Collect all header filenames in this project 
+# and glob them in HEADERS
 file(GLOB HEADERS *.h)
 
-#Grab all of the source files
+# Grab all of the source files
 file(GLOB SRC *.cpp)
 
-#Look for MAGMA if the user set MAGMA_ROOT
+# Add the library to the list of all the libraries
+set(FIRE_SOLVERS_LIBRARIES ${LIBRARY_NAME})
+
+# Add the source code to the library
+add_library(${LIBRARY_NAME} STATIC ${SRC})
+
+# Find LAPACK
+find_package(LAPACK)
+if(LAPACK_FOUND)
+  message(STATUS "LAPACK found!")
+  
+  message(STATUS "${LAPACK_LINKER_FLAGS}" "${LAPACK_INCLUDE_DIR}")
+  
+  # Add a LAPACK example to the unit tests to make sure Fire can build against 
+  # it correctly.
+  message(STATUS "Adding a LAPACK example to the tests to test integration.")
+  # Add the tests
+  add_tests_with_flags("tests/lapack/example_DGESV_rowmajor.c" "${LAPACK_INCLUDE_DIR}" 
+                       "${LAPACK_LIBRARIES}" "${LAPACK_LINKER_FLAGS}")
+  # Add the libraries to the package library list
+  set(FIRE_SOLVERS_LIBRARIES ${FIRE_SOLVERS_LIBRARIES} ${LAPACK_LIBRARIES})
+  # Link the libraries to the Fire library
+  target_link_libraries(${LIBRARY_NAME} ${LAPACK_LIBRARIES})
+  
+endif(LAPACK_FOUND)
+
+# Look for MAGMA if the user set MAGMA_ROOT
 if(MAGMA_ROOT)
   message(STATUS 
      "MAGMA support requested. Searching at MAGMA_ROOT=${MAGMA_ROOT}.")
@@ -62,21 +91,23 @@ if(MAGMA_ROOT)
   # Add the include directories
   set(FIRE_SOLVERS_INCLUDE_DIRS ${FIRE_SOLVERS_INCLUDE_DIRS} 
       ${MAGMA_INCLUDE_DIRS})
+  # Link the libraries to the Fire library
+  target_link_libraries(${LIBRARY_NAME} ${MAGMA_LIBRARIES})
 endif(MAGMA_ROOT)
 
-#Look for SUNDIALS if some hints are specified
-if(SUNDIALS_ROOT OR SPACK_ROOT)
+# Look for SUNDIALS if some hints are specified
+if(SUNDIALS_ROOT OR SPACK_ROOT AND LAPACK_FOUND)
   # Find SUNDIALS
   message(STATUS "SUNDIALS support requested.")
   find_package(SUNDIALS)
   # SUNDIALS needs BLAS
   find_package(BLAS)
-  # SUNDIALS needs LAPACK
-  find_package(LAPACK)
   # SUNDIALS needs libm - the math library
   find_library(mathlib NAMES "m")
   set(SUNDIALS_LIBRARIES ${SUNDIALS_LIBRARIES} ${BLAS_LIBRARIES} 
       ${LAPACK_LIBRARIES} ${mathlib})
+  # Link the libraries to the Fire library
+  target_link_libraries(${LIBRARY_NAME} ${SUNDIALS_LIBRARIES})
   # Add a SUNDIALS example to the unit tests to make sure Fire can build 
   # against it correctly.
   message(STATUS "Adding a SUNDIALS example to the tests to test integration.")
@@ -91,19 +122,16 @@ if(SUNDIALS_ROOT OR SPACK_ROOT)
   file(GLOB test_files tests/sundials/*Test.cpp)
   # Add the tests for Fire's classes
   add_tests("${test_files}" "${CMAKE_CURRENT_SOURCE_DIR}" "${FIRE_SOLVERS_LIBRARIES}")  
-endif(SUNDIALS_ROOT OR SPACK_ROOT)
+endif(SUNDIALS_ROOT OR SPACK_ROOT AND LAPACK_FOUND)
 
 # Add the variables to the global property list
-set_property(GLOBAL APPEND PROPERTY FIRE_SOLVERS_LIBRARIES "${FIRE_SOLVERS_LIBRARIES}")
-set_property(GLOBAL APPEND PROPERTY FIRE_SOLVERS_INCLUDE_DIRS "${FIRE_SOLVERS_INCLUDE_DIRS}")
-
-#Add the source code to the library
-#add_library(${LIBRARY_NAME} STATIC ${SRC})
+set(FIRE_SOLVERS_LIBRARIES "${FIRE_SOLVERS_LIBRARIES}" CACHE INTERNAL "FIRE_SOLVERS_LIBRARIES")
+set(FIRE_SOLVERS_INCLUDE_DIRS "${FIRE_SOLVERS_INCLUDE_DIRS}" CACHE INTERNAL "FIRE_SOLVERS_INCLUDE_DIRS")
 
 # Get all remaining test files that don't require special libraries.
 file(GLOB test_files tests/*Test.cpp)
 # Add the tests for Fire's classes
 add_tests("${test_files}" "${CMAKE_CURRENT_SOURCE_DIR}" "${FIRE_SOLVERS_LIBRARIES}")  
 
-#Install the Fire header files
+# Install the Fire header files
 install(FILES ${HEADERS} DESTINATION include)

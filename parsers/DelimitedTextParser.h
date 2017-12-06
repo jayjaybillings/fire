@@ -37,7 +37,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include "LocalParser.h"
+#include <LocalParser.h>
 #include <vector>
 #include <StringCaster.h>
 

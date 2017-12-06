@@ -62,22 +62,23 @@ namespace fire {
 
 // Getter for test struct data from a State<TestStruct>
 template<>
-double * State<TestStruct>::u() const {
-	return state->y.data();
+double * State<TestStruct>::u() {
+	double * data = state.y.data();
+	return data;
 };
 
 // Getter for test struct derivative data from a State<TestStruct>
 template<>
-double * State<TestStruct>::dudt(const double & t) const {
+double * State<TestStruct>::dudt(const double & t) {
 
 	// k constant for this problem
 	const double k = 0.85;
 
 	// Multiply the y vector by the constant
-	transform(state->y.begin(), state->y.end(), state->dydt.begin(),
+	transform(state.y.begin(), state.y.end(), state.dydt.begin(),
 			bind1st(multiplies<double>(), k));
 
-	return state->dydt.data();
+	return state.dydt.data();
 };
 
 } // end namespace fire
@@ -124,7 +125,7 @@ BOOST_AUTO_TEST_CASE(checkSingleVariableSolve) {
 	double tInit = 0.0, t = 0.0, tFinal = 1.0, y0 = 1.0, tol = 1.0e-3;
 	state.t(t);
 	// Set the initial conditions
-	auto & myStruct = state.get();
+	TestStruct & myStruct = state.get();
 	myStruct.y[0] = 1.0;
 	// Configure the solver
 	IVPSolver<TestStruct> solver;

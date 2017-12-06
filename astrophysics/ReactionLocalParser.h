@@ -40,6 +40,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <fstream>
+#include <build.h>
 
 using namespace std;
 using namespace fire::astrophysics;
@@ -57,6 +58,7 @@ void LocalParser<vector<Reaction>>::parse() {
 	// Load the contents of the file
 	string value, line;
 	ifstream fileStream;
+	// Source file is from the base class
 	fileStream.open(sourceFile.c_str(), ifstream::in);
 	string delimiter = " ";
 	vector<string> lines, lineVec;
@@ -118,20 +120,6 @@ void LocalParser<vector<Reaction>>::parse() {
 
 	return;
 };
-
-/**
- * This function builds a local parser for a vector of thermonuclear reactions
- * for astrophysical problems. Note: It does not automatically
- * parse the source! Clients must explicitly call parse(). See parse.h for a
- * function template that automatically parses - parse<T>().
- * @param source the name of the file to parse
- */
-template<>
-LocalParser<vector<Reaction>> build(const string & source) {
-    LocalParser<vector<Reaction>> parser;
-	parser.setSource(source);
-	return parser;
-}
 
 } /* namespace fire */
 

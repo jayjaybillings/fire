@@ -1,10 +1,18 @@
-Fire is a framework for scientific computing. It includes various reusable tools and utilities. This includes
+Fire is a framework for modeling and simulation. It includes various reusable tools and utilities for solving computational physics problems. This includes
 \begin{DoxyItemize}
 \item parsers
 \item steppers
+\item solvers
+\item a finite element library
 \end{DoxyItemize}
 
-It also includes domain-\/specific classes for nuclear reaction network simulations in nuclear astrophysics.
+It also includes domain-\/specific classes and tools for
+\begin{DoxyItemize}
+\item kinetic rate theory calculations in nuclear astrophysics
+\item heat conduction and diffusion
+\item sintering
+\item welding
+\end{DoxyItemize}
 
 \subsection*{Documentation}
 
@@ -35,7 +43,14 @@ If you would like to use M\+A\+G\+MA for solvers, you need to modify the cmake a
 
 \begin{DoxyCode}
 cmake ../fire -DCMAKE\_BUILD\_TYPE=Debug -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE\_ECLIPSE\_VERSION=4.5
-       MAGMA\_ROOT=/usr/local/lib
+       -DMAGMA\_ROOT=/usr/local/lib
+\end{DoxyCode}
+ Fire also supports C\+V\+O\+DE, which can be used by either passing -\/\+D\+S\+U\+N\+D\+I\+A\+L\+S\+\_\+\+R\+O\+OT or pointing to Spack\+:
+
+
+\begin{DoxyCode}
+cmake ../fire -DCMAKE\_BUILD\_TYPE=Debug -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE\_ECLIPSE\_VERSION=4.5
+       -DMAGMA\_ROOT=/usr/local/lib -DSPACK\_ROOT=$HOME/spack
 \end{DoxyCode}
 
 

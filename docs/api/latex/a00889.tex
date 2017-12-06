@@ -1,0 +1,88 @@
+\hypertarget{a00889}{}\section{fire\+:\+:Triangular\+Quadrature\+Rule Class Reference}
+\label{a00889}\index{fire\+::\+Triangular\+Quadrature\+Rule@{fire\+::\+Triangular\+Quadrature\+Rule}}
+
+
+{\ttfamily \#include $<$Triangular\+Quadrature\+Rule.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{a00889_a70e3559ed9cc07f46b1bc682c80e9dcb}{Triangular\+Quadrature\+Rule} ()
+\item 
+double \hyperlink{a00889_a4f5f8961db61cf78a265f9a6707fd8ca}{integrate} (const std\+::function$<$ double(const std\+::array$<$ double, 3 $>$ \&, const int \&, const int \&)$>$ \&f, int i=0, int j=0) const
+\item 
+double \hyperlink{a00889_abc70faa98cef1e84333f31dba307653c}{integrate} (const std\+::function$<$ double(const std\+::array$<$ double, 3 $>$ \&, const int \&)$>$ \&f, int i=0) const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class performs an integration over the area of a triangle using 2D Gaussian Quadrature. It integrates a function defined across the triangle with the following signature\+: 
+\begin{DoxyCode}
+\textcolor{keywordtype}{double} f(\textcolor{keyword}{const} std::array<double,3> & coords, \textcolor{keyword}{const} \textcolor{keywordtype}{int} & i, \textcolor{keyword}{const} \textcolor{keywordtype}{int} & j);
+\end{DoxyCode}
+ or, in the case where only one optional index is required 
+\begin{DoxyCode}
+\textcolor{keywordtype}{double} f(\textcolor{keyword}{const} std::array<double,3> & coords, \textcolor{keyword}{const} \textcolor{keywordtype}{int} & i);
+\end{DoxyCode}
+ For the latter case, the following code sample illustrates using the class\+: 
+\begin{DoxyCode}
+\hyperlink{a00889_a70e3559ed9cc07f46b1bc682c80e9dcb}{TriangularQuadratureRule} rule;
+std::function<double(const std::array<double,3> &,
+   \textcolor{keyword}{const} \textcolor{keywordtype}{int} &)> areaFunction = [](\textcolor{keyword}{const} std::array<double,3> & point,
+   \textcolor{keyword}{const} \textcolor{keywordtype}{int} & i) \{
+   \textcolor{keywordflow}{return} 1.0;
+\};
+result = rule.integrate(areaFunction, index);
+\end{DoxyCode}
+ where the array of doubles contains the area coordinates (L\+\_\+1, L\+\_\+2, L\+\_\+3) of the quadrature point and the following integer is the optional identifier of the integration. Including integer identifiers makes it possible to, for example, facilitate the integration of matrix elements, derivatives, and otherwise indexed functions. For example, a function might differ depending on whether it is the matrix element (i,j) or (j+1,i).
+
+This class provides an alternative version of the integrate function that will forward a single index instead of two, which is useful for dealing with vector indices.
+
+This class uses a four point Gaussian Quadrature rule in area coordinates that exactly integrates all polynomials of degree 7 or less. It requires four evaluations of the function f. Specifically, \[ \iint_{A} f(L_{1},L_{2},L_{3}) dA \approx \sum_{i=0}^{i=4} \omega_{i}f(L_{1,i},L_{2,i},L_{3,i}) \]
+
+Note that the weights and area coordinates are defined statically because they are used unmodified across all instances of this class. Failing to declare them as such could lead to an explosion in memory use if a new instance of the quadrature rule is used in many places. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{a00889_a70e3559ed9cc07f46b1bc682c80e9dcb}\label{a00889_a70e3559ed9cc07f46b1bc682c80e9dcb}} 
+\index{fire\+::\+Triangular\+Quadrature\+Rule@{fire\+::\+Triangular\+Quadrature\+Rule}!Triangular\+Quadrature\+Rule@{Triangular\+Quadrature\+Rule}}
+\index{Triangular\+Quadrature\+Rule@{Triangular\+Quadrature\+Rule}!fire\+::\+Triangular\+Quadrature\+Rule@{fire\+::\+Triangular\+Quadrature\+Rule}}
+\subsubsection{\texorpdfstring{Triangular\+Quadrature\+Rule()}{TriangularQuadratureRule()}}
+{\footnotesize\ttfamily fire\+::\+Triangular\+Quadrature\+Rule\+::\+Triangular\+Quadrature\+Rule (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructor 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{a00889_a4f5f8961db61cf78a265f9a6707fd8ca}\label{a00889_a4f5f8961db61cf78a265f9a6707fd8ca}} 
+\index{fire\+::\+Triangular\+Quadrature\+Rule@{fire\+::\+Triangular\+Quadrature\+Rule}!integrate@{integrate}}
+\index{integrate@{integrate}!fire\+::\+Triangular\+Quadrature\+Rule@{fire\+::\+Triangular\+Quadrature\+Rule}}
+\subsubsection{\texorpdfstring{integrate()}{integrate()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily double fire\+::\+Triangular\+Quadrature\+Rule\+::integrate (\begin{DoxyParamCaption}\item[{const std\+::function$<$ double(const std\+::array$<$ double, 3 $>$ \&, const int \&, const int \&)$>$ \&}]{f,  }\item[{int}]{i = {\ttfamily 0},  }\item[{int}]{j = {\ttfamily 0} }\end{DoxyParamCaption}) const}
+
+This operation integrates the function across the area of the triangle. 
+\begin{DoxyParams}{Parameters}
+{\em the} & function to integrate with the signature as described above \\
+\hline
+{\em optional} & first identifier \\
+\hline
+{\em optional} & second identifier \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00889_abc70faa98cef1e84333f31dba307653c}\label{a00889_abc70faa98cef1e84333f31dba307653c}} 
+\index{fire\+::\+Triangular\+Quadrature\+Rule@{fire\+::\+Triangular\+Quadrature\+Rule}!integrate@{integrate}}
+\index{integrate@{integrate}!fire\+::\+Triangular\+Quadrature\+Rule@{fire\+::\+Triangular\+Quadrature\+Rule}}
+\subsubsection{\texorpdfstring{integrate()}{integrate()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily double fire\+::\+Triangular\+Quadrature\+Rule\+::integrate (\begin{DoxyParamCaption}\item[{const std\+::function$<$ double(const std\+::array$<$ double, 3 $>$ \&, const int \&)$>$ \&}]{f,  }\item[{int}]{i = {\ttfamily 0} }\end{DoxyParamCaption}) const}
+
+This operation integrates the function across the area of the triangle, but only forwards one index to the integrand. 
+\begin{DoxyParams}{Parameters}
+{\em the} & function to integrate with the signature as described above \\
+\hline
+{\em optional} & identifier \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Triangular\+Quadrature\+Rule.\+h\item 
+Triangular\+Quadrature\+Rule.\+cpp\end{DoxyCompactItemize}

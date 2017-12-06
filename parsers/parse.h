@@ -33,8 +33,8 @@
 #define PARSERS_PARSE_H_
 
 #include <LocalParser.h>
-#include<build.h>
-#include<vector>
+#include <build.h>
+#include <vector>
 #include <memory>
 
 using namespace std;
@@ -60,8 +60,7 @@ namespace fire {
  */
 template<typename T>
 shared_ptr<vector<T>> parse(const string & source) {
-	LocalParser<vector<T>> parser = build
-			< LocalParser<vector<T>>,const string &>(source);
+	LocalParser<vector<T>> parser = buildParser<vector,T>(source);
 	parser.setSource(source);
 	parser.parse();
 	return parser.getData();
