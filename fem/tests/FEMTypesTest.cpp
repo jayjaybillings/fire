@@ -188,22 +188,3 @@ BOOST_AUTO_TEST_CASE(checkMatrixElementIndicesComputation) {
     BOOST_REQUIRE_EQUAL(rowIndex,rowMajorIndex(e, lRow));
     BOOST_REQUIRE_EQUAL(colIndex,colMajorIndex(e, lCol));
 }
-
-BOOST_AUTO_TEST_CASE(checkTwoDRobinBoundaryCondition) {
-	std::function<double(const double &)> f = [](const double & foo) {
-		return -1.0;
-	};
-	std::function<double(const double &)> g = [](const double & foo) {
-		return -5.0;
-	};
-	TwoDNode node1, node2(2.0,3.0,1);
-	TwoDRobinBoundaryCondition cond1(node1,node2,f,f), cond2(node1,node2,g,g),
-			cond3(node1,node2,f,f);
-
-	// Make sure they are not equal
-	BOOST_REQUIRE(cond1 != cond2);
-	// Make sure they are equal
-	BOOST_REQUIRE(cond1 == cond3);
-
-	return;
-}

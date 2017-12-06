@@ -1,87 +1,122 @@
-\hypertarget{a00805}{}\section{fire\+:\+:System$<$ T $>$ Class Template Reference}
-\label{a00805}\index{fire\+::\+System$<$ T $>$@{fire\+::\+System$<$ T $>$}}
+\hypertarget{a00805}{}\section{fire\+:\+:Two\+D\+Robin\+Boundary\+Condition Struct Reference}
+\label{a00805}\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
 
 
-{\ttfamily \#include $<$System.\+h$>$}
+{\ttfamily \#include $<$F\+E\+M\+Types.\+h$>$}
 
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \hyperlink{a00805_a2c252b0ec85877bcfcbae60dff04dfaa}{set\+Size} (const long \&n, const short \&d)
+\hyperlink{a00805_a94772dc1ff3c599f3f526e72675dac38}{Two\+D\+Robin\+Boundary\+Condition} ()
 \item 
-void \hyperlink{a00805_aa9e25fbc00a50d54fb90ac1fdcd911e4}{set\+State} (T $\ast$system\+State)
+\hyperlink{a00805_a691668fb77499b26336866f608cf42b2}{Two\+D\+Robin\+Boundary\+Condition} (const \hyperlink{a00210_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&first, const \hyperlink{a00210_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&second, const std\+::function$<$ double(const double \&)$>$ \&\+\_\+sigma, const std\+::function$<$ double(const double \&)$>$ \&\+\_\+h)
+\item 
+bool \hyperlink{a00805_a3568bb75ca2ecea61b1dbc4c1b8b5b60}{operator==} (const \hyperlink{a00805}{Two\+D\+Robin\+Boundary\+Condition} \&other\+Cond) const
+\item 
+bool \hyperlink{a00805_adaa602ac0734d5ed6294f015ab4e2c79}{operator!=} (const \hyperlink{a00805}{Two\+D\+Robin\+Boundary\+Condition} \&other\+Cond) const
 \end{DoxyCompactItemize}
-\subsection*{Protected Attributes}
+\subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-long \hyperlink{a00805_a89101170e69beff93e11c795aa6bb481}{num\+Eqs}
+\hyperlink{a00210_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \hyperlink{a00805_ad4db2466fecae72b4dc5068a4d04ec4a}{first\+Node}
 \item 
-short \hyperlink{a00805_a041623ed0162d4cad4309c9be3e7df9d}{n\+Dim}
+\hyperlink{a00210_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \hyperlink{a00805_a5cfaf9f512560ea73616ba18471234bf}{second\+Node}
 \item 
-T $\ast$ \hyperlink{a00805_ac59dffce1577673d04cd222c0f769c11}{state}
+std\+::function$<$ double(const double \&)$>$ \hyperlink{a00805_ab32818260358435239f283ee40651fe8}{sigma}
+\item 
+std\+::function$<$ double(const double \&)$>$ \hyperlink{a00805_a41dadd7aa9c2d03978d7f0b7b673d684}{h}
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
-\subsubsection*{template$<$class T$>$\newline
-class fire\+::\+System$<$ T $>$}
+This struct represents a two dimensional Robin Boundary condition in which the condition is defined across an edge between two nodes. The Robin condition is defined as \[ k(s)\frac{\partial u}{\partial n} + \sigma(s) u = h(s) \mbox{ on } C_{2} \] All members of this struct must be initialized on construction. The idea is that the references should not need to change during execution because the boundaries do not change. 
 
-This class represents a system of equations in Fire, where a system of equations is a collection of equations with the same unknowns.
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{a00805_a94772dc1ff3c599f3f526e72675dac38}\label{a00805_a94772dc1ff3c599f3f526e72675dac38}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!Two\+D\+Robin\+Boundary\+Condition@{Two\+D\+Robin\+Boundary\+Condition}}
+\index{Two\+D\+Robin\+Boundary\+Condition@{Two\+D\+Robin\+Boundary\+Condition}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{Two\+D\+Robin\+Boundary\+Condition()}{TwoDRobinBoundaryCondition()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::\+Two\+D\+Robin\+Boundary\+Condition (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-The system of equations is represented by a collection of operators that operate on a problem state provided by the user. The state defines all of the system\textquotesingle{}s unknown quantities. However, since the type of the state is generic, the system does not explicitly known the identity of those unknowns. The user-\/defined state class is expected to provide the unknowns contiguously when queried.
+The default constructor \mbox{\Hypertarget{a00805_a691668fb77499b26336866f608cf42b2}\label{a00805_a691668fb77499b26336866f608cf42b2}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!Two\+D\+Robin\+Boundary\+Condition@{Two\+D\+Robin\+Boundary\+Condition}}
+\index{Two\+D\+Robin\+Boundary\+Condition@{Two\+D\+Robin\+Boundary\+Condition}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{Two\+D\+Robin\+Boundary\+Condition()}{TwoDRobinBoundaryCondition()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::\+Two\+D\+Robin\+Boundary\+Condition (\begin{DoxyParamCaption}\item[{const \hyperlink{a00210_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&}]{first,  }\item[{const \hyperlink{a00210_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&}]{second,  }\item[{const std\+::function$<$ double(const double \&)$>$ \&}]{\+\_\+sigma,  }\item[{const std\+::function$<$ double(const double \&)$>$ \&}]{\+\_\+h }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-The system of equations can be integrated by calling the integrate() operation. The system will be solved using a default integrator if a user-\/ defined integrator is not provided. 
-
-\subsection{Member Function Documentation}
-\mbox{\Hypertarget{a00805_a2c252b0ec85877bcfcbae60dff04dfaa}\label{a00805_a2c252b0ec85877bcfcbae60dff04dfaa}} 
-\index{fire\+::\+System@{fire\+::\+System}!set\+Size@{set\+Size}}
-\index{set\+Size@{set\+Size}!fire\+::\+System@{fire\+::\+System}}
-\subsubsection{\texorpdfstring{set\+Size()}{setSize()}}
-{\footnotesize\ttfamily template$<$class T $>$ \\
-void \hyperlink{a00805}{fire\+::\+System}$<$ T $>$\+::set\+Size (\begin{DoxyParamCaption}\item[{const long \&}]{n,  }\item[{const short \&}]{d }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
-
-This operation sets the size of the system of equations by defining the total number of equations and the number of dimensions. 
+Constructor 
 \begin{DoxyParams}{Parameters}
-{\em n} & The total number of equations in the system. \\
+{\em first} & the node that should be used as the first node on the path \\
 \hline
-{\em d} & The total number of physical dimensions of the system, not including time. 1 for 1D, 2 for 2D, 3 for 3D. \\
+{\em second} & the node that should be used as the second or terminal node on the path \\
+\hline
+{\em \+\_\+sigma} & the sigma function \\
+\hline
+{\em \+\_\+h} & the h function on the right-\/hand side of the condition \\
 \hline
 \end{DoxyParams}
-\mbox{\Hypertarget{a00805_aa9e25fbc00a50d54fb90ac1fdcd911e4}\label{a00805_aa9e25fbc00a50d54fb90ac1fdcd911e4}} 
-\index{fire\+::\+System@{fire\+::\+System}!set\+State@{set\+State}}
-\index{set\+State@{set\+State}!fire\+::\+System@{fire\+::\+System}}
-\subsubsection{\texorpdfstring{set\+State()}{setState()}}
-{\footnotesize\ttfamily template$<$class T $>$ \\
-void \hyperlink{a00805}{fire\+::\+System}$<$ T $>$\+::set\+State (\begin{DoxyParamCaption}\item[{T $\ast$}]{system\+State }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
-This operation specifies the state of the system of equations.
 
-The state is provided using a raw pointer because the system of equations does not participate in the state\textquotesingle{}s memory lifecycle. This class explicitly guarantees that it will never deallocate the state data! Classes utilized by this class, such as integrators, may overwrite or manipulate the state data in ways described in their A\+PI docs, including attempting to deallocate it (frowned upon). Clients should generally expect that the state variables provided by the state type T will be modified and that in some instances those modifications may be done in place. 
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{a00805_adaa602ac0734d5ed6294f015ab4e2c79}\label{a00805_adaa602ac0734d5ed6294f015ab4e2c79}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily bool fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::operator!= (\begin{DoxyParamCaption}\item[{const \hyperlink{a00805}{Two\+D\+Robin\+Boundary\+Condition} \&}]{other\+Cond }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+The inequality operator override to invert ==. \mbox{\Hypertarget{a00805_a3568bb75ca2ecea61b1dbc4c1b8b5b60}\label{a00805_a3568bb75ca2ecea61b1dbc4c1b8b5b60}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!operator==@{operator==}}
+\index{operator==@{operator==}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily bool fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::operator== (\begin{DoxyParamCaption}\item[{const \hyperlink{a00805}{Two\+D\+Robin\+Boundary\+Condition} \&}]{other\+Cond }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+This is an operator override to compare two dimensional Robin conditions. Note that this operation implements equality checks for the functions by generating pointer targets for the functions and checking target types. This may or may not be the best way to check for equality of these functions, depending on your application. 
+\begin{DoxyParams}{Parameters}
+{\em other\+Cond} & the other condition \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the conditions are equal, false otherwise. 
+\end{DoxyReturn}
+
 
 \subsection{Member Data Documentation}
-\mbox{\Hypertarget{a00805_a041623ed0162d4cad4309c9be3e7df9d}\label{a00805_a041623ed0162d4cad4309c9be3e7df9d}} 
-\index{fire\+::\+System@{fire\+::\+System}!n\+Dim@{n\+Dim}}
-\index{n\+Dim@{n\+Dim}!fire\+::\+System@{fire\+::\+System}}
-\subsubsection{\texorpdfstring{n\+Dim}{nDim}}
-{\footnotesize\ttfamily template$<$class T $>$ \\
-short \hyperlink{a00805}{fire\+::\+System}$<$ T $>$\+::n\+Dim\hspace{0.3cm}{\ttfamily [protected]}}
+\mbox{\Hypertarget{a00805_ad4db2466fecae72b4dc5068a4d04ec4a}\label{a00805_ad4db2466fecae72b4dc5068a4d04ec4a}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!first\+Node@{first\+Node}}
+\index{first\+Node@{first\+Node}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{first\+Node}{firstNode}}
+{\footnotesize\ttfamily \hyperlink{a00210_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::first\+Node}
 
-The total number of physical dimensions of the system, not including time. \mbox{\Hypertarget{a00805_a89101170e69beff93e11c795aa6bb481}\label{a00805_a89101170e69beff93e11c795aa6bb481}} 
-\index{fire\+::\+System@{fire\+::\+System}!num\+Eqs@{num\+Eqs}}
-\index{num\+Eqs@{num\+Eqs}!fire\+::\+System@{fire\+::\+System}}
-\subsubsection{\texorpdfstring{num\+Eqs}{numEqs}}
-{\footnotesize\ttfamily template$<$class T $>$ \\
-long \hyperlink{a00805}{fire\+::\+System}$<$ T $>$\+::num\+Eqs\hspace{0.3cm}{\ttfamily [protected]}}
+The first node where the edge starts \mbox{\Hypertarget{a00805_a41dadd7aa9c2d03978d7f0b7b673d684}\label{a00805_a41dadd7aa9c2d03978d7f0b7b673d684}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!h@{h}}
+\index{h@{h}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{h}{h}}
+{\footnotesize\ttfamily std\+::function$<$double(const double \&)$>$ fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::h}
 
-The total number of equations in the system. \mbox{\Hypertarget{a00805_ac59dffce1577673d04cd222c0f769c11}\label{a00805_ac59dffce1577673d04cd222c0f769c11}} 
-\index{fire\+::\+System@{fire\+::\+System}!state@{state}}
-\index{state@{state}!fire\+::\+System@{fire\+::\+System}}
-\subsubsection{\texorpdfstring{state}{state}}
-{\footnotesize\ttfamily template$<$class T $>$ \\
-T$\ast$ \hyperlink{a00805}{fire\+::\+System}$<$ T $>$\+::state\hspace{0.3cm}{\ttfamily [protected]}}
+As defined in the definition of the condition. 
+\begin{DoxyParams}{Parameters}
+{\em s} & The distance along the side length \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{a00805_a5cfaf9f512560ea73616ba18471234bf}\label{a00805_a5cfaf9f512560ea73616ba18471234bf}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!second\+Node@{second\+Node}}
+\index{second\+Node@{second\+Node}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{second\+Node}{secondNode}}
+{\footnotesize\ttfamily \hyperlink{a00210_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::second\+Node}
 
-The state of the system, including unknowns, materials information, etc. 
+The second node where the edge terminates \mbox{\Hypertarget{a00805_ab32818260358435239f283ee40651fe8}\label{a00805_ab32818260358435239f283ee40651fe8}} 
+\index{fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}!sigma@{sigma}}
+\index{sigma@{sigma}!fire\+::\+Two\+D\+Robin\+Boundary\+Condition@{fire\+::\+Two\+D\+Robin\+Boundary\+Condition}}
+\subsubsection{\texorpdfstring{sigma}{sigma}}
+{\footnotesize\ttfamily std\+::function$<$double(const double \&)$>$ fire\+::\+Two\+D\+Robin\+Boundary\+Condition\+::sigma}
 
-The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+As defined in the definition of the condition. 
+\begin{DoxyParams}{Parameters}
+{\em s} & The distance along the side length \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-System.\+h\end{DoxyCompactItemize}
+F\+E\+M\+Types.\+h\end{DoxyCompactItemize}

@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen 1.8.13"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <title>Fire: case_insensitive_equals Class Reference</title>
+        <title>Fire: SI_GenericCase&lt; SI_CHAR &gt; Struct Template Reference</title>
         <!--<link href="tabs.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="dynsections.js"></script>
         <link href="search/search.css" rel="stylesheet" type="text/css"/>
@@ -73,22 +73,25 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="a00934.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">case_insensitive_equals Class Reference</div>  </div>
+<div class="title">SI_GenericCase&lt; SI_CHAR &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="a00176_source.html">SimpleIni.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9d610611f775742c59898e6fa72c5808"><td class="memItemLeft" align="right" valign="top"><a id="a9d610611f775742c59898e6fa72c5808"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (const std::string &amp;key1, const std::string &amp;key2) const</td></tr>
-<tr class="separator:a9d610611f775742c59898e6fa72c5808"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d610611f775742c59898e6fa72c5808"><td class="memItemLeft" align="right" valign="top"><a id="a9d610611f775742c59898e6fa72c5808"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (const std::string &amp;key1, const std::string &amp;key2) const</td></tr>
-<tr class="separator:a9d610611f775742c59898e6fa72c5808"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a786f2c11709bb935c13d9c6ce6a21f7a"><td class="memItemLeft" align="right" valign="top"><a id="a786f2c11709bb935c13d9c6ce6a21f7a"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (const SI_CHAR *pLeft, const SI_CHAR *pRight) const</td></tr>
+<tr class="separator:a786f2c11709bb935c13d9c6ce6a21f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li><a class="el" href="a00176_source.html">client_http.hpp</a></li>
-<li><a class="el" href="a00182_source.html">server_http.hpp</a></li>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;class SI_CHAR&gt;<br />
+struct SI_GenericCase&lt; SI_CHAR &gt;</h3>
+
+<p>Generic case-sensitive less than comparison. This class returns numerically ordered ASCII case-sensitive text for all possible sizes and types of SI_CHAR. </p>
+</div><hr/>The documentation for this struct was generated from the following file:<ul>
+<li><a class="el" href="a00176_source.html">SimpleIni.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->

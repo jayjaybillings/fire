@@ -115,7 +115,7 @@ if __name__ == '__main__':
     # Read the file to get the shape to be sampled.
     shape = TopoDS_Shape()
     builder = BRep_Builder()
-    breptools_Read(shape, "cantilever-repaired-unrefined.brep", builder);
+    breptools_Read(shape, "cubeWithHole.brep", builder);
     
     # Loop over the shape pulled from the input and look for solids.
     solids = [] # A list for storing solids from the file

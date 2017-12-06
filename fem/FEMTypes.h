@@ -33,6 +33,7 @@
 #define SOLVERS_MATRIXELEMENT_H_
 
 #include <utility>
+#include <functional>
 
 namespace fire {
 
@@ -233,16 +234,15 @@ using VectorElement = BasicPair<int,T>;
 /**
  * This is a simple structure that represents an individual element in a
  * matrix. It is templated so that it can be used in an appropriately typed
- * scenario. Its actual implementation is provided by std::tuple through an
- * alias declaration. The indicies i and j are stored in the first and second
- * positions respectively. The "value" of the matrix element is stored in the
- * third position of the tuple. Here is an example that shows getting the
- * value of a matrix element positioned at (1,0):
+ * scenario. It is an IdentifiablePair with integer first and second values
+ * that store the indicies i and j respectively. The "value" of the matrix
+ * element is stored in the value element of the pair. Here is an example
+ * that shows getting the value of a matrix element positioned at (1,0):
  * @code
- * MatrixElement<double> element{1, 0, 0.5};
- * int i = std::get<0>(element);
- * int j = std::get<1>(element);
- * double value = std::get<2>(element);
+ * MatrixElement<double> element(1, 0, 0.5);
+ * int i = element.first;
+ * int j = element.second;
+ * double value = element.value;
  * @endcode
  *
  * This structure is not meant to be used for dense matrices or in situations
@@ -252,8 +252,8 @@ using VectorElement = BasicPair<int,T>;
  *
  * The first int is the major index and the second int is the minor index. So
  * in a row-major storage system the first int is the row index and the second
- *  is the column index. In a column-major storage system i is the column
- *  index and j is the row index.
+ * is the column index. In a column-major storage system i is the column index
+ * and j is the row index.
  */
 template<typename T>
 using MatrixElement = IdentifiablePair<int,int,T>;
@@ -315,84 +315,48 @@ inline int colMajorIndex(MatrixElement<T> e, int colLength) {
 }
 
 /**
- * This struct represents a two dimensional Robin Boundary condition in which
- * the condition is defined across an edge between two nodes. The Robin
- * condition is defined as
- * \f[
- * k(s)\frac{\partial u}{\partial n} + \sigma(s) u = h(s) \mbox{ on } C_{2}
- * \f]
- * All members of this struct must be initialized on construction. The idea is
- * that the references should not need to change during execution because the
- * boundaries do not change.
+ * This structure create is a placeholder for a function reference and matrix
+ * element that can be used to calculate the contribution to the matrix element
+ * from the Robin Boundary Condition with the given id/index.
+ *
+ * Optionally, this class can be associated with an id/index for a Dirichlet
+ * Boundary Condition in case this contribution is being considered on the
+ * right hand side of the equation as part of the force vector calculation.
+ * This makes it possible to accurately scale the contribution by the value
+ * of the condition.
  */
-struct TwoDRobinBoundaryCondition {
+struct RobinBoundaryMatrixContribution {
+
+	int kIndex;
+	int fIndex;
+	MatrixElement<double> matrixElement;
 
 	/**
-	 * The first node where the edge starts
+	 * The id or index of the Robin Boundary Condition in the element.
 	 */
-	TwoDNode firstNode;
+	int robinCondID = -1;
 
 	/**
-	 * The second node where the edge terminates
+	 * The id or index of the Dirichlet Boundary Condition in the element.
 	 */
-	TwoDNode secondNode;
+	int dirichletCondID = -1;
 
 	/**
-	 * As defined in the definition of the condition.
-	 * @param s The distance along the side length
+	 * A reference to the function that will contribute the contribution
+	 * given the combination of the above variables.
 	 */
-    std::function<double(const double &)> sigma;
+	std::function<double(const double &,const int &)> func;
 
 	/**
-	 * As defined in the definition of the condition.
-	 * @param s The distance along the side length
+	 * Constructor
 	 */
-    std::function<double(const double &)> h;
+	RobinBoundaryMatrixContribution(const int & index, const int & _fIndex,
+			const MatrixElement<double> & elem, const int & rId, const int & dId,
+			const std::function<double(const double &,const int &)> & contFunc)
+	: kIndex(index), fIndex(_fIndex),
+	  matrixElement(elem.first,elem.second,elem.value),
+	  robinCondID(rId), dirichletCondID(dId), func(contFunc) {}
 
-    /**
-     * The default constructor
-     */
-    TwoDRobinBoundaryCondition() {};
-
-    /**
-     * Constructor
-     * @param first the node that should be used as the first node on the path
-     * @param second the node that should be used as the second or terminal
-     * node on the path
-     * @param _sigma the sigma function
-     * @param _h the h function on the right-hand side of the condition
-     */
-    TwoDRobinBoundaryCondition(const TwoDNode & first, const TwoDNode & second,
-    		const std::function<double(const double &)> & _sigma,
-			const std::function<double(const double &)> & _h) : firstNode(first),
-					secondNode(second), sigma(_sigma), h(_h) {};
-
-    /**
-     * This is an operator override to compare two dimensional Robin conditions.
-     * Note that this operation implements equality checks for the functions by
-     * generating pointer targets for the functions and checking target types.
-     * This may or may not be the best way to check for equality of these
-     * functions, depending on your application.
-     * @param otherCond the other condition
-     * @return true if the conditions are equal, false otherwise.
-     */
-    bool operator == (const TwoDRobinBoundaryCondition & otherCond) const {
-    	return (firstNode == otherCond.firstNode)
-    			&& (secondNode == otherCond.secondNode)
-    			&& (sigma.target_type() == otherCond.sigma.target_type())
-    			&& (sigma.target<double(const double &)>()
-    					== otherCond.sigma.target<double(const double &)>())
-				&& (h.target_type() == otherCond.h.target_type())
-				&& (h.target<double(const double &)>()
-						== otherCond.h.target<double(const double &)>());
-    }
-
-    /**
-     * The inequality operator override to invert ==.
-     */
-    bool operator != (const TwoDRobinBoundaryCondition & otherCond) const {
-    	return !operator==(otherCond);
-    }
 
 };
 

@@ -29,15 +29,32 @@
 
  Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
-#include "PoissonCST.h"
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE FEM
 
-namespace fire {
+#include <boost/test/included/unit_test.hpp>
+#include <TwoDDirichletBoundaryCondition.h>
 
-PoissonCST::PoissonCST(const TwoDNode & node1,
-		const TwoDNode & node2, const TwoDNode & node3) :
-				ConstantStrainTriangleElement(node1,node2,node3) {
-	// TODO Auto-generated constructor stub
+using namespace std;
+using namespace fire;
 
+BOOST_AUTO_TEST_CASE(checkTwoDDirichletBoundaryCondition) {
+	std::function<double(const double &, const double &)> f =
+			[](const double & foo, const double & bar) {
+		return -1.0;
+	};
+	std::function<double(const double &, const double &)> g =
+			[](const double & foo, const double & bar) {
+		return -5.0;
+	};
+	TwoDNode node1, node2(2.0,3.0,1);
+	TwoDDirichletBoundaryCondition cond1(node1,f), cond2(node1,g),
+			cond3(node1,f);
+
+	// Make sure they are not equal
+	BOOST_REQUIRE(cond1 != cond2);
+	// Make sure they are equal
+	BOOST_REQUIRE(cond1 == cond3);
+
+	return;
 }
-
-} /* namespace fire */

@@ -29,27 +29,45 @@
 
  Author(s): Jay Jay Billings (jayjaybillings <at> gmail <dot> com)
  -----------------------------------------------------------------------------*/
-#ifndef FEM_POISSONCST_H_
-#define FEM_POISSONCST_H_
+#include <LaplaceCSTElement.h>
+#include <iostream>
 
-#include <ConstantStrainTriangleElement.h>
+using namespace std;
 
 namespace fire {
 
-/**
- * This is a ConstantStrainTriangleElement for Poisson's Equation
- * \f[ ADD Poisson's equation!
- * \f]
- *
- * NEED TO DISCUSS K!
- *
- */
-class PoissonCST: public ConstantStrainTriangleElement {
-public:
-	PoissonCST(const TwoDNode & node1,
-			const TwoDNode & node2, const TwoDNode & node3);
-};
+LaplaceCSTElement::LaplaceCSTElement(const TwoDNode & node1,
+		const TwoDNode & node2, const TwoDNode & node3) :
+				ConstantStrainTriangleElement(node1,node2,node3) {
+
+	kFunction = [&](const std::array<double,3> & coords, const int & i,
+			const int & j) {
+	    return 1.0;
+	};
+
+	// The stiffness kernel is very simple across a CST for Laplace's equation.
+	// This is taken from Davies, p. 109.
+	stiffnessKernel = [&](const std::array<double,3> & coords, const int & i,
+			const int & j) {
+		double result = (kFunction(coords,i,j)/(4.0*eArea*eArea))*(b[i]*b[j]+c[i]*c[j]);
+	    return result;
+	};
+	// f = 0 for Laplace's equation
+	bodyForceKernel = [&](const std::array<double,3> & coords, const int & i) {
+	    return 0.0;
+	};
+
+}
+
+void LaplaceCSTElement::transferCoefficient(const std::function<double(const std::array<double,3> &,
+		const int &, const int &)> & function) {
+	kFunction = function;
+}
+
+const std::function<double(const std::array<double,3> &,
+		const int &, const int &)> & LaplaceCSTElement::transferCoefficient() const {
+	return kFunction;
+}
+
 
 } /* namespace fire */
-
-#endif /* FEM_POISSONCST_H_ */

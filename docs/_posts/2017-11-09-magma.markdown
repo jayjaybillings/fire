@@ -1,0 +1,71 @@
+---
+layout: post
+title: Notes on Building MAGMA
+permalink: /about/magma
+category: about
+---
+
+[The Matrix Algebra for GPU and Multicore Architectures (MAGMA)](1)
+
+These are notes from an October 2016 installation of MAGMA.
+
+## Building MAGMA on Fedora 23
+The following instructions describe how to get MAGMA running on Fedora 23.
+
+Introduction to MAGMA
+
+<ADD INTRO TO MAGMA>
+
+Installation instructions for Fedora 23
+
+I downloaded the 2.1.0 release of MAGMA from the ICL and extracted it to its own directory using 
+
+```bash
+tar -xzvf magma-2.1.0.tar.gz
+cd magma-2.1.0
+```
+
+The README says to modify the make.inc file to point to proper compilers, etc., but no make.inc is provided by default. I copied one of the examples, make.inc.openblas, to make.inc and edited that instead. I needed to change the compiler information to point to a custom build of GCC 4.9 because CUDA 7.5 requires GCC 4.9 or lower, but Fedora 23 ships with GCC 5.3.1 by default. Years ago I had a lot of fun modifying the CUDA headers and other pieces to manually update the version, but doing that is time consuming and painful. Instead, as scary as it may sound, it is far easier to build GCC 4.9 from scratch or to download a precompiled binary. If you like, follow <link - my instructions> on building GCC 4.9 from scratch. If you follow my instructions, then it is also necessary to point the CUDA compiler, nvcc, to the correct version of GCC since the executable has the "49" suffix. This is possible using the "-ccbin" option, which I learned about in the CUDA SDK makefiles. The #programs section of my make.inc file looks like this:
+
+```bash
+# --------------------
+# programs
+
+CC        = gcc49
+CXX       = g++49
+NVCC      = nvcc -ccbin g++49
+FORT      = gfortran49
+
+ARCH      = ar
+ARCHFLAGS = cr
+RANLIB    = ranlib
+```
+
+Modifying the OPENBLASDIR and CUDADIR variables in the make.inc file did not work, so I had to add them to my .bashrc file
+
+```bash
+# CUDA
+export PATH=$PATH:/usr/local/cuda/bin:/usr/local/cuda-7.5/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-7.5/lib64
+# Added for MAGMA
+export CUDADIR=/usr/local/cuda
+
+# OpenBLAS - Added for MAGMA
+export OPENBLASDIR=/usr
+```
+
+and then I sourced it from the command line to reload the variables with 
+
+```bash
+. ~/.bashrc
+```
+
+After that, do yourself a favor and run the build in parallel using the following command while you go get a drink:
+
+```bash
+make -jN
+```
+
+where N is equal to the number of processors on your machine plus one. On my machine with N=9 the build takes about 12m31s.
+
+[1]: http://icl.cs.utk.edu/magma/software/

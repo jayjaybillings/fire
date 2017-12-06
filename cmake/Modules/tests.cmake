@@ -99,8 +99,13 @@ endfunction()
 # add_tests("${intTests}" "${test_include_dirs}" "${FIRE_LIBS}" "${flags}")
 function(add_tests_with_flags tests test_include_dirs test_libs test_cflags)
     if(Boost_FOUND)
-      # Include all the required headers and BOOST
-      include_directories("${Boost_INCLUDE_DIR}" "${test_include_dirs}")
+      if (NOT test_include_dirs STREQUAL "")
+         # Include all the required headers and BOOST
+         include_directories("${Boost_INCLUDE_DIR}" "${test_include_dirs}")      
+      else (NOT test_include_dirs STREQUAL "")
+         # Include the BOOST headers
+         include_directories("${Boost_INCLUDE_DIR}")
+      endif (NOT test_include_dirs STREQUAL "")
       # Make executables and link libraries for testers
       foreach(test ${tests})
          message(STATUS "Adding test ${test}")

@@ -1,42 +1,25 @@
-\hypertarget{a00977}{}\section{Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:\+:Response Class Reference}
-\label{a00977}\index{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$\+::\+Response@{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$\+::\+Response}}
-Inheritance diagram for Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:\+:Response\+:\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[height=5.000000cm]{a00977}
-\end{center}
-\end{figure}
-\subsection*{Public Member Functions}
-\begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{a00977_af666efb61621d70c16e3d6a6c419271d}\label{a00977_af666efb61621d70c16e3d6a6c419271d}} 
-size\+\_\+t {\bfseries size} ()
-\end{DoxyCompactItemize}
+\hypertarget{a00977}{}\section{Simple\+Web\+:\+:Client\+Base$<$ socket\+\_\+type $>$\+:\+:Config Class Reference}
+\label{a00977}\index{Simple\+Web\+::\+Client\+Base$<$ socket\+\_\+type $>$\+::\+Config@{Simple\+Web\+::\+Client\+Base$<$ socket\+\_\+type $>$\+::\+Config}}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
-bool \hyperlink{a00977_a2818b4f3c577ff1f4067bb1c62640c15}{close\+\_\+connection\+\_\+after\+\_\+response} = false
-\end{DoxyCompactItemize}
+\mbox{\Hypertarget{a00977_ab0ec5665cc6666eb621e01e9403fdf28}\label{a00977_ab0ec5665cc6666eb621e01e9403fdf28}} 
+std\+::size\+\_\+t \hyperlink{a00977_ab0ec5665cc6666eb621e01e9403fdf28}{timeout} = 0
+\begin{DoxyCompactList}\small\item\em Set timeout on requests in seconds. Default value\+: 0 (no timeout). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{a00977_ad810229c900c88c32ab42a8bfce2c4a1}\label{a00977_ad810229c900c88c32ab42a8bfce2c4a1}} 
+std\+::size\+\_\+t \hyperlink{a00977_ad810229c900c88c32ab42a8bfce2c4a1}{timeout\+\_\+connect} = 0
+\begin{DoxyCompactList}\small\item\em Set connect timeout in seconds. Default value\+: 0 (\hyperlink{a00977_ab0ec5665cc6666eb621e01e9403fdf28}{Config\+::timeout} is then used instead). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{a00977_a6eb0382dccf50e9e8bdc541d3f06f9d5}\label{a00977_a6eb0382dccf50e9e8bdc541d3f06f9d5}} 
+std\+::string \hyperlink{a00977_a6eb0382dccf50e9e8bdc541d3f06f9d5}{proxy\+\_\+server}
+\begin{DoxyCompactList}\small\item\em Set proxy server (server\+:port) \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Friends}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{a00977_a01d54a7e16ca437c98ec571deca98dfc}\label{a00977_a01d54a7e16ca437c98ec571deca98dfc}} 
-class {\bfseries Server\+Base$<$ socket\+\_\+type $>$}
+\mbox{\Hypertarget{a00977_aee5298660229dd276c7169cf7ef3d387}\label{a00977_aee5298660229dd276c7169cf7ef3d387}} 
+class {\bfseries Client\+Base$<$ socket\+\_\+type $>$}
 \end{DoxyCompactItemize}
 
 
-\subsection{Member Data Documentation}
-\mbox{\Hypertarget{a00977_a2818b4f3c577ff1f4067bb1c62640c15}\label{a00977_a2818b4f3c577ff1f4067bb1c62640c15}} 
-\index{Simple\+Web\+::\+Server\+Base\+::\+Response@{Simple\+Web\+::\+Server\+Base\+::\+Response}!close\+\_\+connection\+\_\+after\+\_\+response@{close\+\_\+connection\+\_\+after\+\_\+response}}
-\index{close\+\_\+connection\+\_\+after\+\_\+response@{close\+\_\+connection\+\_\+after\+\_\+response}!Simple\+Web\+::\+Server\+Base\+::\+Response@{Simple\+Web\+::\+Server\+Base\+::\+Response}}
-\subsubsection{\texorpdfstring{close\+\_\+connection\+\_\+after\+\_\+response}{close\_connection\_after\_response}}
-{\footnotesize\ttfamily template$<$class socket\+\_\+type$>$ \\
-bool \hyperlink{a00973}{Simple\+Web\+::\+Server\+Base}$<$ socket\+\_\+type $>$\+::Response\+::close\+\_\+connection\+\_\+after\+\_\+response = false}
-
-If true, force server to close the connection after the response have been sent.
-
-This is useful when implementing a H\+T\+T\+P/1.\+0-\/server sending content without specifying the content length. 
-
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-server\+\_\+http.\+hpp\end{DoxyCompactItemize}
+client\+\_\+http.\+hpp\end{DoxyCompactItemize}

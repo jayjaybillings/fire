@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen 1.8.13"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <title>Fire: fire::PoissonCST Class Reference</title>
+        <title>Fire: fire::BasicPair&lt; T, K &gt; Struct Template Reference</title>
         <!--<link href="tabs.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="dynsections.js"></script>
         <link href="search/search.css" rel="stylesheet" type="text/css"/>
@@ -69,101 +69,231 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00198.html">fire</a></li><li class="navelem"><a class="el" href="a00793.html">PoissonCST</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00210.html">fire</a></li><li class="navelem"><a class="el" href="a00793.html">BasicPair</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="a00790.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">fire::PoissonCST Class Reference</div>  </div>
+<div class="title">fire::BasicPair&lt; T, K &gt; Struct Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="a00044_source.html">PoissonCST.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00038_source.html">FEMTypes.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for fire::PoissonCST:</div>
+Inheritance diagram for fire::BasicPair&lt; T, K &gt;:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="a00793.png" usemap="#fire::PoissonCST_map" alt=""/>
-  <map id="fire::PoissonCST_map" name="fire::PoissonCST_map">
-<area href="a00773.html" alt="fire::ConstantStrainTriangleElement" shape="rect" coords="0,0,209,24"/>
+  <img src="a00793.png" usemap="#fire::BasicPair_3C_20T_2C_20K_20_3E_map" alt=""/>
+  <map id="fire::BasicPair_3C_20T_2C_20K_20_3E_map" name="fire::BasicPair_3C_20T_2C_20K_20_3E_map">
+<area href="a00797.html" alt="fire::IdentifiablePair&lt; T, K, V &gt;" shape="rect" coords="0,56,217,80"/>
+<area href="a00797.html" alt="fire::IdentifiablePair&lt; T, K, Z &gt;" shape="rect" coords="227,56,444,80"/>
+<area href="a00801.html" alt="fire::IdentifiableTriplet&lt; T, K, V, Z &gt;" shape="rect" coords="227,112,444,136"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab45e61d417f5bbf0803d884bfb2db07f"><td class="memItemLeft" align="right" valign="top"><a id="ab45e61d417f5bbf0803d884bfb2db07f"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PoissonCST</b> (const <a class="el" href="a00198.html#a92dafcc05a788e1065a5792b67f0f70e">TwoDNode</a> &amp;node1, const <a class="el" href="a00198.html#a92dafcc05a788e1065a5792b67f0f70e">TwoDNode</a> &amp;node2, const <a class="el" href="a00198.html#a92dafcc05a788e1065a5792b67f0f70e">TwoDNode</a> &amp;node3)</td></tr>
-<tr class="separator:ab45e61d417f5bbf0803d884bfb2db07f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_a00773"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_a00773')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="a00773.html">fire::ConstantStrainTriangleElement</a></td></tr>
-<tr class="memitem:aa54c09f1dd7cacaf1f4f0b1428859c00 inherit pub_methods_a00773"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#aa54c09f1dd7cacaf1f4f0b1428859c00">ConstantStrainTriangleElement</a> (const <a class="el" href="a00198.html#a92dafcc05a788e1065a5792b67f0f70e">TwoDNode</a> &amp;node1, const <a class="el" href="a00198.html#a92dafcc05a788e1065a5792b67f0f70e">TwoDNode</a> &amp;node2, const <a class="el" href="a00198.html#a92dafcc05a788e1065a5792b67f0f70e">TwoDNode</a> &amp;node3)</td></tr>
-<tr class="separator:aa54c09f1dd7cacaf1f4f0b1428859c00 inherit pub_methods_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6da0892a84128d73e1186aeb69a37723 inherit pub_methods_a00773"><td class="memItemLeft" align="right" valign="top">const std::array&lt; <a class="el" href="a00198.html#a1a12603621e7a1efa59ac5cb79f9d509">MatrixElement</a>&lt; double &gt;, 9 &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#a6da0892a84128d73e1186aeb69a37723">stiffnessMatrix</a> ()</td></tr>
-<tr class="separator:a6da0892a84128d73e1186aeb69a37723 inherit pub_methods_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0795172aa1ee5ffc68ec0e2c4aab9cc inherit pub_methods_a00773"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="a00198.html#a08f01d4bb892cf7b2386d0f3a8643d72">VectorElement</a>&lt; double &gt;, 3 &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#ae0795172aa1ee5ffc68ec0e2c4aab9cc">bodyForceVector</a> ()</td></tr>
-<tr class="separator:ae0795172aa1ee5ffc68ec0e2c4aab9cc inherit pub_methods_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40cf9432221b62db76e8b154e3e81e3d inherit pub_methods_a00773"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#a40cf9432221b62db76e8b154e3e81e3d">recomputeConstants</a> ()</td></tr>
-<tr class="separator:a40cf9432221b62db76e8b154e3e81e3d inherit pub_methods_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd197716c6bffaa3c7b472661f0e5ca4 inherit pub_methods_a00773"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#acd197716c6bffaa3c7b472661f0e5ca4">area</a> ()</td></tr>
-<tr class="separator:acd197716c6bffaa3c7b472661f0e5ca4 inherit pub_methods_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a772e106e996b0d757332ca59b9c7f159 inherit pub_methods_a00773"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00198.html#a124b14f4255dab47a3f7235a02cc65ee">CSTLocalPoint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#a772e106e996b0d757332ca59b9c7f159">computeLocalPoint</a> (const double &amp;x, const double &amp;y) const</td></tr>
-<tr class="separator:a772e106e996b0d757332ca59b9c7f159 inherit pub_methods_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf4734f5fbc56b700c29d637baf78b9f inherit pub_methods_a00773"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#acf4734f5fbc56b700c29d637baf78b9f">hasNode</a> (const <a class="el" href="a00198.html#a92dafcc05a788e1065a5792b67f0f70e">TwoDNode</a> &amp;node) const</td></tr>
-<tr class="separator:acf4734f5fbc56b700c29d637baf78b9f inherit pub_methods_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaec00b05b8a6af567d2f5b39b1bb5611 inherit pub_methods_a00773"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#aaec00b05b8a6af567d2f5b39b1bb5611">getLocalNodeId</a> (const <a class="el" href="a00198.html#a92dafcc05a788e1065a5792b67f0f70e">TwoDNode</a> &amp;node) const</td></tr>
-<tr class="separator:aaec00b05b8a6af567d2f5b39b1bb5611 inherit pub_methods_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f65ab76e065f67fd5cef71e2e8c9628 inherit pub_methods_a00773"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#a6f65ab76e065f67fd5cef71e2e8c9628">getOffBoundaryNodeId</a> (const <a class="el" href="a00789.html">TwoDRobinBoundaryCondition</a> &amp;boundary) const</td></tr>
-<tr class="separator:a6f65ab76e065f67fd5cef71e2e8c9628 inherit pub_methods_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f4a8e6d0fece8943963f615caf70f09 inherit pub_methods_a00773"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#a7f4a8e6d0fece8943963f615caf70f09">addRobinBoundary</a> (const <a class="el" href="a00789.html">TwoDRobinBoundaryCondition</a> &amp;boundary)</td></tr>
-<tr class="separator:a7f4a8e6d0fece8943963f615caf70f09 inherit pub_methods_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28eae46234d49126ac4727e7883174a4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00793.html#a28eae46234d49126ac4727e7883174a4">BasicPair</a> ()</td></tr>
+<tr class="separator:a28eae46234d49126ac4727e7883174a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada8fa3f47bae245613d050598ac8488c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00793.html#ada8fa3f47bae245613d050598ac8488c">BasicPair</a> (const T &amp;_first, const K &amp;_second)</td></tr>
+<tr class="separator:ada8fa3f47bae245613d050598ac8488c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf9bd93b4bf7e16ca730a4dcc3ab859d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00793.html#acf9bd93b4bf7e16ca730a4dcc3ab859d">operator==</a> (const <a class="el" href="a00793.html">BasicPair</a> &amp;otherPair) const</td></tr>
+<tr class="separator:acf9bd93b4bf7e16ca730a4dcc3ab859d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cff50c2cbaaa51cba83832d435455d7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00793.html#a8cff50c2cbaaa51cba83832d435455d7">operator!=</a> (const <a class="el" href="a00793.html">BasicPair</a> &amp;otherPair) const</td></tr>
+<tr class="separator:a8cff50c2cbaaa51cba83832d435455d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_attribs_a00773"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_a00773')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="a00773.html">fire::ConstantStrainTriangleElement</a></td></tr>
-<tr class="memitem:a5feb92c27270536c92fcb39c6fecc00d inherit pub_attribs_a00773"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#a5feb92c27270536c92fcb39c6fecc00d">elementID</a> = -1</td></tr>
-<tr class="separator:a5feb92c27270536c92fcb39c6fecc00d inherit pub_attribs_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_attribs_a00773"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_a00773')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="a00773.html">fire::ConstantStrainTriangleElement</a></td></tr>
-<tr class="memitem:ab74cbf3ff783201003c53439f79307e4 inherit pro_attribs_a00773"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#ab74cbf3ff783201003c53439f79307e4">eArea</a> = 0.0</td></tr>
-<tr class="separator:ab74cbf3ff783201003c53439f79307e4 inherit pro_attribs_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad7071cc0cf8762bad7b59789b7bb5fc inherit pro_attribs_a00773"><td class="memItemLeft" align="right" valign="top">std::array&lt; double, numNodes &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#aad7071cc0cf8762bad7b59789b7bb5fc">a</a></td></tr>
-<tr class="separator:aad7071cc0cf8762bad7b59789b7bb5fc inherit pro_attribs_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75eeb5e4f9b5f6610b0e7112f8324b86 inherit pro_attribs_a00773"><td class="memItemLeft" align="right" valign="top">std::array&lt; double, numNodes &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#a75eeb5e4f9b5f6610b0e7112f8324b86">b</a></td></tr>
-<tr class="separator:a75eeb5e4f9b5f6610b0e7112f8324b86 inherit pro_attribs_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9152e640f73a7b832ee6d45a1cce567 inherit pro_attribs_a00773"><td class="memItemLeft" align="right" valign="top">std::array&lt; double, numNodes &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#ad9152e640f73a7b832ee6d45a1cce567">c</a></td></tr>
-<tr class="separator:ad9152e640f73a7b832ee6d45a1cce567 inherit pro_attribs_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add9415a1262a4d58136e1ef11507360b inherit pro_attribs_a00773"><td class="memItemLeft" align="right" valign="top">std::array&lt; std::reference_wrapper&lt; const <a class="el" href="a00198.html#a92dafcc05a788e1065a5792b67f0f70e">TwoDNode</a> &gt;, numNodes &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#add9415a1262a4d58136e1ef11507360b">nodes</a></td></tr>
-<tr class="separator:add9415a1262a4d58136e1ef11507360b inherit pro_attribs_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9126763a046ac0736d72b6b5d20ba80d inherit pro_attribs_a00773"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="a00198.html#a1a12603621e7a1efa59ac5cb79f9d509">MatrixElement</a>&lt; double &gt;, 9 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#a9126763a046ac0736d72b6b5d20ba80d">kIJElements</a></td></tr>
-<tr class="separator:a9126763a046ac0736d72b6b5d20ba80d inherit pro_attribs_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a85094c0060a67aa1b6abf4a5e660a6 inherit pro_attribs_a00773"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="a00198.html#a08f01d4bb892cf7b2386d0f3a8643d72">VectorElement</a>&lt; double &gt;, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#a8a85094c0060a67aa1b6abf4a5e660a6">bodyElements</a></td></tr>
-<tr class="separator:a8a85094c0060a67aa1b6abf4a5e660a6 inherit pro_attribs_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2480b5335fe78245cb1006e3eeb034d inherit pro_attribs_a00773"><td class="memItemLeft" align="right" valign="top">std::function&lt; double(const std::array&lt; double, 3 &gt; &amp;, const int &amp;, const int &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#ae2480b5335fe78245cb1006e3eeb034d">stiffnessKernel</a></td></tr>
-<tr class="separator:ae2480b5335fe78245cb1006e3eeb034d inherit pro_attribs_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48dbf56bce64a1e97332b03309720154 inherit pro_attribs_a00773"><td class="memItemLeft" align="right" valign="top">std::function&lt; double(const std::array&lt; double, 3 &gt; &amp;, const int &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#a48dbf56bce64a1e97332b03309720154">bodyForceKernel</a></td></tr>
-<tr class="separator:a48dbf56bce64a1e97332b03309720154 inherit pro_attribs_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e50303ae2cfb783f44de143be8a9aac inherit pro_attribs_a00773"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00869.html">TriangularQuadratureRule</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#a5e50303ae2cfb783f44de143be8a9aac">triQuadRule</a></td></tr>
-<tr class="separator:a5e50303ae2cfb783f44de143be8a9aac inherit pro_attribs_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70ceb410983c87c36546a2a95306dac6 inherit pro_attribs_a00773"><td class="memItemLeft" align="right" valign="top">short int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#a70ceb410983c87c36546a2a95306dac6">numBoundaries</a> = 0</td></tr>
-<tr class="separator:a70ceb410983c87c36546a2a95306dac6 inherit pro_attribs_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b9ec5bc80554d9ffcdd26248061c79f inherit pro_attribs_a00773"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="a00789.html">TwoDRobinBoundaryCondition</a>, numNodes &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#a3b9ec5bc80554d9ffcdd26248061c79f">boundaries</a></td></tr>
-<tr class="separator:a3b9ec5bc80554d9ffcdd26248061c79f inherit pro_attribs_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9e146872421c7dbd60e08f887b0cfc0 inherit pro_attribs_a00773"><td class="memItemLeft" align="right" valign="top">std::array&lt; int, numNodes &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00773.html#ac9e146872421c7dbd60e08f887b0cfc0">offBoundaryNodeIds</a></td></tr>
-<tr class="separator:ac9e146872421c7dbd60e08f887b0cfc0 inherit pro_attribs_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_static_attribs_a00773"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_a00773')"><img src="closed.png" alt="-"/>&#160;Static Protected Attributes inherited from <a class="el" href="a00773.html">fire::ConstantStrainTriangleElement</a></td></tr>
-<tr class="memitem:a3e23c9ef56fcb6641d5aa727370a827e inherit pro_static_attribs_a00773"><td class="memItemLeft" align="right" valign="top"><a id="a3e23c9ef56fcb6641d5aa727370a827e"></a>
-static constexpr const int&#160;</td><td class="memItemRight" valign="bottom"><b>numNodes</b> = 3</td></tr>
-<tr class="separator:a3e23c9ef56fcb6641d5aa727370a827e inherit pro_static_attribs_a00773"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a4e073a19bf2d3330d105d81a8febc4be"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00793.html#a4e073a19bf2d3330d105d81a8febc4be">first</a></td></tr>
+<tr class="separator:a4e073a19bf2d3330d105d81a8febc4be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecd2977e2fb903a5b106e4b5d7ab3bac"><td class="memItemLeft" align="right" valign="top">K&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00793.html#aecd2977e2fb903a5b106e4b5d7ab3bac">second</a></td></tr>
+<tr class="separator:aecd2977e2fb903a5b106e4b5d7ab3bac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This is a <a class="el" href="a00773.html">ConstantStrainTriangleElement</a> for Poisson's Equation </p><p class="formulaDsp">
-<img class="formulaDsp" alt="\[ ADD Poisson's equation! \]" src="form_11.png"/>
-</p>
-<p>NEED TO DISCUSS K! </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
-<li><a class="el" href="a00044_source.html">PoissonCST.h</a></li>
-<li>PoissonCST.cpp</li>
+<div class="textblock"><h3>template&lt;typename T, typename K&gt;<br />
+struct fire::BasicPair&lt; T, K &gt;</h3>
+
+<p>This is a basic pair of two types. It is modeled after std::pair in that it uses "first" and "second" elements, but it does not provide as many utility functions. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a28eae46234d49126ac4727e7883174a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28eae46234d49126ac4727e7883174a4">&#9670;&nbsp;</a></span>BasicPair() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename K&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00793.html">fire::BasicPair</a>&lt; T, K &gt;::<a class="el" href="a00793.html">BasicPair</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Basic constructor </p>
+
+</div>
+</div>
+<a id="ada8fa3f47bae245613d050598ac8488c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada8fa3f47bae245613d050598ac8488c">&#9670;&nbsp;</a></span>BasicPair() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename K&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="a00793.html">fire::BasicPair</a>&lt; T, K &gt;::<a class="el" href="a00793.html">BasicPair</a> </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>_first</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const K &amp;&#160;</td>
+          <td class="paramname"><em>_second</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initialization by value-copy constructor </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">_first</td><td>the value of the first element </td></tr>
+    <tr><td class="paramname">_second</td><td>the value of the second element </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a8cff50c2cbaaa51cba83832d435455d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cff50c2cbaaa51cba83832d435455d7">&#9670;&nbsp;</a></span>operator!=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename K&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="a00793.html">fire::BasicPair</a>&lt; T, K &gt;::operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a00793.html">BasicPair</a>&lt; T, K &gt; &amp;&#160;</td>
+          <td class="paramname"><em>otherPair</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The inequality operator override to invert ==. </p>
+
+</div>
+</div>
+<a id="acf9bd93b4bf7e16ca730a4dcc3ab859d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf9bd93b4bf7e16ca730a4dcc3ab859d">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename K&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="a00793.html">fire::BasicPair</a>&lt; T, K &gt;::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a00793.html">BasicPair</a>&lt; T, K &gt; &amp;&#160;</td>
+          <td class="paramname"><em>otherPair</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is an operator override to compare basic pairs. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">otherPair</td><td>a reference to the other pair to compare to this one </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if equal, false otherwise </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a4e073a19bf2d3330d105d81a8febc4be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e073a19bf2d3330d105d81a8febc4be">&#9670;&nbsp;</a></span>first</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename K&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">T <a class="el" href="a00793.html">fire::BasicPair</a>&lt; T, K &gt;::first</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The first member of the pair, often considered the key or x-coordinate value. </p>
+
+</div>
+</div>
+<a id="aecd2977e2fb903a5b106e4b5d7ab3bac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecd2977e2fb903a5b106e4b5d7ab3bac">&#9670;&nbsp;</a></span>second</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename K&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">K <a class="el" href="a00793.html">fire::BasicPair</a>&lt; T, K &gt;::second</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The second member of the pair, often considered the value or y-coordinate value. </p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li><a class="el" href="a00038_source.html">FEMTypes.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->

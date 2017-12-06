@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['kijelements',['kIJElements',['../a00773.html#a9126763a046ac0736d72b6b5d20ba80d',1,'fire::ConstantStrainTriangleElement']]]
+  ['jinoderobinboundarystiffnessfunction',['jiNodeRobinBoundaryStiffnessFunction',['../a00789.html#a6fb845d019aa63800d467329265b4a60',1,'fire::ConstantStrainTriangleElement']]],
+  ['jjnoderobinboundarystiffnessfunction',['jjNodeRobinBoundaryStiffnessFunction',['../a00789.html#a9fcfa817ef9b82d560608bcc531e41e5',1,'fire::ConstantStrainTriangleElement']]]
 ];

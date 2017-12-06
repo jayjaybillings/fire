@@ -37,6 +37,9 @@
 #include <functional>
 #include <FEMTypes.h>
 #include <TriangularQuadratureRule.h>
+#include <LineQuadratureRule.h>
+#include <TwoDRobinBoundaryCondition.h>
+#include <TwoDDirichletBoundaryCondition.h>
 
 namespace fire {
 
@@ -71,7 +74,7 @@ namespace fire {
  * double f(const std::array<double,3> & coords, const int & i);
  * @endcode
  * In this case, only one identifier is required to specify the vector element
- * index i of the kernel. PoissonCST provides a good example of an
+ * index i of the kernel. LaplaceCST provides a good example of an
  * appropriately configured subclass. The default implementations of
  * stiffnessKernel and bodyForceKernel evaluate to -1.0 for all values of (x,y)
  * input and will throw an exception if called.
@@ -82,12 +85,34 @@ namespace fire {
  * Boundaries can then be set on the element by calling addBoundary() with
  * local side ids. A triangle cannot have more than three boundaries.
  *
+ * Adding Dirichlet Boundary Conditions will cause the element to deflate its
+ * stiffness matrix and force vector by deleting unneeded matrix and vector
+ * elements, which greatly increases performance. Since this is a destructive
+ * process, Robin Boundary Conditions should always be added before Dirichlet
+ * Boundary Conditions. Cross-coupled elements of the stiffness matrix are
+ * subtracted from both sides (zeroed on the left, subtracted on the right)
+ * and scaled by the value of unknown due to the Dirichlet condition.
  */
 class ConstantStrainTriangleElement {
 
 protected:
 
+	/**
+	 * The number of nodes in the element.
+	 */
 	constexpr static const int numNodes = 3;
+
+	/**
+	 * The square of the number of nodes in the element.
+	 */
+	constexpr static int numElements = numNodes*numNodes;
+
+	/**
+	 * The maximum number of Dirichlet Boundary Conditions allowed for the
+	 * element. This is a triangle, so if you need 3 Dirichlet Boundary
+	 * Conditions, then you don't need this code!
+	 */
+	constexpr static int maxNumDBCs = 2;
 
 	/**
 	 * The area of the element.
@@ -112,20 +137,27 @@ protected:
 	/**
 	 * The nodes in the element.
 	 *
-	 * Note that this is initialized on construction because the array elements
-	 * are references.
+	 * Note that this wraps references because the element does not own the
+	 * nodes, only uses them.
 	 */
 	std::array<std::reference_wrapper<const TwoDNode>,numNodes> nodes;
 
 	/**
 	 * The matrix elements k_ij computed for this element.
 	 */
-	std::array<MatrixElement<double>,9> kIJElements;
+	std::vector<MatrixElement<double>> kIJElements;
 
 	/**
 	 * The body force vector elements f_i computed for this element.
 	 */
-	std::array<VectorElement<double>,3> bodyElements;
+	std::vector<VectorElement<double>> bodyElements;
+
+	/**
+	 * This vector stores stiffness matrix elements that are removed due to
+	 * deflation from Dirichlet Boundary Conditions that must be added to the
+	 * right hand side.
+	 */
+	std::vector<IdentifiableTriplet<int,int,int,int>> forceVectorUpdateElements;
 
 	/**
 	 * A function handle to the kernel that will be evaluated in the
@@ -150,31 +182,192 @@ protected:
 	TriangularQuadratureRule triQuadRule;
 
 	/**
-	 * This is the number of active boundaries on the triangle.
+	 * This is a four point Gaussian Quadrature rule over a line that is used
+	 * to integrate the boundary condition kernels. It should be more
+	 * efficient to drop to a two point rule since this element's boundaries
+	 * transform into quadratic functions in the bounds change, but we can test
+	 * that later.
 	 */
-	short int numBoundaries = 0;
+	LineQuadratureRule lineQuadRule;
 
 	/**
-	 * This array stores the active boundaries on the triangle.
+	 * This is the number of active Robin boundary conditions on the triangle.
 	 */
-	std::array<TwoDRobinBoundaryCondition, numNodes> boundaries;
+	short int numRobinBoundaries = 0;
 
 	/**
-	 * This array stores the id of the node that is not on the boundary at
-	 * the same index in the boundaries array. For example, if boundaries[0]
-	 * is the boundary between the third and first node, then
-	 * offBoundaryNodeIds[0] = 2. This is used in the computation of the
-	 * "distance" elements
+	 * This array stores the active Robin boundary conditions on the triangle.
+	 */
+	std::vector<std::reference_wrapper<const TwoDRobinBoundaryCondition>> robinBoundaries;
+
+	/**
+	 * This stores a small amount of information about the boundary conditions
+	 * so that sparsity can be maximally leveraged (at the expense of some
+	 * memory, yes) for the stiffness matrix.
+	 */
+	std::vector<RobinBoundaryMatrixContribution> robinBoundaryContributions;
+
+	/**
+	 * This stores boundary condition contributions that have been removed from
+	 * the stiffness matrix and need to be added to force vector because of
+	 * deflation from a Dirichlet Boundary Condition.
+	 */
+	std::vector<RobinBoundaryMatrixContribution> robinBoundaryForceContributions;
+
+	/**
+	 * This is a pair that stores a small amount of information about the
+	 * boundary conditions so that sparsity can maximally leverage (at the
+	 * expense of some memory, yes) for the force vector.
+	 */
+	std::vector<IdentifiableTriplet<int,int,int,std::function<double(const double &,
+			const int &)>>> robinBoundaryForces;
+
+
+	/**
+	 * This array stores the active Diriclet boundary conditions on the
+	 * triangle.
+	 */
+	std::vector<std::reference_wrapper<const TwoDDirichletBoundaryCondition>> dirichletBoundaries;
+
+	/**
+	 * This function computes the contribution to the stiffness matrix at (j,j)
+	 * element due to a boundary between nodes (i,j) that has a Robin Boundary
+	 * Condition. It computes
 	 * \f[
-	 * (b_{i}^{2} + c_{i}^{2})^{1/2}
+	 * \sigma(L_{j})(b_{k}^2 + c_{k}^2)^{1/2}L_{j}
 	 * \f]
-	 * of the boundary conditions since i must not be equal to the boundary
-	 * node ids.
+	 * which is integrated as
+	 * \f[
+	 * \int_{0}^{1} \sigma(L_{j})(b_{k}^2 + c_{k}^2)^{1/2}L_{j} dL_{j}
+	 * \f]
+	 * where \f$b_{k}\f$ and \f$c_{k}^2\f$ are the b and c constants for node
+	 * k, which is not on the boundary.
 	 *
-	 * Computing this id in advance is handy because it saves cycles and avoids
-	 * multiple branches during the computation of the matrix elements.
+	 * Note that the bounds of integration are shifted in the code to cover
+	 * [-1,1] and better fit standard 1D Gaussian Quadrature routines such as
+	 * the one implemented by LineQuadratureRule. The bound shift is
+	 * accomplished using u-substitution of
+	 * \f[
+	 * x = 2L_{i} - 1
+	 * \f]
 	 */
-	std::array<int,numNodes> offBoundaryNodeIds;
+	std::function<double(const double &, const int &)> jjNodeRobinBoundaryStiffnessFunction;
+
+	/**
+	 * This function computes the contribution to the stiffness matrix at the
+	 * (i,j) and (j,i) elements due to a boundary between nodes (i,j) that has
+	 * a Robin Boundary Condition. It computes
+	 * \f[
+	 * \sigma(L_{j})(b_{k}^2 + c_{k}^2)^{1/2}(L_{j}-L_{j}^{2})
+	 * \f]
+	 * which is integrated as
+	 * \f[
+	 * \int_{0}^{1} \sigma(L_{j})(b_{k}^2 + c_{k}^2)^{1/2}(L_{j}-L_{j}^{2}) dL_{j}
+	 * \f]
+	 * where \f$b_{k}\f$ and \f$c_{k}^2\f$ are the b and c constants for node
+	 * k, which is not on the boundary.
+	 *
+	 * Note that the bounds of integration are shifted in the code to cover
+	 * [-1,1] and better fit standard 1D Gaussian Quadrature routines such as
+	 * the one implemented by LineQuadratureRule. The bound shift is
+	 * accomplished using u-substitution of
+	 * \f[
+	 * x = 2L_{i} - 1
+	 * \f]
+	 */
+	std::function<double(const double &, const int &)> jiNodeRobinBoundaryStiffnessFunction;
+
+	/**
+	 * This function computes the contribution to the stiffness matrix at (j,j)
+	 * element due to a boundary between nodes (i,j) that has a Robin Boundary
+	 * Condition. It computes
+	 * \f[
+	 * \sigma(L_{j})(b_{k}^2 + c_{k}^2)^{1/2}(1-L_{j})^{2}
+	 * \f]
+	 * which is integrated as
+	 * \f[
+	 * \int_{0}^{1} \sigma(L_{j})(b_{k}^2 + c_{k}^2)^{1/2}(1-L_{j})^{2} dL_{j}
+	 * \f]
+	 * where \f$b_{k}\f$ and \f$c_{k}^2\f$ are the b and c constants for node
+	 * k, which is not on the boundary.
+	 *
+	 * Note that the bounds of integration are shifted in the code to cover
+	 * [-1,1] and better fit standard 1D Gaussian Quadrature routines such as
+	 * the one implemented by LineQuadratureRule. The bound shift is
+	 * accomplished using u-substitution of
+	 * \f[
+	 * x = 2L_{i} - 1
+	 * \f]
+	 */
+	std::function<double(const double &, const int &)> iiNodeRobinBoundaryStiffnessFunction;
+
+	/**
+	 * This function computes the contribution to the force vector at the first
+	 * node of a boundary due to a Robin Boundary Condition. It computes
+	 * \f[
+	 * h(L_{i})(1-L_{i})
+	 * \f]
+	 * which is integrated as
+	 * \f[
+	 * \int_{0}^{1} h(L_{i})(1-L_{i}) dL_{i}
+	 * \f]
+	 *
+	 * Note that the bounds of integration are shifted in the code to cover
+	 * [-1,1] and better fit standard 1D Gaussian Quadrature routines such as
+	 * the one implemented by LineQuadratureRule. The bound shift is
+	 * accomplished using u-substitution of
+	 * \f[
+	 * x = 2L_{i} - 1
+	 * \f]
+	 */
+	std::function<double(const double &, const int &)> firstNodeRobinBoundaryForceFunction;
+
+	/**
+	 * This function computes the contribution to the force vector at the second
+	 * node of a boundary due to a Robin Boundary Condition. It computes
+	 * \f[
+	 *  h(L_{i})L_{i}
+	 * \f]
+	 * which is integrated as
+	 * \f[
+	 * \int_{0}^{1} h(L_{i})L_{i}dL_{i}
+	 * \f]
+	 *
+	 * Note that the bounds of integration are shifted in the code to cover
+	 * [-1,1] and better fit standard 1D Gaussian Quadrature routines such as
+	 * the one implemented by LineQuadratureRule. The bound shift is
+	 * accomplished using u-substitution of
+	 * \f[
+	 * x = 2L_{i} - 1
+	 * \f]
+	 */
+	std::function<double(const double &, const int &)> secondNodeRobinBoundaryForceFunction;
+
+	/**
+	 * This function checks a 2D boundary to see if it was previously modified
+	 * or configured in this element. It specifically checks that the boundary:
+	 * 1) is not a loop where the same node is the start and end of the
+	 * boundary.
+	 * 2) has nodes that are in the element.
+	 * @param boundaryCond the boundary condition to check
+	 * @return true if the boundary is already configured on the element, false
+	 * if not
+	 */
+    bool checkBoundary(const NodePair<TwoDNode> & boundary) const;
+
+    /**
+     * FIXME! Add docs when finished with it
+     */
+    void computeIds();
+
+    /**
+     * This operation computes the value of the stiffness matrix without
+     * consideration of Robin Boundary Conditions at the given indices.
+     * @param i the first index
+     * @param j the second index
+     * @return the result
+     */
+    double getStiffnessElement(const int & i, const int & j);
 
 public:
 
@@ -186,6 +379,9 @@ public:
 
 	/**
 	 * The constructor
+	 * @param node1 the first node in the element
+	 * @param node2 the second node in the element
+	 * @param node3 the third node in the element
 	 */
 	ConstantStrainTriangleElement(const TwoDNode & node1,
 			const TwoDNode & node2, const TwoDNode & node3);
@@ -196,7 +392,7 @@ public:
 	 * @return An array of 9 matrix elements, each containing a single
 	 * contribution k_ij to the global stiffness matrix.
 	 */
-	const std::array<MatrixElement<double>,9> & stiffnessMatrix();
+	const std::vector<MatrixElement<double>> & stiffnessMatrix();
 
 	/**
 	 * This operation returns the contributions, f_i, made by this element to
@@ -204,7 +400,7 @@ public:
 	 * @return An array of 3 vector elements, each containing a single
 	 * contribution f_i to the global body force vector..
 	 */
-	std::array<VectorElement<double>,3> & bodyForceVector();
+	const std::vector	<VectorElement<double>> & bodyForceVector();
 
 	/**
 	 * This operation directs the element to recompute its constants. That is,
@@ -214,7 +410,11 @@ public:
 	void recomputeConstants();
 
 	/**
-	 * This operation returns the area of the element.
+	 * This operation returns the area of the element. Note that this operation
+	 * does not compute the area of the element. The area should be constant
+	 * unless the coordinates of the nodes change, so the area is computed once
+	 * during construction and must be recomputed by calling
+	 * recomputeConstants() if the nodes change.
 	 * @return the area of the element as computed by recomputeConstants().
 	 */
 	double area();
@@ -245,21 +445,40 @@ public:
 	int getLocalNodeId(const TwoDNode & node) const;
 
 	/**
+	 * This operation returns the local id for the node in question if and
+	 * only if it is a member of the element.
+	 * @param nodeId the nodeId to check for inclusion
+	 * @return 0, 1, or 2 if the element contains the node, -1 otherwise.
+	 */
+	int getLocalNodeId(const int & nodeId) const;
+
+	/**
 	 * This operation returns the id of the node in this element that IS NOT on
 	 * the boundary or -1 if the boundary is not on this element.
 	 */
-	int getOffBoundaryNodeId(const TwoDRobinBoundaryCondition & boundary) const;
+	int getOffBoundaryLocalNodeId(const TwoDRobinBoundaryCondition & boundary) const;
 
 	/**
 	 * This operation will assign the supplied TwoDRobinBoundaryCondition to
 	 * the element. A triangle cannot have more than three boundaries and this
 	 * function will throw an exception if it is called to set a fourth
 	 * boundary. Likewise, this function will also throw an exception if the
-	 * two boundary node ids are the same (no self-
-	 * boundary loops).
+	 * two boundary node ids are the same (no self- boundary loops) or if the
+	 * boundary condition has been added previously.
 	 * @param boundary the 2D Robin Boundary Condition
 	 */
 	void addRobinBoundary(const TwoDRobinBoundaryCondition & boundary);
+
+	/**
+	 * This operation will assign the supplied TwoDDirichletBoundaryCondition to
+	 * the element. A triangle cannot have more than three boundaries and this
+	 * function will throw an exception if it is called to set a fourth
+	 * boundary. Likewise, this function will also throw an exception if the
+	 * two boundary node ids are the same (no self-boundary loops) or if the
+	 * boundary condition has been added previously.
+	 * @param boundary the 2D Dirichlet Boundary Condition
+	 */
+	void addDirichletBoundary(const TwoDDirichletBoundaryCondition & boundary);
 
 };
 

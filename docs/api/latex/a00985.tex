@@ -1,43 +1,32 @@
-\hypertarget{a00985}{}\section{Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:\+:Request Class Reference}
-\label{a00985}\index{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$\+::\+Request@{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$\+::\+Request}}
-\subsection*{Public Attributes}
+\hypertarget{a00985}{}\section{Simple\+Web\+:\+:Client$<$ H\+T\+T\+PS $>$ Class Template Reference}
+\label{a00985}\index{Simple\+Web\+::\+Client$<$ H\+T\+T\+P\+S $>$@{Simple\+Web\+::\+Client$<$ H\+T\+T\+P\+S $>$}}
+Inheritance diagram for Simple\+Web\+:\+:Client$<$ H\+T\+T\+PS $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{a00985}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{a00985_a1fb7883b8e0e3a660117252f510f373c}\label{a00985_a1fb7883b8e0e3a660117252f510f373c}} 
-std\+::string {\bfseries method}
-\item 
-\mbox{\Hypertarget{a00985_aeb74bfe9b28c61dbf439f71ba752b0f7}\label{a00985_aeb74bfe9b28c61dbf439f71ba752b0f7}} 
-std\+::string {\bfseries path}
-\item 
-\mbox{\Hypertarget{a00985_a09d25275bf1442fb384bad9be714e6ba}\label{a00985_a09d25275bf1442fb384bad9be714e6ba}} 
-std\+::string {\bfseries http\+\_\+version}
-\item 
-\mbox{\Hypertarget{a00985_aa62ad9907bb75bb1da861167134f772e}\label{a00985_aa62ad9907bb75bb1da861167134f772e}} 
-\hyperlink{a00981}{Content} {\bfseries content}
-\item 
-\mbox{\Hypertarget{a00985_a6a7785d6de24ca7479c6a8c50752fcec}\label{a00985_a6a7785d6de24ca7479c6a8c50752fcec}} 
-std\+::unordered\+\_\+multimap$<$ std\+::string, std\+::string, \hyperlink{a00941}{case\+\_\+insensitive\+\_\+hash}, \hyperlink{a00937}{case\+\_\+insensitive\+\_\+equals} $>$ {\bfseries header}
-\item 
-\mbox{\Hypertarget{a00985_ae9dc5e6dc6eb24e1faeb2c65b7ee7ba6}\label{a00985_ae9dc5e6dc6eb24e1faeb2c65b7ee7ba6}} 
-R\+E\+G\+E\+X\+\_\+\+N\+S\+::smatch {\bfseries path\+\_\+match}
-\item 
-\mbox{\Hypertarget{a00985_a9689318cfa9b95862f6e1477071fb725}\label{a00985_a9689318cfa9b95862f6e1477071fb725}} 
-std\+::string {\bfseries remote\+\_\+endpoint\+\_\+address}
-\item 
-\mbox{\Hypertarget{a00985_ab44a4b842b5144fcb88df1d3a3aff92f}\label{a00985_ab44a4b842b5144fcb88df1d3a3aff92f}} 
-unsigned short {\bfseries remote\+\_\+endpoint\+\_\+port}
+\mbox{\Hypertarget{a00985_abd87d3dc08c9fed3a60f18c749b8bacd}\label{a00985_abd87d3dc08c9fed3a60f18c749b8bacd}} 
+{\bfseries Client} (const std\+::string \&server\+\_\+port\+\_\+path, bool verify\+\_\+certificate=true, const std\+::string \&cert\+\_\+file=std\+::string(), const std\+::string \&private\+\_\+key\+\_\+file=std\+::string(), const std\+::string \&verify\+\_\+file=std\+::string())
 \end{DoxyCompactItemize}
-\subsection*{Friends}
+\subsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{a00985_a01d54a7e16ca437c98ec571deca98dfc}\label{a00985_a01d54a7e16ca437c98ec571deca98dfc}} 
-class {\bfseries Server\+Base$<$ socket\+\_\+type $>$}
-\item 
-\mbox{\Hypertarget{a00985_a3f155064c0074d68a408aa3193ca1666}\label{a00985_a3f155064c0074d68a408aa3193ca1666}} 
-class {\bfseries Server$<$ socket\+\_\+type $>$}
+\mbox{\Hypertarget{a00985_a833f6fd136e3158b873bee024d6e188c}\label{a00985_a833f6fd136e3158b873bee024d6e188c}} 
+void {\bfseries connect} ()
 \end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{a00985_afe57679cc6153d5d1fe8abc94a8fa58a}\label{a00985_afe57679cc6153d5d1fe8abc94a8fa58a}} 
+boost\+::asio\+::ssl\+::context {\bfseries context}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-server\+\_\+http.\+hpp\end{DoxyCompactItemize}
+client\+\_\+https.\+hpp\end{DoxyCompactItemize}

@@ -46,9 +46,9 @@ BOOST_AUTO_TEST_CASE(checkCSTArea) {
 	TwoDNode node1(0.0,0.0,1), node2(1.0,0.0,2), node3(1.0,1.0,3);
 	ConstantStrainTriangleElement element(node1,node2,node3);
 
-	double area = (node2.first*node3.second - node3.first*node2.second)
+	double area = 0.5*((node2.first*node3.second - node3.first*node2.second)
 			- node1.first*(node3.second-node2.second)
-			+ node1.second*(node3.first-node2.first);
+			+ node1.second*(node3.first-node2.first));
 
 	// Check the area
 	BOOST_REQUIRE_CLOSE(area,element.area(),1.0e-15);
@@ -84,11 +84,18 @@ BOOST_AUTO_TEST_CASE(checkLocalNodeIdsAndOffIds) {
 	// Node 4 is not on the element, so it should return -1.
 	BOOST_REQUIRE_EQUAL(-1,element.getLocalNodeId(node4));
 
+	// Check local node ids using integers
+	BOOST_REQUIRE_EQUAL(0,element.getLocalNodeId(1));
+	BOOST_REQUIRE_EQUAL(1,element.getLocalNodeId(2));
+	BOOST_REQUIRE_EQUAL(2,element.getLocalNodeId(3));
+	// Node 4 is not on the element, so it should return -1.
+	BOOST_REQUIRE_EQUAL(-1,element.getLocalNodeId(4));
+
 	// Check off boundary ids
-	BOOST_REQUIRE_EQUAL(1,element.getOffBoundaryNodeId(cond1));
-	BOOST_REQUIRE_EQUAL(2,element.getOffBoundaryNodeId(cond2));
-	BOOST_REQUIRE_EQUAL(0,element.getOffBoundaryNodeId(cond3));
-	BOOST_REQUIRE_EQUAL(-1,element.getOffBoundaryNodeId(cond4));
+	BOOST_REQUIRE_EQUAL(1,element.getOffBoundaryLocalNodeId(cond1));
+	BOOST_REQUIRE_EQUAL(2,element.getOffBoundaryLocalNodeId(cond2));
+	BOOST_REQUIRE_EQUAL(0,element.getOffBoundaryLocalNodeId(cond3));
+	BOOST_REQUIRE_EQUAL(-1,element.getOffBoundaryLocalNodeId(cond4));
 
 	return;
 }
@@ -126,14 +133,24 @@ BOOST_AUTO_TEST_CASE(checkRecomputingConstants) {
 	TwoDNode node1(0.0,0.0,1), node2(1.0,0.0,2), node3(1.0,1.0,3);
 	ConstantStrainTriangleElement element(node1,node2,node3);
 
-	double area = (node2.first*node3.second - node3.first*node2.second)
+	double area = 0.5*(node2.first*node3.second - node3.first*node2.second)
 			- node1.first*(node3.second-node2.second)
 			+ node1.second*(node3.first-node2.first);
 
 	// Check the area
 	BOOST_REQUIRE_CLOSE(area,element.area(),1.0e-15);
 
-	// Double
+	// Double the height of the third node
+	node3.second = 2.0;
+	// Make sure the area hasn't changed
+	BOOST_REQUIRE_CLOSE(area,element.area(),1.0e-15);
+	// Recompute the constants to update the area
+	element.recomputeConstants();
+	// Make sure the area has changed
+	area = 0.5*(node2.first*node3.second - node3.first*node2.second)
+				- node1.first*(node3.second-node2.second)
+				+ node1.second*(node3.first-node2.first);
+	BOOST_REQUIRE_CLOSE(area,element.area(),1.0e-15);
 
 	return;
 }
@@ -197,31 +214,64 @@ BOOST_AUTO_TEST_CASE(checkBoundaries) {
 	std::function<double(const double &)> h = [](const double & foo) {
 		return 3.0;
 	};
-	TwoDRobinBoundaryCondition cond1(node3,node1,f,g),
-			cond2(node1,node2,g,h), cond3(node2,node2,h,f),
-			cond4(node2,node3,h,f), cond5(node4,node1,f,g);
+	std::function<double(const double &, const double &)> dF =
+			[](const double & foo, const double & bar) {
+		return 3.0;
+	};
+	std::function<double(const double &, const double &)> dG =
+			[](const double & foo, const double & bar) {
+		return 3.0;
+	};
 
-	// NEED to create TwoDRobinBoundaryCondition
+
+	// Start with Robin Conditions
+	TwoDRobinBoundaryCondition rCond1(node3,node1,f,g),
+			rCond2(node1,node2,g,h), rCond3(node2,node2,h,f),
+			rCond4(node2,node3,h,f), rCond5(node4,node1,f,g);
 
 	// Add a couple of boundaries
-	element.addRobinBoundary(cond1);
-	element.addRobinBoundary(cond2);
+	element.addRobinBoundary(rCond1);
+	element.addRobinBoundary(rCond2);
 	// Try to add a boundary with the same node ids
 	try {
-		element.addRobinBoundary(cond3);
+		element.addRobinBoundary(rCond3);
 		BOOST_FAIL("Adding boundary with same node ids not caught!");
 	} catch (...) { /** Do nothing, it passed **/ }
 	// Add a third boundary
-	element.addRobinBoundary(cond4);
+	element.addRobinBoundary(rCond4);
 	// Try to add a fourth, invalid boundary
 	try {
-		element.addRobinBoundary(cond5);
+		element.addRobinBoundary(rCond5);
 		BOOST_FAIL("Adding fourth boundary on triangle not caught!");
 	} catch (...) { /** Do nothing, it passed **/ }
 	// Try to add a boundary that is already configured
 	try {
-		element.addRobinBoundary(cond1);
+		element.addRobinBoundary(rCond1);
 		BOOST_FAIL("Adding pre-existing boundary on triangle not caught!");
+	} catch (...) { /** Do nothing, it passed **/ }
+
+	// Repeat for Dirichlet Conditions
+	TwoDDirichletBoundaryCondition dCond1(node3,dF),
+			dCond2(node1,dG), dCond3(node2,dF),
+			dCond4(node2,dG);
+
+	// Add a couple of boundaries
+	element.addDirichletBoundary(dCond1);
+	element.addDirichletBoundary(dCond2);
+	// Try to add a boundary with the same node ids
+	try {
+		element.addDirichletBoundary(dCond3);
+		BOOST_FAIL("Adding Dirichlet boundary with same node ids not caught!");
+	} catch (...) { /** Do nothing, it passed **/ }
+	// Try to add a third, which isn't allowed for Dirichlet boundaries.
+	try {
+		element.addDirichletBoundary(dCond4);
+		BOOST_FAIL("Adding fourth Dirichlet boundary on triangle not caught!");
+	} catch (...) { /** Do nothing, it passed **/ }
+	// Try to add a boundary that is already configured
+	try {
+		element.addDirichletBoundary(dCond1);
+		BOOST_FAIL("Adding pre-existing Dirichlet boundary on triangle not caught!");
 	} catch (...) { /** Do nothing, it passed **/ }
 
 	return;

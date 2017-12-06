@@ -1,109 +1,61 @@
-\hypertarget{a00809}{}\section{fire\+:\+:Delimited\+Text\+Parser$<$ T, K $>$ Class Template Reference}
-\label{a00809}\index{fire\+::\+Delimited\+Text\+Parser$<$ T, K $>$@{fire\+::\+Delimited\+Text\+Parser$<$ T, K $>$}}
+\hypertarget{a00809}{}\section{fire\+:\+:Laplace\+C\+ST Class Reference}
+\label{a00809}\index{fire\+::\+Laplace\+C\+ST@{fire\+::\+Laplace\+C\+ST}}
 
 
-{\ttfamily \#include $<$Delimited\+Text\+Parser.\+h$>$}
+{\ttfamily \#include $<$Laplace\+C\+S\+T.\+h$>$}
 
-Inheritance diagram for fire\+:\+:Delimited\+Text\+Parser$<$ T, K $>$\+:\begin{figure}[H]
+Inheritance diagram for fire\+:\+:Laplace\+C\+ST\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[height=4.000000cm]{a00809}
+\includegraphics[height=2.000000cm]{a00809}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{a00809_aa1f041ebbf0bf72145e8bd20bf95f3f4}\label{a00809_aa1f041ebbf0bf72145e8bd20bf95f3f4}} 
-{\bfseries Delimited\+Text\+Parser} (string delim, string comment)
-\item 
-virtual void \hyperlink{a00809_a686df5548771cae833d5e721442a821a}{parse} ()
-\item 
-{\footnotesize template$<$$>$ }\\void \hyperlink{a00809_a773fa7ed28cb9d8c384ad94bd81fc93f}{parse} ()
+\hyperlink{a00809_a6be98b3a124e32f9f9e35864e1a032de}{Laplace\+C\+ST} (const \hyperlink{a00210_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&node1, const \hyperlink{a00210_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&node2, const \hyperlink{a00210_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&node3)
 \end{DoxyCompactItemize}
 \subsection*{Protected Attributes}
 \begin{DoxyCompactItemize}
 \item 
-string \hyperlink{a00809_ac817fc333b53611a41f446977461bdbf}{delimiter}
-\item 
-string \hyperlink{a00809_acdd7b27b8109ed41e7d9bc5e6de72e93}{comment\+Char}
+std\+::function$<$ double(const std\+::array$<$ double, 3 $>$ \&, const int \&, const int \&)$>$ \hyperlink{a00809_a29219b378306be30e3577c0508098ca7}{k\+Function}
 \end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
 
 
 \subsection{Detailed Description}
-\subsubsection*{template$<$typename T, typename K$>$\newline
-class fire\+::\+Delimited\+Text\+Parser$<$ T, K $>$}
+This is a \hyperlink{a00789}{Constant\+Strain\+Triangle\+Element} for Laplace\textquotesingle{}s Equation \[ \kappa(\bar{x})\nabla^{2}u(\bar{x}) = 0 \] where $\kappa(\bar{x})$ is the spatially-\/dependent transfer coefficient. (See set\+Transfer\+Coefficient() for details on how to specify it.)
 
-This class implements \hyperlink{a00813}{I\+Local\+Parser} to provide a local, file-\/based, serially executed delimited text parser.
+The contributions to the stiffness matrix for for Laplace\textquotesingle{}s equation are given by \[ k_{ij} = \iint_{A} \frac{\kappa(\bar{x})}{4A^{2}} (b_{i}b_{j} + c_{i}c_{j}) dx dy \] If k is constant, then this can be simplified further\+: \[ k_{ij} = \frac{\kappa}{4A} (b_{i}b_{j} + c_{i}c_{j}) \] 
 
-\hyperlink{a00813_a091d5cf56bf8f407854ef87f460b2958}{is\+File()} will return true if set\+Source(string) is used is\+Stream() will return true if set\+Source(istream) is used \hyperlink{a00813_a770acae6e216de3a9c7140a12de25d58}{is\+Local()} always returns true. \hyperlink{a00813_ad46898c516adcce38acbb4800dc9777b}{is\+Parallel()} always returns false.
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{a00809_a6be98b3a124e32f9f9e35864e1a032de}\label{a00809_a6be98b3a124e32f9f9e35864e1a032de}} 
+\index{fire\+::\+Laplace\+C\+ST@{fire\+::\+Laplace\+C\+ST}!Laplace\+C\+ST@{Laplace\+C\+ST}}
+\index{Laplace\+C\+ST@{Laplace\+C\+ST}!fire\+::\+Laplace\+C\+ST@{fire\+::\+Laplace\+C\+ST}}
+\subsubsection{\texorpdfstring{Laplace\+C\+S\+T()}{LaplaceCST()}}
+{\footnotesize\ttfamily fire\+::\+Laplace\+C\+S\+T\+::\+Laplace\+C\+ST (\begin{DoxyParamCaption}\item[{const \hyperlink{a00210_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&}]{node1,  }\item[{const \hyperlink{a00210_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&}]{node2,  }\item[{const \hyperlink{a00210_a92dafcc05a788e1065a5792b67f0f70e}{Two\+D\+Node} \&}]{node3 }\end{DoxyParamCaption})}
 
-Because delimited text is most often primitives, this class requires two template arguments. The first argument T is how the data should be returned and the second argument K is the root type of the delimited text, most likely a primitive. This would look something like
-
-
-\begin{DoxyCode}
-DelimitedTextParser<vector<vector<double>>,\textcolor{keywordtype}{double}>
-\end{DoxyCode}
-
-
-for a dense body of text like in a standard C\+SV file or D\+AT file where each column is composed of dense primitives.
-
-The source may either be a file on the local filesystem or an input stream.
-
-This is an extension of the parser interface that focuses on parsing delimited text. Delimited text is text with entries that are separated by a common pattern, such as a common or space.
-
-The Comma-\/\+Separated Variables format is a delimited text format of the form
-
-v1, v2, v3, v4
-
-where each comma is the delimiter between the text values v1 through v4. A line of text with only spaces is also a delimited text format\+:
-
-v1 v2 v3 v4
-
-Delimited text parsers may assume that lines such as those above are terminated by ~\newline
-. Like most other text formats, delimited text files may contain comments, which may be skipped by I\+Delimited\+Text\+Parsers. The characters that denote comments -\/ very commonly a \char`\"{}\#\char`\"{} or \char`\"{}//\char`\"{} -\/ may be passed to the constructor. 
-
-\subsection{Member Function Documentation}
-\mbox{\Hypertarget{a00809_a686df5548771cae833d5e721442a821a}\label{a00809_a686df5548771cae833d5e721442a821a}} 
-\index{fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}!parse@{parse}}
-\index{parse@{parse}!fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}}
-\subsubsection{\texorpdfstring{parse()}{parse()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
-{\footnotesize\ttfamily template$<$typename T , typename K $>$ \\
-virtual void \hyperlink{a00809}{fire\+::\+Delimited\+Text\+Parser}$<$ T, K $>$\+::parse (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
-
-This operation directs the parser to parse its source. 
-
-Reimplemented from \hyperlink{a00829_abd8929aea06c2dda40256d2e58236650}{fire\+::\+Local\+Parser$<$ T $>$}.
-
-\mbox{\Hypertarget{a00809_a773fa7ed28cb9d8c384ad94bd81fc93f}\label{a00809_a773fa7ed28cb9d8c384ad94bd81fc93f}} 
-\index{fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}!parse@{parse}}
-\index{parse@{parse}!fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}}
-\subsubsection{\texorpdfstring{parse()}{parse()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
-{\footnotesize\ttfamily template$<$$>$ \\
-void \hyperlink{a00809}{fire\+::\+Delimited\+Text\+Parser}$<$ vector$<$ vector$<$ double $>$ $>$, double $>$\+::parse (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
-
-This specialization is for dense data of primitive type double. 
-
-Reimplemented from \hyperlink{a00829_abd8929aea06c2dda40256d2e58236650}{fire\+::\+Local\+Parser$<$ T $>$}.
-
+The constructor 
+\begin{DoxyParams}{Parameters}
+{\em node1} & the first node in the element \\
+\hline
+{\em node2} & the second node in the element \\
+\hline
+{\em node3} & the third node in the element \\
+\hline
+\end{DoxyParams}
 
 
 \subsection{Member Data Documentation}
-\mbox{\Hypertarget{a00809_acdd7b27b8109ed41e7d9bc5e6de72e93}\label{a00809_acdd7b27b8109ed41e7d9bc5e6de72e93}} 
-\index{fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}!comment\+Char@{comment\+Char}}
-\index{comment\+Char@{comment\+Char}!fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}}
-\subsubsection{\texorpdfstring{comment\+Char}{commentChar}}
-{\footnotesize\ttfamily template$<$typename T , typename K $>$ \\
-string \hyperlink{a00809}{fire\+::\+Delimited\+Text\+Parser}$<$ T, K $>$\+::comment\+Char\hspace{0.3cm}{\ttfamily [protected]}}
+\mbox{\Hypertarget{a00809_a29219b378306be30e3577c0508098ca7}\label{a00809_a29219b378306be30e3577c0508098ca7}} 
+\index{fire\+::\+Laplace\+C\+ST@{fire\+::\+Laplace\+C\+ST}!k\+Function@{k\+Function}}
+\index{k\+Function@{k\+Function}!fire\+::\+Laplace\+C\+ST@{fire\+::\+Laplace\+C\+ST}}
+\subsubsection{\texorpdfstring{k\+Function}{kFunction}}
+{\footnotesize\ttfamily std\+::function$<$double(const std\+::array$<$double,3$>$ \&, const int \&, const int \&)$>$ fire\+::\+Laplace\+C\+S\+T\+::k\+Function\hspace{0.3cm}{\ttfamily [protected]}}
 
-The character that represents a comment and should be skipped. \mbox{\Hypertarget{a00809_ac817fc333b53611a41f446977461bdbf}\label{a00809_ac817fc333b53611a41f446977461bdbf}} 
-\index{fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}!delimiter@{delimiter}}
-\index{delimiter@{delimiter}!fire\+::\+Delimited\+Text\+Parser@{fire\+::\+Delimited\+Text\+Parser}}
-\subsubsection{\texorpdfstring{delimiter}{delimiter}}
-{\footnotesize\ttfamily template$<$typename T , typename K $>$ \\
-string \hyperlink{a00809}{fire\+::\+Delimited\+Text\+Parser}$<$ T, K $>$\+::delimiter\hspace{0.3cm}{\ttfamily [protected]}}
+A function to compute the value of the Laplace constant k. By default, this function will always return 1.\+0. It can be configured by clients with the 
 
-The delimiter used when parsing the file. 
-
-The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-Delimited\+Text\+Parser.\+h\end{DoxyCompactItemize}
+Laplace\+C\+S\+T.\+h\item 
+Laplace\+C\+S\+T.\+cpp\end{DoxyCompactItemize}

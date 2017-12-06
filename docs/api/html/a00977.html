@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen 1.8.13"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <title>Fire: SimpleWeb::ServerBase&lt; socket_type &gt;::Response Class Reference</title>
+        <title>Fire: SimpleWeb::ClientBase&lt; socket_type &gt;::Config Class Reference</title>
         <!--<link href="tabs.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="dynsections.js"></script>
         <link href="search/search.css" rel="stylesheet" type="text/css"/>
@@ -69,66 +69,42 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00207.html">SimpleWeb</a></li><li class="navelem"><a class="el" href="a00973.html">ServerBase</a></li><li class="navelem"><a class="el" href="a00977.html">Response</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00223.html">SimpleWeb</a></li><li class="navelem"><a class="el" href="a00969.html">ClientBase</a></li><li class="navelem"><a class="el" href="a00977.html">Config</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="a00974.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">SimpleWeb::ServerBase&lt; socket_type &gt;::Response Class Reference</div>  </div>
+<div class="title">SimpleWeb::ClientBase&lt; socket_type &gt;::Config Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Inheritance diagram for SimpleWeb::ServerBase&lt; socket_type &gt;::Response:</div>
-<div class="dyncontent">
- <div class="center">
-  <img src="a00977.png" usemap="#SimpleWeb::ServerBase_3C_20socket_5Ftype_20_3E::Response_map" alt=""/>
-  <map id="SimpleWeb::ServerBase_3C_20socket_5Ftype_20_3E::Response_map" name="SimpleWeb::ServerBase_3C_20socket_5Ftype_20_3E::Response_map">
-</map>
- </div></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:af666efb61621d70c16e3d6a6c419271d"><td class="memItemLeft" align="right" valign="top"><a id="af666efb61621d70c16e3d6a6c419271d"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>size</b> ()</td></tr>
-<tr class="separator:af666efb61621d70c16e3d6a6c419271d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a2818b4f3c577ff1f4067bb1c62640c15"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00977.html#a2818b4f3c577ff1f4067bb1c62640c15">close_connection_after_response</a> = false</td></tr>
-<tr class="separator:a2818b4f3c577ff1f4067bb1c62640c15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0ec5665cc6666eb621e01e9403fdf28"><td class="memItemLeft" align="right" valign="top"><a id="ab0ec5665cc6666eb621e01e9403fdf28"></a>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00977.html#ab0ec5665cc6666eb621e01e9403fdf28">timeout</a> = 0</td></tr>
+<tr class="memdesc:ab0ec5665cc6666eb621e01e9403fdf28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set timeout on requests in seconds. Default value: 0 (no timeout). <br /></td></tr>
+<tr class="separator:ab0ec5665cc6666eb621e01e9403fdf28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad810229c900c88c32ab42a8bfce2c4a1"><td class="memItemLeft" align="right" valign="top"><a id="ad810229c900c88c32ab42a8bfce2c4a1"></a>
+std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00977.html#ad810229c900c88c32ab42a8bfce2c4a1">timeout_connect</a> = 0</td></tr>
+<tr class="memdesc:ad810229c900c88c32ab42a8bfce2c4a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set connect timeout in seconds. Default value: 0 (<a class="el" href="a00977.html#ab0ec5665cc6666eb621e01e9403fdf28" title="Set timeout on requests in seconds. Default value: 0 (no timeout). ">Config::timeout</a> is then used instead). <br /></td></tr>
+<tr class="separator:ad810229c900c88c32ab42a8bfce2c4a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6eb0382dccf50e9e8bdc541d3f06f9d5"><td class="memItemLeft" align="right" valign="top"><a id="a6eb0382dccf50e9e8bdc541d3f06f9d5"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00977.html#a6eb0382dccf50e9e8bdc541d3f06f9d5">proxy_server</a></td></tr>
+<tr class="memdesc:a6eb0382dccf50e9e8bdc541d3f06f9d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set proxy server (server:port) <br /></td></tr>
+<tr class="separator:a6eb0382dccf50e9e8bdc541d3f06f9d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
-<tr class="memitem:a01d54a7e16ca437c98ec571deca98dfc"><td class="memItemLeft" align="right" valign="top"><a id="a01d54a7e16ca437c98ec571deca98dfc"></a>
-class&#160;</td><td class="memItemRight" valign="bottom"><b>ServerBase&lt; socket_type &gt;</b></td></tr>
-<tr class="separator:a01d54a7e16ca437c98ec571deca98dfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee5298660229dd276c7169cf7ef3d387"><td class="memItemLeft" align="right" valign="top"><a id="aee5298660229dd276c7169cf7ef3d387"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>ClientBase&lt; socket_type &gt;</b></td></tr>
+<tr class="separator:aee5298660229dd276c7169cf7ef3d387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a2818b4f3c577ff1f4067bb1c62640c15"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2818b4f3c577ff1f4067bb1c62640c15">&#9670;&nbsp;</a></span>close_connection_after_response</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class socket_type&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="a00973.html">SimpleWeb::ServerBase</a>&lt; socket_type &gt;::Response::close_connection_after_response = false</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>If true, force server to close the connection after the response have been sent.</p>
-<p>This is useful when implementing a HTTP/1.0-server sending content without specifying the content length. </p>
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00182_source.html">server_http.hpp</a></li>
+<li><a class="el" href="a00188_source.html">client_http.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->

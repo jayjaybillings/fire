@@ -1,38 +1,28 @@
-\hypertarget{a01001}{}\section{Simple\+Web\+:\+:Server$<$ H\+T\+T\+PS $>$ Class Template Reference}
-\label{a01001}\index{Simple\+Web\+::\+Server$<$ H\+T\+T\+P\+S $>$@{Simple\+Web\+::\+Server$<$ H\+T\+T\+P\+S $>$}}
-Inheritance diagram for Simple\+Web\+:\+:Server$<$ H\+T\+T\+PS $>$\+:\begin{figure}[H]
+\hypertarget{a01001}{}\section{Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:\+:Content Class Reference}
+\label{a01001}\index{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$\+::\+Content@{Simple\+Web\+::\+Server\+Base$<$ socket\+\_\+type $>$\+::\+Content}}
+Inheritance diagram for Simple\+Web\+:\+:Server\+Base$<$ socket\+\_\+type $>$\+:\+:Content\+:\begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[height=2.000000cm]{a01001}
+\includegraphics[height=5.000000cm]{a01001}
 \end{center}
 \end{figure}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{a01001_a1a5530e96cd973de3dc987034ca61b54}\label{a01001_a1a5530e96cd973de3dc987034ca61b54}} 
-D\+E\+P\+R\+E\+C\+A\+T\+ED {\bfseries Server} (unsigned short port, size\+\_\+t thread\+\_\+pool\+\_\+size, const std\+::string \&cert\+\_\+file, const std\+::string \&private\+\_\+key\+\_\+file, long timeout\+\_\+request=5, long timeout\+\_\+content=300, const std\+::string \&verify\+\_\+file=std\+::string())
+\mbox{\Hypertarget{a01001_adf8b2386c8ab32277341c6ae07cd4670}\label{a01001_adf8b2386c8ab32277341c6ae07cd4670}} 
+size\+\_\+t {\bfseries size} ()
 \item 
-\mbox{\Hypertarget{a01001_a15bb179287dfaa18da16b8877174e8d6}\label{a01001_a15bb179287dfaa18da16b8877174e8d6}} 
-{\bfseries Server} (const std\+::string \&cert\+\_\+file, const std\+::string \&private\+\_\+key\+\_\+file, const std\+::string \&verify\+\_\+file=std\+::string())
-\item 
-\mbox{\Hypertarget{a01001_a6a740b3fdbbbf178f540e27942cc93fc}\label{a01001_a6a740b3fdbbbf178f540e27942cc93fc}} 
-void {\bfseries start} ()
+\mbox{\Hypertarget{a01001_a6b4a72b0631c88ef576db28f54a768cb}\label{a01001_a6b4a72b0631c88ef576db28f54a768cb}} 
+std\+::string {\bfseries string} ()
 \end{DoxyCompactItemize}
-\subsection*{Protected Member Functions}
+\subsection*{Friends}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\Hypertarget{a01001_af722d2884eafafada7073feb7793c422}\label{a01001_af722d2884eafafada7073feb7793c422}} 
-void {\bfseries accept} ()
+\mbox{\Hypertarget{a01001_a01d54a7e16ca437c98ec571deca98dfc}\label{a01001_a01d54a7e16ca437c98ec571deca98dfc}} 
+class {\bfseries Server\+Base$<$ socket\+\_\+type $>$}
 \end{DoxyCompactItemize}
-\subsection*{Protected Attributes}
-\begin{DoxyCompactItemize}
-\item 
-\mbox{\Hypertarget{a01001_ade0b1e6f826fd76ba6c6253d352fd93c}\label{a01001_ade0b1e6f826fd76ba6c6253d352fd93c}} 
-boost\+::asio\+::ssl\+::context {\bfseries context}
-\end{DoxyCompactItemize}
-\subsection*{Additional Inherited Members}
 
 
 The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-server\+\_\+https.\+hpp\end{DoxyCompactItemize}
+server\+\_\+http.\+hpp\end{DoxyCompactItemize}

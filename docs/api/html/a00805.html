@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
         <meta name="generator" content="Doxygen 1.8.13"/>
         <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <title>Fire: fire::System&lt; T &gt; Class Template Reference</title>
+        <title>Fire: fire::TwoDRobinBoundaryCondition Struct Reference</title>
         <!--<link href="tabs.css" rel="stylesheet" type="text/css"/>-->
         <script type="text/javascript" src="dynsections.js"></script>
         <link href="search/search.css" rel="stylesheet" type="text/css"/>
@@ -69,67 +69,107 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="a00198.html">fire</a></li><li class="navelem"><a class="el" href="a00805.html">System</a></li>  </ul>
+<li class="navelem"><a class="el" href="a00210.html">fire</a></li><li class="navelem"><a class="el" href="a00805.html">TwoDRobinBoundaryCondition</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="a00802.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">fire::System&lt; T &gt; Class Template Reference</div>  </div>
+<div class="title">fire::TwoDRobinBoundaryCondition Struct Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="a00062_source.html">System.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="a00038_source.html">FEMTypes.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2c252b0ec85877bcfcbae60dff04dfaa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#a2c252b0ec85877bcfcbae60dff04dfaa">setSize</a> (const long &amp;n, const short &amp;d)</td></tr>
-<tr class="separator:a2c252b0ec85877bcfcbae60dff04dfaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9e25fbc00a50d54fb90ac1fdcd911e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#aa9e25fbc00a50d54fb90ac1fdcd911e4">setState</a> (T *systemState)</td></tr>
-<tr class="separator:aa9e25fbc00a50d54fb90ac1fdcd911e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94772dc1ff3c599f3f526e72675dac38"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#a94772dc1ff3c599f3f526e72675dac38">TwoDRobinBoundaryCondition</a> ()</td></tr>
+<tr class="separator:a94772dc1ff3c599f3f526e72675dac38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a691668fb77499b26336866f608cf42b2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#a691668fb77499b26336866f608cf42b2">TwoDRobinBoundaryCondition</a> (const <a class="el" href="a00210.html#a92dafcc05a788e1065a5792b67f0f70e">TwoDNode</a> &amp;first, const <a class="el" href="a00210.html#a92dafcc05a788e1065a5792b67f0f70e">TwoDNode</a> &amp;second, const std::function&lt; double(const double &amp;)&gt; &amp;_sigma, const std::function&lt; double(const double &amp;)&gt; &amp;_h)</td></tr>
+<tr class="separator:a691668fb77499b26336866f608cf42b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3568bb75ca2ecea61b1dbc4c1b8b5b60"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#a3568bb75ca2ecea61b1dbc4c1b8b5b60">operator==</a> (const <a class="el" href="a00805.html">TwoDRobinBoundaryCondition</a> &amp;otherCond) const</td></tr>
+<tr class="separator:a3568bb75ca2ecea61b1dbc4c1b8b5b60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adaa602ac0734d5ed6294f015ab4e2c79"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#adaa602ac0734d5ed6294f015ab4e2c79">operator!=</a> (const <a class="el" href="a00805.html">TwoDRobinBoundaryCondition</a> &amp;otherCond) const</td></tr>
+<tr class="separator:adaa602ac0734d5ed6294f015ab4e2c79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a89101170e69beff93e11c795aa6bb481"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#a89101170e69beff93e11c795aa6bb481">numEqs</a></td></tr>
-<tr class="separator:a89101170e69beff93e11c795aa6bb481"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a041623ed0162d4cad4309c9be3e7df9d"><td class="memItemLeft" align="right" valign="top">short&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#a041623ed0162d4cad4309c9be3e7df9d">nDim</a></td></tr>
-<tr class="separator:a041623ed0162d4cad4309c9be3e7df9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac59dffce1577673d04cd222c0f769c11"><td class="memItemLeft" align="right" valign="top">T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#ac59dffce1577673d04cd222c0f769c11">state</a></td></tr>
-<tr class="separator:ac59dffce1577673d04cd222c0f769c11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:ad4db2466fecae72b4dc5068a4d04ec4a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00210.html#a92dafcc05a788e1065a5792b67f0f70e">TwoDNode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#ad4db2466fecae72b4dc5068a4d04ec4a">firstNode</a></td></tr>
+<tr class="separator:ad4db2466fecae72b4dc5068a4d04ec4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cfaf9f512560ea73616ba18471234bf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00210.html#a92dafcc05a788e1065a5792b67f0f70e">TwoDNode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#a5cfaf9f512560ea73616ba18471234bf">secondNode</a></td></tr>
+<tr class="separator:a5cfaf9f512560ea73616ba18471234bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab32818260358435239f283ee40651fe8"><td class="memItemLeft" align="right" valign="top">std::function&lt; double(const double &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#ab32818260358435239f283ee40651fe8">sigma</a></td></tr>
+<tr class="separator:ab32818260358435239f283ee40651fe8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41dadd7aa9c2d03978d7f0b7b673d684"><td class="memItemLeft" align="right" valign="top">std::function&lt; double(const double &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00805.html#a41dadd7aa9c2d03978d7f0b7b673d684">h</a></td></tr>
+<tr class="separator:a41dadd7aa9c2d03978d7f0b7b673d684"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;class T&gt;<br />
-class fire::System&lt; T &gt;</h3>
-
-<p>This class represents a system of equations in Fire, where a system of equations is a collection of equations with the same unknowns.</p>
-<p>The system of equations is represented by a collection of operators that operate on a problem state provided by the user. The state defines all of the system's unknown quantities. However, since the type of the state is generic, the system does not explicitly known the identity of those unknowns. The user-defined state class is expected to provide the unknowns contiguously when queried.</p>
-<p>The system of equations can be integrated by calling the integrate() operation. The system will be solved using a default integrator if a user- defined integrator is not provided. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2c252b0ec85877bcfcbae60dff04dfaa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c252b0ec85877bcfcbae60dff04dfaa">&#9670;&nbsp;</a></span>setSize()</h2>
+<div class="textblock"><p>This struct represents a two dimensional Robin Boundary condition in which the condition is defined across an edge between two nodes. The Robin condition is defined as </p><p class="formulaDsp">
+<img class="formulaDsp" alt="\[ k(s)\frac{\partial u}{\partial n} + \sigma(s) u = h(s) \mbox{ on } C_{2} \]" src="form_19.png"/>
+</p>
+<p> All members of this struct must be initialized on construction. The idea is that the references should not need to change during execution because the boundaries do not change. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a94772dc1ff3c599f3f526e72675dac38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94772dc1ff3c599f3f526e72675dac38">&#9670;&nbsp;</a></span>TwoDRobinBoundaryCondition() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="a00805.html">fire::System</a>&lt; T &gt;::setSize </td>
+          <td class="memname">fire::TwoDRobinBoundaryCondition::TwoDRobinBoundaryCondition </td>
           <td>(</td>
-          <td class="paramtype">const long &amp;&#160;</td>
-          <td class="paramname"><em>n</em>, </td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The default constructor </p>
+
+</div>
+</div>
+<a id="a691668fb77499b26336866f608cf42b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a691668fb77499b26336866f608cf42b2">&#9670;&nbsp;</a></span>TwoDRobinBoundaryCondition() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">fire::TwoDRobinBoundaryCondition::TwoDRobinBoundaryCondition </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a00210.html#a92dafcc05a788e1065a5792b67f0f70e">TwoDNode</a> &amp;&#160;</td>
+          <td class="paramname"><em>first</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short &amp;&#160;</td>
-          <td class="paramname"><em>d</em>&#160;</td>
+          <td class="paramtype">const <a class="el" href="a00210.html#a92dafcc05a788e1065a5792b67f0f70e">TwoDNode</a> &amp;&#160;</td>
+          <td class="paramname"><em>second</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; double(const double &amp;)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>_sigma</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; double(const double &amp;)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>_h</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -143,33 +183,34 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This operation sets the size of the system of equations by defining the total number of equations and the number of dimensions. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Constructor </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">n</td><td>The total number of equations in the system. </td></tr>
-    <tr><td class="paramname">d</td><td>The total number of physical dimensions of the system, not including time. 1 for 1D, 2 for 2D, 3 for 3D. </td></tr>
+    <tr><td class="paramname">first</td><td>the node that should be used as the first node on the path </td></tr>
+    <tr><td class="paramname">second</td><td>the node that should be used as the second or terminal node on the path </td></tr>
+    <tr><td class="paramname">_sigma</td><td>the sigma function </td></tr>
+    <tr><td class="paramname">_h</td><td>the h function on the right-hand side of the condition </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="aa9e25fbc00a50d54fb90ac1fdcd911e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9e25fbc00a50d54fb90ac1fdcd911e4">&#9670;&nbsp;</a></span>setState()</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="adaa602ac0734d5ed6294f015ab4e2c79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adaa602ac0734d5ed6294f015ab4e2c79">&#9670;&nbsp;</a></span>operator!=()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void <a class="el" href="a00805.html">fire::System</a>&lt; T &gt;::setState </td>
+          <td class="memname">bool fire::TwoDRobinBoundaryCondition::operator!= </td>
           <td>(</td>
-          <td class="paramtype">T *&#160;</td>
-          <td class="paramname"><em>systemState</em></td><td>)</td>
-          <td></td>
+          <td class="paramtype">const <a class="el" href="a00805.html">TwoDRobinBoundaryCondition</a> &amp;&#160;</td>
+          <td class="paramname"><em>otherCond</em></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -178,89 +219,116 @@ template&lt;class T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This operation specifies the state of the system of equations.</p>
-<p>The state is provided using a raw pointer because the system of equations does not participate in the state's memory lifecycle. This class explicitly guarantees that it will never deallocate the state data! Classes utilized by this class, such as integrators, may overwrite or manipulate the state data in ways described in their API docs, including attempting to deallocate it (frowned upon). Clients should generally expect that the state variables provided by the state type T will be modified and that in some instances those modifications may be done in place. </p>
+<p>The inequality operator override to invert ==. </p>
+
+</div>
+</div>
+<a id="a3568bb75ca2ecea61b1dbc4c1b8b5b60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3568bb75ca2ecea61b1dbc4c1b8b5b60">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool fire::TwoDRobinBoundaryCondition::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="a00805.html">TwoDRobinBoundaryCondition</a> &amp;&#160;</td>
+          <td class="paramname"><em>otherCond</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>This is an operator override to compare two dimensional Robin conditions. Note that this operation implements equality checks for the functions by generating pointer targets for the functions and checking target types. This may or may not be the best way to check for equality of these functions, depending on your application. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">otherCond</td><td>the other condition </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the conditions are equal, false otherwise. </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a041623ed0162d4cad4309c9be3e7df9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a041623ed0162d4cad4309c9be3e7df9d">&#9670;&nbsp;</a></span>nDim</h2>
+<a id="ad4db2466fecae72b4dc5068a4d04ec4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4db2466fecae72b4dc5068a4d04ec4a">&#9670;&nbsp;</a></span>firstNode</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">short <a class="el" href="a00805.html">fire::System</a>&lt; T &gt;::nDim</td>
+          <td class="memname"><a class="el" href="a00210.html#a92dafcc05a788e1065a5792b67f0f70e">TwoDNode</a> fire::TwoDRobinBoundaryCondition::firstNode</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
-<p>The total number of physical dimensions of the system, not including time. </p>
+<p>The first node where the edge starts </p>
 
 </div>
 </div>
-<a id="a89101170e69beff93e11c795aa6bb481"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89101170e69beff93e11c795aa6bb481">&#9670;&nbsp;</a></span>numEqs</h2>
+<a id="a41dadd7aa9c2d03978d7f0b7b673d684"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41dadd7aa9c2d03978d7f0b7b673d684">&#9670;&nbsp;</a></span>h</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">long <a class="el" href="a00805.html">fire::System</a>&lt; T &gt;::numEqs</td>
+          <td class="memname">std::function&lt;double(const double &amp;)&gt; fire::TwoDRobinBoundaryCondition::h</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
-<p>The total number of equations in the system. </p>
+<p>As defined in the definition of the condition. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>The distance along the side length </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
-<a id="ac59dffce1577673d04cd222c0f769c11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac59dffce1577673d04cd222c0f769c11">&#9670;&nbsp;</a></span>state</h2>
+<a id="a5cfaf9f512560ea73616ba18471234bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cfaf9f512560ea73616ba18471234bf">&#9670;&nbsp;</a></span>secondNode</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;class T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">T* <a class="el" href="a00805.html">fire::System</a>&lt; T &gt;::state</td>
+          <td class="memname"><a class="el" href="a00210.html#a92dafcc05a788e1065a5792b67f0f70e">TwoDNode</a> fire::TwoDRobinBoundaryCondition::secondNode</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
-<p>The state of the system, including unknowns, materials information, etc. </p>
+<p>The second node where the edge terminates </p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="a00062_source.html">System.h</a></li>
+<a id="ab32818260358435239f283ee40651fe8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab32818260358435239f283ee40651fe8">&#9670;&nbsp;</a></span>sigma</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::function&lt;double(const double &amp;)&gt; fire::TwoDRobinBoundaryCondition::sigma</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>As defined in the definition of the condition. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>The distance along the side length </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li><a class="el" href="a00038_source.html">FEMTypes.h</a></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->
