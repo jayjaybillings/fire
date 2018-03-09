@@ -49,12 +49,12 @@ statement should look like the following:
 ```bash
 cmake ../fire -DCMAKE_BUILD_TYPE=Debug -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_VERSION=4.5 -DMAGMA_ROOT=/usr/local/lib
 ```
+
 Fire also supports CVODE, which can be used by either passing -DSUNDIALS_ROOT or pointing to Spack:
 
 ```bash
 cmake ../fire -DCMAKE_BUILD_TYPE=Debug -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_VERSION=4.5 -DMAGMA_ROOT=/usr/local/lib -DSPACK_ROOT=$HOME/spack
 ```
-
 
 The above will get the code running, but it will not run the tests or generate the 
 documentation. Issue the following commands to do that:
@@ -62,7 +62,6 @@ documentation. Issue the following commands to do that:
 make test
 make doc
 ```
-
 
 Build flags, such as -Wall, can be set by prepending the CXX_FLAGS variable to 
 the cmake command as such
@@ -74,6 +73,14 @@ CXX_FLAGS='-Wall' cmake ../fire -DCMAKE_BUILD_TYPE=Debug -G"Eclipse CDT4 - Unix 
 Optimization flags should be handled by setting -DCMAKE_BUILD_TYPE=Release 
 instead of Debug. Likewise, an optimized build with debug information can be 
 acheived by setting -DCMAKE_BUILD_TYPE=RelWithDebugInfo.
+
+### Installation Step
+
+If Fire is to be deployed as a third party library, then it should be installed to a proper installation directory. This can be done by passing the -DCMAKE_INSTALL_PREFIX option during configuration as follows:
+
+```bash
+cmake ../fire -DCMAKE_INSTALL_PREFIX=/awesome-install-directory -DCMAKE_BUILD_TYPE=Debug -G"Eclipse CDT4 - Unix Makefiles" -DCMAKE_ECLIPSE_VERSION=4.5 -DMAGMA_ROOT=/usr/local/lib
+```
 
 ## License
 
